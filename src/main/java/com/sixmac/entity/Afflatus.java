@@ -13,8 +13,8 @@ public class Afflatus {
     private String name;
     private Integer userId;
     private Integer type;
-    private Integer styleId;
-    private Integer areaId;
+    private Styles style;
+    private Areas area;
     private Integer coverId;
     private Integer shareNum;
     private String labels;
@@ -58,22 +58,24 @@ public class Afflatus {
         this.type = type;
     }
 
-    @Column(name = "styleId")
-    public Integer getStyleId() {
-        return styleId;
+    @OneToOne
+    @JoinColumn(name="styleId")
+    public Styles getStyle() {
+        return style;
     }
 
-    public void setStyleId(Integer styleId) {
-        this.styleId = styleId;
+    public void setStyle(Styles style) {
+        this.style = style;
     }
 
-    @Column(name = "areaId")
-    public Integer getAreaId() {
-        return areaId;
+    @OneToOne
+    @JoinColumn(name="areaId")
+    public Areas getArea() {
+        return area;
     }
 
-    public void setAreaId(Integer areaId) {
-        this.areaId = areaId;
+    public void setArea(Areas area) {
+        this.area = area;
     }
 
     @Column(name = "coverId")

@@ -10,5 +10,5 @@ import org.springframework.data.domain.Page;
  */
 public interface AfflatusService extends ICommonService<Afflatus> {
 
-    public Page<Afflatus> iPage(String type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
+    public Page<Afflatus> iPage(Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
 }

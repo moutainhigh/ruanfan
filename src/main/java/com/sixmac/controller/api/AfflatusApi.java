@@ -27,7 +27,7 @@ public class AfflatusApi {
     @RequestMapping(value = "/list")
     public void login(HttpServletRequest request,
                       HttpServletResponse response,
-                      String type,
+                      Integer type,
                       Integer styleId,
                       Integer areaId,
                       Integer pageNum,
