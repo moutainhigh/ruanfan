@@ -18,7 +18,7 @@ public class Users {
     private String nickName;
     private String password;
     private String headPath;
-    private Integer cityId;
+    private City city;
     private Integer score;
     private String comName;
     private String comArea;
@@ -72,13 +72,14 @@ public class Users {
         this.headPath = headPath;
     }
 
-    @Column(name = "cityId")
-    public Integer getCityId() {
-        return cityId;
+    @OneToOne
+    @JoinColumn(name="cityId")
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Column(name = "score")
