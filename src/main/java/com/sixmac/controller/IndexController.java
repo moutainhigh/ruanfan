@@ -34,7 +34,6 @@ public class IndexController extends CommonController {
         if (StringUtils.isNotBlank(error)) {
             model.addAttribute("error", error);
         }
-
         return "登录";
     }
 
@@ -76,7 +75,6 @@ public class IndexController extends CommonController {
     public String dashboard(HttpServletRequest request,
                             HttpServletResponse response,
                             ModelMap model) {
-
         return "控制面板";
     }
 
