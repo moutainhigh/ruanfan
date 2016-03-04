@@ -1,7 +1,6 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.core.Constant;
-import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Users;
 import com.sixmac.service.UsersService;
 import com.sixmac.utils.WebUtil;
