@@ -14,6 +14,7 @@ public class Reserve {
     private String mobile;
     private String email;
     private Users user;
+    private Designers designer;
     private Date reseTime;
     private Styles style;
     private String address;
@@ -67,6 +68,16 @@ public class Reserve {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "designerId")
+    public Designers getDesigner() {
+        return designer;
+    }
+
+    public void setDesigner(Designers designer) {
+        this.designer = designer;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

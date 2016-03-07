@@ -2,6 +2,7 @@ package com.sixmac.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -21,6 +22,8 @@ public class Designers {
     private Integer isCheck;
     private Integer status;
     private Date createTime;
+    private List<Gams> gamsList;
+    private List<Comment> commentList;
 
     @Id
     @Column(name = "id")
@@ -131,5 +134,23 @@ public class Designers {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public List<Gams> getGamsList() {
+        return gamsList;
+    }
+
+    public void setGamsList(List<Gams> gamsList) {
+        this.gamsList = gamsList;
+    }
+
+    @Transient
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }

@@ -52,7 +52,7 @@ public class AfflatusApi {
      * @param pageSize
      */
     @RequestMapping(value = "/list")
-    public void login(HttpServletRequest request,
+    public void list(HttpServletRequest request,
                       HttpServletResponse response,
                       Integer type,
                       Integer styleId,

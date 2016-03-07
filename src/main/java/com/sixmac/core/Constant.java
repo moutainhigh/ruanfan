@@ -28,6 +28,7 @@ public interface Constant {
     // 点赞or转发目标类型
     Integer GAM_JOURNAL = 1;  // 日志
     Integer GAM_AFFLATUS = 2; // 灵感集
+    Integer GAM_DESIGNERS = 3; // 设计师
 
     // 收藏目标类型
     Integer COLLECT_AFFLATUS = 1;  // 灵感集
