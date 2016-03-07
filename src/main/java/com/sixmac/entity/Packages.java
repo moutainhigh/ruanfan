@@ -13,7 +13,7 @@ public class Packages {
     private String name;
     private String price;
     private String oldPrice;
-    private Integer brandId;
+    private Brand brand;
     private String labels;
     private Integer coverId;
     private String description;
@@ -57,13 +57,14 @@ public class Packages {
         this.oldPrice = oldPrice;
     }
 
-    @Column(name = "brandId")
-    public Integer getBrandId() {
-        return brandId;
+    @ManyToOne
+    @JoinColumn(name = "brandId")
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     @Column(name = "labels")

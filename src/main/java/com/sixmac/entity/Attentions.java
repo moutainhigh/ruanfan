@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "attentions")
 public class Attentions {
     private int id;
-    private int userId;
+    private Users user;
     private int objectId;
     private int objectType;
 
@@ -23,13 +23,14 @@ public class Attentions {
         this.id = id;
     }
 
-    @Column(name = "userId")
-    public int getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Column(name = "objectId")

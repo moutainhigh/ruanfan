@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class City {
     private int id;
     private String name;
-    private int provinceId;
+    private Province province;
 
     @Id
     @Column(name = "id")
@@ -31,12 +31,13 @@ public class City {
         this.name = name;
     }
 
-    @Column(name = "provinceId")
-    public int getProvinceId() {
-        return provinceId;
+    @ManyToOne
+    @JoinColumn(name = "provinceId")
+    public Province getProvince() {
+        return province;
     }
 
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
+    public void setProvince(Province province) {
+        this.province = province;
     }
 }

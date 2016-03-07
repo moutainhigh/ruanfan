@@ -72,7 +72,7 @@ public class Users {
         this.headPath = headPath;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="cityId")
     public City getCity() {
         return city;

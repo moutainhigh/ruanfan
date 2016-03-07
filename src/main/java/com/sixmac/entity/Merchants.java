@@ -18,8 +18,8 @@ public class Merchants {
     private String license;
     private String labels;
     private Integer type;
-    private Integer styleId;
-    private Integer cityId;
+    private Styles style;
+    private City city;
     private String description;
     private Integer isCheck;
     private Integer status;
@@ -107,22 +107,24 @@ public class Merchants {
         this.type = type;
     }
 
-    @Column(name = "styleId")
-    public Integer getStyleId() {
-        return styleId;
+    @ManyToOne
+    @JoinColumn(name = "styleId")
+    public Styles getStyle() {
+        return style;
     }
 
-    public void setStyleId(Integer styleId) {
-        this.styleId = styleId;
+    public void setStyle(Styles style) {
+        this.style = style;
     }
 
-    @Column(name = "cityId")
-    public Integer getCityId() {
-        return cityId;
+    @ManyToOne
+    @JoinColumn(name = "cityId")
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Column(name = "description")

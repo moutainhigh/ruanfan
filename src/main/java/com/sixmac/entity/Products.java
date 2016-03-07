@@ -12,10 +12,10 @@ public class Products {
     private String name;
     private String price;
     private String oldPrice;
-    private Integer merchantId;
+    private Merchants merchant;
     private Integer coverId;
     private Integer type;
-    private Integer brandId;
+    private Brand brand;
     private Integer sortId;
     private String place;
     private String labels;
@@ -64,13 +64,14 @@ public class Products {
         this.oldPrice = oldPrice;
     }
 
-    @Column(name = "merchantId")
-    public Integer getMerchantId() {
-        return merchantId;
+    @ManyToOne
+    @JoinColumn(name = "merchantId")
+    public Merchants getMerchant() {
+        return merchant;
     }
 
-    public void setMerchantId(Integer merchantId) {
-        this.merchantId = merchantId;
+    public void setMerchant(Merchants merchant) {
+        this.merchant = merchant;
     }
 
     @Column(name = "coverId")
@@ -91,13 +92,14 @@ public class Products {
         this.type = type;
     }
 
-    @Column(name = "brandId")
-    public Integer getBrandId() {
-        return brandId;
+    @ManyToOne
+    @JoinColumn(name = "brandId")
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     @Column(name = "sortId")

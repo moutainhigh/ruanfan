@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "journal")
 public class Journal {
     private int id;
-    private int userId;
+    private Users user;
     private String content;
     private Integer forwardNum;
     private Date createTime;
@@ -25,13 +25,14 @@ public class Journal {
         this.id = id;
     }
 
-    @Column(name = "userId")
-    public int getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Column(name = "content")

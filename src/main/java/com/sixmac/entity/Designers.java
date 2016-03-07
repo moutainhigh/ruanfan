@@ -16,7 +16,7 @@ public class Designers {
     private String head;
     private Integer type;
     private String proof;
-    private Integer cityId;
+    private City city;
     private String description;
     private Integer isCheck;
     private Integer status;
@@ -86,13 +86,14 @@ public class Designers {
         this.proof = proof;
     }
 
-    @Column(name = "cityId")
-    public Integer getCityId() {
-        return cityId;
+    @ManyToOne
+    @JoinColumn(name = "cityId")
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Column(name = "description")

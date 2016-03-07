@@ -2,6 +2,7 @@ package com.sixmac.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -11,15 +12,18 @@ import java.util.Date;
 public class Afflatus {
     private int id;
     private String name;
-    private Integer userId;
+    private Users user;
     private Integer type;
     private Styles style;
     private Areas area;
     private Integer coverId;
+    private Integer showNum;
     private Integer shareNum;
     private String labels;
     private Integer status;
     private Date createTime;
+    private List<Gams> gamsList;
+    private List<Afflatus> loveList;
 
     @Id
     @Column(name = "id")
@@ -40,13 +44,14 @@ public class Afflatus {
         this.name = name;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Column(name = "type")
@@ -87,6 +92,15 @@ public class Afflatus {
         this.coverId = coverId;
     }
 
+    @Column(name = "showNum")
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
+    }
+
     @Column(name = "shareNum")
     public Integer getShareNum() {
         return shareNum;
@@ -122,5 +136,23 @@ public class Afflatus {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public List<Gams> getGamsList() {
+        return gamsList;
+    }
+
+    public void setGamsList(List<Gams> gamsList) {
+        this.gamsList = gamsList;
+    }
+
+    @Transient
+    public List<Afflatus> getLoveList() {
+        return loveList;
+    }
+
+    public void setLoveList(List<Afflatus> loveList) {
+        this.loveList = loveList;
     }
 }

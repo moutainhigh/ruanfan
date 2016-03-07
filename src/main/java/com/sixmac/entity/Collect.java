@@ -1,20 +1,17 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
- * Created by Administrator on 2016/3/4 0004.
+ * Created by Administrator on 2016/3/7 0007.
  */
 @Entity
-@Table(name = "comment")
-public class Comment {
+@Table(name = "collect")
+public class Collect {
     private int id;
     private Users user;
     private Integer objectId;
     private Integer objectType;
-    private String content;
-    private Date createTime;
 
     @Id
     @Column(name = "id")
@@ -52,23 +49,5 @@ public class Comment {
 
     public void setObjectType(Integer objectType) {
         this.objectType = objectType;
-    }
-
-    @Column(name = "content")
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    @Column(name = "createTime")
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 }

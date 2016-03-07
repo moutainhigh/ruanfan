@@ -11,7 +11,7 @@ public class Sysusers {
     private int id;
     private String account;
     private String password;
-    private Integer roleId;
+    private Roles role;
 
     @Id
     @Column(name = "id")
@@ -41,12 +41,13 @@ public class Sysusers {
         this.password = password;
     }
 
-    @Column(name = "roleId")
-    public Integer getRoleId() {
-        return roleId;
+    @ManyToOne
+    @JoinColumn(name = "roleId")
+    public Roles getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Roles role) {
+        this.role = role;
     }
 }

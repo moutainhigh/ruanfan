@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "feedback")
 public class Feedback {
     private int id;
-    private Integer userId;
+    private Users user;
     private Integer type;
     private String path;
     private String description;
@@ -26,13 +26,14 @@ public class Feedback {
         this.id = id;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Column(name = "type")

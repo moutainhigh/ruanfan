@@ -13,9 +13,9 @@ public class Reserve {
     private String name;
     private String mobile;
     private String email;
-    private Integer userId;
+    private Users user;
     private Date reseTime;
-    private Integer styleId;
+    private Styles style;
     private String address;
     private String remark;
     private String reseAddress;
@@ -59,13 +59,14 @@ public class Reserve {
         this.email = email;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -78,13 +79,14 @@ public class Reserve {
         this.reseTime = reseTime;
     }
 
-    @Column(name = "styleId")
-    public Integer getStyleId() {
-        return styleId;
+    @ManyToOne
+    @JoinColumn(name = "styleId")
+    public Styles getStyle() {
+        return style;
     }
 
-    public void setStyleId(Integer styleId) {
-        this.styleId = styleId;
+    public void setStyle(Styles style) {
+        this.style = style;
     }
 
     @Column(name = "address")

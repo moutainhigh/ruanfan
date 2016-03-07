@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "ordersinfo")
 public class Ordersinfo {
     private int id;
-    private Integer orderId;
-    private Integer productId;
+    private Orders order;
+    private Products product;
     private String productName;
     private String productPath;
     private String price;
@@ -28,22 +28,24 @@ public class Ordersinfo {
         this.id = id;
     }
 
-    @Column(name = "orderId")
-    public Integer getOrderId() {
-        return orderId;
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    public Orders getOrder() {
+        return order;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrder(Orders order) {
+        this.order = order;
     }
 
-    @Column(name = "productId")
-    public Integer getProductId() {
-        return productId;
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    public Products getProduct() {
+        return product;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProduct(Products product) {
+        this.product = product;
     }
 
     @Column(name = "productName")

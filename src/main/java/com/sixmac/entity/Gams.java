@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "gams")
 public class Gams {
     private int id;
-    private Integer userId;
+    private Users user;
     private Integer objectId;
     private Integer objectType;
     private int type;
@@ -24,13 +24,14 @@ public class Gams {
         this.id = id;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Column(name = "objectId")

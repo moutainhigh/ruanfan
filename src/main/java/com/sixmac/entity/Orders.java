@@ -12,8 +12,8 @@ public class Orders {
     private int id;
     private String orderNum;
     private Date payTime;
-    private Integer userId;
-    private Integer merchantId;
+    private Users user;
+    private Merchants merchant;
     private String consignee;
     private String mobile;
     private String address;
@@ -52,22 +52,24 @@ public class Orders {
         this.payTime = payTime;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
-    @Column(name = "merchantId")
-    public Integer getMerchantId() {
-        return merchantId;
+    @ManyToOne
+    @JoinColumn(name = "merchantId")
+    public Merchants getMerchant() {
+        return merchant;
     }
 
-    public void setMerchantId(Integer merchantId) {
-        this.merchantId = merchantId;
+    public void setMerchant(Merchants merchant) {
+        this.merchant = merchant;
     }
 
     @Column(name = "consignee")

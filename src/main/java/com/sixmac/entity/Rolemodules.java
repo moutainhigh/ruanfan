@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "rolemodules")
 public class Rolemodules {
     private int id;
-    private int roleId;
-    private int moduleId;
+    private Roles role;
+    private Modules module;
 
     @Id
     @Column(name = "id")
@@ -22,21 +22,23 @@ public class Rolemodules {
         this.id = id;
     }
 
-    @Column(name = "roleId")
-    public int getRoleId() {
-        return roleId;
+    @ManyToOne
+    @JoinColumn(name = "roleId")
+    public Roles getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
-    @Column(name = "moduleId")
-    public int getModuleId() {
-        return moduleId;
+    @ManyToOne
+    @JoinColumn(name = "moduleId")
+    public Modules getModule() {
+        return module;
     }
 
-    public void setModuleId(int moduleId) {
-        this.moduleId = moduleId;
+    public void setModule(Modules module) {
+        this.module = module;
     }
 }

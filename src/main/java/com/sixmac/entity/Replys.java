@@ -10,8 +10,8 @@ import java.util.Date;
 @Table(name = "replys")
 public class Replys {
     private int id;
-    private Integer commentId;
-    private Integer userId;
+    private Comment comment;
+    private Users user;
     private String content;
     private Date createTime;
 
@@ -25,22 +25,24 @@ public class Replys {
         this.id = id;
     }
 
-    @Column(name = "commentId")
-    public Integer getCommentId() {
-        return commentId;
+    @ManyToOne
+    @JoinColumn(name = "commentId")
+    public Comment getComment() {
+        return comment;
     }
 
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Column(name = "content")

@@ -11,30 +11,24 @@ public interface Constant {
     String SESSION_MEMBER_GLOBLE = "session_globle_member";
     String SESSION_MEMBER_BUSINESS = "session_business_member";
 
-    String SESSION_WEIXIN_USER = "session_weixin_user";
-
-    String COOKIE_BUSINESS_OPTION = "cookie_business_option";
-
-    String WEIXIN_STATE = "weixin_state";
-
-    String EVENT_DEF_SUBSCRIBE_TEXT = "感谢关注!";
-
-    String MSG_DEF_TEXT = "您输入的序列号不正确，请重新输入!";
-
-    String SEND_TYPE_FLASH = "FLASHSEND";
-
     String EVENT_WINE_ONLINE_HOME = "WINE_ONLINE_HOME";
-
-    String EVENT_WINE_ONLINE_HOTEL = "WINE_ONLINE_HOTEL";
 
     String MEMBER_TYPE_GLOBLE = "GLOBLE";
 
     String MEMBER_TYPE_BUSINESS = "BUSINESS";
 
-    String WINE_CART_COOKIE = "wine_cart_cookie";
+    // 排序方式
+    Integer SORT_TYPE_ASC = 1;   // 正序
+    Integer SORT_TYPE_DESC = 2;  // 倒序
 
-    //微信支付
-    String PAYTYPE_WEIXIN = "WEIXIN_PAY";
-    //货到付款
-    String PAYTYPE_HOME ="HOME_PAY";
+    // 点赞or转发类型
+    Integer GAM_LOVE = 1;  // 点赞
+    Integer GAM_MOVE = 2;  // 转发
+
+    // 点赞or转发目标类型
+    Integer GAM_JOURNAL = 1;  // 日志
+    Integer GAM_AFFLATUS = 2; // 灵感集
+
+    // 收藏目标类型
+    Integer COLLECT_AFFLATUS = 1;  // 灵感集
 }

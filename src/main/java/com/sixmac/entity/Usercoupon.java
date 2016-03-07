@@ -1,9 +1,6 @@
 package com.sixmac.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -12,8 +9,8 @@ import javax.persistence.Table;
 @Table(name = "usercoupon")
 public class Usercoupon {
     private int id;
-    private Integer userId;
-    private Integer couponId;
+    private Users user;
+    private Coupon coupon;
     private Integer status;
 
     @Id
@@ -26,22 +23,24 @@ public class Usercoupon {
         this.id = id;
     }
 
-    @Column(name = "userId")
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
-    @Column(name = "couponId")
-    public Integer getCouponId() {
-        return couponId;
+    @ManyToOne
+    @JoinColumn(name = "couponId")
+    public Coupon getCoupon() {
+        return coupon;
     }
 
-    public void setCouponId(Integer couponId) {
-        this.couponId = couponId;
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
     }
 
     @Column(name = "status")
