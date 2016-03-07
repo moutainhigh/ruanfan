@@ -59,6 +59,11 @@ public class AfflatusApi {
                       Integer areaId,
                       Integer pageNum,
                       Integer pageSize) {
+        if (null == pageNum || null == pageSize) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
         Page<Afflatus> page = afflatusService.iPage(type, styleId, areaId, pageNum, pageSize);
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
