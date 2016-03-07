@@ -6,10 +6,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Collect;
-import com.sixmac.service.AfflatusService;
-import com.sixmac.service.CollectService;
-import com.sixmac.service.GamsService;
-import com.sixmac.service.UsersService;
+import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,9 @@ public class AfflatusApi {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 灵感集列表
@@ -83,6 +83,9 @@ public class AfflatusApi {
         if (null == afflatus) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
         }
+
+        // 查询评论列表
+        afflatus.setCommentList(commentService.iFindList(afflatusId, Constant.COMMENT_AFFLATUS));
 
         // 查询点赞列表
         afflatus.setGamsList(gamsService.iFindList(afflatusId, Constant.GAM_AFFLATUS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));

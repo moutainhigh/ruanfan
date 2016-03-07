@@ -31,4 +31,9 @@ public interface Constant {
 
     // 收藏目标类型
     Integer COLLECT_AFFLATUS = 1;  // 灵感集
+
+    // 评论目标类型
+    Integer COMMENT_DESIGNERS = 1;  // 设计师
+    Integer COMMENT_WORKS = 2;      // 设计作品
+    Integer COMMENT_AFFLATUS = 3;   // 灵感集
 }

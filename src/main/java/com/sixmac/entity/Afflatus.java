@@ -24,6 +24,7 @@ public class Afflatus {
     private Date createTime;
     private List<Gams> gamsList;
     private List<Afflatus> loveList;
+    private List<Comment> commentList;
 
     @Id
     @Column(name = "id")
@@ -154,5 +155,14 @@ public class Afflatus {
 
     public void setLoveList(List<Afflatus> loveList) {
         this.loveList = loveList;
+    }
+
+    @Transient
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }
