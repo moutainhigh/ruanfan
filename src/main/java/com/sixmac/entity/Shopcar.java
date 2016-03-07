@@ -3,25 +3,22 @@ package com.sixmac.entity;
 import javax.persistence.*;
 
 /**
- * Created by Administrator on 2016/3/4 0004.
+ * Created by Administrator on 2016/3/7 0007.
  */
 @Entity
-@Table(name = "ordersinfo")
-public class Ordersinfo {
+public class Shopcar {
     private int id;
-    private Orders order;
+    private Users user;
     private Merchants merchant;
     private Integer type;
-    private Products product;
-    private String productName;
-    private String productPath;
+    private Integer productId;
+    private String cover;
+    private String name;
     private String colors;
     private String sizes;
     private String materials;
     private String price;
     private Integer count;
-    private Integer star;
-    private String comment;
 
     @Id
     @Column(name = "id")
@@ -34,13 +31,13 @@ public class Ordersinfo {
     }
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
-    public Orders getOrder() {
-        return order;
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setOrder(Orders order) {
-        this.order = order;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @ManyToOne
@@ -61,30 +58,28 @@ public class Ordersinfo {
         this.type = type;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "productId")
-    public Products getProduct() {
-        return product;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct(Products product) {
-        this.product = product;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getCover() {
+        return cover;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
-    public String getProductPath() {
-        return productPath;
+    public String getName() {
+        return name;
     }
 
-    public void setProductPath(String productPath) {
-        this.productPath = productPath;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getColors() {
@@ -125,21 +120,5 @@ public class Ordersinfo {
 
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public Integer getStar() {
-        return star;
-    }
-
-    public void setStar(Integer star) {
-        this.star = star;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 }

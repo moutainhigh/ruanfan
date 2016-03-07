@@ -11,6 +11,7 @@ import java.util.Date;
 public class Orders {
     private int id;
     private String orderNum;
+    private Integer payType;
     private Date payTime;
     private Users user;
     private Merchants merchant;
@@ -40,6 +41,14 @@ public class Orders {
 
     public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public Integer getPayType() {
+        return payType;
+    }
+
+    public void setPayType(Integer payType) {
+        this.payType = payType;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

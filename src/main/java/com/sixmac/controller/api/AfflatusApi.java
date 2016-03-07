@@ -133,7 +133,6 @@ public class AfflatusApi {
 
     @RequestMapping("/share")
     public void share(HttpServletResponse response, Integer afflatusId) {
-        String msg = "";
         if (null == afflatusId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;

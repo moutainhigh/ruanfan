@@ -161,6 +161,19 @@ public class DesignersApi {
         WebUtil.printApi(response, new Result(true).msg(msg));
     }
 
+    /**
+     * 预约设计师
+     * @param response
+     * @param userId
+     * @param designerId
+     * @param name
+     * @param mobile
+     * @param email
+     * @param styleId
+     * @param address
+     * @param resTime
+     * @param remark
+     */
     @RequestMapping("/reserve")
     public void reserve(HttpServletResponse response,
                         Integer userId,

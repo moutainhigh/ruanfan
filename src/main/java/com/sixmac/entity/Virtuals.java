@@ -11,8 +11,8 @@ import java.util.Date;
 public class Virtuals {
     private int id;
     private String name;
-    private Integer styleId;
-    private Integer typeId;
+    private Styles style;
+    private Vrtype type;
     private String labels;
     private String cover;
     private String url;
@@ -37,22 +37,24 @@ public class Virtuals {
         this.name = name;
     }
 
-    @Column(name = "styleId")
-    public Integer getStyleId() {
-        return styleId;
+    @ManyToOne
+    @JoinColumn(name = "styleId")
+    public Styles getStyle() {
+        return style;
     }
 
-    public void setStyleId(Integer styleId) {
-        this.styleId = styleId;
+    public void setStyle(Styles style) {
+        this.style = style;
     }
 
-    @Column(name = "typeId")
-    public Integer getTypeId() {
-        return typeId;
+    @ManyToOne
+    @JoinColumn(name = "typeId")
+    public Vrtype getType() {
+        return type;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setType(Vrtype type) {
+        this.type = type;
     }
 
     @Column(name = "labels")
