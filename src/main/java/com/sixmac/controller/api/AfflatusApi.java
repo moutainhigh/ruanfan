@@ -53,12 +53,12 @@ public class AfflatusApi {
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletRequest request,
-                      HttpServletResponse response,
-                      Integer type,
-                      Integer styleId,
-                      Integer areaId,
-                      Integer pageNum,
-                      Integer pageSize) {
+                     HttpServletResponse response,
+                     Integer type,
+                     Integer styleId,
+                     Integer areaId,
+                     Integer pageNum,
+                     Integer pageSize) {
         if (null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -129,5 +129,27 @@ public class AfflatusApi {
         }
 
         WebUtil.printApi(response, new Result(true).msg(msg));
+    }
+
+    @RequestMapping("/share")
+    public void share(HttpServletResponse response, Integer afflatusId) {
+        String msg = "";
+        if (null == afflatusId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        // 增加灵感集的分享数
+        Afflatus afflatus = afflatusService.getById(afflatusId);
+
+        if (null == afflatus) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+        }
+
+        afflatus.setShareNum(afflatus.getShareNum() + 1);
+
+        afflatusService.update(afflatus);
+
+        WebUtil.printApi(response, new Result(true));
     }
 }

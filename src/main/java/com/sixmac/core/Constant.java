@@ -26,9 +26,9 @@ public interface Constant {
     Integer GAM_MOVE = 2;  // 转发
 
     // 点赞or转发目标类型
-    Integer GAM_JOURNAL = 1;  // 日志
-    Integer GAM_AFFLATUS = 2; // 灵感集
-    Integer GAM_DESIGNERS = 3; // 设计师
+    Integer GAM_JOURNAL = 1;    // 日志
+    Integer GAM_AFFLATUS = 2;   // 灵感集
+    Integer GAM_DESIGNERS = 3;  // 设计师
 
     // 收藏目标类型
     Integer COLLECT_AFFLATUS = 1;  // 灵感集
@@ -37,4 +37,8 @@ public interface Constant {
     Integer COMMENT_DESIGNERS = 1;  // 设计师
     Integer COMMENT_WORKS = 2;      // 设计作品
     Integer COMMENT_AFFLATUS = 3;   // 灵感集
+
+    // 关注目标类型
+    Integer ATTENTION_USERS = 1;      // 用户
+    Integer ATTENTION_DESIGNERS = 2;  // 设计师
 }

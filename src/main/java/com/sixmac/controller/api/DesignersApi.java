@@ -1,11 +1,13 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.common.exception.GeneralException;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
+import com.sixmac.entity.Attentions;
 import com.sixmac.entity.Designers;
 import com.sixmac.entity.Reserve;
-import com.sixmac.entity.Styles;
+import com.sixmac.entity.Works;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.DateUtils;
@@ -46,31 +48,52 @@ public class DesignersApi {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private AttentionsService attentionsService;
+
     /**
      * 设计师列表
      *
-     * @param request
      * @param response
      * @param type
-     * @param styleId
-     * @param areaId
      * @param pageNum
      * @param pageSize
      */
     @RequestMapping(value = "/list")
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      Integer type,
-                     Integer styleId,
-                     Integer areaId,
                      Integer pageNum,
                      Integer pageSize) {
-        if (null == pageNum || null == pageSize) {
+        if (null == type || null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
-        Page<Designers> page = designersService.iPage(type, styleId, areaId, pageNum, pageSize);
+        Page<Designers> page = designersService.iPage(type, pageNum, pageSize);
+
+        Map<String, Object> dataMap = APIFactory.fitting(page);
+        WebUtil.printApi(response, new Result(true).data(dataMap));
+    }
+
+    /**
+     * 根据设计师id查询作品列表
+     *
+     * @param response
+     * @param designerId
+     * @param pageNum
+     * @param pageSize
+     */
+    @RequestMapping(value = "/workList")
+    public void workList(HttpServletResponse response,
+                         Integer designerId,
+                         Integer pageNum,
+                         Integer pageSize) {
+        if (null == designerId || null == pageNum || null == pageSize) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Page<Works> page = designersService.iPageWorks(designerId, pageNum, pageSize);
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
         WebUtil.printApi(response, new Result(true).data(dataMap));
@@ -102,6 +125,40 @@ public class DesignersApi {
         designers.setGamsList(gamsService.iFindList(designerId, Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
 
         WebUtil.printApi(response, new Result(true).data(designers));
+    }
+
+    /**
+     * 关注or取消关注
+     *
+     * @param response
+     * @param userId
+     * @param designerId
+     * @param action
+     */
+    @RequestMapping("/attention")
+    public void share(HttpServletResponse response, Integer userId, Integer designerId, Integer action) {
+        // action（关注状态字段）,0表示关注，1表示取消关注
+        String msg = "";
+        if (null == userId || null == designerId || null == action) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+        if (action == 0) {
+            try {
+                attentionsService.iCreate(usersService.getById(userId), designerId, Constant.ATTENTION_DESIGNERS);
+            } catch (GeneralException e) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+            }
+            msg = "关注成功";
+        } else {
+            Attentions attentions = attentionsService.iFindOne(userId, designerId, Constant.ATTENTION_DESIGNERS);
+            if (null != attentions) {
+                attentionsService.deleteById(attentions.getId());
+            }
+            msg = "取消关注成功";
+        }
+
+        WebUtil.printApi(response, new Result(true).msg(msg));
     }
 
     @RequestMapping("/reserve")

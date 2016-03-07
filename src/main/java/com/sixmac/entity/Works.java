@@ -10,6 +10,7 @@ import java.util.Date;
 @Table(name = "works")
 public class Works {
     private int id;
+    private Designers designer;
     private String name;
     private String labels;
     private String description;
@@ -24,6 +25,16 @@ public class Works {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "designerId")
+    public Designers getDesigner() {
+        return designer;
+    }
+
+    public void setDesigner(Designers designer) {
+        this.designer = designer;
     }
 
     @Column(name = "name")
