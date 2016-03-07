@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wangbin on 14-10-16.
@@ -38,5 +39,10 @@ public class ImageServiceImpl implements ImageService {
     public Image create(Image image) {
         image.setCreateTime(new Date());
         return imageDao.save(image);
+    }
+
+    @Override
+    public List<Image> iFindList(Integer objectId, Integer objectType) {
+        return imageDao.iFindList(objectId, objectType);
     }
 }

@@ -121,7 +121,7 @@ public class AfflatusApi {
             }
             msg = "灵感集收藏成功";
         } else {
-            Collect collect = collectService.iFindOne(afflatusId, Constant.COLLECT_AFFLATUS);
+            Collect collect = collectService.iFindOne(userId, afflatusId, Constant.COLLECT_AFFLATUS);
             if (null != collect) {
                 collectService.deleteById(collect.getId());
             }

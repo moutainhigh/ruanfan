@@ -41,4 +41,14 @@ public interface Constant {
     // 关注目标类型
     Integer ATTENTION_USERS = 1;      // 用户
     Integer ATTENTION_DESIGNERS = 2;  // 设计师
+
+    // 图片所属对象类型
+    Integer IMAGE_PRODUCTS = 1;   // 商品
+    Integer IMAGE_PACKAGES = 2;   // 商品套餐
+    Integer IMAGE_SPIKES = 3;     // 秒杀
+    Integer IMAGE_AFFLATUS = 4;   // 灵感图
+    Integer IMAGE_MAGAZINE = 5;   // 杂志详情图
+    Integer IMAGE_PROPERTYS = 6;  // 楼盘
+    Integer IMAGE_JOURNAL = 7;    // 日志图
+    Integer IMAGE_WORKS = 8;      // 设计作品
 }

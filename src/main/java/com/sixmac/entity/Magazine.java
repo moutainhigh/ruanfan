@@ -2,6 +2,7 @@ package com.sixmac.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -14,6 +15,7 @@ public class Magazine {
     private String cover;
     private Integer month;
     private Date createTime;
+    private List<Image> imageList;
 
     @Id
     @Column(name = "id")
@@ -60,5 +62,14 @@ public class Magazine {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 }

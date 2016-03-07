@@ -1,8 +1,10 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Magazine;
+import com.sixmac.service.ImageService;
 import com.sixmac.service.MagazineService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.WebUtil;
@@ -23,6 +25,9 @@ public class MagazineApi {
 
     @Autowired
     private MagazineService magazineService;
+
+    @Autowired
+    private ImageService imageService;
 
     /**
      * 杂志列表
@@ -46,5 +51,30 @@ public class MagazineApi {
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
         WebUtil.printApi(response, new Result(true).data(dataMap));
+    }
+
+    /**
+     * 查看杂志详情
+     *
+     * @param response
+     * @param magazineId
+     */
+    @RequestMapping("info")
+    public void info(HttpServletResponse response,
+                     Integer magazineId) {
+        if (null == magazineId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+        Magazine magazine = magazineService.getById(magazineId);
+
+        if (null == magazine) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+        }
+
+        // 查询杂志对应的图片集合
+        magazine.setImageList(imageService.iFindList(magazineId, Constant.IMAGE_MAGAZINE));
+
+        WebUtil.printApi(response, new Result(true).data(magazine));
     }
 }

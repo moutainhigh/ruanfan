@@ -77,4 +77,9 @@ public class CollectServiceImpl implements CollectService {
 
         collectDao.save(collect);
     }
+
+    @Override
+    public Collect iFindOne(Integer userId, Integer objectId, Integer objectType) {
+        return collectDao.iFindOne(userId, objectId, objectType);
+    }
 }
