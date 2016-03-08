@@ -62,6 +62,8 @@ public class DesignersApi {
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
                      Integer type,
+                     String nickname,
+                     Integer cityId,
                      Integer pageNum,
                      Integer pageSize) {
         if (null == type || null == pageNum || null == pageSize) {
@@ -69,7 +71,7 @@ public class DesignersApi {
             return;
         }
 
-        Page<Designers> page = designersService.iPage(type, pageNum, pageSize);
+        Page<Designers> page = designersService.iPage(type, nickname, cityId, pageNum, pageSize);
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
         WebUtil.printApi(response, new Result(true).data(dataMap));
@@ -163,6 +165,7 @@ public class DesignersApi {
 
     /**
      * 预约设计师
+     *
      * @param response
      * @param userId
      * @param designerId

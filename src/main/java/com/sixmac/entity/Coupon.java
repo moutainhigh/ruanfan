@@ -19,6 +19,7 @@ public class Coupon {
     private Date startDate;
     private Date endDate;
     private Date createTime;
+    private Integer status;
 
     @Id
     @Column(name = "id")
@@ -112,5 +113,14 @@ public class Coupon {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

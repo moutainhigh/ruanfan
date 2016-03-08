@@ -11,7 +11,7 @@ import java.util.Date;
 public class Feedback {
     private int id;
     private Users user;
-    private Integer type;
+    private String type;
     private String path;
     private String description;
     private Date createTime;
@@ -36,16 +36,14 @@ public class Feedback {
         this.user = user;
     }
 
-    @Column(name = "type")
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    @Column(name = "path")
     public String getPath() {
         return path;
     }
@@ -54,7 +52,6 @@ public class Feedback {
         this.path = path;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }

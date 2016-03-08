@@ -79,7 +79,7 @@ public class DesignersServiceImpl implements DesignersService {
     }
 
     @Override
-    public Page<Designers> iPage(Integer type, Integer pageNum, Integer pageSize) {
+    public Page<Designers> iPage(Integer type, String nickname, Integer cityId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Designers> page = designersDao.findAll(new Specification<Designers>() {
@@ -89,6 +89,14 @@ public class DesignersServiceImpl implements DesignersService {
                 List<Predicate> predicateList = new ArrayList<Predicate>();
                 if (type != null) {
                     Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
+                    predicateList.add(pre);
+                }
+                if (nickname != null) {
+                    Predicate pre = cb.like(root.get("type").as(String.class), "%" + nickname + "%");
+                    predicateList.add(pre);
+                }
+                if (cityId != null) {
+                    Predicate pre = cb.equal(root.get("city").get("id").as(Integer.class), cityId);
                     predicateList.add(pre);
                 }
                 if (predicateList.size() > 0) {

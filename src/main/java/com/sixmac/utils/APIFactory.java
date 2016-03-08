@@ -33,5 +33,23 @@ public class APIFactory {
         return dataMap;
     }
 
+    /**
+     * json转换公共类，附加新的list
+     * @param page
+     * @param newList
+     * @return
+     */
+    public static Map<String, Object> fittingPlus(Page<?> page, List<?> newList) {
+        // data中的page
+        Map<String, Object> pageMap = new HashMap<String, Object>();
+        pageMap.put("totalNum", page.getTotalElements());
+        pageMap.put("totalPage", page.getTotalPages());
+        pageMap.put("currentPage", page.getNumber() + 1);
 
+        // data中的list
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("list", newList);
+        dataMap.put("page", pageMap);
+        return dataMap;
+    }
 }

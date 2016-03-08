@@ -32,12 +32,6 @@ public class AfflatusApi {
     private GamsService gamsService;
 
     @Autowired
-    private CollectService collectService;
-
-    @Autowired
-    private UsersService usersService;
-
-    @Autowired
     private CommentService commentService;
 
     /**
@@ -101,52 +95,5 @@ public class AfflatusApi {
         afflatusService.update(afflatus);
 
         WebUtil.printApi(response, new Result(true).data(afflatus));
-    }
-
-    @RequestMapping("/collect")
-    public void collect(HttpServletResponse response, Integer userId, Integer afflatusId, Integer action) {
-        // action（收藏状态字段）,0表示收藏，1表示取消收藏
-        String msg = "";
-        if (null == userId || null == afflatusId || null == action) {
-            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
-            return;
-        }
-        if (action == 0) {
-            try {
-                collectService.iCreate(usersService.getById(userId), afflatusId, Constant.COLLECT_AFFLATUS);
-            } catch (GeneralException e) {
-                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
-            }
-            msg = "灵感集收藏成功";
-        } else {
-            Collect collect = collectService.iFindOne(userId, afflatusId, Constant.COLLECT_AFFLATUS);
-            if (null != collect) {
-                collectService.deleteById(collect.getId());
-            }
-            msg = "灵感集取消收藏成功";
-        }
-
-        WebUtil.printApi(response, new Result(true).msg(msg));
-    }
-
-    @RequestMapping("/share")
-    public void share(HttpServletResponse response, Integer afflatusId) {
-        if (null == afflatusId) {
-            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
-            return;
-        }
-
-        // 增加灵感集的分享数
-        Afflatus afflatus = afflatusService.getById(afflatusId);
-
-        if (null == afflatus) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
-        }
-
-        afflatus.setShareNum(afflatus.getShareNum() + 1);
-
-        afflatusService.update(afflatus);
-
-        WebUtil.printApi(response, new Result(true));
     }
 }

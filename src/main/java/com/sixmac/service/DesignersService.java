@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 public interface DesignersService extends ICommonService<Designers> {
 
     // 设计师列表
-    public Page<Designers> iPage(Integer type, Integer pageNum, Integer pageSize);
+    public Page<Designers> iPage(Integer type, String nickname, Integer cityId, Integer pageNum, Integer pageSize);
 
     // 根据设计师id查询作品列表
     public Page<Works> iPageWorks(Integer designerId, Integer pageNum, Integer pageSize);
