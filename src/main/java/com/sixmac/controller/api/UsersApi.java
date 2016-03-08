@@ -66,6 +66,26 @@ public class UsersApi {
     }
 
     /**
+     * 评价订单
+     *
+     * @param response
+     * @param userId
+     * @param isHide
+     * @param commentList
+     */
+    @RequestMapping(value = "/commentOrders")
+    public void commentOrders(HttpServletResponse response, Integer userId, Integer isHide, String commentList) {
+        if (null == userId || null == isHide || null == commentList) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+
+
+        WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
      * 我的优惠券列表
      *
      * @param response

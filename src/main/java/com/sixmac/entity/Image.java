@@ -18,7 +18,6 @@ public class Image {
     private Integer objectType;
     private String description;
     private String demo;
-    private String url;
     private Date createTime;
 
     @Id
@@ -101,15 +100,6 @@ public class Image {
 
     public void setDemo(String demo) {
         this.demo = demo;
-    }
-
-    @Column(name = "url")
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
