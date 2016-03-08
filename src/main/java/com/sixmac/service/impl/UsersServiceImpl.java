@@ -1,7 +1,10 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.CouponDao;
+import com.sixmac.dao.UsercouponDao;
 import com.sixmac.dao.UsersDao;
+import com.sixmac.entity.Usercoupon;
 import com.sixmac.entity.Users;
 import com.sixmac.service.UsersService;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +28,12 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersDao usersDao;
 
+    @Autowired
+    private UsercouponDao usercouponDao;
+
+    @Autowired
+    private CouponDao couponDao;
+
     @Override
     public List<Users> findAll() {
         return usersDao.findAll();
@@ -46,6 +55,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional
     public Users deleteById(int id) {
         Users users = getById(id);
         usersDao.delete(users);
@@ -53,11 +63,13 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional
     public Users create(Users users) {
         return usersDao.save(users);
     }
 
     @Override
+    @Transactional
     public Users update(Users users) {
         return usersDao.save(users);
     }
@@ -81,13 +93,24 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public void logOut(HttpServletRequest request,String type) {
+    public void logOut(HttpServletRequest request, String type) {
         HttpSession session = request.getSession(false);
-        if(Constant.MEMBER_TYPE_GLOBLE.equals(type)){
+        if (Constant.MEMBER_TYPE_GLOBLE.equals(type)) {
             session.removeAttribute(Constant.SESSION_MEMBER_GLOBLE);
-        }else if(Constant.MEMBER_TYPE_BUSINESS.equals(type)){
+        } else if (Constant.MEMBER_TYPE_BUSINESS.equals(type)) {
             session.removeAttribute(Constant.SESSION_MEMBER_BUSINESS);
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void usedCoupon(Integer userId, Integer couponId) {
+        Usercoupon usercoupon = new Usercoupon();
+        usercoupon.setUser(usersDao.findOne(userId));
+        usercoupon.setCoupon(couponDao.findOne(couponId));
+        usercoupon.setStatus(Constant.COUPON_STATUS_YES);
+
+        usercouponDao.save(usercoupon);
     }
 }

@@ -18,7 +18,8 @@ public class Designers {
     private Integer type;
     private String proof;
     private City city;
-    private String description;
+    private String desc;
+    private String descs;
     private Integer isCheck;
     private Integer status;
     private Date createTime;
@@ -99,13 +100,22 @@ public class Designers {
         this.city = city;
     }
 
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
+    @Column(name = "desc")
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    @Column(name = "descs")
+    public String getDescs() {
+        return descs;
+    }
+
+    public void setDescs(String descs) {
+        this.descs = descs;
     }
 
     @Column(name = "isCheck")

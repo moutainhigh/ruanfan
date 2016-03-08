@@ -43,7 +43,6 @@ public class AfflatusApi {
     /**
      * 灵感集列表
      *
-     * @param request
      * @param response
      * @param type
      * @param styleId
@@ -52,8 +51,7 @@ public class AfflatusApi {
      * @param pageSize
      */
     @RequestMapping(value = "/list")
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      Integer type,
                      Integer styleId,
                      Integer areaId,

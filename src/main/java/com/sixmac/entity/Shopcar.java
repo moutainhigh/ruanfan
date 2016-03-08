@@ -10,8 +10,7 @@ public class Shopcar {
     private int id;
     private Users user;
     private Merchants merchant;
-    private Integer type;
-    private Integer productId;
+    private Products product;
     private String cover;
     private String name;
     private String colors;
@@ -50,20 +49,14 @@ public class Shopcar {
         this.merchant = merchant;
     }
 
-    public Integer getType() {
-        return type;
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    public Products getProduct() {
+        return product;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProduct(Products product) {
+        this.product = product;
     }
 
     public String getCover() {

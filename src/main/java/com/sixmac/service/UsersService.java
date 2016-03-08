@@ -15,4 +15,7 @@ public interface UsersService extends ICommonService<Users> {
     public Boolean login(HttpServletRequest request, String username, String password, String type, String remark);
 
     public void logOut(HttpServletRequest request, String type);
+
+    // 将用户的优惠券标记为已使用
+    public void usedCoupon(Integer userId, Integer couponId);
 }

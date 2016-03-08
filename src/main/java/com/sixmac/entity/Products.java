@@ -16,7 +16,7 @@ public class Products {
     private Integer coverId;
     private Integer type;
     private Brand brand;
-    private Integer sortId;
+    private Producttype sort;
     private String place;
     private String labels;
     private String colors;
@@ -102,13 +102,14 @@ public class Products {
         this.brand = brand;
     }
 
-    @Column(name = "sortId")
-    public Integer getSortId() {
-        return sortId;
+    @ManyToOne
+    @JoinColumn(name = "sortId")
+    public Producttype getSort() {
+        return sort;
     }
 
-    public void setSortId(Integer sortId) {
-        this.sortId = sortId;
+    public void setSort(Producttype sort) {
+        this.sort = sort;
     }
 
     @Column(name = "place")
