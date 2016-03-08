@@ -1,16 +1,17 @@
 package com.sixmac.controller.api;
 
-import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
+import com.sixmac.service.CityService;
 import com.sixmac.service.FeedbackService;
-import com.sixmac.service.ImageService;
-import com.sixmac.service.JournalService;
+import com.sixmac.service.OrdersinfoService;
 import com.sixmac.service.UsersService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -37,10 +37,10 @@ public class UsersApi {
     private FeedbackService feedbackService;
 
     @Autowired
-    private JournalService journalService;
+    private OrdersinfoService ordersinfoService;
 
     @Autowired
-    private ImageService imageService;
+    private CityService cityService;
 
     /**
      * 登录
@@ -66,6 +66,96 @@ public class UsersApi {
     }
 
     /**
+     * 根据用户id查询用户信息
+     *
+     * @param response
+     * @param userId
+     */
+    @RequestMapping(value = "/info")
+    public void info(HttpServletResponse response, Integer userId) {
+        if (null == userId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Users users = usersService.getById(userId);
+
+        if (null == users) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+        }
+
+        WebUtil.printApi(response, new Result(true).data(users));
+    }
+
+    /**
+     * 根据用户id修改用户信息
+     * @param request
+     * @param response
+     * @param userId
+     * @param password
+     * @param multipartRequest
+     * @param nickname
+     * @param cityId
+     * @param comName
+     * @param comArea
+     */
+    @RequestMapping(value = "/updateInfo")
+    public void updateInfo(ServletRequest request,
+                           HttpServletResponse response,
+                           Integer userId,
+                           String password,
+                           MultipartRequest multipartRequest,
+                           String nickname,
+                           Integer cityId,
+                           String comName,
+                           String comArea) {
+        if (null == userId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Users users = usersService.getById(userId);
+
+        if (null == users) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+        }
+
+        if (null != password && !password.equals("")) {
+            users.setPassword(password);
+        }
+
+        try {
+            MultipartFile multipartFile = multipartRequest.getFile("head");
+            if (null != multipartFile) {
+                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
+                users.setHeadPath(map.get("imgURL").toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (null != nickname && !nickname.equals("")) {
+            users.setNickName(nickname);
+        }
+
+        if (null != cityId) {
+            users.setCity(cityService.getById(cityId));
+        }
+
+        if (null != comName && !comName.equals("")) {
+            users.setComName(comName);
+        }
+
+        if (null != comArea && !comArea.equals("")) {
+            users.setComArea(comArea);
+        }
+
+        usersService.update(users);
+
+        WebUtil.printApi(response, new Result(true).data(users));
+    }
+
+    /**
      * 评价订单
      *
      * @param response
@@ -80,9 +170,25 @@ public class UsersApi {
             return;
         }
 
+        try {
+            JSONArray orderinfos = JSONArray.fromObject(commentList);
+            Map<String, Object> mapInfo = null;
+            Ordersinfo ordersinfo = null;
+            for (Object orderMap : orderinfos) {
+                // 获取单个订单详情
+                mapInfo = JsonUtil.jsontoMap(orderMap);
+                ordersinfo = ordersinfoService.getById(Integer.parseInt(mapInfo.get("orderinfoId").toString()));
+                ordersinfo.setStar(Integer.parseInt(mapInfo.get("star").toString()));
+                ordersinfo.setComment(mapInfo.get("content").toString());
 
+                ordersinfoService.update(ordersinfo);
+            }
 
-        WebUtil.printApi(response, new Result(true));
+            WebUtil.printApi(response, new Result(true));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+        }
     }
 
     /**
@@ -141,57 +247,6 @@ public class UsersApi {
         map.put("score", users.getScore());
 
         WebUtil.printApi(response, new Result(true).data(map));
-    }
-
-    /**
-     * 发布日志
-     *
-     * @param response
-     * @param userId
-     * @param content
-     * @param multipartRequest
-     */
-    @RequestMapping(value = "/addJournal")
-    public void addJournal(ServletRequest request, HttpServletResponse response, Integer userId, String content, MultipartRequest multipartRequest) {
-        if (null == userId || null == content) {
-            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
-            return;
-        }
-
-        // 获取图片集合
-        List<MultipartFile> list = multipartRequest.getFiles("imgList");
-
-        Journal journal = new Journal();
-        journal.setUser(usersService.getById(userId));
-        journal.setContent(content);
-        journal.setCreateTime(new Date());
-
-        // 保存日志信息
-        journalService.create(journal);
-
-        try {
-            // 保存日志图片集合
-            Map<String, Object> map = null;
-            Image image = null;
-            for (MultipartFile file : list) {
-                if (null != file) {
-                    map = ImageUtil.saveImage(request, file, false);
-                    image = new Image();
-                    image.setPath(map.get("imgURL").toString());
-                    image.setWidth(map.get("imgWidth").toString());
-                    image.setHeight(map.get("imgHeight").toString());
-                    image.setObjectId(journal.getId());
-                    image.setObjectType(Constant.IMAGE_JOURNAL);
-                    image.setCreateTime(new Date());
-
-                    imageService.create(image);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        WebUtil.printApi(response, new Result(true));
     }
 
     /**

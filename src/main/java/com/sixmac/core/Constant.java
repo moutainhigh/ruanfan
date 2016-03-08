@@ -55,4 +55,11 @@ public interface Constant {
     // 优惠券使用状态
     Integer COUPON_STATUS_YES = 1;   // 已使用
     Integer COUPON_STATUS_NO = 0;    // 未使用
+
+    // 订单状态
+    Integer ORDERS_STATUS_000 = 0;   // 待付款
+    Integer ORDERS_STATUS_001 = 1;   // 待发货
+    Integer ORDERS_STATUS_002 = 2;   // 待确认
+    Integer ORDERS_STATUS_003 = 3;   // 待评价
+    Integer ORDERS_STATUS_004 = 4;   // 已完成
 }

@@ -8,9 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,5 +83,33 @@ public class ShopcarServiceImpl implements ShopcarService {
         for (Shopcar shopcar : list) {
             shopcarDao.delete(shopcar.getId());
         }
+    }
+
+    @Override
+    public Page<Shopcar> iPage(Integer userId, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+
+        Page<Shopcar> page = shopcarDao.findAll(new Specification<Shopcar>() {
+            @Override
+            public Predicate toPredicate(Root<Shopcar> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (userId != null) {
+                    Predicate pre = cb.equal(root.get("user").get("id").as(Integer.class), userId);
+                    predicateList.add(pre);
+                }
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
     }
 }

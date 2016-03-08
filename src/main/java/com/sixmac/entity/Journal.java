@@ -13,6 +13,7 @@ public class Journal {
     private Users user;
     private String content;
     private Integer forwardNum;
+    private Integer shareNum;
     private Date createTime;
 
     @Id
@@ -35,7 +36,6 @@ public class Journal {
         this.user = user;
     }
 
-    @Column(name = "content")
     public String getContent() {
         return content;
     }
@@ -44,13 +44,20 @@ public class Journal {
         this.content = content;
     }
 
-    @Column(name = "forwardNum")
     public Integer getForwardNum() {
         return forwardNum;
     }
 
     public void setForwardNum(Integer forwardNum) {
         this.forwardNum = forwardNum;
+    }
+
+    public Integer getShareNum() {
+        return shareNum;
+    }
+
+    public void setShareNum(Integer shareNum) {
+        this.shareNum = shareNum;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
