@@ -24,99 +24,12 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">控制面板</h1>
+                <h1 class="page-header" style="text-align: center;">首页</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-beer fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge"></div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="admin/product/index">
-                        <div class="panel-footer">
-                            <span class="pull-left">商品管理</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-users fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge"></div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="admin/member/index">
-                        <div class="panel-footer">
-                            <span class="pull-left">商家管理</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-ticket fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge"></div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="admin/coupon/index">
-                        <div class="panel-footer">
-                            <span class="pull-left">发放优惠券</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-file-text fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge"></div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="admin/order/index">
-                        <div class="panel-footer">
-                            <span class="pull-left">订单管理</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            <h2 style="text-align: center;">欢迎进入软范后台管理系统</h2>
         </div>
     </div>
     <!-- /#page-wrapper -->
