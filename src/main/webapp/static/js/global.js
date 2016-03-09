@@ -25,7 +25,7 @@ $(function () {
 })
 
 
-var $bluemobi = {
+var $sixmac = {
     v: {
         ajaxOption: {method: 'get', dataType: 'json', async: true},
         notifyMethod: null,
@@ -88,7 +88,7 @@ var $bluemobi = {
             position: "top center"
         });
         if (method != undefined) {
-            $bluemobi.v.notifyMethod = method;
+            $sixmac.v.notifyMethod = method;
         }
     },
     uiform: function () {
@@ -135,16 +135,16 @@ var $bluemobi = {
     },
     ajax: function (url, data, callbackFun, option) {
         if (option == null || option == undefined) {
-            option = $bluemobi.v.ajaxOption;
+            option = $sixmac.v.ajaxOption;
         } else {
             if (option.method == null || option.method == undefined) {
-                option.method = $bluemobi.v.ajaxOption.method;
+                option.method = $sixmac.v.ajaxOption.method;
             }
             if (option.dataType == null || option.dataType == undefined) {
-                option.dataType = $bluemobi.v.ajaxOption.dataType;
+                option.dataType = $sixmac.v.ajaxOption.dataType;
             }
             if (option.async == null || option.async == undefined) {
-                option.async = $bluemobi.v.ajaxOption.async;
+                option.async = $sixmac.v.ajaxOption.async;
             }
         }
         jQuery.ajax({
@@ -184,7 +184,7 @@ var $bluemobi = {
         form.validator("cleanUp");
     },
     dataTable: function (obj, option) {
-        return obj.DataTable($.extend($bluemobi.v.dataTableL, option))
+        return obj.DataTable($.extend($sixmac.v.dataTableL, option))
     },
     // 根据类型获取性别
     getSex: function(type){
@@ -232,8 +232,8 @@ $(document).on('click', '.notifyjs-foo-base .no', function () {
     $(this).trigger('notify-hide');
 });
 $(document).on('click', '.notifyjs-foo-base .yes', function () {
-    if ($bluemobi.v.notifyMethod != null) {
-        eval("$bluemobi.v.notifyMethod()");
+    if ($sixmac.v.notifyMethod != null) {
+        eval("$sixmac.v.notifyMethod()");
     }
     $(this).trigger('notify-hide');
 });
@@ -250,11 +250,11 @@ $(document).on('click', '.notifyjs-foo-base .yes', function () {
 
         if (sigle) {
             if (checkIds.length > 1) {
-                $bluemobi.notify('只能选择一条记录！', 'error');
+                $sixmac.notify('只能选择一条记录！', 'error');
                 return false;
             }
             else if (checkIds.length == 0) {
-                $bluemobi.notify('请选择一条记录操作！', 'error');
+                $sixmac.notify('请选择一条记录操作！', 'error');
                 return false;
             }
             else {
@@ -262,7 +262,7 @@ $(document).on('click', '.notifyjs-foo-base .yes', function () {
             }
         } else {
             if(checkIds.length == 0){
-                $bluemobi.notify('请选择至少一条记录操作！', 'error');
+                $sixmac.notify('请选择至少一条记录操作！', 'error');
                 return false;
             }else{
                 return checkIds;

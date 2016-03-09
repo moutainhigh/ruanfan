@@ -104,7 +104,7 @@
                     alert(result.msg)
                     location.reload();
                 } else {
-                    $bluemobi.notify(result.msg, "error");
+                    $sixmac.notify(result.msg, "error");
                 }
             }
         })
@@ -112,7 +112,7 @@
 
     function showModal() {
         $("#pwdModal").modal("show");
-        $bluemobi.clearForm($("#pwdModal"));
+        $sixmac.clearForm($("#pwdModal"));
     }
 
 </script>

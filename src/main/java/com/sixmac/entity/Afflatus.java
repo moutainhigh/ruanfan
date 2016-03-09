@@ -12,7 +12,7 @@ import java.util.List;
 public class Afflatus {
     private int id;
     private String name;
-    private Users user;
+    private Designers designer;
     private Integer type;
     private Styles style;
     private Areas area;
@@ -46,13 +46,13 @@ public class Afflatus {
     }
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    public Users getUser() {
-        return user;
+    @JoinColumn(name = "designerId")
+    public Designers getDesigner() {
+        return designer;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setDesigner(Designers designer) {
+        this.designer = designer;
     }
 
     @Column(name = "type")

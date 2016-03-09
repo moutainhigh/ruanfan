@@ -224,11 +224,11 @@
                 if (response.status == '0') {
                     product.fn.viewImage(response.data);
                 } else {
-                    $bluemobi.notify(response.msg, "error");
+                    $sixmac.notify(response.msg, "error");
                 }
             },
             onFileError: function (e, file, error) {
-                $bluemobi.notify(error, "error");
+                $sixmac.notify(error, "error");
             },
             initialPreview:function(){
                 var imgPreViews = [];
@@ -304,7 +304,7 @@
                 };
 
                 if($("#imageId")==""||$("#imageId")==null){
-                    $bluemobi.notify("缩略图不能为空!", "error");
+                    $sixmac.notify("缩略图不能为空!", "error");
                     return false;
                 }
 
@@ -322,9 +322,9 @@
             },
             responseComplete: function (result) {
                 if (result.status == "0") {
-                    $bluemobi.notify(result.msg, "success");
+                    $sixmac.notify(result.msg, "success");
                 } else {
-                    $bluemobi.notify(result.msg, "error");
+                    $sixmac.notify(result.msg, "error");
                 }
             }
         }

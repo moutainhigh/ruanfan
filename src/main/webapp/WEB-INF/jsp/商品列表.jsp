@@ -75,7 +75,7 @@
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" onclick="$bluemobi.checkAll(this)" class="checkall"/>
+                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/>
                                     </th>
                                     <th>商品名称</th>
                                     <th>商品编号</th>
@@ -140,7 +140,7 @@
                 })
             },
             dataTableInit: function () {
-                productList.v.dTable = $bluemobi.dataTable($('#dataTables'), {
+                productList.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching": false,
@@ -210,12 +210,12 @@
                         aoData.areaId = $("#areaList").val();
                     },
                     "fnDrawCallback": function (row) {
-                        $bluemobi.uiform();
+                        $sixmac.uiform();
                     }
                 });
             },
             settingAdded: function (data) {
-                $bluemobi.ajax("admin/product/setting/isAdded", {
+                $sixmac.ajax("admin/product/setting/isAdded", {
                     id: data.id,
                     isAdded: data.isAdded
                 }, function (result) {
@@ -224,14 +224,14 @@
             },
             deleteRow: function (checkBox, ids) {
                 if (ids.length > 0) {
-                    $bluemobi.optNotify(function () {
-                        $bluemobi.ajax("admin/product/delete", {ids: JSON.stringify(ids)}, function (result) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("admin/product/delete", {ids: JSON.stringify(ids)}, function (result) {
                             if (result.status == "0") {
-                                $bluemobi.notify(result.msg, "success");
+                                $sixmac.notify(result.msg, "success");
                                 productList.v.dTable.ajax.reload();
 
                             } else {
-                                $bluemobi.notify(result.msg, "error");
+                                $sixmac.notify(result.msg, "error");
                             }
                         })
                     });
@@ -244,13 +244,13 @@
                     } else {
                         productList.v.dTable.ajax.reload();
                     }
-                    $bluemobi.notify(result.msg, "success");
+                    $sixmac.notify(result.msg, "success");
                 } else {
-                    $bluemobi.notify(result.msg, "error");
+                    $sixmac.notify(result.msg, "error");
                 }
             },
             getTagList: function () {
-                $bluemobi.ajax("admin/utils/type/list", null, function (result) {
+                $sixmac.ajax("admin/utils/type/list", null, function (result) {
                     if (null != result) {
                         // 获取返回的分类列表信息，并循环绑定到label中
                         var content = "<option value=''>全部</option>";
@@ -259,10 +259,10 @@
                         });
                         $('#typeList').append(content);
                     } else {
-                        $bluemobi.notify("获取分类信息失败", "error");
+                        $sixmac.notify("获取分类信息失败", "error");
                     }
                 });
-                $bluemobi.ajax("admin/utils/area/list", null, function (result) {
+                $sixmac.ajax("admin/utils/area/list", null, function (result) {
                     if (null != result) {
                         // 获取返回的分类列表信息，并循环绑定到label中
                         var content = "<option value=''>全部</option>";
@@ -271,7 +271,7 @@
                         });
                         $('#areaList').append(content);
                     } else {
-                        $bluemobi.notify("获取分类信息失败", "error");
+                        $sixmac.notify("获取分类信息失败", "error");
                     }
                 });
             }

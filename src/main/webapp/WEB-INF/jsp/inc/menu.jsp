@@ -50,7 +50,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>灵感集管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>灵感图集</a>
+                        <a href="afflatus/index"><i class="fa fa-plus-square fa-fw"></i>灵感图集</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>虚拟体验</a>

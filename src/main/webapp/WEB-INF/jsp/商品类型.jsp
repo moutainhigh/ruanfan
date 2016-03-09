@@ -52,7 +52,7 @@
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" onclick="$bluemobi.checkAll(this)" class="checkall"/></th>
+                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
                                     <th>名称</th>
                                     <th>创建时间</th>
                                     <th>修改时间</th>
@@ -139,7 +139,7 @@
 
             },
             dataTableInit: function () {
-                productType.v.dTable = $bluemobi.dataTable($('#dataTables'), {
+                productType.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching":false,
@@ -187,20 +187,20 @@
 
                     },
                     "fnDrawCallback": function (row) {
-                        $bluemobi.uiform();
+                        $sixmac.uiform();
                     }
                 });
             },
             deleteRow: function (ids) {
                 if (ids.length > 0) {
-                    $bluemobi.optNotify(function () {
-                        $bluemobi.ajax("admin/product/type/delete", {ids: JSON.stringify(ids)}, function (result) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("admin/product/type/delete", {ids: JSON.stringify(ids)}, function (result) {
                             if (result.status == "0") {
-                                $bluemobi.notify(result.msg, "success");
+                                $sixmac.notify(result.msg, "success");
                                 productType.v.dTable.ajax.reload();
 
                             } else {
-                                $bluemobi.notify(result.msg, "error");
+                                $sixmac.notify(result.msg, "error");
                             }
                         })
                     });
@@ -237,14 +237,14 @@
                         productType.v.dTable.ajax.reload();
                     }
 
-                    $bluemobi.notify(result.msg, "success");
+                    $sixmac.notify(result.msg, "success");
                 } else {
-                    $bluemobi.notify(result.msg, "error");
+                    $sixmac.notify(result.msg, "error");
                 }
             },
             showModal: function (modalId,title) {
                 $("#"+modalId).modal("show");
-                $bluemobi.clearForm($("#"+modalId));
+                $sixmac.clearForm($("#"+modalId));
                 if (title) {
                     $("#"+modalId+" .modal-title").text(title);
                 }
