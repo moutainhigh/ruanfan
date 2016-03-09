@@ -41,3 +41,5 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="static/js/bootstrap.min.js"></script>
 
+<!-- 图片即时预览 -->
+<script src="static/js/uploadPreview.min.js"></script>

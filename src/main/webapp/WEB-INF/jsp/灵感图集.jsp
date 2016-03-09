@@ -19,6 +19,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">灵感图集</h1>
+                <h4 style="margin-left: 10px;">——灵感集列表</h4>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -27,7 +28,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="afflatus/add" target="_blank" class="btn btn-outline btn-primary btn-lg" role="button">新增灵感集</a>
+                        <a href="afflatus/add" class="btn btn-outline btn-primary btn-lg" role="button">新增灵感集</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -152,7 +153,7 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='查看详情' target='_blank' class='btn btn-primary btn-circle edit'>" +
+                            "defaultContent": "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
@@ -183,12 +184,11 @@
                     rowCallback: function (row, data) {
                         var items = afflatusList.v.list;
 
-                        $('td', row).last().find(".edit").attr("href", 'admin/product/add?id=' + data.id)
+                        $('td', row).last().find(".edit").attr("href", 'afflatus/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
-                            var checkbox = $('td', row).first().find("input[type='checkbox']");
-                            afflatusList.fn.deleteRow(checkbox, [data.id]);
-                        })
+                            // 转化为虚拟体验
+                        });
                     },
                     "fnServerParams": function (aoData) {
                         aoData.afflatusName = $("#afflatusName").val();
