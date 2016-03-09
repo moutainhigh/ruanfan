@@ -7,6 +7,7 @@ import com.sixmac.dao.UsersDao;
 import com.sixmac.entity.Coupon;
 import com.sixmac.entity.Usercoupon;
 import com.sixmac.entity.Users;
+import com.sixmac.entity.Usersother;
 import com.sixmac.service.UsersService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -129,6 +131,27 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional
+    public Users iTLogin(Integer type, String account, String openId, String head, String nickname) {
+        Usersother usersother = usersDao.iTLogin(openId, type);
+        Users users = null;
+        // 如果第三方用户信息不存在，则执行注册操作
+        if (null == usersother) {
+            // 此处执行注册操作
+            users = new Users();
+            users.setNickName(nickname);
+            users.setMobile(account);
+            users.setHeadPath(head);
+            users.setCreateTime(new Date());
+
+            usersDao.save(users);
+        } else {
+            users = usersother.getUser();
+        }
+        return users;
+    }
+
+    @Override
     public Users iRegister(Users users) {
         return null;
     }
@@ -159,5 +182,10 @@ public class UsersServiceImpl implements UsersService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public Users iFindOneByMobile(String mobile) {
+        return usersDao.iFindOneByMobile(mobile);
     }
 }

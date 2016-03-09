@@ -13,4 +13,13 @@ public class ErrorCode {
 
     // 没有数据
     public static final String ERROR_CODE_0003 = "error_0003";
+
+    // 验证码不正确
+    public static final String ERROR_CODE_0004 = "error_0004";
+
+    // 验证码类型不正确
+    public static final String ERROR_CODE_0005 = "error_0005";
+
+    // 手机号码已存在
+    public static final String ERROR_CODE_0006 = "error_0006";
 }

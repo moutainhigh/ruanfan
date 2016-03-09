@@ -16,13 +16,13 @@ import java.util.Map;
 public class CommonController {
 
 
-    public static Map<String,Object> emptyData =null;
+    public static Map<String, Object> emptyData = null;
 
     static {
         emptyData = new HashMap<String, Object>();
-        emptyData.put("data",new ArrayList());
-        emptyData.put("iTotalRecords",0);
-        emptyData.put("iTotalDisplayRecords",0);
+        emptyData.put("data", new ArrayList());
+        emptyData.put("iTotalRecords", 0);
+        emptyData.put("iTotalDisplayRecords", 0);
     }
 
     @InitBinder
@@ -37,18 +37,17 @@ public class CommonController {
     }
 
 
-    public Integer getPageNum(Integer start,Integer length){
-        if(start==null){
+    public Integer getPageNum(Integer start, Integer length) {
+        if (start == null) {
             start = 0;
         }
-        if(length == null){
+        if (length == null) {
             length = 10;
         }
 
-        int pageNum = (start/length)+1;
+        int pageNum = (start / length) + 1;
         return pageNum;
     }
-
 
 
 }

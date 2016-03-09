@@ -4,6 +4,12 @@ package com.sixmac.core;
  * Created by wangbin on 2015/6/24.
  */
 public interface Constant {
+
+    // 云片网appkey
+    String YUNPIAN_APPKEY = "sdfsdfsdfsdfsdfsdfd";
+
+    // 云片网select
+
     String ENCODING = "UTF-8";
 
     int PAGE_DEF_SZIE = 20;

@@ -1,16 +1,15 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
+import com.sixmac.entity.vo.CodeVo;
 import com.sixmac.service.CityService;
 import com.sixmac.service.FeedbackService;
 import com.sixmac.service.OrdersinfoService;
 import com.sixmac.service.UsersService;
-import com.sixmac.utils.APIFactory;
-import com.sixmac.utils.ImageUtil;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -29,6 +29,8 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "api/users")
 public class UsersApi {
+
+    public List<CodeVo> voList = new ArrayList<CodeVo>();
 
     @Autowired
     private UsersService usersService;
@@ -41,6 +43,103 @@ public class UsersApi {
 
     @Autowired
     private CityService cityService;
+
+    /**
+     * 发送验证码
+     *
+     * @param response
+     * @param mobile
+     */
+    @RequestMapping(value = "/sendCode")
+    public void sendCode(HttpServletResponse response,
+                         String mobile,
+                         String type) {
+        if (null == mobile) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        // 生成验证码
+        String code = RandomUtil.generateShortUuid();
+
+        // 发送验证码（云片网）
+        try {
+            String text = "【软范】您的验证码是" + code;
+            JavaSmsApi.sendSms(Constant.YUNPIAN_APPKEY, text, mobile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 将生成的验证码保存到voList中
+        CodeVo codeVo = new CodeVo();
+        codeVo.setMobile(mobile);
+        codeVo.setCode(code);
+        codeVo.setType(type);
+        codeVo.setCreateTime(new Date());
+
+        voList.add(codeVo);
+
+        // 返回验证码
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code", code);
+
+        WebUtil.printApi(response, new Result(true).data(map));
+    }
+
+    /**
+     * 注册
+     *
+     * @param response
+     * @param mobile
+     * @param password
+     */
+    @RequestMapping(value = "/register")
+    public void register(ServletRequest request,
+                         HttpServletResponse response,
+                         String mobile,
+                         String password,
+                         String nickname,
+                         MultipartRequest multipartRequest,
+                         String code,
+                         String codeType) {
+        if (null == mobile || null == password || null == nickname || null == code) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        // 检测验证码
+        checkCode(response, mobile, code, codeType);
+
+        // 检测手机号是否唯一，如果不唯一，返回错误码
+        if (null != usersService.iFindOneByMobile(mobile)) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0006));
+            return;
+        }
+
+        // 获取头像
+        MultipartFile multipartFile = multipartRequest.getFile("head");
+        if (null == multipartFile) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Users users = new Users();
+        users.setMobile(mobile);
+        users.setPassword(password);
+        users.setNickName(nickname);
+
+        try {
+            Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
+            users.setHeadPath(map.get("imgURL").toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 注册
+        usersService.create(users);
+
+        WebUtil.printApi(response, new Result(true).data(users));
+    }
 
     /**
      * 登录
@@ -61,6 +160,61 @@ public class UsersApi {
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
         }
+
+        WebUtil.printApi(response, new Result(true).data(users));
+    }
+
+    /**
+     * 第三方登录
+     *
+     * @param response
+     * @param type
+     * @param account
+     * @param openId
+     * @param head
+     * @param nickname
+     */
+    @RequestMapping(value = "/tLogin")
+    public void tLogin(HttpServletResponse response,
+                       Integer type,
+                       String account,
+                       String openId,
+                       String head,
+                       String nickname) {
+        if (null == type || null == account || null == openId || null == head || null == nickname) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Users users = usersService.iTLogin(type, account, openId, head, nickname);
+
+        if (null == users) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+        }
+
+        WebUtil.printApi(response, new Result(true).data(users));
+    }
+
+    /**
+     * 忘记密码
+     *
+     * @param response
+     * @param mobile
+     * @param code
+     * @param codeType
+     */
+    @RequestMapping(value = "/forgetPwd")
+    public void forgetPwd(HttpServletResponse response, String mobile, String code, String codeType) {
+        if (null == mobile || null == code || null == codeType) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        // 检测验证码
+        checkCode(response, mobile, code, codeType);
+
+        // 根据手机号获取用户信息，并返回该用户的信息
+        Users users = usersService.iFindOneByMobile(mobile);
 
         WebUtil.printApi(response, new Result(true).data(users));
     }
@@ -89,6 +243,7 @@ public class UsersApi {
 
     /**
      * 根据用户id修改用户信息
+     *
      * @param request
      * @param response
      * @param userId
@@ -285,5 +440,50 @@ public class UsersApi {
         feedbackService.create(feedback);
 
         WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * 检测验证码是否正确
+     *
+     * @param response
+     * @param mobile
+     * @param code
+     * @param type
+     */
+    public void checkCode(HttpServletResponse response, String mobile, String code, String type) {
+        Boolean flag = false;
+
+        // 检查验证码是否正确，如果不正确，返回错误码
+        CodeVo tempCodeVo = null;
+        for (CodeVo codeVo : voList) {
+            if (codeVo.getCode().equals(code) && codeVo.getMobile().equals(mobile)) {
+                flag = true;
+                tempCodeVo = codeVo;
+            }
+        }
+
+        if (flag == false) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
+        } else if (!tempCodeVo.getType().equals(type)) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0005));
+            return;
+        } else if (DateUtils.secondCompare(tempCodeVo.getCreateTime(), 600)) {
+            // 如果存在，则检测是否超时，如果超时，返回错误信息
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0004));
+            return;
+        }
+
+        if (flag) {
+            // 如果匹配到了，则移除缓存中的验证码实体信息
+            Iterator iter = voList.iterator();
+            CodeVo vo = null;
+            while (iter.hasNext()) {
+                vo = (CodeVo) iter.next();
+                if (vo.getMobile().equals(mobile)) {
+                    iter.remove();
+                }
+            }
+        }
     }
 }

@@ -24,9 +24,15 @@ public interface UsersService extends ICommonService<Users> {
     // 移动端用户登录
     public Users iLogin(String mobile, String password);
 
+    // 移动端用户第三方登录
+    public Users iTLogin(Integer type, String account, String openId, String head, String nickname);
+
     // 移动端用户注册
     public Users iRegister(Users users);
 
     // 移动端根据用户id获取用户优惠券列表
     public Page<Usercoupon> iPageByUserId(Integer userId, Integer pageNum, Integer pageSize);
+
+    // 移动端根据用户手机号获取用户信息
+    public Users iFindOneByMobile(String mobile);
 }
