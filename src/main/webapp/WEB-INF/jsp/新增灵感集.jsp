@@ -87,7 +87,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">图片:</label>
                                 <div class="col-sm-10">
-                                    <div style="float: left;margin-bottom: 30px;" id="lastImageDiv">
+                                    <div style="float: left;margin-bottom: 30px;display: none;" id="lastImageDiv">
                                         <a href="javascript:void(0);" onclick="afflatus.fn.AddTempImg()">
                                             <img id="tempPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inherit; margin-bottom: 6px;" border="1"/>
                                         </a>
@@ -166,6 +166,8 @@
                         // 单图时，隐藏名称和标签
                         $('#nameDiv').css('display', 'none');
                         $('#labelsDiv').css('display', 'none');
+
+                        $("#lastImageDiv").css('display', 'none');
                     } else {
                         $('#name').val('');
                         $('#labels').val('');
@@ -173,6 +175,8 @@
                         // 套图时，显示名称和标签
                         $('#nameDiv').css('display', '');
                         $('#labelsDiv').css('display', '');
+
+                        $("#lastImageDiv").css('display', '');
                     }
                 });
             },
@@ -189,6 +193,12 @@
 
                         $('#name').val($('#tempName').val());
                         $('#labels').val($('#tempLabels').val());
+
+                        $("#lastImageDiv").css('display', '');
+                    }else{
+                        if (afflatus.v.imageSize == 0) {
+                            $("#lastImageDiv").css('display', '');
+                        }
                     }
 
                     // 加载灵感图集图片数组
@@ -202,6 +212,8 @@
             getSerImages: function () {
                 var imgList = ${imageList };
 
+                console.log('图片数量：' + imgList.length);
+
                 // 计算当前灵感图数量
                 afflatus.v.imageSize = imgList.length;
 
@@ -212,9 +224,13 @@
                         $('#lastImageDiv').html('暂无');
                     }
                 });
+
+                var type = $('#typeList option:selected').val();
+                if (type == 1 && imgList.length == 1) {
+                    $("#lastImageDiv").css('display', 'none');
+                }
             },
             insertImage: function (path, id) {
-                afflatus.v.imageSize = afflatus.v.imageSize + 1;
                 $('#tempPicture').prop('src', "static/images/add.jpg");
 
                 var tempDiv = $("#tempDiv").clone();
@@ -224,6 +240,13 @@
                 tempDiv.children(":first").next().prop("value", id);
                 tempDiv.children(":first").next().next().next().prop("href", "afflatus/addTempLabel?id=" + id);
                 tempDiv.insertBefore("#lastImageDiv");
+
+                var type = $('#typeList option:selected').val();
+                if (type == 1) {
+                    $("#lastImageDiv").css('display', 'none');
+                } else {
+                    $("#lastImageDiv").css('display', '');
+                }
 
                 // 让所有的克隆出来的
                 tempDiv.hover(function () {
@@ -245,13 +268,28 @@
                         $('#tempAddImageIds').html($('#tempAddImageIds').html() + data.id + ',');
                         afflatus.fn.insertImage(data.path, data.id);
                     }
-                })
+                });
+
+                afflatus.v.imageSize = afflatus.v.imageSize + 1;
+
+                var type = $('#typeList option:selected').val();
+                if (type == 1 && afflatus.v.imageSize == 1) {
+                    $("#lastImageDiv").css('display', 'none');
+                }
             },
             deleteImage: function (self) {
                 afflatus.v.imageSize = afflatus.v.imageSize - 1;
                 var imageId = $(self).prev().val();
                 $('#tempDelImageIds').html($('#tempDelImageIds').html() + imageId + ',');
                 $(self).parent().remove();
+                var type = $('#typeList option:selected').val();
+                if (type == 1) {
+                    if (afflatus.v.imageSize == 0) {
+                        $("#lastImageDiv").css('display', '');
+                    }
+                } else {
+                    $("#lastImageDiv").css('display', '');
+                }
             },
             getSelectList: function () {
                 $sixmac.ajax("common/designerList", null, function (result) {
@@ -343,6 +381,12 @@
 
                 if (afflatus.v.imageSize == 0) {
                     $sixmac.notify("请至少上传一张灵感图", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (type == 1 && afflatus.v.imageSize > 1) {
+                    $sixmac.notify("单图只能上传一张灵感图", "error");
                     flag = false;
                     return;
                 }
