@@ -7,6 +7,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Image;
+import com.sixmac.entity.Label;
 import com.sixmac.service.*;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.WebUtil;
@@ -45,6 +46,9 @@ public class AfflatusController extends CommonController {
 
     @Autowired
     private DesignersService designersService;
+
+    @Autowired
+    private LabelService labelService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -128,6 +132,9 @@ public class AfflatusController extends CommonController {
             String[] delImageIds = tempDelImageIds.split(",");
 
             Afflatus afflatus = new Afflatus();
+            if (null != id) {
+                afflatus = afflatusService.getById(id);
+            }
             afflatus.setName(name);
             afflatus.setType(type);
             afflatus.setDesigner(designersService.getById(designerId));
@@ -137,7 +144,6 @@ public class AfflatusController extends CommonController {
 
             // 保存灵感集信息
             if (null != id) {
-                afflatus.setId(id);
                 afflatusService.update(afflatus);
             } else {
                 afflatus.setCoverId(0);
@@ -173,5 +179,26 @@ public class AfflatusController extends CommonController {
         }
 
         return 0;
+    }
+
+    /**
+     * 系列图添加标签
+     *
+     * @return
+     * @author xintian
+     * @date 2015-2-6 下午15:19:57
+     */
+    @RequestMapping("/addTempLabel")
+    public String addTempLabel(Integer id, ModelMap model) {
+        try {
+            Image image = imageService.getById(id);
+            // 查询标签信息
+            List<Label> labelList = labelService.findListByParams(image.getId(), Constant.LABEL_AFFLATUS);
+            model.put("imageInfo", image);
+            model.put("labelList", JSONArray.fromObject(labelList.size() == 0 ? null : labelList));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "图片锚点";
     }
 }

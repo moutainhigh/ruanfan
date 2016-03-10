@@ -68,4 +68,7 @@ public interface Constant {
     Integer ORDERS_STATUS_002 = 2;   // 待确认
     Integer ORDERS_STATUS_003 = 3;   // 待评价
     Integer ORDERS_STATUS_004 = 4;   // 已完成
+
+    // 标签所属目标类型
+    Integer LABEL_AFFLATUS = 1;   // 灵感集
 }

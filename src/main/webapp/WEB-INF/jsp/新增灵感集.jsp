@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>新增灵感集</title>
+    <title>灵感图集</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 <body>
@@ -160,6 +160,9 @@
 
                 $("#typeList").change(function () {
                     if ($(this).val() == 1) {
+                        $('#name').val('');
+                        $('#labels').val('');
+
                         // 单图时，隐藏名称和标签
                         $('#nameDiv').css('display', 'none');
                         $('#labelsDiv').css('display', 'none');

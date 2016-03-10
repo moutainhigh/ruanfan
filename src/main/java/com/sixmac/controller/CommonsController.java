@@ -1,13 +1,7 @@
 package com.sixmac.controller;
 
-import com.sixmac.entity.Areas;
-import com.sixmac.entity.Designers;
-import com.sixmac.entity.Image;
-import com.sixmac.entity.Styles;
-import com.sixmac.service.AreasService;
-import com.sixmac.service.DesignersService;
-import com.sixmac.service.ImageService;
-import com.sixmac.service.StylesService;
+import com.sixmac.entity.*;
+import com.sixmac.service.*;
 import com.sixmac.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +12,6 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +33,12 @@ public class CommonsController {
 
     @Autowired
     private DesignersService designersService;
+
+    @Autowired
+    private ProductsService productsService;
+
+    @Autowired
+    private LabelService labelService;
 
     /**
      * 设计师列表
@@ -75,6 +74,17 @@ public class CommonsController {
     }
 
     /**
+     * 商品列表
+     *
+     * @return
+     */
+    @RequestMapping("/productList")
+    @ResponseBody
+    public List<Products> productList() {
+        return productsService.findAll();
+    }
+
+    /**
      * 上传缓存图片
      *
      * @return
@@ -100,5 +110,125 @@ public class CommonsController {
         }
 
         return image;
+    }
+
+    /**
+     * 根据产品id获取产品信息
+     *
+     * @param productId
+     * @return
+     */
+    @RequestMapping("/getProductInfo")
+    @ResponseBody
+    public Products getProductInfo(Integer productId) {
+        try {
+            Products products = productsService.getById(productId);
+
+            return products;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 根据标签id删除标签
+     *
+     * @param labelId
+     * @return
+     */
+    @RequestMapping("/deleteLabel")
+    @ResponseBody
+    public Integer deleteLabel(String labelId) {
+        try {
+            Label label = labelService.searchByLabelId(labelId);
+            labelService.deleteById(label.getId());
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
+     * 根据标签id查询标签最后停留的位置
+     *
+     * @param objectId
+     * @param labelId
+     * @return
+     */
+    @RequestMapping("/queryLastPosition")
+    @ResponseBody
+    public Label queryLastPosition(Integer objectId, String labelId) {
+        try {
+            Label label = labelService.findLastPosition(objectId, labelId);
+
+            return label;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 保存标签信息
+     *
+     * @param objectId
+     * @param labelId
+     * @param name
+     * @param objectType
+     * @param height
+     * @param width
+     * @param leftPoint
+     * @param topPoint
+     * @param productId
+     * @return
+     */
+    @RequestMapping("/saveLabelInfo")
+    @ResponseBody
+    public Integer saveLabelInfo(Integer objectId,
+                                 String labelId,
+                                 String name,
+                                 Integer objectType,
+                                 String height,
+                                 String width,
+                                 Double leftPoint,
+                                 Double topPoint,
+                                 Integer productId) {
+        try {
+            Label label = new Label();
+            Label tempLabel = null;
+            if (null != labelId && !labelId.equals("")) {
+                tempLabel = labelService.findLastPosition(objectId, labelId);
+                if (null != tempLabel) {
+                    label = tempLabel;
+                }
+            }
+
+            label.setName(name);
+            label.setObjectId(objectId);
+            label.setObjectType(objectType);
+            label.setHeight(height);
+            label.setWidth(width);
+            label.setProduct(productsService.getById(productId));
+            label.setLabelId(labelId);
+            label.setLeftPoint(leftPoint);
+            label.setTopPoint(topPoint);
+
+            if (null == tempLabel) {
+                labelService.create(label);
+            } else {
+                labelService.update(label);
+            }
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }
