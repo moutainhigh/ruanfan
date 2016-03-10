@@ -346,7 +346,7 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>2.3</version>
                     <configuration>
-                        <warName>jpa-demo</warName>
+                        <warName>ruanfan</warName>
                     </configuration>
                 </plugin>
                 <plugin>
