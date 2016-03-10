@@ -111,9 +111,12 @@ public class AfflatusController extends CommonController {
      * @param type
      * @param styleId
      * @param areaId
+     * @param designerId
+     * @param settingCover
      * @param labels
      * @param tempAddImageIds
      * @param tempDelImageIds
+     * @return
      */
     @RequestMapping(value = "/save")
     @ResponseBody
@@ -124,6 +127,7 @@ public class AfflatusController extends CommonController {
                         Integer styleId,
                         Integer areaId,
                         Integer designerId,
+                        Integer settingCover,
                         String labels,
                         String tempAddImageIds,
                         String tempDelImageIds) {
@@ -141,12 +145,12 @@ public class AfflatusController extends CommonController {
             afflatus.setStyle(stylesService.getById(styleId));
             afflatus.setArea(areasService.getById(areaId));
             afflatus.setLabels(labels);
+            afflatus.setCoverId(settingCover);
 
             // 保存灵感集信息
             if (null != id) {
                 afflatusService.update(afflatus);
             } else {
-                afflatus.setCoverId(0);
                 afflatus.setShowNum(0);
                 afflatus.setShareNum(0);
                 afflatus.setStatus(0);

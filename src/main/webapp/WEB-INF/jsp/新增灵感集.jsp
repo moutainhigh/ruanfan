@@ -30,6 +30,7 @@
                     <div class="panel-body">
                         <form id="afflatusForm" method="post" enctype="multipart/form-data" action="afflatus/save" class="form-horizontal" role="form">
                             <input type="hidden" id="id" name="id" value="${afflatus.id}">
+                            <input type="hidden" id="tempCoverId" value="${afflatus.coverId}">
                             <input type="hidden" id="tempType" value="${afflatus.type}">
                             <input type="hidden" id="tempName" value="${afflatus.name}">
                             <input type="hidden" id="tempDesignerId" value="${afflatus.designer.id}">
@@ -114,6 +115,7 @@
                                 <img id="pic" src="static/images/xx.png" style="height: 16px; width: 16px; display: inline;" border="1"/>
                             </a>
                             <a href="javascript:void(0)" target="_blank" class="btn btn-primary btn-sm" role="button" style="color: white; display: none; margin-left: -19px;">添加锚点</a>
+                            <input type="radio" name="settingCover"/>设为封面
                         </div>
                     </div>
                     <!-- /.panel-body -->
@@ -195,7 +197,7 @@
                         $('#labels').val($('#tempLabels').val());
 
                         $("#lastImageDiv").css('display', '');
-                    }else{
+                    } else {
                         if (afflatus.v.imageSize == 0) {
                             $("#lastImageDiv").css('display', '');
                         }
@@ -203,6 +205,8 @@
 
                     // 加载灵感图集图片数组
                     afflatus.fn.getSerImages();
+                } else {
+                    $("#lastImageDiv").css('display', '');
                 }
             },
             AddTempImg: function () {
@@ -211,8 +215,6 @@
             },
             getSerImages: function () {
                 var imgList = ${imageList };
-
-                console.log('图片数量：' + imgList.length);
 
                 // 计算当前灵感图数量
                 afflatus.v.imageSize = imgList.length;
@@ -229,6 +231,17 @@
                 if (type == 1 && imgList.length == 1) {
                     $("#lastImageDiv").css('display', 'none');
                 }
+
+                // 选中封面图
+                var id = $('#id').val();
+                var coverId = $('#tempCoverId').val();
+                if (null != id && id != '') {
+                    $('input:radio[name="settingCover"]').each(function () {
+                        if ($(this).val() == coverId) {
+                            $(this).prop('checked', true);
+                        }
+                    });
+                }
             },
             insertImage: function (path, id) {
                 $('#tempPicture').prop('src', "static/images/add.jpg");
@@ -239,6 +252,7 @@
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
                 tempDiv.children(":first").next().next().next().prop("href", "afflatus/addTempLabel?id=" + id);
+                tempDiv.children(":first").next().next().next().next().val(id);
                 tempDiv.insertBefore("#lastImageDiv");
 
                 var type = $('#typeList option:selected').val();
@@ -387,6 +401,13 @@
 
                 if (type == 1 && afflatus.v.imageSize > 1) {
                     $sixmac.notify("单图只能上传一张灵感图", "error");
+                    flag = false;
+                    return;
+                }
+
+                var val = $('input:radio[name="settingCover"]:checked').val();
+                if (null == val) {
+                    $sixmac.notify("请选择一张封面图", "error");
                     flag = false;
                     return;
                 }
