@@ -26,7 +26,7 @@ public class Merchants {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -35,7 +35,6 @@ public class Merchants {
         this.id = id;
     }
 
-    @Column(name = "nickName")
     public String getNickName() {
         return nickName;
     }
@@ -44,7 +43,6 @@ public class Merchants {
         this.nickName = nickName;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -53,7 +51,6 @@ public class Merchants {
         this.password = password;
     }
 
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -62,7 +59,6 @@ public class Merchants {
         this.email = email;
     }
 
-    @Column(name = "url")
     public String getUrl() {
         return url;
     }
@@ -71,7 +67,6 @@ public class Merchants {
         this.url = url;
     }
 
-    @Column(name = "head")
     public String getHead() {
         return head;
     }
@@ -80,7 +75,6 @@ public class Merchants {
         this.head = head;
     }
 
-    @Column(name = "license")
     public String getLicense() {
         return license;
     }
@@ -89,7 +83,6 @@ public class Merchants {
         this.license = license;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -98,7 +91,6 @@ public class Merchants {
         this.labels = labels;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -127,7 +119,6 @@ public class Merchants {
         this.city = city;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -136,7 +127,6 @@ public class Merchants {
         this.description = description;
     }
 
-    @Column(name = "isCheck")
     public Integer getIsCheck() {
         return isCheck;
     }
@@ -145,7 +135,6 @@ public class Merchants {
         this.isCheck = isCheck;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }

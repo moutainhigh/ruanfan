@@ -13,7 +13,7 @@ public class City {
     private Province province;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -22,7 +22,6 @@ public class City {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }

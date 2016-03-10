@@ -16,7 +16,7 @@ public class Replys {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -45,7 +45,6 @@ public class Replys {
         this.user = user;
     }
 
-    @Column(name = "content")
     public String getContent() {
         return content;
     }

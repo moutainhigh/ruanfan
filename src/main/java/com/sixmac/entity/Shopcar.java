@@ -20,7 +20,7 @@ public class Shopcar {
     private Integer count;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }

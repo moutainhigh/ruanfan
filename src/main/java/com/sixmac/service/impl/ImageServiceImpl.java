@@ -42,6 +42,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
+    public Image update(Image image) {
+        return imageDao.save(image);
+    }
+
+    @Override
     public List<Image> iFindList(Integer objectId, Integer objectType) {
         return imageDao.iFindList(objectId, objectType);
     }

@@ -30,6 +30,14 @@
                     <div class="panel-body">
                         <form id="afflatusForm" method="post" enctype="multipart/form-data" action="afflatus/save" class="form-horizontal" role="form">
                             <input type="hidden" id="id" name="id" value="${afflatus.id}">
+                            <input type="hidden" id="tempType" value="${afflatus.type}">
+                            <input type="hidden" id="tempName" value="${afflatus.name}">
+                            <input type="hidden" id="tempDesignerId" value="${afflatus.designer.id}">
+                            <input type="hidden" id="tempStyleId" value="${afflatus.style.id}">
+                            <input type="hidden" id="tempAreaId" value="${afflatus.area.id}">
+                            <input type="hidden" id="tempLabels" value="${afflatus.labels}">
+                            <span id="tempAddImageIds" style="display: none"></span>
+                            <span id="tempDelImageIds" style="display: none"></span>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">类型:</label>
@@ -42,9 +50,16 @@
                             </div>
 
                             <div class="form-group" id="nameDiv" style="display: none;">
-                                <label class="col-sm-2 control-label">名称:</label>
+                                <label class="col-sm-2 control-label">灵感图名称:</label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="name" name="name" maxlength="20" data-rule="required" value="${afflatus.name}" placeholder="请输入灵感图名称"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">发布人:</label>
+                                <div class="col-sm-3">
+                                    <select id="designerList" style="width: 200px;" class="form-control"></select>
                                 </div>
                             </div>
 
@@ -72,7 +87,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">图片:</label>
                                 <div class="col-sm-10">
-                                    <div style="float: left;" id="lastImageDiv">
+                                    <div style="float: left;margin-bottom: 30px;" id="lastImageDiv">
                                         <a href="javascript:void(0);" onclick="afflatus.fn.AddTempImg()">
                                             <img id="tempPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inherit; margin-bottom: 6px;" border="1"/>
                                         </a>
@@ -82,8 +97,8 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10" style="margin-top: 25px;">
-                                    <button type="button" id="submitafflatus" class="btn btn-primary">提交</button>
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" class="btn btn-primary" onclick="afflatus.fn.subInfo()">提交</button>
                                 </div>
                             </div>
                         </form>
@@ -92,18 +107,14 @@
                             <input type="file" name="tempImage" id="tempImage" data-rule="required" style="display:none;" onchange="afflatus.fn.saveTempImage()"/>
                         </form>
 
-                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;">
+                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 30px;">
                             <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
                             <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 207px; left: 184px; display: none;" class="axx" onclick="afflatus.fn.deleteImage(this)">
                                 <img id="pic" src="static/images/xx.png" style="height: 16px; width: 16px; display: inline;" border="1"/>
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-primary btn-sm" role="button" style="color: white; display: none; margin-left: -19px;" onclick="afflatus.fn.addTempLabel(this)">添加锚点</a>
-                            </a>
+                            <a href="javascript:void(0)" target="_blank" class="btn btn-primary btn-sm" role="button" style="color: white; display: none; margin-left: -19px;">添加锚点</a>
                         </div>
-
-                        <a href="javascript:void(0)" target="_blank" style="display: none;" id="hiddenA">隐藏a标签</a>
-
                     </div>
                     <!-- /.panel-body -->
 
@@ -128,10 +139,15 @@
         v: {
             id: "afflatus",
             list: [],
-            dTable: null
+            dTable: null,
+            imageSize: 0
         },
         fn: {
             init: function () {
+                $.ajaxSetup({
+                    async: false
+                });
+
                 if ($("#id").val() != "") {
                     $("#showH").text("——编辑灵感图集");
                 }
@@ -139,30 +155,53 @@
                 // 页面加载时，自动加载下拉框
                 afflatus.fn.getSelectList();
 
+                // 加载数据
+                afflatus.fn.loadData();
+
                 $("#typeList").change(function () {
                     if ($(this).val() == 1) {
                         // 单图时，隐藏名称和标签
                         $('#nameDiv').css('display', 'none');
                         $('#labelsDiv').css('display', 'none');
                     } else {
+                        $('#name').val('');
+                        $('#labels').val('');
+
                         // 套图时，显示名称和标签
                         $('#nameDiv').css('display', '');
                         $('#labelsDiv').css('display', '');
                     }
                 });
             },
+            loadData: function () {
+                var id = $('#id').val();
+                if (null != id && id != '') {
+                    // 设置下拉框选中值
+                    var type = $('#tempType').val();
+                    $('#typeList').val(type);
+                    if (type == 2) {
+                        // 套图时，显示名称和标签
+                        $('#nameDiv').css('display', '');
+                        $('#labelsDiv').css('display', '');
+
+                        $('#name').val($('#tempName').val());
+                        $('#labels').val($('#tempLabels').val());
+                    }
+
+                    // 加载灵感图集图片数组
+                    afflatus.fn.getSerImages();
+                }
+            },
             AddTempImg: function () {
                 // a标签绑定onclick事件
                 $('#tempImage').click();
             },
-            addTempLabel: function (self) {
-                var imageId = $(self).prev().prev().val();
-                // location.href = _basePath + "afflatus/addTempLabel?id=" + imageId;
-                $('#hiddenA').prop('href', "afflatus/addTempLabel?id=" + imageId);
-                $('#hiddenA').click();
-            },
             getSerImages: function () {
                 var imgList = ${imageList };
+
+                // 计算当前灵感图数量
+                afflatus.v.imageSize = imgList.length;
+
                 $.each(imgList, function (i, item) {
                     if (null != item) {
                         afflatus.fn.insertImage(item.path, item.id);
@@ -172,6 +211,7 @@
                 });
             },
             insertImage: function (path, id) {
+                afflatus.v.imageSize = afflatus.v.imageSize + 1;
                 $('#tempPicture').prop('src', "static/images/add.jpg");
 
                 var tempDiv = $("#tempDiv").clone();
@@ -179,6 +219,7 @@
                 tempDiv.css("display", "block");
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
+                tempDiv.children(":first").next().next().next().prop("href", "afflatus/addTempLabel?id=" + id);
                 tempDiv.insertBefore("#lastImageDiv");
 
                 // 让所有的克隆出来的
@@ -198,12 +239,35 @@
                 $("#tempImageForm").ajaxSubmit({
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
+                        $('#tempAddImageIds').html($('#tempAddImageIds').html() + data.id + ',');
                         afflatus.fn.insertImage(data.path, data.id);
                     }
                 })
             },
+            deleteImage: function (self) {
+                afflatus.v.imageSize = afflatus.v.imageSize - 1;
+                var imageId = $(self).prev().val();
+                $('#tempDelImageIds').html($('#tempDelImageIds').html() + imageId + ',');
+                $(self).parent().remove();
+            },
             getSelectList: function () {
+                $sixmac.ajax("common/designerList", null, function (result) {
+                    if (null != result) {
+                        // 获取返回的分类列表信息，并循环绑定到label中
+                        var content = "<option value=''>请选择发布人</option>";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item.id + "'>" + item.nickName + "</option>";
+                        });
+                        $('#designerList').append(content);
+                    } else {
+                        $sixmac.notify("获取发布人信息失败", "error");
+                    }
+
+                    var designerId = $('#tempDesignerId').val();
+                    if (null != designerId && designerId != '') {
+                        $('#designerList').val(designerId);
+                    }
+                });
                 $sixmac.ajax("common/areaList", null, function (result) {
                     if (null != result) {
                         // 获取返回的分类列表信息，并循环绑定到label中
@@ -214,6 +278,11 @@
                         $('#areaList').append(content);
                     } else {
                         $sixmac.notify("获取区域信息失败", "error");
+                    }
+
+                    var areaId = $('#tempAreaId').val();
+                    if (null != areaId && areaId != '') {
+                        $('#areaList').val(areaId);
                     }
                 });
                 $sixmac.ajax("common/styleList", null, function (result) {
@@ -227,7 +296,75 @@
                     } else {
                         $sixmac.notify("获取风格信息失败", "error");
                     }
+
+                    var styleId = $('#tempStyleId').val();
+                    if (null != styleId && styleId != '') {
+                        $('#styleList').val(styleId);
+                    }
                 });
+            },
+            subInfo: function () {
+                var flag = true;
+                var type = $('#typeList option:selected').val();
+                var designerId = $('#designerList option:selected').val();
+                var styleId = $('#styleList option:selected').val();
+                var areaId = $('#areaList option:selected').val();
+                var name = $('#name').val();
+
+                // 当灵感集的类型为套图时，检查名称是否为空
+                if (type == 2) {
+                    if (null == name || name == '') {
+                        $sixmac.notify("请输入灵感图名称", "error");
+                        flag = false;
+                        return;
+                    }
+                }
+
+                if (designerId == '') {
+                    $sixmac.notify("请选择发布人", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (styleId == '') {
+                    $sixmac.notify("请选择灵感图风格", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (areaId == '') {
+                    $sixmac.notify("请选择灵感图区域", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (afflatus.v.imageSize == 0) {
+                    $sixmac.notify("请至少上传一张灵感图", "error");
+                    flag = false;
+                    return;
+                }
+
+                // 所有的验证通过后，执行新增操作
+                if (flag) {
+                    $("#afflatusForm").ajaxSubmit({
+                        url: _basePath + "afflatus/save",
+                        dataType: "json",
+                        data: {
+                            "designerId": designerId,
+                            "styleId": styleId,
+                            "areaId": areaId,
+                            "tempAddImageIds": $("#tempAddImageIds").html(),
+                            "tempDelImageIds": $("#tempDelImageIds").html()
+                        },
+                        success: function (result) {
+                            if (result > 0) {
+                                window.location.href = _basePath + "afflatus/index";
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        }
+                    });
+                }
             }
         }
     }

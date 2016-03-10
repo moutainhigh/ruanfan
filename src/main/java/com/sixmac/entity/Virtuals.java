@@ -19,7 +19,7 @@ public class Virtuals {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -28,7 +28,6 @@ public class Virtuals {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -57,7 +56,6 @@ public class Virtuals {
         this.type = type;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -66,7 +64,6 @@ public class Virtuals {
         this.labels = labels;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }
@@ -75,7 +72,6 @@ public class Virtuals {
         this.cover = cover;
     }
 
-    @Column(name = "url")
     public String getUrl() {
         return url;
     }

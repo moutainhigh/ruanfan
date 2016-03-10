@@ -14,7 +14,7 @@ public class Collect {
     private Integer objectType;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -33,7 +33,6 @@ public class Collect {
         this.user = user;
     }
 
-    @Column(name = "objectId")
     public Integer getObjectId() {
         return objectId;
     }
@@ -42,7 +41,6 @@ public class Collect {
         this.objectId = objectId;
     }
 
-    @Column(name = "objectType")
     public Integer getObjectType() {
         return objectType;
     }

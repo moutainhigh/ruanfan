@@ -16,7 +16,7 @@ public class Message {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -25,7 +25,6 @@ public class Message {
         this.id = id;
     }
 
-    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -34,7 +33,6 @@ public class Message {
         this.title = title;
     }
 
-    @Column(name = "type")
     public String getType() {
         return type;
     }
@@ -43,7 +41,6 @@ public class Message {
         this.type = type;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }

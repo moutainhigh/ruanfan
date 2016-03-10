@@ -27,7 +27,7 @@ public class Users {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -36,7 +36,6 @@ public class Users {
         this.id = id;
     }
 
-    @Column(name = "mobile")
     public String getMobile() {
         return mobile;
     }
@@ -45,7 +44,6 @@ public class Users {
         this.mobile = mobile;
     }
 
-    @Column(name = "nickName")
     public String getNickName() {
         return nickName;
     }
@@ -54,7 +52,6 @@ public class Users {
         this.nickName = nickName;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -63,7 +60,6 @@ public class Users {
         this.password = password;
     }
 
-    @Column(name = "headPath")
     public String getHeadPath() {
         return headPath;
     }
@@ -82,7 +78,6 @@ public class Users {
         this.city = city;
     }
 
-    @Column(name = "score")
     public Integer getScore() {
         return score;
     }
@@ -91,7 +86,6 @@ public class Users {
         this.score = score;
     }
 
-    @Column(name = "comName")
     public String getComName() {
         return comName;
     }
@@ -100,7 +94,6 @@ public class Users {
         this.comName = comName;
     }
 
-    @Column(name = "comArea")
     public String getComArea() {
         return comArea;
     }
@@ -109,7 +102,6 @@ public class Users {
         this.comArea = comArea;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -118,7 +110,6 @@ public class Users {
         this.type = type;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }

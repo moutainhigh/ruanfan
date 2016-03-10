@@ -1,9 +1,6 @@
 package com.sixmac.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -14,7 +11,7 @@ public class Province {
     private String name;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -23,7 +20,6 @@ public class Province {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }

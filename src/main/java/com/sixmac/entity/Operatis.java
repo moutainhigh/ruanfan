@@ -16,7 +16,7 @@ public class Operatis {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -25,7 +25,6 @@ public class Operatis {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -34,7 +33,6 @@ public class Operatis {
         this.name = name;
     }
 
-    @Column(name = "roleName")
     public String getRoleName() {
         return roleName;
     }
@@ -43,7 +41,6 @@ public class Operatis {
         this.roleName = roleName;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }

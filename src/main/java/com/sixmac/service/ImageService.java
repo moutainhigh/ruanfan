@@ -16,6 +16,8 @@ public interface ImageService {
 
     public Image create(Image image);
 
+    public Image update(Image image);
+
     // 根据图片所属目标id和图片所属目标类型查询列表
     public List<Image> iFindList(Integer objectId, Integer objectType);
 }

@@ -18,7 +18,7 @@ public class Notices {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -27,7 +27,6 @@ public class Notices {
         this.id = id;
     }
 
-    @Column(name = "sourceId")
     public Integer getSourceId() {
         return sourceId;
     }
@@ -36,7 +35,6 @@ public class Notices {
         this.sourceId = sourceId;
     }
 
-    @Column(name = "sourceType")
     public Integer getSourceType() {
         return sourceType;
     }
@@ -45,7 +43,6 @@ public class Notices {
         this.sourceType = sourceType;
     }
 
-    @Column(name = "objectId")
     public Integer getObjectId() {
         return objectId;
     }
@@ -54,7 +51,6 @@ public class Notices {
         this.objectId = objectId;
     }
 
-    @Column(name = "objectName")
     public String getObjectName() {
         return objectName;
     }
@@ -63,7 +59,6 @@ public class Notices {
         this.objectName = objectName;
     }
 
-    @Column(name = "objectType")
     public Integer getObjectType() {
         return objectType;
     }

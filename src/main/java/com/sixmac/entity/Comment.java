@@ -17,7 +17,7 @@ public class Comment {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -36,7 +36,6 @@ public class Comment {
         this.user = user;
     }
 
-    @Column(name = "objectId")
     public Integer getObjectId() {
         return objectId;
     }
@@ -45,7 +44,6 @@ public class Comment {
         this.objectId = objectId;
     }
 
-    @Column(name = "objectType")
     public Integer getObjectType() {
         return objectType;
     }
@@ -54,7 +52,6 @@ public class Comment {
         this.objectType = objectType;
     }
 
-    @Column(name = "content")
     public String getContent() {
         return content;
     }
@@ -63,7 +60,6 @@ public class Comment {
         this.content = content;
     }
 
-    @Column(name = "createTime")
     public Date getCreateTime() {
         return createTime;
     }

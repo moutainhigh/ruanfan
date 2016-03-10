@@ -15,7 +15,7 @@ public class Gams {
     private int type;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -34,7 +34,6 @@ public class Gams {
         this.user = user;
     }
 
-    @Column(name = "objectId")
     public Integer getObjectId() {
         return objectId;
     }
@@ -43,7 +42,6 @@ public class Gams {
         this.objectId = objectId;
     }
 
-    @Column(name = "objectType")
     public Integer getObjectType() {
         return objectType;
     }
@@ -52,7 +50,6 @@ public class Gams {
         this.objectType = objectType;
     }
 
-    @Column(name = "type")
     public int getType() {
         return type;
     }

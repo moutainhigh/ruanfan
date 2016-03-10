@@ -22,7 +22,7 @@ public class Coupon {
     private Integer status;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -31,7 +31,6 @@ public class Coupon {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -40,7 +39,6 @@ public class Coupon {
         this.name = name;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }
@@ -49,7 +47,6 @@ public class Coupon {
         this.cover = cover;
     }
 
-    @Column(name = "couponNum")
     public String getCouponNum() {
         return couponNum;
     }
@@ -58,7 +55,6 @@ public class Coupon {
         this.couponNum = couponNum;
     }
 
-    @Column(name = "money")
     public String getMoney() {
         return money;
     }
@@ -67,7 +63,6 @@ public class Coupon {
         this.money = money;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -76,7 +71,6 @@ public class Coupon {
         this.type = type;
     }
 
-    @Column(name = "maxMoney")
     public String getMaxMoney() {
         return maxMoney;
     }

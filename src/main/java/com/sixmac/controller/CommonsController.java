@@ -1,9 +1,11 @@
 package com.sixmac.controller;
 
 import com.sixmac.entity.Areas;
+import com.sixmac.entity.Designers;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Styles;
 import com.sixmac.service.AreasService;
+import com.sixmac.service.DesignersService;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.StylesService;
 import com.sixmac.utils.ImageUtil;
@@ -35,6 +37,20 @@ public class CommonsController {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private DesignersService designersService;
+
+    /**
+     * 设计师列表
+     *
+     * @return
+     */
+    @RequestMapping("/designerList")
+    @ResponseBody
+    public List<Designers> designerList() {
+        return designersService.findAll();
+    }
 
     /**
      * 风格列表

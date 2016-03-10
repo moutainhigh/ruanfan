@@ -15,7 +15,7 @@ public class Brand {
     private Date updateTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -24,7 +24,6 @@ public class Brand {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -33,7 +32,6 @@ public class Brand {
         this.name = name;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }
@@ -42,7 +40,6 @@ public class Brand {
         this.cover = cover;
     }
 
-    @Column(name = "updateTime")
     public Date getUpdateTime() {
         return updateTime;
     }

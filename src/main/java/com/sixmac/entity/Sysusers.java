@@ -14,7 +14,7 @@ public class Sysusers {
     private Roles role;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -23,7 +23,6 @@ public class Sysusers {
         this.id = id;
     }
 
-    @Column(name = "account")
     public String getAccount() {
         return account;
     }
@@ -32,7 +31,6 @@ public class Sysusers {
         this.account = account;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }

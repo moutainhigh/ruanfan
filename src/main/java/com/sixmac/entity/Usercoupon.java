@@ -14,7 +14,7 @@ public class Usercoupon {
     private Integer status;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -43,7 +43,6 @@ public class Usercoupon {
         this.coupon = coupon;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }

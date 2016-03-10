@@ -16,7 +16,7 @@ public class Banner {
     private Date updateTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -25,7 +25,6 @@ public class Banner {
         this.id = id;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }
@@ -34,7 +33,6 @@ public class Banner {
         this.cover = cover;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -43,7 +41,6 @@ public class Banner {
         this.type = type;
     }
 
-    @Column(name = "sourceId")
     public Integer getSourceId() {
         return sourceId;
     }
@@ -52,7 +49,6 @@ public class Banner {
         this.sourceId = sourceId;
     }
 
-    @Column(name = "updateTime")
     public Date getUpdateTime() {
         return updateTime;
     }

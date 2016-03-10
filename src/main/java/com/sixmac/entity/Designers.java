@@ -27,7 +27,7 @@ public class Designers {
     private List<Comment> commentList;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -36,7 +36,6 @@ public class Designers {
         this.id = id;
     }
 
-    @Column(name = "nickName")
     public String getNickName() {
         return nickName;
     }
@@ -45,7 +44,6 @@ public class Designers {
         this.nickName = nickName;
     }
 
-    @Column(name = "mobile")
     public String getMobile() {
         return mobile;
     }
@@ -54,7 +52,6 @@ public class Designers {
         this.mobile = mobile;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -63,7 +60,6 @@ public class Designers {
         this.password = password;
     }
 
-    @Column(name = "head")
     public String getHead() {
         return head;
     }
@@ -72,7 +68,6 @@ public class Designers {
         this.head = head;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -81,7 +76,6 @@ public class Designers {
         this.type = type;
     }
 
-    @Column(name = "proof")
     public String getProof() {
         return proof;
     }
@@ -100,7 +94,6 @@ public class Designers {
         this.city = city;
     }
 
-    @Column(name = "desc")
     public String getDesc() {
         return desc;
     }
@@ -109,7 +102,6 @@ public class Designers {
         this.desc = desc;
     }
 
-    @Column(name = "descs")
     public String getDescs() {
         return descs;
     }
@@ -118,7 +110,6 @@ public class Designers {
         this.descs = descs;
     }
 
-    @Column(name = "isCheck")
     public Integer getIsCheck() {
         return isCheck;
     }
@@ -127,7 +118,6 @@ public class Designers {
         this.isCheck = isCheck;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }

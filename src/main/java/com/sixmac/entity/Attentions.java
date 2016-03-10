@@ -14,7 +14,7 @@ public class Attentions {
     private int objectType;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -33,7 +33,6 @@ public class Attentions {
         this.user = user;
     }
 
-    @Column(name = "objectId")
     public int getObjectId() {
         return objectId;
     }
@@ -42,7 +41,6 @@ public class Attentions {
         this.objectId = objectId;
     }
 
-    @Column(name = "objectType")
     public int getObjectType() {
         return objectType;
     }

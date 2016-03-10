@@ -25,7 +25,7 @@ public class Spikes {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -34,7 +34,6 @@ public class Spikes {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -43,7 +42,6 @@ public class Spikes {
         this.name = name;
     }
 
-    @Column(name = "price")
     public String getPrice() {
         return price;
     }
@@ -52,7 +50,6 @@ public class Spikes {
         this.price = price;
     }
 
-    @Column(name = "oldPrice")
     public String getOldPrice() {
         return oldPrice;
     }
@@ -61,7 +58,6 @@ public class Spikes {
         this.oldPrice = oldPrice;
     }
 
-    @Column(name = "coverId")
     public Integer getCoverId() {
         return coverId;
     }
@@ -90,7 +86,6 @@ public class Spikes {
         this.endTime = endTime;
     }
 
-    @Column(name = "count")
     public Integer getCount() {
         return count;
     }
@@ -99,7 +94,6 @@ public class Spikes {
         this.count = count;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -108,7 +102,6 @@ public class Spikes {
         this.labels = labels;
     }
 
-    @Column(name = "colors")
     public String getColors() {
         return colors;
     }
@@ -117,7 +110,6 @@ public class Spikes {
         this.colors = colors;
     }
 
-    @Column(name = "sizes")
     public String getSizes() {
         return sizes;
     }
@@ -126,7 +118,6 @@ public class Spikes {
         this.sizes = sizes;
     }
 
-    @Column(name = "materials")
     public String getMaterials() {
         return materials;
     }
@@ -135,7 +126,6 @@ public class Spikes {
         this.materials = materials;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }

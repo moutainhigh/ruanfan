@@ -14,7 +14,7 @@ public class Styles {
     private Date updateTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -23,7 +23,6 @@ public class Styles {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }

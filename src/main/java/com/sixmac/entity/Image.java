@@ -30,7 +30,6 @@ public class Image {
         this.id = id;
     }
 
-    @Column(name = "path")
     public String getPath() {
         return path;
     }
@@ -39,7 +38,6 @@ public class Image {
         this.path = path;
     }
 
-    @Column(name = "thuPath")
     public String getThuPath() {
         return thuPath;
     }
@@ -48,7 +46,6 @@ public class Image {
         this.thuPath = thuPath;
     }
 
-    @Column(name = "width")
     public String getWidth() {
         return width;
     }
@@ -57,7 +54,6 @@ public class Image {
         this.width = width;
     }
 
-    @Column(name = "height")
     public String getHeight() {
         return height;
     }
@@ -66,7 +62,6 @@ public class Image {
         this.height = height;
     }
 
-    @Column(name = "objectId")
     public Integer getObjectId() {
         return objectId;
     }
@@ -75,7 +70,6 @@ public class Image {
         this.objectId = objectId;
     }
 
-    @Column(name = "objectType")
     public Integer getObjectType() {
         return objectType;
     }
@@ -84,7 +78,6 @@ public class Image {
         this.objectType = objectType;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -93,7 +86,6 @@ public class Image {
         this.description = description;
     }
 
-    @Column(name = "demo")
     public String getDemo() {
         return demo;
     }

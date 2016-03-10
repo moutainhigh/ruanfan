@@ -18,7 +18,7 @@ public class Works {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -37,7 +37,6 @@ public class Works {
         this.designer = designer;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -46,7 +45,6 @@ public class Works {
         this.name = name;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -55,7 +53,6 @@ public class Works {
         this.labels = labels;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -64,7 +61,6 @@ public class Works {
         this.description = description;
     }
 
-    @Column(name = "coverId")
     public Integer getCoverId() {
         return coverId;
     }

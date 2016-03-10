@@ -12,7 +12,7 @@ public class Roles {
     private String name;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -21,7 +21,6 @@ public class Roles {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }

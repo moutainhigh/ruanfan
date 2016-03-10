@@ -24,7 +24,7 @@ public class Reserve {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -33,7 +33,6 @@ public class Reserve {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -42,7 +41,6 @@ public class Reserve {
         this.name = name;
     }
 
-    @Column(name = "mobile")
     public String getMobile() {
         return mobile;
     }
@@ -51,7 +49,6 @@ public class Reserve {
         this.mobile = mobile;
     }
 
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -100,7 +97,6 @@ public class Reserve {
         this.style = style;
     }
 
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -109,7 +105,6 @@ public class Reserve {
         this.address = address;
     }
 
-    @Column(name = "remark")
     public String getRemark() {
         return remark;
     }
@@ -118,7 +113,6 @@ public class Reserve {
         this.remark = remark;
     }
 
-    @Column(name = "reseAddress")
     public String getReseAddress() {
         return reseAddress;
     }
@@ -127,7 +121,6 @@ public class Reserve {
         this.reseAddress = reseAddress;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }

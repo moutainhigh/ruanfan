@@ -18,7 +18,7 @@ public class Propertys {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -27,7 +27,6 @@ public class Propertys {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -36,7 +35,6 @@ public class Propertys {
         this.name = name;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }
@@ -45,7 +43,6 @@ public class Propertys {
         this.cover = cover;
     }
 
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -54,7 +51,6 @@ public class Propertys {
         this.address = address;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -63,7 +59,6 @@ public class Propertys {
         this.labels = labels;
     }
 
-    @Column(name = "parentId")
     public Integer getParentId() {
         return parentId;
     }

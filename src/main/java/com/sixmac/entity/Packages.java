@@ -21,7 +21,7 @@ public class Packages {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -30,7 +30,6 @@ public class Packages {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -39,7 +38,6 @@ public class Packages {
         this.name = name;
     }
 
-    @Column(name = "price")
     public String getPrice() {
         return price;
     }
@@ -48,7 +46,6 @@ public class Packages {
         this.price = price;
     }
 
-    @Column(name = "oldPrice")
     public String getOldPrice() {
         return oldPrice;
     }
@@ -67,7 +64,6 @@ public class Packages {
         this.brand = brand;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -76,7 +72,6 @@ public class Packages {
         this.labels = labels;
     }
 
-    @Column(name = "coverId")
     public Integer getCoverId() {
         return coverId;
     }
@@ -85,7 +80,6 @@ public class Packages {
         this.coverId = coverId;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -94,7 +88,6 @@ public class Packages {
         this.description = description;
     }
 
-    @Column(name = "count")
     public Integer getCount() {
         return count;
     }

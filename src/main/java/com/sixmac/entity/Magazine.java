@@ -18,7 +18,7 @@ public class Magazine {
     private List<Image> imageList;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -27,7 +27,6 @@ public class Magazine {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -36,7 +35,6 @@ public class Magazine {
         this.name = name;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }
@@ -45,7 +43,6 @@ public class Magazine {
         this.cover = cover;
     }
 
-    @Column(name = "month")
     public Integer getMonth() {
         return month;
     }

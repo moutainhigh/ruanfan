@@ -15,7 +15,6 @@ public class Producttype {
     private Date updateTime;
 
     @Id
-    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -24,7 +23,6 @@ public class Producttype {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -33,7 +31,6 @@ public class Producttype {
         this.name = name;
     }
 
-    @Column(name = "url")
     public String getUrl() {
         return url;
     }

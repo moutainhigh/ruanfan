@@ -13,7 +13,7 @@ public class Modules {
     private Integer parentId;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -22,8 +22,6 @@ public class Modules {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -32,8 +30,6 @@ public class Modules {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "parentId")
     public Integer getParentId() {
         return parentId;
     }

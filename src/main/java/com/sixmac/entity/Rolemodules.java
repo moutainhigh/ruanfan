@@ -13,7 +13,7 @@ public class Rolemodules {
     private Modules module;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }

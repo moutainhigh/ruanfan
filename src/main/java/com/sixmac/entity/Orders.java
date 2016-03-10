@@ -25,7 +25,7 @@ public class Orders {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -34,7 +34,6 @@ public class Orders {
         this.id = id;
     }
 
-    @Column(name = "orderNum")
     public String getOrderNum() {
         return orderNum;
     }
@@ -81,7 +80,6 @@ public class Orders {
         this.merchant = merchant;
     }
 
-    @Column(name = "consignee")
     public String getConsignee() {
         return consignee;
     }
@@ -90,7 +88,6 @@ public class Orders {
         this.consignee = consignee;
     }
 
-    @Column(name = "mobile")
     public String getMobile() {
         return mobile;
     }
@@ -99,7 +96,6 @@ public class Orders {
         this.mobile = mobile;
     }
 
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -108,7 +104,6 @@ public class Orders {
         this.address = address;
     }
 
-    @Column(name = "price")
     public String getPrice() {
         return price;
     }
@@ -117,7 +112,6 @@ public class Orders {
         this.price = price;
     }
 
-    @Column(name = "realPrice")
     public String getRealPrice() {
         return realPrice;
     }
@@ -126,7 +120,6 @@ public class Orders {
         this.realPrice = realPrice;
     }
 
-    @Column(name = "demo")
     public String getDemo() {
         return demo;
     }
@@ -135,7 +128,6 @@ public class Orders {
         this.demo = demo;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }

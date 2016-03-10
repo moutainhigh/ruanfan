@@ -24,7 +24,7 @@ public class Ordersinfo {
     private String comment;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }

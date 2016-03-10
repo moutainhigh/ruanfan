@@ -28,7 +28,7 @@ public class Products {
     private String description;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -37,7 +37,6 @@ public class Products {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -46,7 +45,6 @@ public class Products {
         this.name = name;
     }
 
-    @Column(name = "price")
     public String getPrice() {
         return price;
     }
@@ -55,7 +53,6 @@ public class Products {
         this.price = price;
     }
 
-    @Column(name = "oldPrice")
     public String getOldPrice() {
         return oldPrice;
     }
@@ -74,7 +71,6 @@ public class Products {
         this.merchant = merchant;
     }
 
-    @Column(name = "coverId")
     public Integer getCoverId() {
         return coverId;
     }
@@ -83,7 +79,6 @@ public class Products {
         this.coverId = coverId;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -112,7 +107,6 @@ public class Products {
         this.sort = sort;
     }
 
-    @Column(name = "place")
     public String getPlace() {
         return place;
     }
@@ -121,7 +115,6 @@ public class Products {
         this.place = place;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -130,7 +123,6 @@ public class Products {
         this.labels = labels;
     }
 
-    @Column(name = "colors")
     public String getColors() {
         return colors;
     }
@@ -139,7 +131,6 @@ public class Products {
         this.colors = colors;
     }
 
-    @Column(name = "sizes")
     public String getSizes() {
         return sizes;
     }
@@ -148,7 +139,6 @@ public class Products {
         this.sizes = sizes;
     }
 
-    @Column(name = "materials")
     public String getMaterials() {
         return materials;
     }
@@ -157,7 +147,6 @@ public class Products {
         this.materials = materials;
     }
 
-    @Column(name = "isHot")
     public Integer getIsHot() {
         return isHot;
     }
@@ -166,7 +155,6 @@ public class Products {
         this.isHot = isHot;
     }
 
-    @Column(name = "isCheck")
     public Integer getIsCheck() {
         return isCheck;
     }
@@ -175,7 +163,6 @@ public class Products {
         this.isCheck = isCheck;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }
@@ -184,7 +171,6 @@ public class Products {
         this.status = status;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }

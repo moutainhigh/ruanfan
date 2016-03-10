@@ -15,7 +15,7 @@ public class Estate {
     private Date createTime;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -24,7 +24,6 @@ public class Estate {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -33,7 +32,6 @@ public class Estate {
         this.name = name;
     }
 
-    @Column(name = "cover")
     public String getCover() {
         return cover;
     }

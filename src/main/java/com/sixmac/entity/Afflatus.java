@@ -27,7 +27,7 @@ public class Afflatus {
     private List<Comment> commentList;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -36,7 +36,6 @@ public class Afflatus {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -55,7 +54,6 @@ public class Afflatus {
         this.designer = designer;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -84,7 +82,6 @@ public class Afflatus {
         this.area = area;
     }
 
-    @Column(name = "coverId")
     public Integer getCoverId() {
         return coverId;
     }
@@ -93,7 +90,6 @@ public class Afflatus {
         this.coverId = coverId;
     }
 
-    @Column(name = "showNum")
     public Integer getShowNum() {
         return showNum;
     }
@@ -102,7 +98,6 @@ public class Afflatus {
         this.showNum = showNum;
     }
 
-    @Column(name = "shareNum")
     public Integer getShareNum() {
         return shareNum;
     }
@@ -111,7 +106,6 @@ public class Afflatus {
         this.shareNum = shareNum;
     }
 
-    @Column(name = "labels")
     public String getLabels() {
         return labels;
     }
@@ -120,7 +114,6 @@ public class Afflatus {
         this.labels = labels;
     }
 
-    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }
