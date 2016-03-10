@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "spikes")
 public class Spikes {
-    private int id;
+    private Integer id;
     private String name;
     private String price;
     private String oldPrice;
@@ -26,11 +26,11 @@ public class Spikes {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

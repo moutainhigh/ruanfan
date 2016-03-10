@@ -7,18 +7,18 @@ import javax.persistence.*;
  */
 @Entity
 public class Usersother {
-    private int id;
+    private Integer id;
     private Users user;
     private String openId;
     private Integer type;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "operatis")
 public class Operatis {
-    private int id;
+    private Integer id;
     private String name;
     private String roleName;
     private String description;
@@ -17,11 +17,11 @@ public class Operatis {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

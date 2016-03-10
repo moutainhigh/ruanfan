@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "notices")
 public class Notices {
-    private int id;
+    private Integer id;
     private Integer sourceId;
     private Integer sourceType;
     private Integer objectId;
@@ -19,11 +19,11 @@ public class Notices {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

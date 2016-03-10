@@ -8,18 +8,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "usercoupon")
 public class Usercoupon {
-    private int id;
+    private Integer id;
     private Users user;
     private Coupon coupon;
     private Integer status;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "comment")
 public class Comment {
-    private int id;
+    private Integer id;
     private Users user;
     private Integer objectId;
     private Integer objectType;
@@ -18,11 +18,11 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

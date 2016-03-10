@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "works")
 public class Works {
-    private int id;
+    private Integer id;
     private Designers designer;
     private String name;
     private String labels;
@@ -19,11 +19,11 @@ public class Works {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

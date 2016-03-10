@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "proimage")
 public class Proimage {
-    private int id;
+    private Integer id;
     private Propertys propertys;
     private String path;
     private String head;
@@ -17,11 +17,11 @@ public class Proimage {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

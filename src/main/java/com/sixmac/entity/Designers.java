@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "designers")
 public class Designers {
-    private int id;
+    private Integer id;
     private String nickName;
     private String mobile;
     private String password;
@@ -28,11 +28,11 @@ public class Designers {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -8,19 +8,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "gams")
 public class Gams {
-    private int id;
+    private Integer id;
     private Users user;
     private Integer objectId;
     private Integer objectType;
-    private int type;
+    private Integer type;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,11 +50,11 @@ public class Gams {
         this.objectType = objectType;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 }

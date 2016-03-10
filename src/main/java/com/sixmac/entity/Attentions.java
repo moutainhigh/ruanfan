@@ -8,18 +8,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "attentions")
 public class Attentions {
-    private int id;
+    private Integer id;
     private Users user;
     private int objectId;
     private int objectType;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

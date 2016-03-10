@@ -8,16 +8,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 public class Roles {
-    private int id;
+    private Integer id;
     private String name;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

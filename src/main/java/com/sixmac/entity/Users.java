@@ -9,10 +9,6 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 public class Users {
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String mobile;
     private String nickName;
@@ -28,11 +24,11 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
