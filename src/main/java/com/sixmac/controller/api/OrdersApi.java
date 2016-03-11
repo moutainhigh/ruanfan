@@ -97,13 +97,16 @@ public class OrdersApi {
         orders.setOrderNum(System.currentTimeMillis() + "");
         orders.setPayType(payType);
         orders.setUser(usersService.getById(userId));
-        orders.setMerchant(merchantsService.getById(merchantId));
+        if (null != merchantId) {
+            orders.setMerchant(merchantsService.getById(merchantId));
+        }
         orders.setConsignee(consignee);
         orders.setMobile(mobile);
         orders.setAddress(address);
         orders.setPrice(price);
         orders.setRealPrice(realPrice);
         orders.setDemo(demo);
+        orders.setStatus(0);
         orders.setCreateTime(new Date());
 
         // 增加订单信息
