@@ -25,6 +25,7 @@ public class Designers {
     private Date createTime;
     private List<Gams> gamsList;
     private List<Comment> commentList;
+    private Integer cityId;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -152,5 +153,14 @@ public class Designers {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    @Transient
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
     }
 }

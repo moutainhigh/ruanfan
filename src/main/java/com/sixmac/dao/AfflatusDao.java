@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface AfflatusDao extends JpaRepository<Afflatus, Integer>, JpaSpecificationExecutor<Afflatus> {
 
-    @Query("select a from Afflatus a where a.type = ?1 and a.style.id = ?2 and a.area.id = ?3")
-    public List<Afflatus> iFindLoveList(Integer type, Integer styleId, Integer areaId);
+    @Query("select a from Afflatus a where a.id <> ?1 and a.type = ?2 and a.style.id = ?3 and a.area.id = ?4")
+    public List<Afflatus> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId);
 }

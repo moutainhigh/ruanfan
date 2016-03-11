@@ -100,4 +100,9 @@ public class JournalServiceImpl implements JournalService {
 
         return page;
     }
+
+    @Override
+    public List<Journal> iFindListByUserId(Integer userId) {
+        return journalDao.iFindListByUserId(userId);
+    }
 }

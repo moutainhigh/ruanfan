@@ -2,6 +2,7 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.PackagesDao;
+import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Packages;
 import com.sixmac.service.PackagesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +100,10 @@ public class PackagesServiceImpl implements PackagesService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public List<Packageproducts> findListByPackageId(Integer packageId) {
+        return packagesDao.findListByPackageId(packageId);
     }
 }

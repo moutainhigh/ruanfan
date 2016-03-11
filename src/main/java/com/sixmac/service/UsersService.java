@@ -25,7 +25,7 @@ public interface UsersService extends ICommonService<Users> {
     public Users iLogin(String mobile, String password);
 
     // 移动端用户第三方登录
-    public Users iTLogin(Integer type, String account, String openId, String head, String nickname);
+    public Users iTLogin(Integer type, String openId, String head, String nickname);
 
     // 移动端用户注册
     public Users iRegister(Users users);

@@ -1,9 +1,7 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
-import com.sixmac.dao.CouponDao;
-import com.sixmac.dao.UsercouponDao;
-import com.sixmac.dao.UsersDao;
+import com.sixmac.dao.*;
 import com.sixmac.entity.Coupon;
 import com.sixmac.entity.Usercoupon;
 import com.sixmac.entity.Users;
@@ -44,6 +42,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private CouponDao couponDao;
+
+    @Autowired
+    private CityDao cityDao;
+
+    @Autowired
+    private UsersotherDao usersotherDao;
 
     @Override
     public List<Users> findAll() {
@@ -132,7 +136,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     @Transactional
-    public Users iTLogin(Integer type, String account, String openId, String head, String nickname) {
+    public Users iTLogin(Integer type, String openId, String head, String nickname) {
         Usersother usersother = usersDao.iTLogin(openId, type);
         Users users = null;
         // 如果第三方用户信息不存在，则执行注册操作
@@ -140,11 +144,22 @@ public class UsersServiceImpl implements UsersService {
             // 此处执行注册操作
             users = new Users();
             users.setNickName(nickname);
-            users.setMobile(account);
             users.setHeadPath(head);
+            users.setCity(cityDao.findOne(1));
+            users.setScore(0);
+            users.setType(1);
+            users.setStatus(0);
             users.setCreateTime(new Date());
 
             usersDao.save(users);
+
+            // 注册完毕后，添加该用户的第三方信息
+            Usersother others = new Usersother();
+            others.setType(type);
+            others.setOpenId(openId);
+            others.setUser(users);
+
+            usersotherDao.save(others);
         } else {
             users = usersother.getUser();
         }

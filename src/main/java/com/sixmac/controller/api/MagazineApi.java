@@ -7,6 +7,7 @@ import com.sixmac.entity.Magazine;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.MagazineService;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,11 +71,14 @@ public class MagazineApi {
 
         if (null == magazine) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
         // 查询杂志对应的图片集合
         magazine.setImageList(imageService.iFindList(magazineId, Constant.IMAGE_MAGAZINE));
 
-        WebUtil.printApi(response, new Result(true).data(magazine));
+        Result obj = new Result(true).data(magazine);
+        String result = JsonUtil.obj2ApiJson(obj, "objectId", "objectType");
+        WebUtil.printApi(response, result);
     }
 }

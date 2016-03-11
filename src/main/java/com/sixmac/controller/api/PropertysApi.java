@@ -5,6 +5,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Propertys;
 import com.sixmac.service.PropertysService;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,14 @@ public class PropertysApi {
 
         Page<Propertys> page = propertysService.iPage(name, pageNum, pageSize);
 
+        for (Propertys propertys : page.getContent()) {
+            propertys.setChildList(propertysService.iPageByParentId(propertys.getId()));
+        }
+
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "parentId");
+        WebUtil.printApi(response, result);
     }
 }

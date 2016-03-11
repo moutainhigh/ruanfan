@@ -6,11 +6,9 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Collect;
 import com.sixmac.entity.Journal;
-import com.sixmac.service.AfflatusService;
-import com.sixmac.service.CollectService;
-import com.sixmac.service.JournalService;
-import com.sixmac.service.UsersService;
+import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +37,9 @@ public class CommonApi {
     @Autowired
     private JournalService journalService;
 
+    @Autowired
+    private WorksService worksService;
+
     /**
      * 收藏列表
      *
@@ -49,9 +50,9 @@ public class CommonApi {
      */
     @RequestMapping(value = "/collectList")
     public void collectList(HttpServletResponse response,
-                     Integer userId,
-                     Integer pageNum,
-                     Integer pageSize) {
+                            Integer userId,
+                            Integer pageNum,
+                            Integer pageSize) {
         if (null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -60,11 +61,15 @@ public class CommonApi {
         Page<Collect> page = collectService.iPage(userId, pageNum, pageSize);
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "user");
+        WebUtil.printApi(response, result);
     }
 
     /**
      * 收藏 or 取消收藏
+     *
      * @param response
      * @param userId
      * @param objectId
@@ -73,32 +78,41 @@ public class CommonApi {
      */
     @RequestMapping("/collect")
     public void collect(HttpServletResponse response, Integer userId, Integer objectId, Integer objectType, Integer action) {
-        // action（收藏状态字段）,0表示收藏，1表示取消收藏
-        String msg = "";
         if (null == userId || null == objectId || null == objectType || null == action) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
+
+        Collect collect = collectService.iFindOne(userId, objectId, objectType);
+
+        // action（收藏状态字段）,0表示收藏，1表示取消收藏
         if (action == 0) {
             try {
+                if (null != collect) {
+                    WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0009));
+                    return;
+                }
+
                 collectService.iCreate(usersService.getById(userId), objectId, objectType);
             } catch (GeneralException e) {
                 WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+                return;
             }
-            msg = "收藏成功";
         } else {
-            Collect collect = collectService.iFindOne(userId, objectId, objectType);
-            if (null != collect) {
-                collectService.deleteById(collect.getId());
+            if (null == collect) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0010));
+                return;
             }
-            msg = "取消收藏成功";
+
+            collectService.deleteById(collect.getId());
         }
 
-        WebUtil.printApi(response, new Result(true).msg(msg));
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**
      * 分享
+     *
      * @param response
      * @param objectId
      * @param objectType
@@ -119,6 +133,7 @@ public class CommonApi {
 
                 if (null == afflatus) {
                     WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+                    return;
                 }
 
                 afflatus.setShareNum(afflatus.getShareNum() + 1);
@@ -131,6 +146,7 @@ public class CommonApi {
 
                 if (null == journal) {
                     WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+                    return;
                 }
 
                 journal.setShareNum(journal.getShareNum() + 1);

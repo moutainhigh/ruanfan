@@ -5,6 +5,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Virtuals;
 import com.sixmac.service.VirtualsService;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,9 @@ public class VirtualApi {
         Page<Virtuals> page = virtualsService.iPage(name, styleId, typeId, pageNum, pageSize);
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "style", "type");
+        WebUtil.printApi(response, result);
     }
 }

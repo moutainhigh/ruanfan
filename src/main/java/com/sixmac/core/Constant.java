@@ -29,7 +29,7 @@ public interface Constant {
 
     // 点赞or转发类型
     Integer GAM_LOVE = 1;  // 点赞
-    Integer GAM_MOVE = 2;  // 转发
+    Integer GAM_FORWARD = 2;  // 转发
 
     // 点赞or转发目标类型
     Integer GAM_JOURNAL = 1;    // 日志

@@ -8,6 +8,7 @@ import com.sixmac.service.ProductsService;
 import com.sixmac.service.ShopcarService;
 import com.sixmac.service.UsersService;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,8 +57,16 @@ public class ShopCarApi {
 
         Page<Shopcar> page = shopcarService.iPage(userId, pageNum, pageSize);
 
+        for (Shopcar shopcar : page.getContent()) {
+            shopcar.setMerchantId(shopcar.getMerchant().getId());
+            shopcar.setProductId(shopcar.getProduct().getId());
+        }
+
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "user", "merchant", "product");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -74,7 +83,6 @@ public class ShopCarApi {
      * @param materials
      * @param price
      * @param count
-     * @param packageId
      */
     @RequestMapping("addShopCar")
     public void addShopCar(HttpServletResponse response,
@@ -87,9 +95,8 @@ public class ShopCarApi {
                            String sizes,
                            String materials,
                            String price,
-                           Integer count,
-                           Integer packageId) {
-        if (null == userId || null == merchantId || null == productId || null == cover || null == name || null == colors || null == sizes || null == materials || null == price || null == count || null == packageId) {
+                           Integer count) {
+        if (null == userId || null == merchantId || null == productId || null == cover || null == name || null == colors || null == sizes || null == materials || null == price || null == count) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -128,6 +135,7 @@ public class ShopCarApi {
 
         if (null == shopcar) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
         shopcarService.deleteById(shopcarId);

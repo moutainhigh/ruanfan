@@ -4,11 +4,16 @@ import com.sixmac.entity.Journal;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/3/8 0008 下午 2:34.
  */
 public interface JournalService extends ICommonService<Journal> {
 
-    // 日志列表
+    // 根据用户id查询对应的日志列表（分页）
     public Page<Journal> iPage(Integer userId, Integer pageNum, Integer pageSize);
+
+    // 根据用户id查询对应的日志列表
+    public List<Journal> iFindListByUserId(Integer userId);
 }

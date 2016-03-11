@@ -86,6 +86,12 @@ public class PropertysServiceImpl implements PropertysService {
                     Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
                     predicateList.add(pre);
                 }
+                Predicate pre1 = cb.equal(root.get("parentId").as(Integer.class), 0);
+                predicateList.add(pre1);
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
 
                 if (result != null) {
                     query.where(result);
@@ -96,5 +102,10 @@ public class PropertysServiceImpl implements PropertysService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public List<Propertys> iPageByParentId(Integer parentId) {
+        return propertysDao.iPageByParentId(parentId);
     }
 }

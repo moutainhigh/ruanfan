@@ -15,7 +15,6 @@ import java.util.Map;
  */
 public class CommonController {
 
-
     public static Map<String, Object> emptyData = null;
 
     static {
@@ -36,6 +35,11 @@ public class CommonController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor());
     }
 
+    public Map<String, Object> createMap(String key, Object obj) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(key, obj);
+        return map;
+    }
 
     public Integer getPageNum(Integer start, Integer length) {
         if (start == null) {
@@ -48,6 +52,4 @@ public class CommonController {
         int pageNum = (start / length) + 1;
         return pageNum;
     }
-
-
 }

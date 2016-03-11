@@ -18,9 +18,11 @@ public class Shopcar {
     private String materials;
     private String price;
     private Integer count;
+    private Integer merchantId;
+    private Integer productId;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -113,5 +115,23 @@ public class Shopcar {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    @Transient
+    public Integer getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Integer merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    @Transient
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 }

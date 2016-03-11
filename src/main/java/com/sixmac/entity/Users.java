@@ -21,6 +21,7 @@ public class Users {
     private Integer type;
     private Integer status;
     private Date createTime;
+    private Integer cityId;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -122,5 +123,14 @@ public class Users {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
     }
 }

@@ -16,6 +16,7 @@ public class Works {
     private String description;
     private Integer coverId;
     private Date createTime;
+    private String cover;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -77,5 +78,14 @@ public class Works {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }

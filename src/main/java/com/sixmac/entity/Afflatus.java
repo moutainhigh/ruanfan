@@ -22,6 +22,7 @@ public class Afflatus {
     private String labels;
     private Integer status;
     private Date createTime;
+    private String cover;
     private List<Gams> gamsList;
     private List<Afflatus> loveList;
     private List<Comment> commentList;
@@ -130,6 +131,15 @@ public class Afflatus {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     @Transient

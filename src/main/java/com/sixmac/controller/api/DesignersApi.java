@@ -1,6 +1,7 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.common.exception.GeneralException;
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
@@ -11,6 +12,7 @@ import com.sixmac.entity.Works;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.DateUtils;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +30,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "api/designers")
-public class DesignersApi {
+public class DesignersApi extends CommonController {
 
     @Autowired
     private DesignersService designersService;
@@ -50,6 +52,9 @@ public class DesignersApi {
 
     @Autowired
     private AttentionsService attentionsService;
+
+    @Autowired
+    private ImageService imageService;
 
     /**
      * 设计师列表
@@ -73,8 +78,15 @@ public class DesignersApi {
 
         Page<Designers> page = designersService.iPage(type, nickname, cityId, pageNum, pageSize);
 
+        for (Designers designer : page.getContent()) {
+            designer.setCityId(designer.getCity().getId());
+        }
+
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "status", "gamsList", "commentList");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -97,8 +109,15 @@ public class DesignersApi {
 
         Page<Works> page = designersService.iPageWorks(designerId, pageNum, pageSize);
 
+        for (Works work : page.getContent()) {
+            work.setCover(imageService.getById(work.getCoverId()).getPath());
+        }
+
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -118,7 +137,10 @@ public class DesignersApi {
 
         if (null == designers) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
+
+        designers.setCityId(designers.getCity().getId());
 
         // 查询评论列表
         designers.setCommentList(commentService.iFindList(designerId, Constant.COMMENT_DESIGNERS));
@@ -126,7 +148,9 @@ public class DesignersApi {
         // 查询点赞列表
         designers.setGamsList(gamsService.iFindList(designerId, Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
 
-        WebUtil.printApi(response, new Result(true).data(designers));
+        Result obj = new Result(true).data(createMap("designerInfo", designers));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "status", "objectId", "objectType");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -139,28 +163,36 @@ public class DesignersApi {
      */
     @RequestMapping("/attention")
     public void share(HttpServletResponse response, Integer userId, Integer designerId, Integer action) {
-        // action（关注状态字段）,0表示关注，1表示取消关注
-        String msg = "";
         if (null == userId || null == designerId || null == action) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
+
+        Attentions attentions = attentionsService.iFindOne(userId, designerId, Constant.ATTENTION_DESIGNERS);
+
+        // action（关注状态字段）,0表示关注，1表示取消关注
         if (action == 0) {
             try {
+                if (null != attentions) {
+                    WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0007));
+                    return;
+                }
+
                 attentionsService.iCreate(usersService.getById(userId), designerId, Constant.ATTENTION_DESIGNERS);
             } catch (GeneralException e) {
                 WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+                return;
             }
-            msg = "关注成功";
         } else {
-            Attentions attentions = attentionsService.iFindOne(userId, designerId, Constant.ATTENTION_DESIGNERS);
-            if (null != attentions) {
-                attentionsService.deleteById(attentions.getId());
+            if (null == attentions) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0008));
+                return;
             }
-            msg = "取消关注成功";
+
+            attentionsService.deleteById(attentions.getId());
         }
 
-        WebUtil.printApi(response, new Result(true).msg(msg));
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**
@@ -188,7 +220,6 @@ public class DesignersApi {
                         String address,
                         String resTime,
                         String remark) {
-        String msg = "";
         if (null == userId || null == designerId || null == name || null == mobile || null == email || null == styleId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -213,9 +244,10 @@ public class DesignersApi {
         reserve.setRemark(remark);
         reserve.setReseAddress(address);
         reserve.setCreateTime(new Date());
+        reserve.setStatus(0);
 
         reserveService.create(reserve);
 
-        WebUtil.printApi(response, new Result(true).msg(msg));
+        WebUtil.printApi(response, new Result(true));
     }
 }

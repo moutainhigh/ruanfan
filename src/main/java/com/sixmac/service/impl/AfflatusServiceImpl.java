@@ -154,7 +154,7 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
-    public List<Afflatus> iFindLoveList(Integer type, Integer styleId, Integer areaId) {
-        return afflatusDao.iFindLoveList(type, styleId, areaId);
+    public List<Afflatus> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId) {
+        return afflatusDao.iFindLoveList(afflatusId, type, styleId, areaId);
     }
 }

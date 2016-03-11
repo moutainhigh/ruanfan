@@ -1,5 +1,6 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
@@ -28,7 +29,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "api/users")
-public class UsersApi {
+public class UsersApi extends CommonController {
 
     public List<CodeVo> voList = new ArrayList<CodeVo>();
 
@@ -80,10 +81,7 @@ public class UsersApi {
         voList.add(codeVo);
 
         // 返回验证码
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("code", code);
-
-        WebUtil.printApi(response, new Result(true).data(map));
+        WebUtil.printApi(response, new Result(true).data(createMap("code", code)));
     }
 
     /**
@@ -102,7 +100,7 @@ public class UsersApi {
                          MultipartRequest multipartRequest,
                          String code,
                          String codeType) {
-        if (null == mobile || null == password || null == nickname || null == code) {
+        if (null == mobile || null == password || null == nickname || null == code || null == codeType) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -127,6 +125,11 @@ public class UsersApi {
         users.setMobile(mobile);
         users.setPassword(password);
         users.setNickName(nickname);
+        users.setCity(cityService.getById(1));
+        users.setScore(0);
+        users.setType(1);
+        users.setStatus(0);
+        users.setCreateTime(new Date());
 
         try {
             Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
@@ -138,7 +141,11 @@ public class UsersApi {
         // 注册
         usersService.create(users);
 
-        WebUtil.printApi(response, new Result(true).data(users));
+        users.setCityId(1);
+
+        Result obj = new Result(true).data(createMap("userInfo", users));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -159,9 +166,14 @@ public class UsersApi {
 
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
-        WebUtil.printApi(response, new Result(true).data(users));
+        users.setCityId(users.getCity().getId());
+
+        Result obj = new Result(true).data(createMap("userInfo", users));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -169,7 +181,6 @@ public class UsersApi {
      *
      * @param response
      * @param type
-     * @param account
      * @param openId
      * @param head
      * @param nickname
@@ -177,22 +188,26 @@ public class UsersApi {
     @RequestMapping(value = "/tLogin")
     public void tLogin(HttpServletResponse response,
                        Integer type,
-                       String account,
                        String openId,
                        String head,
                        String nickname) {
-        if (null == type || null == account || null == openId || null == head || null == nickname) {
+        if (null == type || null == openId || null == head || null == nickname) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
-        Users users = usersService.iTLogin(type, account, openId, head, nickname);
+        Users users = usersService.iTLogin(type, openId, head, nickname);
 
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
-        WebUtil.printApi(response, new Result(true).data(users));
+        users.setCityId(users.getCity().getId());
+
+        Result obj = new Result(true).data(createMap("userInfo", users));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -216,7 +231,11 @@ public class UsersApi {
         // 根据手机号获取用户信息，并返回该用户的信息
         Users users = usersService.iFindOneByMobile(mobile);
 
-        WebUtil.printApi(response, new Result(true).data(users));
+        users.setCityId(users.getCity().getId());
+
+        Result obj = new Result(true).data(createMap("userInfo", users));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -236,9 +255,14 @@ public class UsersApi {
 
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
-        WebUtil.printApi(response, new Result(true).data(users));
+        users.setCityId(users.getCity().getId());
+
+        Result obj = new Result(true).data(createMap("userInfo", users));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -273,6 +297,7 @@ public class UsersApi {
 
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
         if (null != password && !password.equals("")) {
@@ -307,7 +332,7 @@ public class UsersApi {
 
         usersService.update(users);
 
-        WebUtil.printApi(response, new Result(true).data(users));
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**
@@ -375,8 +400,11 @@ public class UsersApi {
             list.add(coupon);
         }
 
-        Map<java.lang.String, Object> dataMap = APIFactory.fittingPlus(page, list);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+        Map<String, Object> dataMap = APIFactory.fittingPlus(page, list);
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "status");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -396,12 +424,10 @@ public class UsersApi {
 
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("score", users.getScore());
-
-        WebUtil.printApi(response, new Result(true).data(map));
+        WebUtil.printApi(response, new Result(true).data(createMap("score", users.getScore())));
     }
 
     /**

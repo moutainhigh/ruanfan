@@ -1,6 +1,7 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.common.exception.GeneralException;
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
@@ -8,6 +9,7 @@ import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Collect;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "api/afflatus")
-public class AfflatusApi {
+public class AfflatusApi extends CommonController {
 
     @Autowired
     private AfflatusService afflatusService;
@@ -33,6 +35,9 @@ public class AfflatusApi {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private ImageService imageService;
 
     /**
      * 灵感集列表
@@ -58,8 +63,15 @@ public class AfflatusApi {
 
         Page<Afflatus> page = afflatusService.iPage(type, styleId, areaId, pageNum, pageSize);
 
+        for (Afflatus afflatus : page.getContent()) {
+            afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
+        }
+
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "status", "coverId", "gamsList", "loveList", "commentList");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -79,6 +91,7 @@ public class AfflatusApi {
 
         if (null == afflatus) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
         }
 
         // 查询评论列表
@@ -88,12 +101,16 @@ public class AfflatusApi {
         afflatus.setGamsList(gamsService.iFindList(afflatusId, Constant.GAM_AFFLATUS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
 
         // 查询猜你所想列表
-        afflatus.setLoveList(afflatusService.iFindLoveList(afflatus.getType(), afflatus.getStyle().getId(), afflatus.getArea().getId()));
+        afflatus.setLoveList(afflatusService.iFindLoveList(afflatus.getId(), afflatus.getType(), afflatus.getStyle().getId(), afflatus.getArea().getId()));
 
         // 查看详情的同时，增加浏览量
         afflatus.setShowNum(afflatus.getShowNum() + 1);
         afflatusService.update(afflatus);
 
-        WebUtil.printApi(response, new Result(true).data(afflatus));
+        afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
+
+        Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "status", "coverId", "city", "objectId", "objectType", "password");
+        WebUtil.printApi(response, result);
     }
 }
