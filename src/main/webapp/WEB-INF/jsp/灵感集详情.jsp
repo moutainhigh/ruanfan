@@ -8,6 +8,20 @@
     <meta name="author" content="">
     <title>灵感图集</title>
     <%@ include file="inc/css.jsp" %>
+    <style type="text/css">
+        /*模块拖拽*/
+        .drag {
+            position: absolute;
+            width: 150px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: #FBF2BD;
+            text-align: center;
+            padding: 5px;
+            opacity: 0.7;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 
@@ -89,10 +103,16 @@
                             </div>
                         </form>
 
-                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;">
-                            <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
+                        <div id="tempDiv" style="display:none;float: left; height: 610px;width: 810px;margin-right:6px; z-index: 0;margin-bottom: 50px;">
+                            <img class="imgs" alt="" src="" style="height: 600px;width: 800px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
-                            <span class="settingCover" style="margin-left: 42%; display: none;">封面</span>
+                            <span class="settingCover" style="margin-left: 47%; display: none; line-height: 50px; font-size: large;">↑封面</span>
+                            <a href="javascript:void(0)" target="_blank" style="cursor: hand; float: right;margin-right: 13px;line-height: 50px; font-size: large;">查看标签</a>
+                        </div>
+
+                        <!-- 隐藏区域--标签 -->
+                        <div id="temp" class="drag" style="display: none">
+                            <span></span>
                         </div>
                     </div>
                     <!-- /.panel-body -->
@@ -134,6 +154,9 @@
 
                 // 加载灵感图集图片数组
                 afflatus.fn.getSerImages();
+
+                // 为所有图片锚点
+                afflatus.fn.insertLabel();
             },
             getSerImages: function () {
                 var imgList = ${imageList };
@@ -160,7 +183,30 @@
                 tempDiv.css("display", "block");
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
+                tempDiv.children(":first").next().next().next().prop("href", "afflatus/addTempLabel?id=" + id);
                 tempDiv.insertBefore("#lastImageDiv");
+            },
+            insertLabel: function () {
+                $('input:hidden[name="imageIdTemp"]').each(function () {
+                    // 为图片锚点
+                    $sixmac.ajax("common/findLabelList", {
+                        objectId: $(this).val(),
+                        objectType: 1
+                    }, function (result) {
+                        console.log(result);
+                        if (null != result && result.length > 0) {
+                            var tempDiv = $("#temp").clone();
+                            tempDiv.css("display", "block");
+                            tempDiv.attr("id", '');
+                            tempDiv.css("left", result.leftPoint + "px");
+                            tempDiv.css("top", result.topPoint + "px");
+                            tempDiv.css("background", "#ABF2BD");
+                            tempDiv.children(":first").html(result.name);
+
+                            $(this).parent().append(tempDiv);
+                        }
+                    });
+                });
             },
             goBack: function () {
                 window.location.href = "afflatus/index";

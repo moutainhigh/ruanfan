@@ -100,6 +100,25 @@ public class CommonsController {
     }
 
     /**
+     * 根据目标id和目标类型查询标签集合
+     *
+     * @param objectId
+     * @param objectType
+     * @return
+     */
+    @RequestMapping("/findLabelList")
+    @ResponseBody
+    public List<Label> findLabelList(Integer objectId, Integer objectType) {
+        // 查询标签信息
+        List<Label> list = labelService.findListByParams(objectId, objectType);
+        if (null == list || list.size() == 0) {
+            return null;
+        } else {
+            return list;
+        }
+    }
+
+    /**
      * 上传缓存图片
      *
      * @return

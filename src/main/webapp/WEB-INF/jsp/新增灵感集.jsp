@@ -98,6 +98,10 @@
                             </div>
 
                             <div class="form-group">
+                                <label style="color: red;margin-left: 18%;">提示:图片尺寸待定</label>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="button" class="btn btn-primary" onclick="afflatus.fn.subInfo()">提交</button>
                                 </div>
