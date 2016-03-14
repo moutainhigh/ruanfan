@@ -100,13 +100,13 @@ public class UsersApi extends CommonController {
                          MultipartRequest multipartRequest,
                          String code,
                          String codeType) {
-        if (null == mobile || null == password || null == nickname || null == code || null == codeType) {
+        if (null == mobile || null == password || null == nickname /*|| null == code || null == codeType*/) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
         // 检测验证码
-        checkCode(response, mobile, code, codeType);
+        // checkCode(response, mobile, code, codeType);
 
         // 检测手机号是否唯一，如果不唯一，返回错误码
         if (null != usersService.iFindOneByMobile(mobile)) {
@@ -166,6 +166,12 @@ public class UsersApi extends CommonController {
 
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
+        }
+
+        // 如果用户被禁用，将不允许登录
+        if (users.getStatus() == Constant.BANNED_STATUS_NO) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0013));
             return;
         }
 

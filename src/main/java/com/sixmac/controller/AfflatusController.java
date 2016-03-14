@@ -8,6 +8,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Label;
+import com.sixmac.entity.Virtuals;
 import com.sixmac.service.*;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.WebUtil;
@@ -49,6 +50,12 @@ public class AfflatusController extends CommonController {
 
     @Autowired
     private LabelService labelService;
+
+    @Autowired
+    private VrtypeService vrtypeService;
+
+    @Autowired
+    private VirtualsService virtualsService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -188,9 +195,9 @@ public class AfflatusController extends CommonController {
     /**
      * 系列图添加标签
      *
+     * @param id
+     * @param model
      * @return
-     * @author xintian
-     * @date 2015-2-6 下午15:19:57
      */
     @RequestMapping("/addTempLabel")
     public String addTempLabel(Integer id, ModelMap model) {
@@ -204,5 +211,39 @@ public class AfflatusController extends CommonController {
             e.printStackTrace();
         }
         return "图片锚点";
+    }
+
+    /**
+     * 灵感集转换为虚拟体验
+     *
+     * @param afflatusId
+     * @param typeId
+     * @return
+     */
+    @RequestMapping("/changeVR")
+    @ResponseBody
+    public Integer changeVR(Integer afflatusId, Integer typeId) {
+        try {
+            // 根据灵感集id获取灵感集详情
+            Afflatus afflatus = afflatusService.getById(afflatusId);
+
+            // 创建虚拟体验实体类，准备开始复制信息
+            Virtuals virtuals = new Virtuals();
+            virtuals.setName(afflatus.getName());
+            virtuals.setStyle(afflatus.getStyle());
+            virtuals.setType(vrtypeService.getById(typeId));
+            virtuals.setLabels(afflatus.getLabels());
+            virtuals.setCover(imageService.getById(afflatus.getCoverId()).getPath());
+            virtuals.setUrl("");
+            virtuals.setCreateTime(new Date());
+
+            // 保存虚拟体验信息
+            virtualsService.create(virtuals);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

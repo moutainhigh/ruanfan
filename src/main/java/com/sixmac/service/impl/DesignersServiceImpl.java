@@ -99,6 +99,15 @@ public class DesignersServiceImpl implements DesignersService {
                     Predicate pre = cb.equal(root.get("city").get("id").as(Integer.class), cityId);
                     predicateList.add(pre);
                 }
+
+                // 审核通过的设计师才可以被查询
+                Predicate pre1 = cb.equal(root.get("isCheck").as(Integer.class), Constant.CHECK_STATUS_SUCCESS);
+                predicateList.add(pre1);
+
+                // 没有封禁的设计师才可以被查询
+                Predicate pre2 = cb.equal(root.get("status").as(Integer.class), Constant.BANNED_STATUS_YES);
+                predicateList.add(pre2);
+
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }

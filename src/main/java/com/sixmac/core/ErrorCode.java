@@ -40,4 +40,7 @@ public class ErrorCode {
 
     // 已转发过的日志不能重复转发
     public static final String ERROR_CODE_0012 = "error_0012";
+
+    // 用户被禁用，无法登录
+    public static final String ERROR_CODE_0013 = "error_0013";
 }

@@ -32,10 +32,10 @@
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="afflatusName" maxlength="20" placeholder="灵感名称" />
+                                <input type="text" class="form-control" id="afflatusName" maxlength="20" placeholder="灵感名称"/>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="designerName" maxlength="20" placeholder="发布者" />
+                                <input type="text" class="form-control" id="designerName" maxlength="20" placeholder="发布者"/>
                             </div>
                             <div class="form-group">
                                 <label>状态：</label>
@@ -103,6 +103,35 @@
     </div>
     <!-- /#page-wrapper -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="pwdModalLabel">转为虚拟体验</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="infoForm" method="post" action="afflatus/changeVR" class="form-horizontal" role="form">
+                        <input type="hidden" id="hiddenAfflatusId" name="afflatusId"/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">分类:</label>
+                            <div class="col-sm-5">
+                                <select id="typeList" style="width: 200px;" class="form-control"></select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" onclick="afflatusList.fn.subInfo()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Modal end -->
 
 </div>
 <!-- /#wrapper -->
@@ -188,6 +217,7 @@
 
                         $('td', row).last().find(".delete").click(function () {
                             // 转化为虚拟体验
+                            afflatusList.fn.changeType(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -202,16 +232,36 @@
                     }
                 });
             },
-            responseComplete: function (result, action) {
-                if (result.status == "0") {
-                    if (action) {
-                        afflatusList.v.dTable.ajax.reload(null, false);
-                    } else {
-                        afflatusList.v.dTable.ajax.reload();
-                    }
-                    $sixmac.notify(result.msg, "success");
-                } else {
-                    $sixmac.notify(result.msg, "error");
+            changeType: function (id) {
+                $('#hiddenAfflatusId').val(id);
+
+                $('#typeList').val('');
+                $("#infoModal").modal("show");
+            },
+            subInfo: function () {
+                var flag = true;
+                var typeId = $('#typeList option:selected').val();
+                var afflatusId = $('#hiddenAfflatusId').val();
+
+                if (null == typeId || typeId == '') {
+                    $sixmac.notify("请选择虚拟体验分类", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (flag) {
+                    $sixmac.ajax("afflatus/changeVR", {
+                        "afflatusId": afflatusId,
+                        "typeId": typeId
+                    }, function (result) {
+                        if (result == 1) {
+                            $sixmac.notify("转换成功", "success");
+                            $("#infoModal").modal("hide");
+                            afflatusList.v.dTable.ajax.reload(null, false);
+                        } else {
+                            $sixmac.notify("转换失败", "error");
+                        }
+                    });
                 }
             },
             getSelectList: function () {
@@ -237,6 +287,18 @@
                         $('#styleList').append(content);
                     } else {
                         $sixmac.notify("获取风格信息失败", "error");
+                    }
+                });
+                $sixmac.ajax("common/vrtypeList", null, function (result) {
+                    if (null != result) {
+                        // 获取返回的分类列表信息，并循环绑定到label中
+                        var content = "<option value=''>请选择虚拟体验分类</option>";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                        });
+                        $('#typeList').append(content);
+                    } else {
+                        $sixmac.notify("获取虚拟体验分类信息失败", "error");
                     }
                 });
             }

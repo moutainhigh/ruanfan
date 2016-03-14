@@ -71,4 +71,13 @@ public interface Constant {
 
     // 标签所属目标类型
     Integer LABEL_AFFLATUS = 1;   // 灵感集
+
+    // 审核状态
+    Integer CHECK_STATUS_DEFAULT = 0;  // 待审核
+    Integer CHECK_STATUS_SUCCESS = 1;  // 审核通过
+    Integer CHECK_STATUS_FAIL = 2;     // 审核不通过
+
+    // 用户封禁状态
+    Integer BANNED_STATUS_YES = 0;  // 启用
+    Integer BANNED_STATUS_NO = 1;   // 禁用（封禁）
 }

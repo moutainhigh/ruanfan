@@ -16,8 +16,8 @@ public class Coupon {
     private String money;
     private Integer type;
     private String maxMoney;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private Date createTime;
     private Integer status;
 
@@ -79,23 +79,19 @@ public class Coupon {
         this.maxMoney = maxMoney;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "startDate")
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "endDate")
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

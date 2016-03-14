@@ -40,6 +40,9 @@ public class CommonsController {
     @Autowired
     private LabelService labelService;
 
+    @Autowired
+    private VrtypeService vrtypeService;
+
     /**
      * 设计师列表
      *
@@ -71,6 +74,17 @@ public class CommonsController {
     @ResponseBody
     public List<Areas> areaList() {
         return areasService.findAll();
+    }
+
+    /**
+     * 虚拟体验分类列表
+     *
+     * @return
+     */
+    @RequestMapping("/vrtypeList")
+    @ResponseBody
+    public List<Vrtype> typeList() {
+        return vrtypeService.findAll();
     }
 
     /**
