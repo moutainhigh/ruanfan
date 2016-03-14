@@ -26,6 +26,7 @@ public class Designers {
     private List<Gams> gamsList;
     private List<Comment> commentList;
     private Integer cityId;
+    private List<Image> imageList;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -162,5 +163,14 @@ public class Designers {
 
     public void setCityId(Integer cityId) {
         this.cityId = cityId;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 }

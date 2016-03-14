@@ -5,10 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Afflatus;
-import com.sixmac.entity.Image;
-import com.sixmac.entity.Label;
-import com.sixmac.entity.Virtuals;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.WebUtil;
@@ -56,6 +53,9 @@ public class AfflatusController extends CommonController {
 
     @Autowired
     private VirtualsService virtualsService;
+
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -160,7 +160,7 @@ public class AfflatusController extends CommonController {
             } else {
                 afflatus.setShowNum(0);
                 afflatus.setShareNum(0);
-                afflatus.setStatus(0);
+                afflatus.setStatus(1);
                 afflatus.setCreateTime(new Date());
                 afflatusService.create(afflatus);
             }
@@ -239,6 +239,26 @@ public class AfflatusController extends CommonController {
 
             // 保存虚拟体验信息
             virtualsService.create(virtuals);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 审核灵感集
+     *
+     * @param afflatusId
+     * @param status
+     * @return
+     */
+    @RequestMapping("/changeCheck")
+    @ResponseBody
+    public Integer changeCheck(Integer afflatusId, Integer status, String reason) {
+        try {
+            afflatusService.changeCheck(afflatusId, status, reason);
 
             return 1;
         } catch (Exception e) {

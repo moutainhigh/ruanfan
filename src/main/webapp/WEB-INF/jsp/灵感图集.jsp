@@ -109,7 +109,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="pwdModalLabel">转为虚拟体验</h4>
+                    <h4 class="modal-title">转为虚拟体验</h4>
                 </div>
                 <div class="modal-body">
                     <form id="infoForm" method="post" action="afflatus/changeVR" class="form-horizontal" role="form">
@@ -125,6 +125,34 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" onclick="afflatusList.fn.subInfo()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Modal end -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">驳回原因</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <textarea cols="40" rows="5" id="reason" style="resize: none;" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" onclick="afflatusList.fn.subCheckInfo()" class="btn btn-primary">保存</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -188,6 +216,14 @@
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='转为虚拟体验' class='btn btn-info btn-circle delete'>" +
                             "<i class='fa fa-recycle'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='审核通过' style='display: none' class='btn btn-primary btn-circle checkyes'>" +
+                            "<i class='fa fa-check'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'>" +
+                            "<i class='fa fa-close'></i>" +
                             "</button>",
                             "targets": -1
                         }
@@ -213,11 +249,26 @@
                     rowCallback: function (row, data) {
                         var items = afflatusList.v.list;
 
+                        if (data.status == 0) {
+                            $('td', row).last().find(".checkyes").css("display", '');
+                            $('td', row).last().find(".checkno").css("display", '');
+                        }
+
                         $('td', row).last().find(".edit").attr("href", 'afflatus/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 转化为虚拟体验
                             afflatusList.fn.changeType(data.id);
+                        });
+
+                        $('td', row).last().find(".checkyes").click(function () {
+                            // 审核为通过
+                            afflatusList.fn.changeCheck(data.id, 1);
+                        });
+
+                        $('td', row).last().find(".checkno").click(function () {
+                            // 审核为不通过
+                            afflatusList.fn.checkNo(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -231,6 +282,38 @@
                         $sixmac.uiform();
                     }
                 });
+            },
+            checkNo: function (id) {
+                $('#hiddenAfflatusId').val(id);
+
+                $("#checkModal").modal("show");
+            },
+            subCheckInfo: function () {
+                var flag = true;
+                var reason = $('#reason').val();
+                var id = $('#hiddenAfflatusId').val();
+
+                if (null == reason || reason.trim().length == 0) {
+                    $sixmac.notify("请输入驳回原因", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (flag) {
+                    $sixmac.ajax("afflatus/changeCheck", {
+                        "afflatusId": id,
+                        "status": 2,
+                        "reason": reason
+                    }, function (result) {
+                        if (result == 1) {
+                            $sixmac.notify("操作成功", "success");
+                            $("#checkModal").modal("hide");
+                            afflatusList.v.dTable.ajax.reload(null, false);
+                        } else {
+                            $sixmac.notify("操作失败", "error");
+                        }
+                    });
+                }
             },
             changeType: function (id) {
                 $('#hiddenAfflatusId').val(id);
@@ -263,6 +346,19 @@
                         }
                     });
                 }
+            },
+            changeCheck: function (id, status) {
+                $sixmac.ajax("afflatus/changeCheck", {
+                    "afflatusId": id,
+                    "status": status
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        afflatusList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
+                    }
+                });
             },
             getSelectList: function () {
                 $sixmac.ajax("common/areaList", null, function (result) {

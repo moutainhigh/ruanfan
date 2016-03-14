@@ -19,4 +19,7 @@ public interface AfflatusService extends ICommonService<Afflatus> {
 
     // 查询猜你所想列表
     public List<Afflatus> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId);
+
+    // 审核灵感集
+    public void changeCheck(Integer afflatusId, Integer status, String reason);
 }

@@ -56,6 +56,9 @@ public class DesignersApi extends CommonController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private WorksService worksService;
+
     /**
      * 设计师列表
      *
@@ -79,13 +82,19 @@ public class DesignersApi extends CommonController {
         Page<Designers> page = designersService.iPage(type, nickname, cityId, pageNum, pageSize);
 
         for (Designers designer : page.getContent()) {
+            // 设置设计师所属城市id
             designer.setCityId(designer.getCity().getId());
+
+            // 获取每个独立设计师的最新三张作品图片
+            if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
+                designer.setImageList(worksService.iFindThreeNewWorksByDesignerId(designer.getId()));
+            }
         }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "status", "gamsList", "commentList");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "status", "gamsList", "commentList", "objectId", "objectType");
         WebUtil.printApi(response, result);
     }
 
@@ -147,6 +156,11 @@ public class DesignersApi extends CommonController {
 
         // 查询点赞列表
         designers.setGamsList(gamsService.iFindList(designerId, Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
+
+        // 获取每个独立设计师的最新三张作品图片
+        if (designers.getType() == Constant.DESIGNER_TYPE_ONE) {
+            designers.setImageList(worksService.iFindThreeNewWorksByDesignerId(designerId));
+        }
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
         String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "status", "objectId", "objectType");

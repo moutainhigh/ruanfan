@@ -1,7 +1,9 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.WorksDao;
+import com.sixmac.entity.Image;
 import com.sixmac.entity.Works;
 import com.sixmac.service.WorksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +24,9 @@ public class WorksServiceImpl implements WorksService {
 
     @Autowired
     private WorksDao worksDao;
+
+    @Autowired
+    private ImageDao imageDao;
 
     @Override
     public List<Works> findAll() {
@@ -64,6 +70,37 @@ public class WorksServiceImpl implements WorksService {
     public void deleteAll(int[] ids) {
         for (int id : ids) {
             deleteById(id);
+        }
+    }
+
+    @Override
+    public List<Image> iFindThreeNewWorksByDesignerId(Integer designerId) {
+        List<Works> tempList = new ArrayList<Works>();
+        List<Image> imageList = new ArrayList<Image>();
+        Image image = null;
+
+        List<Works> worksList = worksDao.iFindThreeNewWorksByDesignerId(designerId);
+
+        if (null != worksList) {
+            if (worksList.size() > 3) {
+                tempList.add(worksList.get(0));
+                tempList.add(worksList.get(1));
+                tempList.add(worksList.get(2));
+            } else {
+                for (Works works : worksList) {
+                    tempList.add(works);
+                }
+            }
+
+            // 读取作品信息，并根据作品信息获取对应的图片信息
+            for (Works work : tempList) {
+                image = imageDao.findOne(work.getCoverId());
+                imageList.add(image);
+            }
+
+            return imageList;
+        } else {
+            return null;
         }
     }
 }

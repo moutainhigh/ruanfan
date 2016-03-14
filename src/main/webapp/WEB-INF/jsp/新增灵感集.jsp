@@ -279,17 +279,22 @@
                 $("#tempImageForm").ajaxSubmit({
                     dataType: "json",
                     success: function (data) {
-                        $('#tempAddImageIds').html($('#tempAddImageIds').html() + data.id + ',');
-                        afflatus.fn.insertImage(data.path, data.id);
+                        if (null != data.path && data.path != '') {
+                            $('#tempAddImageIds').html($('#tempAddImageIds').html() + data.id + ',');
+                            afflatus.fn.insertImage(data.path, data.id);
+
+                            afflatus.v.imageSize = afflatus.v.imageSize + 1;
+
+                            var type = $('#typeList option:selected').val();
+                            if (type == 1 && afflatus.v.imageSize == 1) {
+                                $("#lastImageDiv").css('display', 'none');
+                            }
+                        } else {
+                            $sixmac.notify("图片格式不正确", "error");
+                            $("#lastImageDiv").css('display', '');
+                        }
                     }
                 });
-
-                afflatus.v.imageSize = afflatus.v.imageSize + 1;
-
-                var type = $('#typeList option:selected').val();
-                if (type == 1 && afflatus.v.imageSize == 1) {
-                    $("#lastImageDiv").css('display', 'none');
-                }
             },
             deleteImage: function (self) {
                 afflatus.v.imageSize = afflatus.v.imageSize - 1;

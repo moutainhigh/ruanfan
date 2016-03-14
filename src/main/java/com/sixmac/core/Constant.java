@@ -80,4 +80,14 @@ public interface Constant {
     // 用户封禁状态
     Integer BANNED_STATUS_YES = 0;  // 启用
     Integer BANNED_STATUS_NO = 1;   // 禁用（封禁）
+
+    // 系统消息类型
+    String MESSAGE_ALL = "0";         // 全部
+    String MESSAGE_DESIGNERS = "1";   // 设计师
+    String MESSAGE_MERCHANTS = "2";   // 商户
+    String MESSAGE_USERS = "3";       // 用户
+
+    // 设计师类型
+    Integer DESIGNER_TYPE_ONE = 1;    // 独立设计师
+    Integer DESIGNER_TYPE_TWO = 2;    // 设计公司
 }

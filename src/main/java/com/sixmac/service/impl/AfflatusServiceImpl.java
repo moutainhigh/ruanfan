@@ -2,7 +2,9 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.AfflatusDao;
+import com.sixmac.dao.MessageDao;
 import com.sixmac.entity.Afflatus;
+import com.sixmac.entity.Message;
 import com.sixmac.service.AfflatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class AfflatusServiceImpl implements AfflatusService {
 
     @Autowired
     private AfflatusDao afflatusDao;
+
+    @Autowired
+    private MessageDao messageDao;
 
     @Override
     public List<Afflatus> findAll() {
@@ -156,5 +162,28 @@ public class AfflatusServiceImpl implements AfflatusService {
     @Override
     public List<Afflatus> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId) {
         return afflatusDao.iFindLoveList(afflatusId, type, styleId, areaId);
+    }
+
+    @Override
+    @Transactional
+    public void changeCheck(Integer afflatusId, Integer status, String reason) {
+        Afflatus afflatus = afflatusDao.findOne(afflatusId);
+        afflatus.setStatus(status);
+
+        // 修改审核状态
+        afflatusDao.save(afflatus);
+
+        // 添加系统消息
+        Message message = new Message();
+        message.setTitle("系统消息");
+        message.setType(Constant.MESSAGE_DESIGNERS);
+        if (afflatus.getType() == 1) {
+            message.setDescription("发布的灵感单图审核" + (status == 1 ? "通过" : "不通过，驳回原因：" + reason));
+        } else {
+            message.setDescription("发布的灵感套图 " + afflatus.getName() + " 审核" + (status == 1 ? "通过" : "不通过，驳回原因：" + reason));
+        }
+        message.setCreateTime(new Date());
+
+        messageDao.save(message);
     }
 }

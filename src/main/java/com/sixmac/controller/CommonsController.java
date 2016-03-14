@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,21 @@ public class CommonsController {
 
         try {
             MultipartFile multipartFile = multipartRequest.getFile("tempImage");
+
+            // 验证图片格式
+            String originalFileName = multipartFile.getOriginalFilename().toLowerCase();
+            String fileType = originalFileName.substring(originalFileName.indexOf("."));
+
+            List<String> list = new ArrayList<String>();
+            list.add(".jpg");
+            list.add(".gif");
+            list.add(".jpeg");
+            list.add(".png");
+            list.add(".bmp");
+
+            if (!list.contains(fileType)) {
+                return image;
+            }
 
             Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
 
