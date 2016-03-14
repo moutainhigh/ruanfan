@@ -53,7 +53,7 @@
                         <a href="afflatus/index"><i class="fa fa-plus-square fa-fw"></i>灵感图集</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>虚拟体验</a>
+                        <a href="virtuals/index"><i class="fa fa-cart-plus fa-fw"></i>虚拟体验</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>杂志列表</a>

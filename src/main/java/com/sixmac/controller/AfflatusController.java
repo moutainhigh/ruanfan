@@ -3,11 +3,8 @@ package com.sixmac.controller;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.core.ErrorCode;
-import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
 import com.sixmac.service.*;
-import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -59,7 +53,7 @@ public class AfflatusController extends CommonController {
 
     @RequestMapping("index")
     public String index(ModelMap model) {
-        return "灵感图集";
+        return "灵感图集列表";
     }
 
     @RequestMapping("/list")
