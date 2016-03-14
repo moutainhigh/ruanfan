@@ -66,4 +66,9 @@ public class ReserveServiceImpl implements ReserveService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Reserve> iFindListByDesignerId(Integer designerId) {
+        return reserveDao.iFindListByDesignerId(designerId);
+    }
 }

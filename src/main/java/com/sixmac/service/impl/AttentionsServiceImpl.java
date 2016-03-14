@@ -82,4 +82,9 @@ public class AttentionsServiceImpl implements AttentionsService {
     public Attentions iFindOne(Integer userId, Integer objectId, Integer objectType) {
         return attentionsDao.iFindOne(userId, objectId, objectType);
     }
+
+    @Override
+    public List<Attentions> iFindList(Integer objectId, Integer objectType) {
+        return attentionsDao.iFindList(objectId, objectType);
+    }
 }

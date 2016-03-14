@@ -18,6 +18,8 @@ public class Designers {
     private Integer type;
     private String proof;
     private City city;
+    private Integer star;
+    private String price;
     private String desc;
     private String descs;
     private Integer isCheck;
@@ -27,6 +29,8 @@ public class Designers {
     private List<Comment> commentList;
     private Integer cityId;
     private List<Image> imageList;
+    private Integer fansNum;
+    private Integer reserveNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -94,6 +98,22 @@ public class Designers {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public Integer getStar() {
+        return star;
+    }
+
+    public void setStar(Integer star) {
+        this.star = star;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getDesc() {
@@ -172,5 +192,23 @@ public class Designers {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
+    }
+
+    @Transient
+    public Integer getFansNum() {
+        return fansNum;
+    }
+
+    public void setFansNum(Integer fansNum) {
+        this.fansNum = fansNum;
+    }
+
+    @Transient
+    public Integer getReserveNum() {
+        return reserveNum;
+    }
+
+    public void setReserveNum(Integer reserveNum) {
+        this.reserveNum = reserveNum;
     }
 }

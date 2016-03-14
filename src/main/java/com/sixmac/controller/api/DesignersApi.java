@@ -89,6 +89,12 @@ public class DesignersApi extends CommonController {
             if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
                 designer.setImageList(worksService.iFindThreeNewWorksByDesignerId(designer.getId()));
             }
+
+            // 获取粉丝数
+            designer.setFansNum(attentionsService.iFindList(designer.getId(), Constant.ATTENTION_DESIGNERS).size());
+
+            // 获取预约数
+            designer.setReserveNum(reserveService.iFindListByDesignerId(designer.getId()).size());
         }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
@@ -150,6 +156,12 @@ public class DesignersApi extends CommonController {
         }
 
         designers.setCityId(designers.getCity().getId());
+
+        // 获取粉丝数
+        designers.setFansNum(attentionsService.iFindList(designerId, Constant.ATTENTION_DESIGNERS).size());
+
+        // 获取预约数
+        designers.setReserveNum(reserveService.iFindListByDesignerId(designerId).size());
 
         // 查询评论列表
         designers.setCommentList(commentService.iFindList(designerId, Constant.COMMENT_DESIGNERS));
