@@ -100,7 +100,7 @@ public class DesignersApi extends CommonController {
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "status", "gamsList", "commentList", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "gamsList", "commentList", "objectId", "objectType");
         WebUtil.printApi(response, result);
     }
 
@@ -175,7 +175,7 @@ public class DesignersApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "status", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "objectId", "objectType");
         WebUtil.printApi(response, result);
     }
 

@@ -149,7 +149,7 @@ public class MallApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");
         WebUtil.printApi(response, result);
     }
 
@@ -182,7 +182,7 @@ public class MallApi extends CommonController {
         products.setSortName(products.getSort().getName());
 
         Result obj = new Result(true).data(createMap("productInfo", products));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");
         WebUtil.printApi(response, result);
     }
 
@@ -240,7 +240,7 @@ public class MallApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");
         WebUtil.printApi(response, result);
     }
 
@@ -290,7 +290,7 @@ public class MallApi extends CommonController {
         packages.setProductsList(productList);
 
         Result obj = new Result(true).data(createMap("packageInfo", packages));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");
         WebUtil.printApi(response, result);
     }
 }

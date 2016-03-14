@@ -70,7 +70,7 @@ public class AfflatusApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "status", "coverId", "gamsList", "loveList", "commentList");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "gamsList", "loveList", "commentList");
         WebUtil.printApi(response, result);
     }
 
@@ -110,7 +110,7 @@ public class AfflatusApi extends CommonController {
         afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "status", "coverId", "city", "objectId", "objectType", "password");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password");
         WebUtil.printApi(response, result);
     }
 }

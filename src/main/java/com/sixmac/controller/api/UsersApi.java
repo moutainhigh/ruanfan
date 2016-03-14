@@ -144,7 +144,7 @@ public class UsersApi extends CommonController {
         users.setCityId(1);
 
         Result obj = new Result(true).data(createMap("userInfo", users));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
         WebUtil.printApi(response, result);
     }
 
@@ -178,7 +178,7 @@ public class UsersApi extends CommonController {
         users.setCityId(users.getCity().getId());
 
         Result obj = new Result(true).data(createMap("userInfo", users));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
         WebUtil.printApi(response, result);
     }
 
@@ -212,7 +212,7 @@ public class UsersApi extends CommonController {
         users.setCityId(users.getCity().getId());
 
         Result obj = new Result(true).data(createMap("userInfo", users));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
         WebUtil.printApi(response, result);
     }
 
@@ -240,7 +240,7 @@ public class UsersApi extends CommonController {
         users.setCityId(users.getCity().getId());
 
         Result obj = new Result(true).data(createMap("userInfo", users));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
         WebUtil.printApi(response, result);
     }
 
@@ -267,7 +267,7 @@ public class UsersApi extends CommonController {
         users.setCityId(users.getCity().getId());
 
         Result obj = new Result(true).data(createMap("userInfo", users));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type", "status");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
         WebUtil.printApi(response, result);
     }
 
@@ -409,7 +409,7 @@ public class UsersApi extends CommonController {
         Map<String, Object> dataMap = APIFactory.fittingPlus(page, list);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "status");
+        String result = JsonUtil.obj2ApiJson(obj);
         WebUtil.printApi(response, result);
     }
 

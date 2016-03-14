@@ -109,6 +109,32 @@ public class AfflatusController extends CommonController {
         return "新增灵感集";
     }
 
+    @RequestMapping("show")
+    public String show(ModelMap model, Integer id) {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = null;
+
+        // 如果id不为空，则该操作是编辑，否则是新增
+        Afflatus afflatus = afflatusService.getById(id);
+        model.addAttribute("afflatus", afflatus);
+
+        // 如果灵感集不为空，则查询对应的图片集合
+        if (null != afflatus) {
+            List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
+            for (Image image : imageList) {
+                map = new HashMap<String, Object>();
+                map.put("id", image.getId());
+                map.put("path", image.getPath());
+
+                list.add(map);
+            }
+        }
+
+        model.addAttribute("imageList", JSONArray.fromObject(list));
+
+        return "灵感集详情";
+    }
+
     /**
      * 保存灵感集
      *

@@ -254,7 +254,7 @@
                             $('td', row).last().find(".checkno").css("display", '');
                         }
 
-                        $('td', row).last().find(".edit").attr("href", 'afflatus/add?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'afflatus/show?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 转化为虚拟体验
