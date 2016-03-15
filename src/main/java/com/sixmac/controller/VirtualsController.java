@@ -103,13 +103,19 @@ public class VirtualsController extends CommonController {
     @ResponseBody
     public Integer save(ServletRequest request, Integer id, Integer styleId, Integer typeId, String name, String labels, String url, MultipartRequest multipartRequest) {
         try {
-            Virtuals virtuals = new Virtuals();
+            Virtuals virtuals = null;
+
+            if (null != id) {
+                virtuals = virtualsService.getById(id);
+            } else {
+                virtuals = new Virtuals();
+            }
+
             virtuals.setStyle(stylesService.getById(styleId));
             virtuals.setType(vrtypeService.getById(typeId));
             virtuals.setName(name);
             virtuals.setLabels(labels);
             virtuals.setUrl(url);
-            virtuals.setCreateTime(new Date());
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
@@ -118,9 +124,9 @@ public class VirtualsController extends CommonController {
             }
 
             if (null != id) {
-                virtuals.setId(id);
                 virtualsService.update(virtuals);
             } else {
+                virtuals.setCreateTime(new Date());
                 virtualsService.create(virtuals);
             }
 

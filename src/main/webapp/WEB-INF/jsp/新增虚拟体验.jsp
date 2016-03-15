@@ -75,7 +75,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">链接:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="url" name="url" maxlength="500" value="${virtuals.url}" placeholder="请输入链接地址"/>
+                                    <input type="text" class="form-control" id="url" name="url" maxlength="200" data-rule="required" value="${virtuals.url}" placeholder="请输入链接地址"/>
                                 </div>
                             </div>
 
