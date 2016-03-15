@@ -167,7 +167,7 @@ public class UsersApi extends CommonController {
         Users users = usersService.iLogin(mobile, password);
 
         if (null == users) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
             return;
         }
 
@@ -207,7 +207,7 @@ public class UsersApi extends CommonController {
         Users users = usersService.iTLogin(type, openId, head, nickname);
 
         if (null == users) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
             return;
         }
 
@@ -234,7 +234,7 @@ public class UsersApi extends CommonController {
         }
 
         // 检测验证码
-        checkCode(response, mobile, code, codeType);
+        // checkCode(response, mobile, code, codeType);
 
         // 根据手机号获取用户信息，并返回该用户的信息
         Users users = usersService.iFindOneByMobile(mobile);
@@ -262,7 +262,7 @@ public class UsersApi extends CommonController {
         Users users = usersService.getById(userId);
 
         if (null == users) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
             return;
         }
 
@@ -305,7 +305,7 @@ public class UsersApi extends CommonController {
         Users users = usersService.getById(userId);
 
         if (null == users) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
             return;
         }
 
@@ -499,14 +499,14 @@ public class UsersApi extends CommonController {
         }
 
         if (flag == false) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0004));
             return;
         } else if (!tempCodeVo.getType().equals(type)) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0005));
             return;
         } else if (DateUtils.secondCompare(tempCodeVo.getCreateTime(), 600)) {
             // 如果存在，则检测是否超时，如果超时，返回错误信息
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0004));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0014));
             return;
         }
 

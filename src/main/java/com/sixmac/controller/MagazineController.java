@@ -10,6 +10,7 @@ import com.sixmac.service.ImageService;
 import com.sixmac.service.MagazineService;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.WebUtil;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/3/15 0015.
@@ -44,6 +44,7 @@ public class MagazineController extends CommonController {
 
     @RequestMapping("/list")
     public void list(HttpServletResponse response,
+                     String name,
                      Integer month,
                      Integer draw,
                      Integer start,
@@ -52,18 +53,35 @@ public class MagazineController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Magazine> page = magazineService.iPage(month, pageNum, length);
+        Page<Magazine> page = magazineService.page(name, month, pageNum, length);
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
 
     @RequestMapping("add")
     public String add(ModelMap model, Integer id) {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = null;
+
         // 如果id不为空，则该操作是编辑，否则是新增
         if (null != id) {
             Magazine magazine = magazineService.getById(id);
             model.addAttribute("magazine", magazine);
+
+            // 如果杂志不为空，则查询对应的图片集合
+            if (null != magazine) {
+                List<Image> imageList = imageService.iFindList(magazine.getId(), Constant.IMAGE_MAGAZINE);
+                for (Image image : imageList) {
+                    map = new HashMap<String, Object>();
+                    map.put("id", image.getId());
+                    map.put("path", image.getPath());
+
+                    list.add(map);
+                }
+            }
         }
+
+        model.addAttribute("imageList", JSONArray.fromObject(list));
 
         return "杂志详情";
     }
@@ -98,7 +116,7 @@ public class MagazineController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, Integer month, String name, String tempAddImages, MultipartRequest multipartRequest) {
+    public Integer save(ServletRequest request, Integer id, Integer month, String name, String tempAddImages, String tempDelImages, MultipartRequest multipartRequest) {
         try {
             Magazine magazine = null;
 
@@ -124,9 +142,6 @@ public class MagazineController extends CommonController {
                 magazineService.create(magazine);
             }
 
-            // 清除已删除的图片信息
-            imageService.deleteInfo(magazine.getId(), Constant.IMAGE_MAGAZINE);
-
             // 保存关联图片信息
             String[] strings = tempAddImages.split(",");
             Image image = null;
@@ -138,6 +153,14 @@ public class MagazineController extends CommonController {
                     image.setObjectType(Constant.IMAGE_MAGAZINE);
 
                     imageService.update(image);
+                }
+            }
+
+            // 删除用户清除的图片信息
+            String[] delStrings = tempDelImages.split(",");
+            for (String str : delStrings) {
+                if (null != str && !str.equals("")) {
+                    imageService.deleteById(Integer.parseInt(str));
                 }
             }
 

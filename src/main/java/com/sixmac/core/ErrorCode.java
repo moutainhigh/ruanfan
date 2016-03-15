@@ -43,4 +43,10 @@ public class ErrorCode {
 
     // 用户被禁用，无法登录
     public static final String ERROR_CODE_0013 = "error_0013";
+
+    // 用户被禁用，无法登录
+    public static final String ERROR_CODE_0014 = "error_0014";
+
+    // 用户不存在
+    public static final String ERROR_CODE_0015 = "error_0015";
 }

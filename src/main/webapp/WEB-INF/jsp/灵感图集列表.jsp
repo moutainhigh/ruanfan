@@ -71,12 +71,9 @@
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
-                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/>
-                                    </th>
                                     <th>名称</th>
                                     <th>类型</th>
                                     <th>状态</th>
@@ -198,7 +195,6 @@
                         "type": "POST"
                     },
                     "columns": [
-                        {"data": "id"},
                         {"data": "name"},
                         {"data": "type"},
                         {"data": "status"},
@@ -230,20 +226,19 @@
                     ],
                     "createdRow": function (row, data, index) {
                         afflatusList.v.list.push(data);
-                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
                         if (data.type == 1) {
-                            $('td', row).eq(2).html("单图");
+                            $('td', row).eq(1).html("单图");
                         } else {
-                            $('td', row).eq(2).html("套图");
+                            $('td', row).eq(1).html("套图");
                         }
 
                         if (data.status == 0) {
-                            $('td', row).eq(3).html("待审核");
+                            $('td', row).eq(2).html("待审核");
                         } else if (data.status == 1) {
-                            $('td', row).eq(3).html("审核成功");
+                            $('td', row).eq(2).html("审核成功");
                         } else {
-                            $('td', row).eq(3).html("审核失败");
+                            $('td', row).eq(2).html("审核失败");
                         }
                     },
                     rowCallback: function (row, data) {

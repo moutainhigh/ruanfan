@@ -27,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="virtuals/add" class="btn btn-outline btn-primary btn-lg" role="button">新增杂志</a>
+                        <a href="magazine/add" class="btn btn-outline btn-primary btn-lg" role="button">新增杂志</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -171,8 +171,12 @@
                     ],
                     "createdRow": function (row, data, index) {
                         magazineList.v.list.push(data);
-                        $('td', row).eq(0).html("<img src='" + data.cover + "' width='200px' height='200px' />");
+                        $('td', row).eq(0).html("<img src='" + data.cover + "' width='180px' height='180px' />");
                         $('td', row).eq(2).html(data.month + "月");
+                        $('td', row).eq(0).css('line-height', '200px');
+                        $('td', row).eq(1).css('line-height', '200px');
+                        $('td', row).eq(2).css('line-height', '200px');
+                        $('td', row).eq(3).css('line-height', '200px');
                     },
                     rowCallback: function (row, data) {
                         var items = magazineList.v.list;
@@ -185,9 +189,8 @@
                         });
                     },
                     "fnServerParams": function (aoData) {
-                        aoData.name = $("#virtualsName").val();
-                        aoData.typeId = $("#typeList option:selected").val();
-                        aoData.styleId = $("#styleList option:selected").val();
+                        aoData.name = $("#magazineName").val();
+                        aoData.month = $("#monthList option:selected").val();
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();

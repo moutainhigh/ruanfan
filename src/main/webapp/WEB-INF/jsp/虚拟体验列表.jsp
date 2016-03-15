@@ -57,11 +57,11 @@
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
-                                    <col class="gradeA odd"/>
+                                    <%--<col class="gradeA odd"/>--%>
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
+                                    <%--<th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>--%>
                                     <th>名称</th>
                                     <th>提交时间</th>
                                     <th>区域</th>
@@ -146,7 +146,7 @@
                         "type": "POST"
                     },
                     "columns": [
-                        {"data": "id"},
+                        /*{"data": "id"},*/
                         {"data": "name"},
                         {"data": "createTime"},
                         {"data": "type.name"},
@@ -168,7 +168,7 @@
                     ],
                     "createdRow": function (row, data, index) {
                         virtualsList.v.list.push(data);
-                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
+                        /*$('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");*/
                     },
                     rowCallback: function (row, data) {
                         var items = virtualsList.v.list;

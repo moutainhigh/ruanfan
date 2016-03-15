@@ -133,7 +133,9 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users iLogin(String mobile, String password) {
         Users users = usersDao.iLogin(mobile, password);
-        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
+        if (null != users) {
+            users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
+        }
         return users;
     }
 

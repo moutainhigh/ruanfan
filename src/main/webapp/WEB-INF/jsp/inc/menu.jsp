@@ -56,7 +56,7 @@
                         <a href="virtuals/index"><i class="fa fa-cart-plus fa-fw"></i>虚拟体验</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>杂志列表</a>
+                        <a href="magazine/index"><i class="fa fa-map-marker fa-fw"></i>杂志列表</a>
                     </li>
                 </ul>
             </li>
