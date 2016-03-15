@@ -23,6 +23,10 @@ public interface Constant {
 
     String MEMBER_TYPE_BUSINESS = "BUSINESS";
 
+    // 点赞状态
+    Integer GAM_LOVE_YES = 0;  // 已赞
+    Integer GAM_LOVE_NO = 1;   // 未赞
+
     // 排序方式
     Integer SORT_TYPE_ASC = 1;   // 正序
     Integer SORT_TYPE_DESC = 2;  // 倒序

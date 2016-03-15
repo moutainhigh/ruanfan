@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.CommentDao;
 import com.sixmac.entity.Comment;
 import com.sixmac.service.CommentService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,6 +70,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> iFindList(Integer objectId, Integer objectType) {
-        return commentDao.iFindList(objectId, objectType);
+        List<Comment> list = commentDao.iFindList(objectId, objectType);
+
+        for (Comment comment : list) {
+            comment.getUser().setHeadPath(PathUtils.getRemotePath() + comment.getUser().getHeadPath());
+        }
+
+        return list;
     }
 }

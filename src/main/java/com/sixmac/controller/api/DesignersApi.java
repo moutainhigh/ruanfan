@@ -5,15 +5,9 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Attentions;
-import com.sixmac.entity.Designers;
-import com.sixmac.entity.Reserve;
-import com.sixmac.entity.Works;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
-import com.sixmac.utils.APIFactory;
-import com.sixmac.utils.DateUtils;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -23,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,6 +79,7 @@ public class DesignersApi extends CommonController {
         for (Designers designer : page.getContent()) {
             // 设置设计师所属城市id
             designer.setCityId(designer.getCity().getId());
+            designer.setHead(PathUtils.getRemotePath() + designer.getHead());
 
             // 获取每个独立设计师的最新三张作品图片
             if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
@@ -100,7 +96,7 @@ public class DesignersApi extends CommonController {
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "gamsList", "commentList", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "gamsList", "commentList", "objectId", "objectType", "isGam", "gamNum", "commentNum");
         WebUtil.printApi(response, result);
     }
 
@@ -125,7 +121,7 @@ public class DesignersApi extends CommonController {
         Page<Works> page = designersService.iPageWorks(designerId, pageNum, pageSize);
 
         for (Works work : page.getContent()) {
-            work.setCover(imageService.getById(work.getCoverId()).getPath());
+            work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
         }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
@@ -140,10 +136,12 @@ public class DesignersApi extends CommonController {
      *
      * @param response
      * @param designerId
+     * @param userId
      */
     @RequestMapping("info")
     public void designerInfo(HttpServletResponse response,
-                             Integer designerId) {
+                             Integer designerId,
+                             Integer userId) {
         if (null == designerId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -156,6 +154,7 @@ public class DesignersApi extends CommonController {
         }
 
         designers.setCityId(designers.getCity().getId());
+        designers.setHead(PathUtils.getRemotePath() + designers.getHead());
 
         // 获取粉丝数
         designers.setFansNum(attentionsService.iFindList(designerId, Constant.ATTENTION_DESIGNERS).size());
@@ -166,8 +165,24 @@ public class DesignersApi extends CommonController {
         // 查询评论列表
         designers.setCommentList(commentService.iFindList(designerId, Constant.COMMENT_DESIGNERS));
 
+        // 设置评论数
+        designers.setCommentNum(designers.getCommentList().size());
+
         // 查询点赞列表
         designers.setGamsList(gamsService.iFindList(designerId, Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
+
+        // 设置点赞数
+        designers.setGamNum(designers.getGamsList().size());
+
+        // 如果userId不为空时，查询是否点赞过
+        if (null != userId) {
+            Gams gams = gamsService.iFindOne(userId, designerId, Constant.GAM_DESIGNERS, Constant.GAM_LOVE);
+            if (null != gams) {
+                designers.setIsGam(Constant.GAM_LOVE_YES);
+            } else {
+                designers.setIsGam(Constant.GAM_LOVE_YES);
+            }
+        }
 
         // 获取每个独立设计师的最新三张作品图片
         if (designers.getType() == Constant.DESIGNER_TYPE_ONE) {
@@ -175,7 +190,7 @@ public class DesignersApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "objectId", "objectType", "gamsList");
         WebUtil.printApi(response, result);
     }
 

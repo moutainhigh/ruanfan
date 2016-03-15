@@ -4,6 +4,7 @@ package com.sixmac.service.impl;
 import com.sixmac.dao.ImageDao;
 import com.sixmac.entity.Image;
 import com.sixmac.service.ImageService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,21 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> iFindList(Integer objectId, Integer objectType) {
-        return imageDao.iFindList(objectId, objectType);
+        List<Image> list = imageDao.iFindList(objectId, objectType);
+
+        for (Image image : list) {
+            image.setPath(PathUtils.getRemotePath() + image.getPath());
+        }
+
+        return list;
+    }
+
+    @Override
+    @Transactional
+    public void deleteInfo(Integer objectId, Integer objectType) {
+        List<Image> list = imageDao.iFindList(objectId, objectType);
+        for (Image image : list) {
+            imageDao.delete(image);
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.sixmac.dao.WorksDao;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Works;
 import com.sixmac.service.WorksService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,6 +96,7 @@ public class WorksServiceImpl implements WorksService {
             // 读取作品信息，并根据作品信息获取对应的图片信息
             for (Works work : tempList) {
                 image = imageDao.findOne(work.getCoverId());
+                image.setPath(PathUtils.getRemotePath() + image.getPath());
                 imageList.add(image);
             }
 

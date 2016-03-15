@@ -7,6 +7,7 @@ import com.sixmac.entity.Usercoupon;
 import com.sixmac.entity.Users;
 import com.sixmac.entity.Usersother;
 import com.sixmac.service.UsersService;
+import com.sixmac.utils.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -131,7 +132,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users iLogin(String mobile, String password) {
-        return usersDao.iLogin(mobile, password);
+        Users users = usersDao.iLogin(mobile, password);
+        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
+        return users;
     }
 
     @Override
@@ -163,6 +166,9 @@ public class UsersServiceImpl implements UsersService {
         } else {
             users = usersother.getUser();
         }
+
+        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
+
         return users;
     }
 
@@ -201,6 +207,8 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users iFindOneByMobile(String mobile) {
-        return usersDao.iFindOneByMobile(mobile);
+        Users users = usersDao.iFindOneByMobile(mobile);
+        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
+        return users;
     }
 }

@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.GamsDao;
 import com.sixmac.entity.Gams;
 import com.sixmac.service.GamsService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,10 +70,24 @@ public class GamsServiceImpl implements GamsService {
 
     @Override
     public List<Gams> iFindList(Integer objectId, Integer objectType, Integer type, Integer sort) {
+        List<Gams> list = null;
         if (sort == Constant.SORT_TYPE_ASC) {
-            return gamsDao.iFindListASC(objectId, objectType, type);
+            list = gamsDao.iFindListASC(objectId, objectType, type);
         } else {
-            return gamsDao.iFindListDESC(objectId, objectType, type);
+            list = gamsDao.iFindListDESC(objectId, objectType, type);
         }
+
+        for (Gams gams : list) {
+            gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
+        }
+
+        return list;
+    }
+
+    @Override
+    public Gams iFindOne(Integer userId, Integer objectId, Integer objectType, Integer type) {
+        Gams gams = gamsDao.iFindOne(userId, objectId, objectType, type);
+        gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
+        return gams;
     }
 }

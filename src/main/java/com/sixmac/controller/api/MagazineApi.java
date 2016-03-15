@@ -8,6 +8,7 @@ import com.sixmac.service.ImageService;
 import com.sixmac.service.MagazineService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -73,6 +74,8 @@ public class MagazineApi {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
+
+        magazine.setCover(PathUtils.getRemotePath() + magazine.getCover());
 
         // 查询杂志对应的图片集合
         magazine.setImageList(imageService.iFindList(magazineId, Constant.IMAGE_MAGAZINE));

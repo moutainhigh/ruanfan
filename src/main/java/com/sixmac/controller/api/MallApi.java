@@ -7,6 +7,7 @@ import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,6 +50,10 @@ public class MallApi extends CommonController {
     public void bannerList(HttpServletResponse response) {
         List<Banner> list = bannerService.findAll();
 
+        for (Banner banner : list) {
+            banner.setCover(PathUtils.getRemotePath() + banner.getCover());
+        }
+
         WebUtil.printApi(response, new Result(true).data(list));
     }
 
@@ -71,7 +76,7 @@ public class MallApi extends CommonController {
         Page<Spikes> page = spikesService.find(pageNum, pageSize);
 
         for (Spikes spikes : page.getContent()) {
-            spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
+            spikes.setCover(PathUtils.getRemotePath() + imageService.getById(spikes.getCoverId()).getPath());
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
@@ -101,7 +106,7 @@ public class MallApi extends CommonController {
             return;
         }
 
-        spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
+        spikes.setCover(PathUtils.getRemotePath() + imageService.getById(spikes.getCoverId()).getPath());
 
         Result obj = new Result(true).data(spikes);
         String result = JsonUtil.obj2ApiJson(obj, "coverId");
@@ -137,7 +142,7 @@ public class MallApi extends CommonController {
         Page<Products> page = productsService.iPage(type, name, brandId, sortId, isHot, pageNum, pageSize);
 
         for (Products products : page.getContent()) {
-            products.setCover(imageService.getById(products.getCoverId()).getPath());
+            products.setCover(PathUtils.getRemotePath() + imageService.getById(products.getCoverId()).getPath());
             products.setMerchantId(products.getMerchant().getId());
             products.setMerchantName(products.getMerchant().getNickName());
             products.setBrandId(products.getBrand().getId());
@@ -173,7 +178,7 @@ public class MallApi extends CommonController {
             return;
         }
 
-        products.setCover(imageService.getById(products.getCoverId()).getPath());
+        products.setCover(PathUtils.getRemotePath() + imageService.getById(products.getCoverId()).getPath());
         products.setMerchantId(products.getMerchant().getId());
         products.setMerchantName(products.getMerchant().getNickName());
         products.setBrandId(products.getBrand().getId());
@@ -212,7 +217,7 @@ public class MallApi extends CommonController {
 
         for (Packages packages : page.getContent()) {
             // 设置封面图路径和品牌信息
-            packages.setCover(imageService.getById(packages.getCoverId()).getPath());
+            packages.setCover(PathUtils.getRemotePath() + imageService.getById(packages.getCoverId()).getPath());
             packages.setBrandId(packages.getBrand().getId());
             packages.setBrandName(packages.getBrand().getName());
 
@@ -223,7 +228,7 @@ public class MallApi extends CommonController {
             }
 
             for (Products product : productList) {
-                product.setCover(imageService.getById(product.getCoverId()).getPath());
+                product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
                 product.setMerchantId(product.getMerchant().getId());
                 product.setMerchantName(product.getMerchant().getNickName());
                 product.setBrandId(product.getBrand().getId());
@@ -265,7 +270,7 @@ public class MallApi extends CommonController {
         }
 
         // 设置封面图路径和品牌信息
-        packages.setCover(imageService.getById(packages.getCoverId()).getPath());
+        packages.setCover(PathUtils.getRemotePath() + imageService.getById(packages.getCoverId()).getPath());
         packages.setBrandId(packages.getBrand().getId());
         packages.setBrandName(packages.getBrand().getName());
 
@@ -278,7 +283,7 @@ public class MallApi extends CommonController {
         }
 
         for (Products product : productList) {
-            product.setCover(imageService.getById(product.getCoverId()).getPath());
+            product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
             product.setMerchantId(product.getMerchant().getId());
             product.setMerchantName(product.getMerchant().getNickName());
             product.setBrandId(product.getBrand().getId());

@@ -66,7 +66,10 @@ public class OrdersApi {
         Page<Orders> page = ordersService.iPage(userId, pageNum, pageSize);
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
-        WebUtil.printApi(response, new Result(true).data(dataMap));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "user");
+        WebUtil.printApi(response, result);
     }
 
     /**

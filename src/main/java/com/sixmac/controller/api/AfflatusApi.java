@@ -10,6 +10,7 @@ import com.sixmac.entity.Collect;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,7 +65,7 @@ public class AfflatusApi extends CommonController {
         Page<Afflatus> page = afflatusService.iPage(type, styleId, areaId, pageNum, pageSize);
 
         for (Afflatus afflatus : page.getContent()) {
-            afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
+            afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
@@ -107,7 +108,7 @@ public class AfflatusApi extends CommonController {
         afflatus.setShowNum(afflatus.getShowNum() + 1);
         afflatusService.update(afflatus);
 
-        afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
+        afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
         String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password");

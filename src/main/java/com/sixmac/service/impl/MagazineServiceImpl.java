@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.MagazineDao;
 import com.sixmac.entity.Magazine;
 import com.sixmac.service.MagazineService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -94,6 +95,10 @@ public class MagazineServiceImpl implements MagazineService {
             }
 
         }, pageRequest);
+
+        for (Magazine magazine : page.getContent()) {
+            magazine.setCover(PathUtils.getRemotePath() + magazine.getCover());
+        }
 
         return page;
     }

@@ -11,10 +11,7 @@ import com.sixmac.service.GamsService;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.JournalService;
 import com.sixmac.service.UsersService;
-import com.sixmac.utils.APIFactory;
-import com.sixmac.utils.ImageUtil;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -88,6 +85,7 @@ public class JournalApi extends CommonController {
         }
 
         Journal journal = journalService.getById(journalId);
+        journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
 
         if (null == journal) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));

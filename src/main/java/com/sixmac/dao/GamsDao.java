@@ -16,4 +16,7 @@ public interface GamsDao extends JpaRepository<Gams, Integer> {
 
     @Query("select a from Gams a where a.objectId = ?1 and a.objectType = ?2 and a.type = ?3 order by a.id desc")
     public List<Gams> iFindListDESC(Integer objectId, Integer objectType, Integer type);
+
+    @Query("select a from Gams a where a.user.id = ?1 and a.objectId = ?2 and a.objectType = ?3 and a.type = ?4")
+    public Gams iFindOne(Integer userId, Integer objectId, Integer objectType, Integer type);
 }

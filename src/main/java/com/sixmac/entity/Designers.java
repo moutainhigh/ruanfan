@@ -31,6 +31,9 @@ public class Designers {
     private List<Image> imageList;
     private Integer fansNum;
     private Integer reserveNum;
+    private Integer gamNum;
+    private Integer commentNum;
+    private Integer isGam;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -210,5 +213,32 @@ public class Designers {
 
     public void setReserveNum(Integer reserveNum) {
         this.reserveNum = reserveNum;
+    }
+
+    @Transient
+    public Integer getGamNum() {
+        return gamNum;
+    }
+
+    public void setGamNum(Integer gamNum) {
+        this.gamNum = gamNum;
+    }
+
+    @Transient
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
+
+    @Transient
+    public Integer getIsGam() {
+        return isGam;
+    }
+
+    public void setIsGam(Integer isGam) {
+        this.isGam = isGam;
     }
 }
