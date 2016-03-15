@@ -2,8 +2,8 @@ package com.sixmac.controller;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
-import com.sixmac.entity.Producttype;
-import com.sixmac.service.ProducttypeService;
+import com.sixmac.entity.Brand;
+import com.sixmac.service.BrandService;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +24,15 @@ import java.util.Map;
  * Created by Administrator on 2016/3/15 0015.
  */
 @Controller
-@RequestMapping(value = "productType")
-public class ProductTypeController extends CommonController {
+@RequestMapping(value = "brand")
+public class BrandController extends CommonController {
 
     @Autowired
-    private ProducttypeService producttypeService;
+    private BrandService brandService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
-        return "商品种类";
+        return "品牌分类";
     }
 
     @RequestMapping("/list")
@@ -44,11 +44,11 @@ public class ProductTypeController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Producttype> page = producttypeService.find(pageNum, length);
+        Page<Brand> page = brandService.find(pageNum, length);
 
-        // 循环查找每个商品分类的关联商品数量
-        for (Producttype proType : page.getContent()) {
-            proType.setProductNum(producttypeService.findProductListByProductTypeId(proType.getId()).size());
+        // 循环查找每个品牌的关联商品数量
+        for (Brand brand : page.getContent()) {
+            brand.setProductNum(brandService.findProductListByBrandId(brand.getId()).size());
         }
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
@@ -56,16 +56,16 @@ public class ProductTypeController extends CommonController {
     }
 
     /**
-     * 删除商品种类
+     * 删除品牌分类
      *
-     * @param productTypeId
+     * @param brandId
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer productTypeId) {
+    public Integer delete(Integer brandId) {
         try {
-            producttypeService.deleteById(productTypeId);
+            brandService.deleteById(brandId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class ProductTypeController extends CommonController {
     }
 
     /**
-     * 新增商品种类
+     * 新增品牌分类
      *
      * @param request
      * @param id
@@ -86,27 +86,27 @@ public class ProductTypeController extends CommonController {
     @ResponseBody
     public Integer save(ServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
         try {
-            Producttype producttype = null;
+            Brand brand = null;
 
             if (null != id) {
-                producttype = producttypeService.getById(id);
+                brand = brandService.getById(id);
             } else {
-                producttype = new Producttype();
+                brand = new Brand();
             }
 
-            producttype.setName(name);
-            producttype.setUpdateTime(new Date());
+            brand.setName(name);
+            brand.setUpdateTime(new Date());
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
                 Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                producttype.setUrl(map.get("imgURL").toString());
+                brand.setCover(map.get("imgURL").toString());
             }
 
             if (null != id) {
-                producttypeService.update(producttype);
+                brandService.update(brand);
             } else {
-                producttypeService.create(producttype);
+                brandService.create(brand);
             }
 
             return 1;

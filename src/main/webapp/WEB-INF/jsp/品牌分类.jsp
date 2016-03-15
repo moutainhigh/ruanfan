@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>商品种类</title>
+    <title>品牌分类</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 
@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">商品种类</h1>
+                <h1 class="page-header">品牌分类</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -27,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="javascript:void(0)" class="btn btn-outline btn-primary btn-lg" role="button" onclick="productTypeList.fn.addInfo()">新增分类</a>
+                        <a href="javascript:void(0)" class="btn btn-outline btn-primary btn-lg" role="button" onclick="brandList.fn.addInfo()">新增品牌</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -77,19 +77,19 @@
                     <h4 class="modal-title">分类信息</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="infoForm" method="post" action="productType/save" class="form-horizontal" role="form">
-                        <input type="hidden" id="hiddenProductTypeId" name="productTypeId"/>
+                    <form id="infoForm" method="post" action="brand/save" class="form-horizontal" role="form">
+                        <input type="hidden" id="hiddenbrandId" name="brandId"/>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">分类名称:</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" id="productTypeName" maxlength="20" placeholder="请输入分类名称"/>
+                                <input type="text" class="form-control" id="brandName" maxlength="20" placeholder="请输入分类名称"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">图标:</label>
                             <div class="col-sm-5">
                                 <input type="file" name="mainImage" id="mainImage" style="display:none;"/>
-                                <a href="javascript:void(0);" onclick="productTypeList.fn.AddImg()">
+                                <a href="javascript:void(0);" onclick="brandList.fn.AddImg()">
                                     <img id="mainPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
                                 </a>
                             </div>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" onclick="productTypeList.fn.subInfo()" class="btn btn-primary">确定</button>
+                    <button type="button" onclick="brandList.fn.subInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -116,12 +116,12 @@
                     <h4 class="modal-title">删除提示</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="productTypeId"/>
-                    确定删除该商品种类？
+                    <input type="hidden" id="brandId"/>
+                    确定删除该品牌分类？
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" onclick="productTypeList.fn.subDelInfo()" class="btn btn-primary">确定</button>
+                    <button type="button" onclick="brandList.fn.subDelInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -138,15 +138,15 @@
 
 <script type="text/javascript">
 
-    var productTypeList = {
+    var brandList = {
         v: {
-            id: "productTypeList",
+            id: "brandList",
             list: [],
             dTable: null
         },
         fn: {
             init: function () {
-                productTypeList.fn.dataTableInit();
+                brandList.fn.dataTableInit();
 
                 //套图主图预览
                 $("#mainImage").uploadPreview({
@@ -156,13 +156,13 @@
                 });
             },
             dataTableInit: function () {
-                productTypeList.v.dTable = $sixmac.dataTable($('#dataTables'), {
+                brandList.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching": false,
                     "ordering": false,
                     "ajax": {
-                        "url": "productType/list",
+                        "url": "brand/list",
                         "type": "POST"
                     },
                     "columns": [
@@ -186,9 +186,9 @@
                         }
                     ],
                     "createdRow": function (row, data, index) {
-                        productTypeList.v.list.push(data);
-                        if (null != data.url && data.url != '') {
-                            $('td', row).eq(2).html("<img src='" + data.url + "' width='60px' height='60px' />");
+                        brandList.v.list.push(data);
+                        if (null != data.cover && data.cover != '') {
+                            $('td', row).eq(2).html("<img src='" + data.cover + "' width='60px' height='60px' />");
                         } else {
                             $('td', row).eq(2).html("暂无");
                         }
@@ -199,11 +199,11 @@
                         $('td', row).eq(4).css('line-height', '65px');
                     },
                     rowCallback: function (row, data) {
-                        var items = productTypeList.v.list;
+                        var items = brandList.v.list;
 
                         $('td', row).last().find(".edit").click(function () {
                             // 编辑
-                            productTypeList.fn.editInfo(data);
+                            brandList.fn.editInfo(data);
                         });
 
                         $('td', row).last().find(".delete").click(function () {
@@ -211,7 +211,7 @@
                             if (data.productNum > 0) {
                                 $sixmac.notify("该分类有关联商品，无法删除", "error");
                             } else {
-                                productTypeList.fn.delInfo(data.id);
+                                brandList.fn.delInfo(data.id);
                             }
                         });
                     },
@@ -231,9 +231,9 @@
                 $("#infoModal").modal("show");
             },
             editInfo: function (data) {
-                $('#hiddenProductTypeId').val(data.id);
-                $('#productTypeName').val(data.name);
-                $('#mainPicture').prop('src', data.url);
+                $('#hiddenbrandId').val(data.id);
+                $('#brandName').val(data.name);
+                $('#mainPicture').prop('src', data.cover);
 
                 $("#infoModal").modal("show");
             },
@@ -242,19 +242,19 @@
                 $('#mainImage').click();
             },
             delInfo: function (id) {
-                $('#productTypeId').val(id);
+                $('#brandId').val(id);
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
-                var productTypeId = $('#productTypeId').val();
+                var brandId = $('#brandId').val();
 
-                $sixmac.ajax("productType/delete", {
-                    "productTypeId": productTypeId
+                $sixmac.ajax("brand/delete", {
+                    "brandId": brandId
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
                         $("#delModal").modal("hide");
-                        productTypeList.v.dTable.ajax.reload(null, false);
+                        brandList.v.dTable.ajax.reload(null, false);
                     } else {
                         $sixmac.notify("操作失败", "error");
                     }
@@ -262,8 +262,8 @@
             },
             subInfo: function () {
                 var flag = true;
-                var productTypeId = $('#hiddenProductTypeId').val();
-                var productName = $('#productTypeName').val();
+                var brandId = $('#hiddenbrandId').val();
+                var productName = $('#brandName').val();
                 var url = $('#mainImage').val();
 
                 if (null == productName || productName == '') {
@@ -281,17 +281,17 @@
                 // 所有的验证通过后，执行新增操作
                 if (flag) {
                     $("#infoForm").ajaxSubmit({
-                        url: _basePath + "productType/save",
+                        url: _basePath + "brand/save",
                         dataType: "json",
                         data: {
-                            "id": productTypeId,
+                            "id": brandId,
                             "name": productName
                         },
                         success: function (result) {
                             if (result > 0) {
                                 $sixmac.notify("操作成功", "success");
                                 $("#infoModal").modal("hide");
-                                productTypeList.v.dTable.ajax.reload(null, false);
+                                brandList.v.dTable.ajax.reload(null, false);
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }
@@ -303,7 +303,7 @@
     }
 
     $(document).ready(function () {
-        productTypeList.fn.init();
+        brandList.fn.init();
     });
 
 </script>

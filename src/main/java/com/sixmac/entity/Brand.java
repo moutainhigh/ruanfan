@@ -13,6 +13,7 @@ public class Brand {
     private String name;
     private String cover;
     private Date updateTime;
+    private Integer productNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -46,5 +47,14 @@ public class Brand {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Transient
+    public Integer getProductNum() {
+        return productNum;
+    }
+
+    public void setProductNum(Integer productNum) {
+        this.productNum = productNum;
     }
 }
