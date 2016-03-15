@@ -40,6 +40,12 @@ public class AfflatusApi extends CommonController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private CollectService collectService;
+
+    @Autowired
+    private ReserveService reserveService;
+
     /**
      * 灵感集列表
      *
@@ -66,6 +72,13 @@ public class AfflatusApi extends CommonController {
 
         for (Afflatus afflatus : page.getContent()) {
             afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+
+            // 分享、收藏、点赞、预约数
+            afflatus.setCollectNum(collectService.iFindList(afflatus.getId(), Constant.COLLECT_AFFLATUS).size());
+
+            afflatus.setGamNum(gamsService.iFindList(afflatus.getId(), Constant.GAM_AFFLATUS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+
+            afflatus.setReserveNum(reserveService.iFindListByDesignerId(afflatus.getDesigner().getId()).size());
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
@@ -94,6 +107,13 @@ public class AfflatusApi extends CommonController {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
+
+        // 分享、收藏、点赞、预约数
+        afflatus.setCollectNum(collectService.iFindList(afflatus.getId(), Constant.COLLECT_AFFLATUS).size());
+
+        afflatus.setGamNum(gamsService.iFindList(afflatus.getId(), Constant.GAM_AFFLATUS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+
+        afflatus.setReserveNum(reserveService.iFindListByDesignerId(afflatus.getDesigner().getId()).size());
 
         // 查询评论列表
         afflatus.setCommentList(commentService.iFindList(afflatusId, Constant.COMMENT_AFFLATUS));

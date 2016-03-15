@@ -132,7 +132,7 @@ public class AfflatusServiceImpl implements AfflatusService {
             public Predicate toPredicate(Root<Afflatus> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
-                if (type != null) {
+                if (null != type) {
                     Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
                     predicateList.add(pre);
                 }

@@ -14,4 +14,7 @@ public interface CollectDao extends JpaRepository<Collect, Integer>, JpaSpecific
 
     @Query("select a from Collect a where a.user.id = ?1 and a.objectId = ?2 and a.objectType = ?3")
     public Collect iFindOne(Integer userId, Integer objectId, Integer objectType);
+
+    @Query("select a from Collect a where a.objectId = ?1 and a.objectType = ?2")
+    public List<Collect> iFindList(Integer objectId, Integer objectType);
 }

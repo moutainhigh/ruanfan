@@ -26,9 +26,12 @@ public class Afflatus {
     private List<Gams> gamsList;
     private List<Afflatus> loveList;
     private List<Comment> commentList;
+    private Integer collectNum;
+    private Integer gamNum;
+    private Integer reserveNum;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -64,7 +67,7 @@ public class Afflatus {
     }
 
     @OneToOne
-    @JoinColumn(name="styleId")
+    @JoinColumn(name = "styleId")
     public Styles getStyle() {
         return style;
     }
@@ -74,7 +77,7 @@ public class Afflatus {
     }
 
     @OneToOne
-    @JoinColumn(name="areaId")
+    @JoinColumn(name = "areaId")
     public Areas getArea() {
         return area;
     }
@@ -167,5 +170,32 @@ public class Afflatus {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    @Transient
+    public Integer getCollectNum() {
+        return collectNum;
+    }
+
+    public void setCollectNum(Integer collectNum) {
+        this.collectNum = collectNum;
+    }
+
+    @Transient
+    public Integer getGamNum() {
+        return gamNum;
+    }
+
+    public void setGamNum(Integer gamNum) {
+        this.gamNum = gamNum;
+    }
+
+    @Transient
+    public Integer getReserveNum() {
+        return reserveNum;
+    }
+
+    public void setReserveNum(Integer reserveNum) {
+        this.reserveNum = reserveNum;
     }
 }

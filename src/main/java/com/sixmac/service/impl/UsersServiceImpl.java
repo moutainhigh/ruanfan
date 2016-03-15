@@ -210,7 +210,6 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users iFindOneByMobile(String mobile) {
         Users users = usersDao.iFindOneByMobile(mobile);
-        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
         return users;
     }
 }

@@ -223,12 +223,13 @@ public class UsersApi extends CommonController {
      *
      * @param response
      * @param mobile
+     * @param password
      * @param code
      * @param codeType
      */
     @RequestMapping(value = "/forgetPwd")
-    public void forgetPwd(HttpServletResponse response, String mobile, String code, String codeType) {
-        if (null == mobile || null == code || null == codeType) {
+    public void forgetPwd(HttpServletResponse response, String mobile, String password, String code, String codeType) {
+        if (null == mobile || null == password/* || null == code || null == codeType*/) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -239,11 +240,16 @@ public class UsersApi extends CommonController {
         // 根据手机号获取用户信息，并返回该用户的信息
         Users users = usersService.iFindOneByMobile(mobile);
 
-        users.setCityId(users.getCity().getId());
+        if (null == users) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
+            return;
+        }
 
-        Result obj = new Result(true).data(createMap("userInfo", users));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
-        WebUtil.printApi(response, result);
+        users.setPassword(password);
+
+        usersService.update(users);
+
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**

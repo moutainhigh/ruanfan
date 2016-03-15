@@ -65,7 +65,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>分类管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>商品种类</a>
+                        <a href="productType/index"><i class="fa fa-plus-square fa-fw"></i>商品种类</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>品牌分类</a>

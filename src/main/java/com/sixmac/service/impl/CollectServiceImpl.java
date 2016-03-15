@@ -116,4 +116,9 @@ public class CollectServiceImpl implements CollectService {
 
         return page;
     }
+
+    @Override
+    public List<Collect> iFindList(Integer objectId, Integer objectType) {
+        return collectDao.iFindList(objectId, objectType);
+    }
 }

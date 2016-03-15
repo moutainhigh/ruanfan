@@ -99,10 +99,7 @@ public class WorksServiceImpl implements WorksService {
                 image.setPath(PathUtils.getRemotePath() + image.getPath());
                 imageList.add(image);
             }
-
-            return imageList;
-        } else {
-            return null;
         }
+        return imageList;
     }
 }

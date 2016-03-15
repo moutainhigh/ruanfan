@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,8 @@ public class DesignersApi extends CommonController {
             // 获取每个独立设计师的最新三张作品图片
             if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
                 designer.setImageList(worksService.iFindThreeNewWorksByDesignerId(designer.getId()));
+            } else {
+                designer.setImageList(new ArrayList<Image>());
             }
 
             // 获取粉丝数
@@ -187,6 +190,8 @@ public class DesignersApi extends CommonController {
         // 获取每个独立设计师的最新三张作品图片
         if (designers.getType() == Constant.DESIGNER_TYPE_ONE) {
             designers.setImageList(worksService.iFindThreeNewWorksByDesignerId(designerId));
+        } else {
+            designers.setImageList(new ArrayList<Image>());
         }
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
