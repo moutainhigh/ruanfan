@@ -7,6 +7,8 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Collect;
+import com.sixmac.entity.Image;
+import com.sixmac.entity.Label;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +50,9 @@ public class AfflatusApi extends CommonController {
     @Autowired
     private ReserveService reserveService;
 
+    @Autowired
+    private LabelService labelService;
+
     /**
      * 灵感集列表
      *
@@ -72,6 +79,8 @@ public class AfflatusApi extends CommonController {
 
         for (Afflatus afflatus : page.getContent()) {
             afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+            afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
+            afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
             // 分享、收藏、点赞、预约数
             afflatus.setCollectNum(collectService.iFindList(afflatus.getId(), Constant.COLLECT_AFFLATUS).size());
@@ -84,7 +93,7 @@ public class AfflatusApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "gamsList", "loveList", "commentList");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "gamsList", "loveList", "commentList", "labelList", "imageList");
         WebUtil.printApi(response, result);
     }
 
@@ -124,11 +133,23 @@ public class AfflatusApi extends CommonController {
         // 查询猜你所想列表
         afflatus.setLoveList(afflatusService.iFindLoveList(afflatus.getId(), afflatus.getType(), afflatus.getStyle().getId(), afflatus.getArea().getId()));
 
+        // 查询图片列表
+        List<Image> imageList = imageService.iFindList(afflatusId, Constant.IMAGE_AFFLATUS);
+
+        // 查询标签列表
+        for (Image image : imageList) {
+            image.setLabelList(labelService.findListByParams(image.getId(), Constant.LABEL_AFFLATUS));
+        }
+
+        afflatus.setImageList(imageList);
+
         // 查看详情的同时，增加浏览量
         afflatus.setShowNum(afflatus.getShowNum() + 1);
         afflatusService.update(afflatus);
 
         afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+        afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
+        afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
         String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password");

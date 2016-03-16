@@ -29,6 +29,10 @@ public class Afflatus {
     private Integer collectNum;
     private Integer gamNum;
     private Integer reserveNum;
+    private String designerHead;
+    private String designerName;
+    private List<Label> labelList;
+    private List<Image> imageList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -197,5 +201,41 @@ public class Afflatus {
 
     public void setReserveNum(Integer reserveNum) {
         this.reserveNum = reserveNum;
+    }
+
+    @Transient
+    public String getDesignerHead() {
+        return designerHead;
+    }
+
+    public void setDesignerHead(String designerHead) {
+        this.designerHead = designerHead;
+    }
+
+    @Transient
+    public String getDesignerName() {
+        return designerName;
+    }
+
+    public void setDesignerName(String designerName) {
+        this.designerName = designerName;
+    }
+
+    @Transient
+    public List<Label> getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<Label> labelList) {
+        this.labelList = labelList;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 }

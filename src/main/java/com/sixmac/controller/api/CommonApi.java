@@ -37,16 +37,40 @@ public class CommonApi {
     @Autowired
     private JournalService journalService;
 
-    @Autowired
-    private WorksService worksService;
-
     /**
-     * 收藏列表
+     * @api {post} /api/common/collectList 收藏列表
+     * @apiName  common.collectList
+     * @apiGroup common
      *
-     * @param response
-     * @param userId
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 收藏列表
+     * @apiSuccess {Integer} list.id 收藏id
+     * @apiSuccess {Integer} list.objectId 收藏目标id
+     * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "status": "0",
+     *       "msg": "",
+     *       "data":{
+     *           "page":{
+     *               "totalNum": 1,
+     *               "totalPage": 1,
+     *               "currentPage": 1
+     *           },
+     *           "list":[
+     *              {
+     *                  "id":2,
+     *                  "objectId":1
+     *                  "objectType":1
+     *              }
+     *           ]
+     *       }
+     *     }
      */
     @RequestMapping(value = "/collectList")
     public void collectList(HttpServletResponse response,

@@ -55,6 +55,9 @@ public class DesignersApi extends CommonController {
     @Autowired
     private WorksService worksService;
 
+    @Autowired
+    private CollectService collectService;
+
     /**
      * 设计师列表
      *
@@ -125,6 +128,17 @@ public class DesignersApi extends CommonController {
 
         for (Works work : page.getContent()) {
             work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
+
+            // 设计师头像、预约数、点赞数、评论数、收藏数
+            work.setDesignerHead(PathUtils.getRemotePath() + work.getDesigner().getHead());
+
+            work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
+
+            work.setGamNum(gamsService.iFindList(work.getDesigner().getId(), Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+
+            work.setCommentNum(commentService.iFindList(work.getId(), Constant.COMMENT_WORKS).size());
+
+            work.setCollectNum(collectService.iFindList(work.getId(), Constant.COLLECT_WORKS).size());
         }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
@@ -177,13 +191,20 @@ public class DesignersApi extends CommonController {
         // 设置点赞数
         designers.setGamNum(designers.getGamsList().size());
 
-        // 如果userId不为空时，查询是否点赞过
+        // 如果userId不为空时，查询是否点赞过和是否关注过
         if (null != userId) {
             Gams gams = gamsService.iFindOne(userId, designerId, Constant.GAM_DESIGNERS, Constant.GAM_LOVE);
             if (null != gams) {
                 designers.setIsGam(Constant.GAM_LOVE_YES);
             } else {
-                designers.setIsGam(Constant.GAM_LOVE_YES);
+                designers.setIsGam(Constant.GAM_LOVE_NO);
+            }
+
+            Attentions attentions = attentionsService.iFindOne(userId, designerId, Constant.ATTENTION_DESIGNERS);
+            if (null != attentions) {
+                designers.setIsAttention(Constant.ATTENTION_STATUS_YES);
+            } else {
+                designers.setIsAttention(Constant.ATTENTION_STATUS_NO);
             }
         }
 

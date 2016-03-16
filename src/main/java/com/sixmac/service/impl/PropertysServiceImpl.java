@@ -119,4 +119,9 @@ public class PropertysServiceImpl implements PropertysService {
 
         return list;
     }
+
+    @Override
+    public List<Propertys> pageByParentId(Integer parentId) {
+        return null;
+    }
 }

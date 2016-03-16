@@ -18,6 +18,7 @@ public class Propertys {
     private Integer parentId;
     private Date createTime;
     private List<Propertys> childList;
+    private Integer childNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -86,5 +87,14 @@ public class Propertys {
 
     public void setChildList(List<Propertys> childList) {
         this.childList = childList;
+    }
+
+    @Transient
+    public Integer getChildNum() {
+        return childNum;
+    }
+
+    public void setChildNum(Integer childNum) {
+        this.childNum = childNum;
     }
 }

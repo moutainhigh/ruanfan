@@ -17,6 +17,11 @@ public class Works {
     private Integer coverId;
     private Date createTime;
     private String cover;
+    private String designerHead;
+    private Integer reserveNum;
+    private Integer gamNum;
+    private Integer commentNum;
+    private Integer collectNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -87,5 +92,50 @@ public class Works {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    @Transient
+    public String getDesignerHead() {
+        return designerHead;
+    }
+
+    public void setDesignerHead(String designerHead) {
+        this.designerHead = designerHead;
+    }
+
+    @Transient
+    public Integer getReserveNum() {
+        return reserveNum;
+    }
+
+    public void setReserveNum(Integer reserveNum) {
+        this.reserveNum = reserveNum;
+    }
+
+    @Transient
+    public Integer getGamNum() {
+        return gamNum;
+    }
+
+    public void setGamNum(Integer gamNum) {
+        this.gamNum = gamNum;
+    }
+
+    @Transient
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
+
+    @Transient
+    public Integer getCollectNum() {
+        return collectNum;
+    }
+
+    public void setCollectNum(Integer collectNum) {
+        this.collectNum = collectNum;
     }
 }

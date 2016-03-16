@@ -27,6 +27,10 @@ public interface Constant {
     Integer GAM_LOVE_YES = 0;  // 已赞
     Integer GAM_LOVE_NO = 1;   // 未赞
 
+    // 关注状态
+    Integer ATTENTION_STATUS_YES = 0;  // 已关注
+    Integer ATTENTION_STATUS_NO = 1;   // 未关注
+
     // 排序方式
     Integer SORT_TYPE_ASC = 1;   // 正序
     Integer SORT_TYPE_DESC = 2;  // 倒序
@@ -42,6 +46,7 @@ public interface Constant {
 
     // 收藏目标类型
     Integer COLLECT_AFFLATUS = 1;  // 灵感集
+    Integer COLLECT_WORKS = 2;     // 设计作品
 
     // 评论目标类型
     Integer COMMENT_DESIGNERS = 1;  // 设计师

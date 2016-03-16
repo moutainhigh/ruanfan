@@ -11,9 +11,12 @@ import java.util.List;
  */
 public interface PropertysService extends ICommonService<Propertys> {
 
-    // 楼盘列表
+    // 地产列表
     public Page<Propertys> iPage(String name, Integer pageNum, Integer pageSize);
 
-    // 根据楼盘id查询地产列表
+    // 根据地产id查询楼盘列表
     public List<Propertys> iPageByParentId(Integer parentId);
+
+    // 根据地产id查询楼盘列表
+    public List<Propertys> pageByParentId(Integer parentId);
 }
