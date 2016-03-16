@@ -8,4 +8,6 @@ import com.sixmac.service.common.ICommonService;
  */
 public interface AreasService extends ICommonService<Areas> {
 
+    // 根据区域id查询对应的灵感图信息集合
+    public Integer findListByAreaId(Integer areaId);
 }

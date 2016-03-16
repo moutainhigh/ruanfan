@@ -1,8 +1,11 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.AfflatusDao;
+import com.sixmac.dao.MerchantsDao;
 import com.sixmac.dao.StylesDao;
-import com.sixmac.entity.Styles;
+import com.sixmac.dao.VirtualsDao;
+import com.sixmac.entity.*;
 import com.sixmac.service.StylesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,15 @@ public class StylesServiceImpl implements StylesService {
 
     @Autowired
     private StylesDao stylesDao;
+
+    @Autowired
+    private AfflatusDao afflatusDao;
+
+    @Autowired
+    private MerchantsDao merchantsDao;
+
+    @Autowired
+    private VirtualsDao virtualsDao;
 
     @Override
     public List<Styles> findAll() {
@@ -65,5 +77,24 @@ public class StylesServiceImpl implements StylesService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public Integer findListByStyleId(Integer styleId) {
+        Integer count = 0;
+
+        // 获取与该风格关联的灵感集信息
+        List<Afflatus> afflatusList = afflatusDao.iFindListByStyleId(styleId);
+
+        // 获取与该风格关联的商户信息
+        List<Merchants> merchantsList = merchantsDao.iFindListByStyleId(styleId);
+
+        // 获取与该风格关联的虚拟体验信息
+        List<Virtuals> virtualsList = virtualsDao.iFindListByStyleId(styleId);
+
+        // 将所有关联数量相加，并返回
+        count = afflatusList.size() + merchantsList.size() + virtualsList.size();
+
+        return count;
     }
 }

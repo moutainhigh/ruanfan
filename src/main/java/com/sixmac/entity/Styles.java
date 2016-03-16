@@ -12,6 +12,7 @@ public class Styles {
     private Integer id;
     private String name;
     private Date updateTime;
+    private Integer productNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -39,5 +40,14 @@ public class Styles {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Transient
+    public Integer getProductNum() {
+        return productNum;
+    }
+
+    public void setProductNum(Integer productNum) {
+        this.productNum = productNum;
     }
 }

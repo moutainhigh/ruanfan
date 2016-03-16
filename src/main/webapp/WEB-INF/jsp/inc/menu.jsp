@@ -71,13 +71,13 @@
                         <a href="brand/index"><i class="fa fa-cart-plus fa-fw"></i>品牌分类</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>风格分类</a>
+                        <a href="style/index"><i class="fa fa-map-marker fa-fw"></i>风格分类</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>灵感图区域</a>
+                        <a href="afflatusArea/index"><i class="fa fa-cubes fa-fw"></i>灵感图区域</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>虚拟体验分类</a>
+                        <a href="virtualType/index"><i class="fa fa-cubes fa-fw"></i>虚拟体验分类</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>地产类型</a>

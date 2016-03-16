@@ -2,6 +2,7 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.AreasDao;
+import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Areas;
 import com.sixmac.service.AreasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,12 @@ public class AreasServiceImpl implements AreasService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public Integer findListByAreaId(Integer areaId) {
+        List<Afflatus> afflatusList = areasDao.iFindListByAreaId(areaId);
+
+        return afflatusList.size();
     }
 }

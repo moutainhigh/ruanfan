@@ -2,6 +2,7 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.VrtypeDao;
+import com.sixmac.entity.Virtuals;
 import com.sixmac.entity.Vrtype;
 import com.sixmac.service.VrtypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,12 @@ public class VrtypeServiceImpl implements VrtypeService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public Integer findListByTypeId(Integer vrTypeId) {
+        List<Virtuals> virtualsList = vrtypeDao.iFindListByTypeId(vrTypeId);
+
+        return virtualsList.size();
     }
 }
