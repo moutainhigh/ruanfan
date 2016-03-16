@@ -50,9 +50,9 @@ public class JournalApi extends CommonController {
      * @apiName journal.list
      * @apiGroup journal
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 日志列表
      * @apiSuccess {Integer} list.id 日志id
@@ -91,7 +91,7 @@ public class JournalApi extends CommonController {
      * @apiName journal.info
      * @apiGroup journal
      *
-     * @apiParam {Integer} journalId 日志id
+     * @apiParam {Integer} journalId 日志id       <必传 />
      *
      * @apiSuccess {Object} journalInfo 日志详情
      * @apiSuccess {Integer} journalInfo.id 日志id
@@ -128,8 +128,8 @@ public class JournalApi extends CommonController {
      * @apiName journal.addJournal
      * @apiGroup journal
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {String} content 内容
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {String} content 内容       <必传 />
      * @apiParam {Stream} imgList 图片数组
      */
     @RequestMapping(value = "/addJournal")
@@ -183,8 +183,8 @@ public class JournalApi extends CommonController {
      * @apiName journal.forward
      * @apiGroup journal
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} journalId 日志id
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} journalId 日志id       <必传 />
      */
     @RequestMapping(value = "/forward")
     public void forward(HttpServletResponse response, Integer userId, Integer journalId) {

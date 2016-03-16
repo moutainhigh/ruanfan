@@ -42,9 +42,9 @@ public class CommonApi {
      * @apiName  common.collectList
      * @apiGroup common
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数      <必传 />
      *
      * @apiSuccess {Object} list 收藏列表
      * @apiSuccess {Integer} list.id 收藏id
@@ -76,10 +76,10 @@ public class CommonApi {
      * @apiName  common.collect
      * @apiGroup common
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} objectId 目标id
-     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品
-     * @apiParam {Integer} action 类型，0=收藏，1=取消收藏
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} objectId 目标id        <必传 />
+     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品     <必传 />
+     * @apiParam {Integer} action 类型，0=收藏，1=取消收藏        <必传 />
      *
      */
     @RequestMapping("/collect")
@@ -121,8 +121,8 @@ public class CommonApi {
      * @apiName  common.share
      * @apiGroup common
      *
-     * @apiParam {Integer} objectId 分享目标id
-     * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志
+     * @apiParam {Integer} objectId 分享目标id      <必传 />
+     * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志       <必传 />
      *
      */
     @RequestMapping("/share")

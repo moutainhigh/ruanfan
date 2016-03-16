@@ -40,9 +40,9 @@ public class MagazineApi extends CommonController {
      * @apiName magazine.list
      * @apiGroup magazine
      *
-     * @apiParam {Integer} month 用户id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} month 月份
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 杂志列表
      * @apiSuccess {Integer} list.id 杂志id
@@ -87,7 +87,7 @@ public class MagazineApi extends CommonController {
      * @apiName magazine.info
      * @apiGroup magazine
      *
-     * @apiParam {Integer} magazineId 杂志id
+     * @apiParam {Integer} magazineId 杂志id       <必传 />
      *
      * @apiSuccess {Object} magazineInfo 杂志列表
      * @apiSuccess {Integer} magazineInfo.id 杂志id

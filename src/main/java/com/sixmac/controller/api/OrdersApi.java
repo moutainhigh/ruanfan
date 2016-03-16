@@ -50,9 +50,9 @@ public class OrdersApi {
      * @apiName  orders.list
      * @apiGroup orders
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 收藏列表
      * @apiSuccess {Integer} list.id 收藏id
@@ -84,29 +84,29 @@ public class OrdersApi {
      * @apiName  orders.confirmOrder
      * @apiGroup orders
      *
-     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} merchantId 商户id
      * @apiParam {Integer} couponId 优惠券id
-     * @apiParam {Integer} payType 支付方式，1=支付宝，2=微信
+     * @apiParam {Integer} payType 支付方式，1=支付宝，2=微信       <必传 />
      * @apiParam {Integer} score 使用积分数
-     * @apiParam {String} consignee 收货人
-     * @apiParam {String} mobile 联系方式
-     * @apiParam {String} address 地址
-     * @apiParam {String} price 金额
-     * @apiParam {String} realPrice 实付金额
+     * @apiParam {String} consignee 收货人       <必传 />
+     * @apiParam {String} mobile 联系方式       <必传 />
+     * @apiParam {String} address 地址       <必传 />
+     * @apiParam {String} price 金额       <必传 />
+     * @apiParam {String} realPrice 实付金额       <必传 />
      * @apiParam {String} demo 备注
-     * @apiParam {Object} orderInfoList 订单详情（json格式字符串）
+     * @apiParam {Object} orderInfoList 订单详情（json格式字符串）       <必传 />
      * @apiParam {Integer} orderInfoList.shopCarId 购物车id
-     * @apiParam {Integer} orderInfoList.merchantId 商品所属商户id，type为1时传入
-     * @apiParam {Integer} orderInfoList.type 类型，1=商品，2=秒杀
-     * @apiParam {Integer} orderInfoList.id 商品id or 秒杀id
-     * @apiParam {String} orderInfoList.name 名称
-     * @apiParam {String} orderInfoList.path 图片路径
-     * @apiParam {String} orderInfoList.colors 颜色
-     * @apiParam {String} orderInfoList.sizes 尺寸
-     * @apiParam {String} orderInfoList.materials 材质
-     * @apiParam {String} orderInfoList.price 价格
-     * @apiParam {Integer} orderInfoList.count 数量
+     * @apiParam {Integer} orderInfoList.merchantId 商品所属商户id，type为1时传入，type为0时不传
+     * @apiParam {Integer} orderInfoList.type 类型，1=商品，2=秒杀       <必传 />
+     * @apiParam {Integer} orderInfoList.id 商品id or 秒杀id       <必传 />
+     * @apiParam {String} orderInfoList.name 名称       <必传 />
+     * @apiParam {String} orderInfoList.path 图片路径       <必传 />
+     * @apiParam {String} orderInfoList.colors 颜色       <必传 />
+     * @apiParam {String} orderInfoList.sizes 尺寸       <必传 />
+     * @apiParam {String} orderInfoList.materials 材质       <必传 />
+     * @apiParam {String} orderInfoList.price 价格       <必传 />
+     * @apiParam {Integer} orderInfoList.count 数量       <必传 />
      */
     @RequestMapping("confirmOrder")
     public void confirmOrder(HttpServletResponse response,
@@ -199,8 +199,8 @@ public class OrdersApi {
      * @apiName  orders.updateOrders
      * @apiGroup orders
      *
-     * @apiParam {String} orderNum 订单流水号
-     * @apiParam {Integer} status 订单状态
+     * @apiParam {String} orderNum 订单流水号       <必传 />
+     * @apiParam {Integer} status 订单状态       <必传 />
      *
      */
     @RequestMapping(value = "/updateOrders")

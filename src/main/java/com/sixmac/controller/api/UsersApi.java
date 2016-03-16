@@ -50,8 +50,8 @@ public class UsersApi extends CommonController {
      * @apiName  users.sendCode
      * @apiGroup users
      *
-     * @apiParam {String} mobile 手机号码
-     * @apiParam {String} type 验证码类型，注册=register，忘记密码=forgetPwd
+     * @apiParam {String} mobile 手机号码       <必传 />
+     * @apiParam {String} type 验证码类型，注册=register，忘记密码=forgetPwd       <必传 />
      *
      * @apiSuccess {String} code 验证码
      *
@@ -94,12 +94,12 @@ public class UsersApi extends CommonController {
      * @apiName  users.register
      * @apiGroup users
      *
-     * @apiParam {String} mobile 手机号码
-     * @apiParam {String} password 密码，MD5密文
-     * @apiParam {String} nickname 昵称
-     * @apiParam {Stream} head 头像（二级制流文件）
-     * @apiParam {String} code 验证码
-     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd
+     * @apiParam {String} mobile 手机号码       <必传 />
+     * @apiParam {String} password 密码，MD5密文       <必传 />
+     * @apiParam {String} nickname 昵称       <必传 />
+     * @apiParam {Stream} head 头像（二级制流文件）       <必传 />
+     * @apiParam {String} code 验证码       <必传 />
+     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd       <必传 />
      *
      * @apiSuccess {Object} userInfo 用户信息
      * @apiSuccess {Integer} userInfo.id 用户id
@@ -177,8 +177,8 @@ public class UsersApi extends CommonController {
      * @apiName  users.login
      * @apiGroup users
      *
-     * @apiParam {String} mobile 手机号码
-     * @apiParam {String} password 密码，MD5密文
+     * @apiParam {String} mobile 手机号码       <必传 />
+     * @apiParam {String} password 密码，MD5密文       <必传 />
      *
      * @apiSuccess {Object} userInfo 用户信息
      * @apiSuccess {Integer} userInfo.id 用户id
@@ -224,10 +224,10 @@ public class UsersApi extends CommonController {
      * @apiName  users.tLogin
      * @apiGroup users
      *
-     * @apiParam {Integer} type 第三方类型，1=微信，2=QQ，3=新浪微博
-     * @apiParam {String} openId 唯一标识
-     * @apiParam {String} head 头像路径
-     * @apiParam {String} nickname 昵称
+     * @apiParam {Integer} type 第三方类型，1=微信，2=QQ，3=新浪微博       <必传 />
+     * @apiParam {String} openId 唯一标识       <必传 />
+     * @apiParam {String} head 头像路径       <必传 />
+     * @apiParam {String} nickname 昵称       <必传 />
      *
      * @apiSuccess {Object} userInfo 用户信息
      * @apiSuccess {Integer} userInfo.id 用户id
@@ -271,10 +271,10 @@ public class UsersApi extends CommonController {
      * @apiName  users.forgetPwd
      * @apiGroup users
      *
-     * @apiParam {String} mobile 手机号
-     * @apiParam {String} password 密码，MD5密文
-     * @apiParam {String} code 验证码
-     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd
+     * @apiParam {String} mobile 手机号       <必传 />
+     * @apiParam {String} password 新密码，MD5密文       <必传 />
+     * @apiParam {String} code 验证码       <必传 />
+     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd       <必传 />
      *
      */
     @RequestMapping(value = "/forgetPwd")
@@ -307,7 +307,7 @@ public class UsersApi extends CommonController {
      * @apiName  users.info
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} userId 用户id       <必传 />
      *
      * @apiSuccess {Object} userInfo 用户信息
      * @apiSuccess {Integer} userInfo.id 用户id
@@ -348,8 +348,8 @@ public class UsersApi extends CommonController {
      * @apiName  users.updateHead
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Stream} head 头像文件，二进制流
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Stream} head 头像文件，二进制流       <必传 />
      *
      */
     @RequestMapping(value = "/updateHead")
@@ -389,7 +389,7 @@ public class UsersApi extends CommonController {
      * @apiName  users.updateInfo
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {String} password 密码，MD5密文
      * @apiParam {String} nickname 昵称
      * @apiParam {Integer} cityId 所属城市id
@@ -443,16 +443,16 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * @api {post} /api/users/commentOrders 修改用户信息
+     * @api {post} /api/users/commentOrders 评价订单
      * @apiName  users.commentOrders
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} isHide 是否匿名，0=是，1=否
-     * @apiParam {Object} commentList 评价详情（json格式字符串）
-     * @apiParam {Integer} commentList.orderInfoId 订单详情id
-     * @apiParam {Integer} commentList.star 星级
-     * @apiParam {String} commentList.content 评价内容
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} isHide 是否匿名，0=是，1=否       <必传 />
+     * @apiParam {Object} commentList 评价详情（json格式字符串）       <必传 />
+     * @apiParam {Integer} commentList.orderInfoId 订单详情id       <必传 />
+     * @apiParam {Integer} commentList.star 星级       <必传 />
+     * @apiParam {String} commentList.content 评价内容       <必传 />
      *
      */
     @RequestMapping(value = "/commentOrders")
@@ -488,9 +488,9 @@ public class UsersApi extends CommonController {
      * @apiName  users.couponList
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 优惠券列表
      * @apiSuccess {Integer} list.id 优惠券id
@@ -535,11 +535,11 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * @api {post} /api/users/score 我的优惠券列表
+     * @api {post} /api/users/score 用户积分
      * @apiName  users.score
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} userId 用户id       <必传 />
      *
      * @apiSuccess {String} score 用户积分数
      *
@@ -566,9 +566,9 @@ public class UsersApi extends CommonController {
      * @apiName  users.addFeedBack
      * @apiGroup users
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {String} type 问题种类（文字）
-     * @apiParam {String} content 反馈内容
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {String} type 问题种类（文字）       <必传 />
+     * @apiParam {String} content 反馈内容       <必传 />
      * @apiParam {Stream} pic 图片（二进制流文件）
      *
      */

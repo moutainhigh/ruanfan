@@ -31,8 +31,8 @@ public class PropertysApi {
      * @apiGroup property
      *
      * @apiParam {String} name 名称or地区
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 地产列表
      * @apiSuccess {Integer} list.id 地产id
@@ -48,7 +48,7 @@ public class PropertysApi {
      * @apiSuccess {String} list.childList.address 楼盘地址
      * @apiSuccess {String} list.childList.labels 楼盘标签
      * @apiSuccess {String} list.childList.createTime 楼盘创建时间
-     * @apiSuccess {Object} list.childList.childList （无用字段）
+     * @apiSuccess {Object} list.childList.childList ...（无用字段）
      *
      */
     @RequestMapping(value = "/list")
@@ -70,7 +70,7 @@ public class PropertysApi {
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "parentId");
+        String result = JsonUtil.obj2ApiJson(obj, "parentId", "childNum");
         WebUtil.printApi(response, result);
     }
 }

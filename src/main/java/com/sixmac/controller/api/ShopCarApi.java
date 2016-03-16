@@ -42,7 +42,7 @@ public class ShopCarApi {
      * @apiName  shopCar.list
      * @apiGroup shopCar
      *
-     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} userId 用户id       <必传 />
      *
      * @apiSuccess {Object} list 购物车列表
      * @apiSuccess {Integer} list.id 购物车id
@@ -86,16 +86,16 @@ public class ShopCarApi {
      * @apiName  shopCar.addShopCar
      * @apiGroup shopCar
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} merchantId 所属商户id
-     * @apiParam {Integer} productId 商品id
-     * @apiParam {String} cover 商品封面图
-     * @apiParam {String} name 商品名称
-     * @apiParam {String} colors 颜色
-     * @apiParam {String} sizes 尺寸
-     * @apiParam {String} materials 材质
-     * @apiParam {String} price 价格
-     * @apiParam {Integer} count 数量
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} merchantId 所属商户id       <必传 />
+     * @apiParam {Integer} productId 商品id       <必传 />
+     * @apiParam {String} cover 商品封面图       <必传 />
+     * @apiParam {String} name 商品名称       <必传 />
+     * @apiParam {String} colors 颜色       <必传 />
+     * @apiParam {String} sizes 尺寸       <必传 />
+     * @apiParam {String} materials 材质       <必传 />
+     * @apiParam {String} price 价格       <必传 />
+     * @apiParam {Integer} count 数量       <必传 />
      *
      */
     @RequestMapping("addShopCar")
@@ -136,7 +136,7 @@ public class ShopCarApi {
      * @apiName  shopCar.deleteShopCar
      * @apiGroup shopCar
      *
-     * @apiParam {Integer} shopCarId 购物车id
+     * @apiParam {Integer} shopCarId 购物车id       <必传 />
      *
      */
     @RequestMapping("deleteShopCar")
@@ -164,7 +164,7 @@ public class ShopCarApi {
      * @apiName  shopCar.cleanShopCar
      * @apiGroup shopCar
      *
-     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} userId 用户id       <必传 />
      *
      */
     @RequestMapping("cleanShopCar")

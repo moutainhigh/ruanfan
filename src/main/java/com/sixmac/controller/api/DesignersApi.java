@@ -63,11 +63,11 @@ public class DesignersApi extends CommonController {
      * @apiName  designers.list
      * @apiGroup designers
      *
-     * @apiParam {Integer} type 类型，1=独立设计师，2=设计公司
+     * @apiParam {Integer} type 类型，1=独立设计师，2=设计公司       <必传 />
      * @apiParam {String} nickname 设计师昵称
      * @apiParam {Integer} cityId 所在城市id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数      <必传 />
      *
      * @apiSuccess {Object} list 设计师列表
      * @apiSuccess {Integer} list.id 设计师id
@@ -138,9 +138,9 @@ public class DesignersApi extends CommonController {
      * @apiName  designers.workList
      * @apiGroup designers
      *
-     * @apiParam {Integer} designerId 设计师id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} designerId 设计师id     <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数      <必传 />
      *
      * @apiSuccess {Object} list 设计作品列表
      * @apiSuccess {Integer} list.id 设计作品id
@@ -195,7 +195,7 @@ public class DesignersApi extends CommonController {
      * @apiName  designers.info
      * @apiGroup designers
      *
-     * @apiParam {Integer} designerId 设计师id
+     * @apiParam {Integer} designerId 设计师id     <必传 />
      * @apiParam {Integer} userId 当前登录用户id
      *
      * @apiSuccess {Object} designerInfo 设计师详情
@@ -303,9 +303,9 @@ public class DesignersApi extends CommonController {
      * @apiName  designers.attention
      * @apiGroup designers
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} designerId 设计师id
-     * @apiParam {Integer} action 类型，0=关注，1=取消关注
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} designerId 设计师id     <必传 />
+     * @apiParam {Integer} action 类型，0=关注，1=取消关注        <必传 />
      *
      */
     @RequestMapping("/attention")
@@ -347,12 +347,12 @@ public class DesignersApi extends CommonController {
      * @apiName  designers.reserve
      * @apiGroup designers
      *
-     * @apiParam {Integer} userId 用户id
-     * @apiParam {Integer} designerId 设计师id
-     * @apiParam {String} name 姓名
-     * @apiParam {String} mobile 联系方式
-     * @apiParam {String} email 电子邮箱
-     * @apiParam {Integer} styleId 喜爱的风格id
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} designerId 设计师id       <必传 />
+     * @apiParam {String} name 姓名       <必传 />
+     * @apiParam {String} mobile 联系方式       <必传 />
+     * @apiParam {String} email 电子邮箱        <必传 />
+     * @apiParam {Integer} styleId 喜爱的风格id      <必传 />
      * @apiParam {String} address 地址
      * @apiParam {String} resTime 预约时间
      * @apiParam {String} remark 备注（留言）

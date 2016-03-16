@@ -70,8 +70,8 @@ public class MallApi extends CommonController {
      * @apiName  mall.spikeList
      * @apiGroup mall
      *
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 秒杀列表
      * @apiSuccess {Integer} list.id 秒杀id
@@ -117,7 +117,7 @@ public class MallApi extends CommonController {
      * @apiName  mall.spikeInfo
      * @apiGroup mall
      *
-     * @apiParam {Integer} spikesId 秒杀id
+     * @apiParam {Integer} spikesId 秒杀id       <必传 />
      *
      * @apiSuccess {Object} list 秒杀列表
      * @apiSuccess {Integer} list.id 秒杀id
@@ -167,8 +167,8 @@ public class MallApi extends CommonController {
      * @apiParam {Integer} brandId 品牌id
      * @apiParam {Integer} sortId 产品种类id
      * @apiParam {Integer} isHot 是否首页推荐，0=否，1=是
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 商品列表
      * @apiSuccess {Integer} list.id 商品id
@@ -229,7 +229,7 @@ public class MallApi extends CommonController {
      * @apiName  mall.info
      * @apiGroup mall
      *
-     * @apiParam {Integer} productId 商品id
+     * @apiParam {Integer} productId 商品id       <必传 />
      *
      * @apiSuccess {Object} productInfo 商品详情
      * @apiSuccess {Integer} productInfo.id 商品id
@@ -285,8 +285,8 @@ public class MallApi extends CommonController {
      * @apiGroup mall
      *
      * @apiParam {Integer} brandId 品牌id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
      * @apiSuccess {Object} list 套餐列表
      * @apiSuccess {Integer} list.id 套餐id
@@ -375,7 +375,7 @@ public class MallApi extends CommonController {
      * @apiName  mall.packageInfo
      * @apiGroup mall
      *
-     * @apiParam {Integer} packageId 套餐id
+     * @apiParam {Integer} packageId 套餐id       <必传 />
      *
      * @apiSuccess {Object} packageInfo 套餐列表
      * @apiSuccess {Integer} packageInfo.id 套餐id

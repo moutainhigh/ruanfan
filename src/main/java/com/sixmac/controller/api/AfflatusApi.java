@@ -59,11 +59,11 @@ public class AfflatusApi extends CommonController {
      * @apiName afflatus.list
      * @apiGroup afflatus
      *
-     * @apiParam {Integer} type 类型：1单图   2套图
+     * @apiParam {Integer} type 类型：1单图 2套图      <必传 />
      * @apiParam {Integer} styleId 风格id
      * @apiParam {Integer} areaId 区域id
-     * @apiParam {Integer} pageNum 页码
-     * @apiParam {Integer} pageSize 每页显示条数
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数      <必传 />
      *
      * @apiSuccess {Object} list 灵感集列表
      * @apiSuccess {Integer} list.id 灵感集id
@@ -121,7 +121,7 @@ public class AfflatusApi extends CommonController {
      * @apiName afflatus.info
      * @apiGroup afflatus
      *
-     * @apiParam {Integer} afflatusId 灵感集id
+     * @apiParam {Integer} afflatusId 灵感集id     <必传 />
      *
      * @apiSuccess {Object} afflatusInfo 灵感集详情
      * @apiSuccess {Integer} afflatusInfo.id 灵感集id
