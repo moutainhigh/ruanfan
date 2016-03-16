@@ -1,5 +1,7 @@
 package com.sixmac.entity;
 
+import com.sixmac.entity.vo.BeanVo;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -24,14 +26,13 @@ public class Afflatus {
     private Date createTime;
     private String cover;
     private List<Gams> gamsList;
-    private List<Afflatus> loveList;
+    private List<BeanVo> loveList;
     private List<Comment> commentList;
     private Integer collectNum;
     private Integer gamNum;
     private Integer reserveNum;
     private String designerHead;
     private String designerName;
-    private List<Label> labelList;
     private List<Image> imageList;
 
     @Id
@@ -159,11 +160,11 @@ public class Afflatus {
     }
 
     @Transient
-    public List<Afflatus> getLoveList() {
+    public List<BeanVo> getLoveList() {
         return loveList;
     }
 
-    public void setLoveList(List<Afflatus> loveList) {
+    public void setLoveList(List<BeanVo> loveList) {
         this.loveList = loveList;
     }
 
@@ -219,15 +220,6 @@ public class Afflatus {
 
     public void setDesignerName(String designerName) {
         this.designerName = designerName;
-    }
-
-    @Transient
-    public List<Label> getLabelList() {
-        return labelList;
-    }
-
-    public void setLabelList(List<Label> labelList) {
-        this.labelList = labelList;
     }
 
     @Transient

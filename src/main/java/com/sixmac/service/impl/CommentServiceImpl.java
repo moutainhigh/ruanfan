@@ -74,6 +74,9 @@ public class CommentServiceImpl implements CommentService {
 
         for (Comment comment : list) {
             comment.getUser().setHeadPath(PathUtils.getRemotePath() + comment.getUser().getHeadPath());
+            comment.setUserId(comment.getUser().getId());
+            comment.setUserName(comment.getUser().getNickName());
+            comment.setUserHead(comment.getUser().getHeadPath());
         }
 
         return list;

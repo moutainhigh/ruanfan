@@ -87,7 +87,9 @@ public class GamsServiceImpl implements GamsService {
     @Override
     public Gams iFindOne(Integer userId, Integer objectId, Integer objectType, Integer type) {
         Gams gams = gamsDao.iFindOne(userId, objectId, objectType, type);
-        gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
+        if (null != gams && null != gams.getUser()) {
+            gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
+        }
         return gams;
     }
 }

@@ -54,14 +54,32 @@ public class AfflatusApi extends CommonController {
     private LabelService labelService;
 
     /**
-     * 灵感集列表
+     * @api {post} /api/afflatus/list 灵感集列表
      *
-     * @param response
-     * @param type
-     * @param styleId
-     * @param areaId
-     * @param pageNum
-     * @param pageSize
+     * @apiName afflatus.list
+     * @apiGroup afflatus
+     *
+     * @apiParam {Integer} type 类型：1单图   2套图
+     * @apiParam {Integer} styleId 风格id
+     * @apiParam {Integer} areaId 区域id
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 灵感集列表
+     * @apiSuccess {Integer} list.id 灵感集id
+     * @apiSuccess {Integer} list.name 灵感集名称
+     * @apiSuccess {Integer} list.type 类型：1单图   2套图
+     * @apiSuccess {Integer} list.showNum 浏览量
+     * @apiSuccess {Integer} list.shareNum 分享数
+     * @apiSuccess {Integer} list.labels 标签
+     * @apiSuccess {Integer} list.status 状态，0=待审核，1=审核通过，2=审核不通过
+     * @apiSuccess {Integer} list.createTime 创建时间
+     * @apiSuccess {Integer} list.cover 封面图
+     * @apiSuccess {Integer} list.collectNum 收藏数
+     * @apiSuccess {Integer} list.gamNum 点赞数
+     * @apiSuccess {Integer} list.reserveNum 预约数
+     * @apiSuccess {Integer} list.designerHead 设计师头像
+     * @apiSuccess {Integer} list.designerName 设计师名称
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -98,10 +116,51 @@ public class AfflatusApi extends CommonController {
     }
 
     /**
-     * 查看灵感集详情
+     * @api {post} /api/afflatus/info 灵感集详情
      *
-     * @param response
-     * @param afflatusId
+     * @apiName afflatus.info
+     * @apiGroup afflatus
+     *
+     * @apiParam {Integer} afflatusId 灵感集id
+     *
+     * @apiSuccess {Object} afflatusInfo 灵感集详情
+     * @apiSuccess {Integer} afflatusInfo.id 灵感集id
+     * @apiSuccess {String} afflatusInfo.name 灵感集名称
+     * @apiSuccess {Integer} afflatusInfo.type 类型：1单图   2套图
+     * @apiSuccess {Integer} afflatusInfo.showNum 浏览量
+     * @apiSuccess {Integer} afflatusInfo.shareNum 分享数
+     * @apiSuccess {String} afflatusInfo.labels 标签
+     * @apiSuccess {Integer} afflatusInfo.status 状态，0=待审核，1=审核通过，2=审核不通过
+     * @apiSuccess {String} afflatusInfo.createTime 创建时间
+     * @apiSuccess {String} afflatusInfo.cover 封面图
+     * @apiSuccess {Object} afflatusInfo.loveList 猜你所想列表
+     * @apiSuccess {Integer} afflatusInfo.loveList.id 猜你所想灵感集id
+     * @apiSuccess {String} afflatusInfo.loveList.name 猜你所想灵感集名称
+     * @apiSuccess {String} afflatusInfo.loveList.path 猜你所想灵感集封面图
+     * @apiSuccess {Object} afflatusInfo.commentList 评论列表
+     * @apiSuccess {Integer} afflatusInfo.commentList.id 评论id
+     * @apiSuccess {Integer} afflatusInfo.commentList.userId 评论人id
+     * @apiSuccess {Integer} afflatusInfo.commentList.userName 评论人昵称
+     * @apiSuccess {Integer} afflatusInfo.commentList.userHead 评论人头像
+     * @apiSuccess {Integer} afflatusInfo.commentList.content 评论内容
+     * @apiSuccess {Integer} afflatusInfo.commentList.createTime 评论时间
+     * @apiSuccess {Integer} afflatusInfo.collectNum 收藏数
+     * @apiSuccess {Integer} afflatusInfo.gamNum 点赞数
+     * @apiSuccess {Integer} afflatusInfo.reserveNum 预约数
+     * @apiSuccess {String} afflatusInfo.designerHead 设计师头像
+     * @apiSuccess {String} afflatusInfo.designerName 设计师名称
+     * @apiSuccess {Object} afflatusInfo.imageList 详情图片列表
+     * @apiSuccess {Integer} afflatusInfo.imageList.id 图片id
+     * @apiSuccess {String} afflatusInfo.imageList.path 图片路径
+     * @apiSuccess {String} afflatusInfo.imageList.description 图片描述
+     * @apiSuccess {String} afflatusInfo.imageList.demo 图片备注
+     * @apiSuccess {String} afflatusInfo.imageList.createTime 创建时间
+     * @apiSuccess {Object} afflatusInfo.imageList.labelList 图片标签列表
+     * @apiSuccess {Integer} afflatusInfo.imageList.labelList.id 标签id
+     * @apiSuccess {String} afflatusInfo.imageList.labelList.name 标签名称
+     * @apiSuccess {String} afflatusInfo.imageList.labelList.description 标签描述
+     * @apiSuccess {String} afflatusInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
+     * @apiSuccess {String} afflatusInfo.imageList.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
      */
     @RequestMapping("info")
     public void afflatusInfo(HttpServletResponse response,
@@ -152,7 +211,7 @@ public class AfflatusApi extends CommonController {
         afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password", "user", "gamsList", "product", "thuPath", "width", "height", "labelId");
         WebUtil.printApi(response, result);
     }
 }

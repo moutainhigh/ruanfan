@@ -46,10 +46,15 @@ public class UsersApi extends CommonController {
     private CityService cityService;
 
     /**
-     * 发送验证码
+     * @api {post} /api/users/sendCode 发送验证码
+     * @apiName  users.sendCode
+     * @apiGroup users
      *
-     * @param response
-     * @param mobile
+     * @apiParam {String} mobile 手机号码
+     * @apiParam {String} type 验证码类型，注册=register，忘记密码=forgetPwd
+     *
+     * @apiSuccess {String} code 验证码
+     *
      */
     @RequestMapping(value = "/sendCode")
     public void sendCode(HttpServletResponse response,
@@ -85,11 +90,28 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 注册
+     * @api {post} /api/users/register 注册
+     * @apiName  users.register
+     * @apiGroup users
      *
-     * @param response
-     * @param mobile
-     * @param password
+     * @apiParam {String} mobile 手机号码
+     * @apiParam {String} password 密码，MD5密文
+     * @apiParam {String} nickname 昵称
+     * @apiParam {Stream} head 头像（二级制流文件）
+     * @apiParam {String} code 验证码
+     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd
+     *
+     * @apiSuccess {Object} userInfo 用户信息
+     * @apiSuccess {Integer} userInfo.id 用户id
+     * @apiSuccess {String} userInfo.mobile 手机号
+     * @apiSuccess {String} userInfo.nickName 昵称
+     * @apiSuccess {String} userInfo.headPath 头像
+     * @apiSuccess {Integer} userInfo.score 积分
+     * @apiSuccess {String} userInfo.comName 小区名称
+     * @apiSuccess {String} userInfo.comArea 小区面积
+     * @apiSuccess {String} userInfo.createTime 注册时间
+     * @apiSuccess {Integer} userInfo.cityId 所在城市id
+     *
      */
     @RequestMapping(value = "/register")
     public void register(ServletRequest request,
@@ -151,11 +173,24 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 登录
+     * @api {post} /api/users/login 登录
+     * @apiName  users.login
+     * @apiGroup users
      *
-     * @param response
-     * @param mobile
-     * @param password
+     * @apiParam {String} mobile 手机号码
+     * @apiParam {String} password 密码，MD5密文
+     *
+     * @apiSuccess {Object} userInfo 用户信息
+     * @apiSuccess {Integer} userInfo.id 用户id
+     * @apiSuccess {String} userInfo.mobile 手机号
+     * @apiSuccess {String} userInfo.nickName 昵称
+     * @apiSuccess {String} userInfo.headPath 头像
+     * @apiSuccess {Integer} userInfo.score 积分
+     * @apiSuccess {String} userInfo.comName 小区名称
+     * @apiSuccess {String} userInfo.comArea 小区面积
+     * @apiSuccess {String} userInfo.createTime 注册时间
+     * @apiSuccess {Integer} userInfo.cityId 所在城市id
+     *
      */
     @RequestMapping(value = "/login")
     public void login(HttpServletResponse response, String mobile, String password) {
@@ -185,13 +220,26 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 第三方登录
+     * @api {post} /api/users/tLogin 第三方登录
+     * @apiName  users.tLogin
+     * @apiGroup users
      *
-     * @param response
-     * @param type
-     * @param openId
-     * @param head
-     * @param nickname
+     * @apiParam {Integer} type 第三方类型，1=微信，2=QQ，3=新浪微博
+     * @apiParam {String} openId 唯一标识
+     * @apiParam {String} head 头像路径
+     * @apiParam {String} nickname 昵称
+     *
+     * @apiSuccess {Object} userInfo 用户信息
+     * @apiSuccess {Integer} userInfo.id 用户id
+     * @apiSuccess {String} userInfo.mobile 手机号
+     * @apiSuccess {String} userInfo.nickName 昵称
+     * @apiSuccess {String} userInfo.headPath 头像
+     * @apiSuccess {Integer} userInfo.score 积分
+     * @apiSuccess {String} userInfo.comName 小区名称
+     * @apiSuccess {String} userInfo.comArea 小区面积
+     * @apiSuccess {String} userInfo.createTime 注册时间
+     * @apiSuccess {Integer} userInfo.cityId 所在城市id
+     *
      */
     @RequestMapping(value = "/tLogin")
     public void tLogin(HttpServletResponse response,
@@ -219,13 +267,15 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 忘记密码
+     * @api {post} /api/users/forgetPwd 忘记密码
+     * @apiName  users.forgetPwd
+     * @apiGroup users
      *
-     * @param response
-     * @param mobile
-     * @param password
-     * @param code
-     * @param codeType
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} password 密码，MD5密文
+     * @apiParam {String} code 验证码
+     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd
+     *
      */
     @RequestMapping(value = "/forgetPwd")
     public void forgetPwd(HttpServletResponse response, String mobile, String password, String code, String codeType) {
@@ -253,10 +303,23 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 根据用户id查询用户信息
+     * @api {post} /api/users/info 查询用户信息
+     * @apiName  users.info
+     * @apiGroup users
      *
-     * @param response
-     * @param userId
+     * @apiParam {Integer} userId 用户id
+     *
+     * @apiSuccess {Object} userInfo 用户信息
+     * @apiSuccess {Integer} userInfo.id 用户id
+     * @apiSuccess {String} userInfo.mobile 手机号
+     * @apiSuccess {String} userInfo.nickName 昵称
+     * @apiSuccess {String} userInfo.headPath 头像
+     * @apiSuccess {Integer} userInfo.score 积分
+     * @apiSuccess {String} userInfo.comName 小区名称
+     * @apiSuccess {String} userInfo.comArea 小区面积
+     * @apiSuccess {String} userInfo.createTime 注册时间
+     * @apiSuccess {Integer} userInfo.cityId 所在城市id
+     *
      */
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response, Integer userId) {
@@ -281,24 +344,63 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 根据用户id修改用户信息
+     * @api {post} /api/users/updateHead 修改头像
+     * @apiName  users.updateHead
+     * @apiGroup users
      *
-     * @param request
-     * @param response
-     * @param userId
-     * @param password
-     * @param multipartRequest
-     * @param nickname
-     * @param cityId
-     * @param comName
-     * @param comArea
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Stream} head 头像文件，二进制流
+     *
      */
-    @RequestMapping(value = "/updateInfo")
-    public void updateInfo(ServletRequest request,
+    @RequestMapping(value = "/updateHead")
+    public void updateHead(ServletRequest request,
                            HttpServletResponse response,
                            Integer userId,
+                           MultipartRequest multipartRequest) {
+        if (null == userId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Users users = usersService.getById(userId);
+
+        if (null == users) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
+            return;
+        }
+
+        try {
+            MultipartFile multipartFile = multipartRequest.getFile("head");
+            if (null != multipartFile) {
+                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
+                users.setHeadPath(map.get("imgURL").toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        usersService.update(users);
+
+        WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/users/updateInfo 修改用户信息
+     * @apiName  users.updateInfo
+     * @apiGroup users
+     *
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {String} password 密码，MD5密文
+     * @apiParam {String} nickname 昵称
+     * @apiParam {Integer} cityId 所属城市id
+     * @apiParam {String} comName 小区名称
+     * @apiParam {String} comArea 小区面积
+     *
+     */
+    @RequestMapping(value = "/updateInfo")
+    public void updateInfo(HttpServletResponse response,
+                           Integer userId,
                            String password,
-                           MultipartRequest multipartRequest,
                            String nickname,
                            Integer cityId,
                            String comName,
@@ -317,16 +419,6 @@ public class UsersApi extends CommonController {
 
         if (null != password && !password.equals("")) {
             users.setPassword(password);
-        }
-
-        try {
-            MultipartFile multipartFile = multipartRequest.getFile("head");
-            if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                users.setHeadPath(map.get("imgURL").toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         if (null != nickname && !nickname.equals("")) {
@@ -351,12 +443,17 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 评价订单
+     * @api {post} /api/users/commentOrders 修改用户信息
+     * @apiName  users.commentOrders
+     * @apiGroup users
      *
-     * @param response
-     * @param userId
-     * @param isHide
-     * @param commentList
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} isHide 是否匿名，0=是，1=否
+     * @apiParam {Object} commentList 评价详情（json格式字符串）
+     * @apiParam {Integer} commentList.orderInfoId 订单详情id
+     * @apiParam {Integer} commentList.star 星级
+     * @apiParam {String} commentList.content 评价内容
+     *
      */
     @RequestMapping(value = "/commentOrders")
     public void commentOrders(HttpServletResponse response, Integer userId, Integer isHide, String commentList) {
@@ -372,7 +469,7 @@ public class UsersApi extends CommonController {
             for (Object orderMap : orderinfos) {
                 // 获取单个订单详情
                 mapInfo = JsonUtil.jsontoMap(orderMap);
-                ordersinfo = ordersinfoService.getById(Integer.parseInt(mapInfo.get("orderinfoId").toString()));
+                ordersinfo = ordersinfoService.getById(Integer.parseInt(mapInfo.get("orderInfoId").toString()));
                 ordersinfo.setStar(Integer.parseInt(mapInfo.get("star").toString()));
                 ordersinfo.setComment(mapInfo.get("content").toString());
 
@@ -387,12 +484,26 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 我的优惠券列表
+     * @api {post} /api/users/couponList 我的优惠券列表
+     * @apiName  users.couponList
+     * @apiGroup users
      *
-     * @param response
-     * @param userId
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 优惠券列表
+     * @apiSuccess {Integer} list.id 优惠券id
+     * @apiSuccess {Integer} list.name 优惠券名称
+     * @apiSuccess {Integer} list.cover 封面
+     * @apiSuccess {Integer} list.couponNum 优惠券编号（待定）
+     * @apiSuccess {Integer} list.money 金额
+     * @apiSuccess {Integer} list.type 类型，0=无限制，1=满减
+     * @apiSuccess {Integer} list.maxMoney 满减金额
+     * @apiSuccess {Integer} list.startDate 开始日期
+     * @apiSuccess {Integer} list.endDate 结束日期
+     * @apiSuccess {Integer} list.createTime 创建时间
+     *
      */
     @RequestMapping(value = "/couponList")
     public void couponList(HttpServletResponse response,
@@ -424,10 +535,14 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 查询用户积分
+     * @api {post} /api/users/score 我的优惠券列表
+     * @apiName  users.score
+     * @apiGroup users
      *
-     * @param response
-     * @param userId
+     * @apiParam {Integer} userId 用户id
+     *
+     * @apiSuccess {String} score 用户积分数
+     *
      */
     @RequestMapping(value = "/score")
     public void score(HttpServletResponse response, Integer userId) {
@@ -447,14 +562,15 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * 添加反馈
+     * @api {post} /api/users/addFeedBack 添加反馈
+     * @apiName  users.addFeedBack
+     * @apiGroup users
      *
-     * @param request
-     * @param response
-     * @param userId
-     * @param type
-     * @param content
-     * @param multipartRequest
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {String} type 问题种类（文字）
+     * @apiParam {String} content 反馈内容
+     * @apiParam {Stream} pic 图片（二进制流文件）
+     *
      */
     @RequestMapping(value = "/addFeedBack")
     public void addFeedBack(ServletRequest request, HttpServletResponse response, Integer userId, String type, String content, MultipartRequest multipartRequest) {

@@ -46,12 +46,19 @@ public class OrdersApi {
     private ProductsService productsService;
 
     /**
-     * 订单列表
+     * @api {post} /api/orders/list 订单列表
+     * @apiName  orders.list
+     * @apiGroup orders
      *
-     * @param response
-     * @param userId
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 收藏列表
+     * @apiSuccess {Integer} list.id 收藏id
+     * @apiSuccess {Integer} list.objectId 收藏目标id
+     * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
+     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -73,9 +80,33 @@ public class OrdersApi {
     }
 
     /**
-     * 确认订单
+     * @api {post} /api/orders/confirmOrder 确认订单
+     * @apiName  orders.confirmOrder
+     * @apiGroup orders
      *
-     * @param response
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} merchantId 商户id
+     * @apiParam {Integer} couponId 优惠券id
+     * @apiParam {Integer} payType 支付方式，1=支付宝，2=微信
+     * @apiParam {Integer} score 使用积分数
+     * @apiParam {String} consignee 收货人
+     * @apiParam {String} mobile 联系方式
+     * @apiParam {String} address 地址
+     * @apiParam {String} price 金额
+     * @apiParam {String} realPrice 实付金额
+     * @apiParam {String} demo 备注
+     * @apiParam {Object} orderInfoList 订单详情（json格式字符串）
+     * @apiParam {Integer} orderInfoList.shopCarId 购物车id
+     * @apiParam {Integer} orderInfoList.merchantId 商品所属商户id，type为1时传入
+     * @apiParam {Integer} orderInfoList.type 类型，1=商品，2=秒杀
+     * @apiParam {Integer} orderInfoList.id 商品id or 秒杀id
+     * @apiParam {String} orderInfoList.name 名称
+     * @apiParam {String} orderInfoList.path 图片路径
+     * @apiParam {String} orderInfoList.colors 颜色
+     * @apiParam {String} orderInfoList.sizes 尺寸
+     * @apiParam {String} orderInfoList.materials 材质
+     * @apiParam {String} orderInfoList.price 价格
+     * @apiParam {Integer} orderInfoList.count 数量
      */
     @RequestMapping("confirmOrder")
     public void confirmOrder(HttpServletResponse response,
@@ -90,8 +121,8 @@ public class OrdersApi {
                              String price,
                              String realPrice,
                              String demo,
-                             String orderinfoList) {
-        if (null == userId || null == consignee || null == mobile || null == address || null == payType || null == price || null == realPrice || null == orderinfoList) {
+                             String orderInfoList) {
+        if (null == userId || null == consignee || null == mobile || null == address || null == payType || null == price || null == realPrice || null == orderInfoList) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -116,7 +147,7 @@ public class OrdersApi {
         ordersService.create(orders);
 
         // 增加订单详情信息
-        JSONArray orderinfos = JSONArray.fromObject(orderinfoList);
+        JSONArray orderinfos = JSONArray.fromObject(orderInfoList);
         Map<String, Object> mapInfo = null;
         Ordersinfo ordersinfo = null;
         for (Object orderMap : orderinfos) {
@@ -143,8 +174,8 @@ public class OrdersApi {
             ordersinfoService.create(ordersinfo);
 
             // 判断是否传入了购物车id，如果传入，则表示该订单详情是从购物车中添加的，此时应该删除该购物车信息
-            if (null != mapInfo.get("shopcarId") && !mapInfo.get("shopcarId").equals("")) {
-                shopcarService.deleteById(Integer.parseInt(mapInfo.get("shopcarId").toString()));
+            if (null != mapInfo.get("shopCarId") && !mapInfo.get("shopCarId").equals("")) {
+                shopcarService.deleteById(Integer.parseInt(mapInfo.get("shopCarId").toString()));
             }
         }
 
@@ -164,21 +195,19 @@ public class OrdersApi {
     }
 
     /**
-     * 修改订单状态
+     * @api {post} /api/orders/updateOrders 修改订单状态
+     * @apiName  orders.updateOrders
+     * @apiGroup orders
      *
-     * @param response
-     * @param orderNum
-     * @param status
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {String} orderNum 订单流水号
+     * @apiParam {Integer} status 订单状态
+     *
      */
     @RequestMapping(value = "/updateOrders")
     public void updateOrders(HttpServletResponse response,
                              String orderNum,
-                             Integer status,
-                             Integer pageNum,
-                             Integer pageSize) {
-        if (null == orderNum || null == status || null == pageNum || null == pageSize) {
+                             Integer status) {
+        if (null == orderNum || null == status) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }

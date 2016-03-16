@@ -15,6 +15,9 @@ public class Comment {
     private Integer objectType;
     private String content;
     private Date createTime;
+    private Integer userId;
+    private String userName;
+    private String userHead;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -66,5 +69,32 @@ public class Comment {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Transient
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Transient
+    public String getUserHead() {
+        return userHead;
+    }
+
+    public void setUserHead(String userHead) {
+        this.userHead = userHead;
     }
 }

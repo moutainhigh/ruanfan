@@ -82,7 +82,9 @@ public class AttentionsServiceImpl implements AttentionsService {
     @Override
     public Attentions iFindOne(Integer userId, Integer objectId, Integer objectType) {
         Attentions attentions = attentionsDao.iFindOne(userId, objectId, objectType);
-        attentions.getUser().setHeadPath(PathUtils.getRemotePath() + attentions.getUser().getHeadPath());
+        if (null != attentions && null != attentions.getUser()) {
+            attentions.getUser().setHeadPath(PathUtils.getRemotePath() + attentions.getUser().getHeadPath());
+        }
         return attentions;
     }
 

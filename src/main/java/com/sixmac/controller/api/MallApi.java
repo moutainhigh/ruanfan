@@ -42,9 +42,17 @@ public class MallApi extends CommonController {
     private ImageService imageService;
 
     /**
-     * 首页banner图列表
+     * @api {post} /api/mall/bannerList 首页banner图列表
+     * @apiName  mall.bannerList
+     * @apiGroup mall
      *
-     * @param response
+     * @apiSuccess {Object} list 首页banner图列表
+     * @apiSuccess {Integer} list.id banner图id
+     * @apiSuccess {String} list.cover 图片路径
+     * @apiSuccess {Integer} list.type 类型，1=商品，2=套餐商品，3=特价商品
+     * @apiSuccess {Integer} list.sourceId 关联目标id
+     * @apiSuccess {String} list.updateTime 更新时间
+     *
      */
     @RequestMapping(value = "/bannerList")
     public void bannerList(HttpServletResponse response) {
@@ -58,11 +66,29 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * 秒杀列表
+     * @api {post} /api/mall/spikeList 秒杀列表
+     * @apiName  mall.spikeList
+     * @apiGroup mall
      *
-     * @param response
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 秒杀列表
+     * @apiSuccess {Integer} list.id 秒杀id
+     * @apiSuccess {String} list.name 秒杀名称
+     * @apiSuccess {String} list.price 价格
+     * @apiSuccess {String} list.oldPrice 原价
+     * @apiSuccess {String} list.startTime 开始时间
+     * @apiSuccess {String} list.endTime 结束时间
+     * @apiSuccess {Integer} list.count 交易数量
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.colors 颜色
+     * @apiSuccess {String} list.sizes 尺寸
+     * @apiSuccess {String} list.materials 材质
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {String} list.cover 封面图
+     *
      */
     @RequestMapping(value = "/spikeList")
     public void spikeList(HttpServletResponse response,
@@ -87,10 +113,28 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * 查看秒杀详情
+     * @api {post} /api/mall/spikeInfo 秒杀详情
+     * @apiName  mall.spikeInfo
+     * @apiGroup mall
      *
-     * @param response
-     * @param spikesId
+     * @apiParam {Integer} spikesId 秒杀id
+     *
+     * @apiSuccess {Object} list 秒杀列表
+     * @apiSuccess {Integer} list.id 秒杀id
+     * @apiSuccess {String} list.name 秒杀名称
+     * @apiSuccess {String} list.price 价格
+     * @apiSuccess {String} list.oldPrice 原价
+     * @apiSuccess {String} list.startTime 开始时间
+     * @apiSuccess {String} list.endTime 结束时间
+     * @apiSuccess {Integer} list.count 交易数量
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.colors 颜色
+     * @apiSuccess {String} list.sizes 尺寸
+     * @apiSuccess {String} list.materials 材质
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {String} list.cover 封面图
+     *
      */
     @RequestMapping("spikeInfo")
     public void spikeInfo(HttpServletResponse response,
@@ -114,16 +158,38 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * 商品列表
+     * @api {post} /api/mall/list 商品列表
+     * @apiName  mall.list
+     * @apiGroup mall
      *
-     * @param response
-     * @param type
-     * @param name
-     * @param brandId
-     * @param sortId
-     * @param isHot
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} type 分类，1=单品，2=艺术品，3=设计师品牌
+     * @apiParam {String} name 名称
+     * @apiParam {Integer} brandId 品牌id
+     * @apiParam {Integer} sortId 产品种类id
+     * @apiParam {Integer} isHot 是否首页推荐，0=否，1=是
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 商品列表
+     * @apiSuccess {Integer} list.id 商品id
+     * @apiSuccess {String} list.name 商品名称
+     * @apiSuccess {String} list.price 价格
+     * @apiSuccess {String} list.oldPrice 原价
+     * @apiSuccess {Integer} list.type 分类，1=单品，2=艺术品，3=设计师品牌
+     * @apiSuccess {String} list.place 产地
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.colors 颜色
+     * @apiSuccess {String} list.sizes 尺寸
+     * @apiSuccess {String} list.materials 材质
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {String} list.cover 封面图
+     * @apiSuccess {Integer} list.merchantId 商户id
+     * @apiSuccess {String} list.merchantName 商户名称
+     * @apiSuccess {Integer} list.brandId 品牌id
+     * @apiSuccess {String} list.brandName 品牌名称
+     * @apiSuccess {Integer} list.sortId 分类id
+     * @apiSuccess {String} list.sortName 分类名称
+     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -159,10 +225,32 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * 查看商品详情
+     * @api {post} /api/mall/info 商品详情
+     * @apiName  mall.info
+     * @apiGroup mall
      *
-     * @param response
-     * @param productId
+     * @apiParam {Integer} productId 商品id
+     *
+     * @apiSuccess {Object} productInfo 商品详情
+     * @apiSuccess {Integer} productInfo.id 商品id
+     * @apiSuccess {String} productInfo.name 商品名称
+     * @apiSuccess {String} productInfo.price 价格
+     * @apiSuccess {String} productInfo.oldPrice 原价
+     * @apiSuccess {Integer} productInfo.type 分类，1=单品，2=艺术品，3=设计师品牌
+     * @apiSuccess {String} productInfo.place 产地
+     * @apiSuccess {String} productInfo.labels 标签
+     * @apiSuccess {String} productInfo.colors 颜色
+     * @apiSuccess {String} productInfo.sizes 尺寸
+     * @apiSuccess {String} productInfo.materials 材质
+     * @apiSuccess {String} productInfo.description 描述
+     * @apiSuccess {String} productInfo.cover 封面图
+     * @apiSuccess {Integer} productInfo.merchantId 商户id
+     * @apiSuccess {String} productInfo.merchantName 商户名称
+     * @apiSuccess {Integer} productInfo.brandId 品牌id
+     * @apiSuccess {String} productInfo.brandName 品牌名称
+     * @apiSuccess {Integer} productInfo.sortId 分类id
+     * @apiSuccess {String} productInfo.sortName 分类名称
+     *
      */
     @RequestMapping("info")
     public void info(HttpServletResponse response,
@@ -192,12 +280,45 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * 套餐列表
+     * @api {post} /api/mall/packageList 套餐列表
+     * @apiName  mall.packageList
+     * @apiGroup mall
      *
-     * @param response
-     * @param brandId
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} brandId 品牌id
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 套餐列表
+     * @apiSuccess {Integer} list.id 套餐id
+     * @apiSuccess {String} list.name 套餐名称
+     * @apiSuccess {String} list.price 价格
+     * @apiSuccess {String} list.oldPrice 原价
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {Integer} list.count 交易数量
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {Object} list.productsList 商品列表
+     * @apiSuccess {Integer} list.productsList.id 商品id
+     * @apiSuccess {String} list.productsList.name 商品名称
+     * @apiSuccess {String} list.productsList.price 价格
+     * @apiSuccess {String} list.productsList.oldPrice 原价
+     * @apiSuccess {Integer} list.productsList.type 分类，1=单品，2=艺术品，3=设计师品牌
+     * @apiSuccess {String} list.productsList.place 产地
+     * @apiSuccess {String} list.productsList.labels 标签
+     * @apiSuccess {String} list.productsList.colors 颜色
+     * @apiSuccess {String} list.productsList.sizes 尺寸
+     * @apiSuccess {String} list.productsList.materials 材质
+     * @apiSuccess {String} list.productsList.description 描述
+     * @apiSuccess {String} list.productsList.cover 封面图
+     * @apiSuccess {Integer} list.productsList.merchantId 商户id
+     * @apiSuccess {String} list.productsList.merchantName 商户名称
+     * @apiSuccess {Integer} list.productsList.brandId 品牌id
+     * @apiSuccess {String} list.productsList.brandName 品牌名称
+     * @apiSuccess {Integer} list.productsList.sortId 分类id
+     * @apiSuccess {String} list.productsList.sortName 分类名称
+     * @apiSuccess {String} list.cover 封面图
+     * @apiSuccess {Integer} list.brandId 品牌id
+     * @apiSuccess {String} list.brandName 品牌名称
      */
     @RequestMapping(value = "/packageList")
     public void packageList(HttpServletResponse response,
@@ -250,10 +371,43 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * 查看套餐详情
+     * @api {post} /api/mall/packageInfo 套餐详情
+     * @apiName  mall.packageInfo
+     * @apiGroup mall
      *
-     * @param response
-     * @param packageId
+     * @apiParam {Integer} packageId 套餐id
+     *
+     * @apiSuccess {Object} packageInfo 套餐列表
+     * @apiSuccess {Integer} packageInfo.id 套餐id
+     * @apiSuccess {String} packageInfo.name 套餐名称
+     * @apiSuccess {String} packageInfo.price 价格
+     * @apiSuccess {String} packageInfo.oldPrice 原价
+     * @apiSuccess {String} packageInfo.labels 标签
+     * @apiSuccess {String} packageInfo.description 描述
+     * @apiSuccess {Integer} packageInfo.count 交易数量
+     * @apiSuccess {String} packageInfo.createTime 创建时间
+     * @apiSuccess {Object} packageInfo.productsList 商品列表
+     * @apiSuccess {Integer} packageInfo.productsList.id 商品id
+     * @apiSuccess {String} packageInfo.productsList.name 商品名称
+     * @apiSuccess {String} packageInfo.productsList.price 价格
+     * @apiSuccess {String} packageInfo.productsList.oldPrice 原价
+     * @apiSuccess {Integer} packageInfo.productsList.type 分类，1=单品，2=艺术品，3=设计师品牌
+     * @apiSuccess {String} packageInfo.productsList.place 产地
+     * @apiSuccess {String} packageInfo.productsList.labels 标签
+     * @apiSuccess {String} packageInfo.productsList.colors 颜色
+     * @apiSuccess {String} packageInfo.productsList.sizes 尺寸
+     * @apiSuccess {String} packageInfo.productsList.materials 材质
+     * @apiSuccess {String} packageInfo.productsList.description 描述
+     * @apiSuccess {String} packageInfo.productsList.cover 封面图
+     * @apiSuccess {Integer} packageInfo.productsList.merchantId 商户id
+     * @apiSuccess {String} packageInfo.productsList.merchantName 商户名称
+     * @apiSuccess {Integer} packageInfo.productsList.brandId 品牌id
+     * @apiSuccess {String} packageInfo.productsList.brandName 品牌名称
+     * @apiSuccess {Integer} packageInfo.productsList.sortId 分类id
+     * @apiSuccess {String} packageInfo.productsList.sortName 分类名称
+     * @apiSuccess {String} packageInfo.cover 封面图
+     * @apiSuccess {Integer} packageInfo.brandId 品牌id
+     * @apiSuccess {String} packageInfo.brandName 品牌名称
      */
     @RequestMapping("packageInfo")
     public void packageInfo(HttpServletResponse response,

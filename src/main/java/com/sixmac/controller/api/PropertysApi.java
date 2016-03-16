@@ -26,12 +26,30 @@ public class PropertysApi {
     private PropertysService propertysService;
 
     /**
-     * 楼盘列表
+     * @api {post} /api/property/list 地产列表
+     * @apiName  property.list
+     * @apiGroup property
      *
-     * @param response
-     * @param name
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {String} name 名称or地区
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 地产列表
+     * @apiSuccess {Integer} list.id 地产id
+     * @apiSuccess {String} list.name 地产名称
+     * @apiSuccess {String} list.cover 地产封面图
+     * @apiSuccess {String} list.address 地产地址
+     * @apiSuccess {String} list.labels 地产标签
+     * @apiSuccess {String} list.createTime 地产创建时间
+     * @apiSuccess {Object} list.childList 楼盘列表
+     * @apiSuccess {Integer} list.childList.id 楼盘id
+     * @apiSuccess {String} list.childList.name 楼盘名称
+     * @apiSuccess {String} list.childList.cover 楼盘封面图
+     * @apiSuccess {String} list.childList.address 楼盘地址
+     * @apiSuccess {String} list.childList.labels 楼盘标签
+     * @apiSuccess {String} list.childList.createTime 楼盘创建时间
+     * @apiSuccess {Object} list.childList.childList （无用字段）
+     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,

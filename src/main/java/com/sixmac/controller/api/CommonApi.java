@@ -51,26 +51,6 @@ public class CommonApi {
      * @apiSuccess {Integer} list.objectId 收藏目标id
      * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
      *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "status": "0",
-     *       "msg": "",
-     *       "data":{
-     *           "page":{
-     *               "totalNum": 1,
-     *               "totalPage": 1,
-     *               "currentPage": 1
-     *           },
-     *           "list":[
-     *              {
-     *                  "id":2,
-     *                  "objectId":1
-     *                  "objectType":1
-     *              }
-     *           ]
-     *       }
-     *     }
      */
     @RequestMapping(value = "/collectList")
     public void collectList(HttpServletResponse response,
@@ -92,13 +72,15 @@ public class CommonApi {
     }
 
     /**
-     * 收藏 or 取消收藏
+     * @api {post} /api/common/collect 收藏 or 取消收藏
+     * @apiName  common.collect
+     * @apiGroup common
      *
-     * @param response
-     * @param userId
-     * @param objectId
-     * @param objectType
-     * @param action
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} objectId 目标id
+     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品
+     * @apiParam {Integer} action 类型，0=收藏，1=取消收藏
+     *
      */
     @RequestMapping("/collect")
     public void collect(HttpServletResponse response, Integer userId, Integer objectId, Integer objectType, Integer action) {
@@ -135,11 +117,13 @@ public class CommonApi {
     }
 
     /**
-     * 分享
+     * @api {post} /api/common/share 分享
+     * @apiName  common.share
+     * @apiGroup common
      *
-     * @param response
-     * @param objectId
-     * @param objectType
+     * @apiParam {Integer} objectId 分享目标id
+     * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志
+     *
      */
     @RequestMapping("/share")
     public void share(HttpServletResponse response, Integer objectId, Integer objectType) {

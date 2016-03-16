@@ -1,11 +1,13 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
-import com.sixmac.dao.AfflatusDao;
-import com.sixmac.dao.MessageDao;
+import com.sixmac.dao.*;
 import com.sixmac.entity.Afflatus;
+import com.sixmac.entity.Image;
 import com.sixmac.entity.Message;
+import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.AfflatusService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +35,24 @@ public class AfflatusServiceImpl implements AfflatusService {
 
     @Autowired
     private MessageDao messageDao;
+
+    @Autowired
+    private ImageDao imageDao;
+
+    @Autowired
+    private CollectDao collectDao;
+
+    @Autowired
+    private GamsDao gamsDao;
+
+    @Autowired
+    private ReserveDao reserveDao;
+
+    @Autowired
+    private CommentDao commentDao;
+
+    @Autowired
+    private LabelDao labelDao;
 
     @Override
     public List<Afflatus> findAll() {
@@ -160,8 +180,21 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
-    public List<Afflatus> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId) {
-        return afflatusDao.iFindLoveList(afflatusId, type, styleId, areaId);
+    public List<BeanVo> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId) {
+        List<Afflatus> list = afflatusDao.iFindLoveList(afflatusId, type, styleId, areaId);
+        List<BeanVo> beanVoList = new ArrayList<BeanVo>();
+        BeanVo beanVo = null;
+
+        for (Afflatus afflatus : list) {
+            beanVo = new BeanVo();
+            beanVo.setId(afflatus.getId());
+            beanVo.setName(afflatus.getName());
+            beanVo.setPath(PathUtils.getRemotePath() + imageDao.findOne(afflatus.getCoverId()).getPath());
+
+            beanVoList.add(beanVo);
+        }
+
+        return beanVoList;
     }
 
     @Override

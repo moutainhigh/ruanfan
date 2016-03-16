@@ -1,7 +1,10 @@
 package com.sixmac.entity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -15,6 +18,7 @@ public class Journal {
     private Integer forwardNum;
     private Integer shareNum;
     private Date createTime;
+    private List<Image> imageList;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -68,5 +72,14 @@ public class Journal {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 }

@@ -45,12 +45,21 @@ public class JournalApi extends CommonController {
     private GamsService gamsService;
 
     /**
-     * 日志列表
+     * @api {post} /api/journal/list 日志列表
      *
-     * @param response
-     * @param userId
-     * @param pageNum
-     * @param pageSize
+     * @apiName journal.list
+     * @apiGroup journal
+     *
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} pageNum 页码
+     * @apiParam {Integer} pageSize 每页显示条数
+     *
+     * @apiSuccess {Object} list 日志列表
+     * @apiSuccess {Integer} list.id 日志id
+     * @apiSuccess {String} list.content 内容
+     * @apiSuccess {Integer} list.forwardNum 转发数
+     * @apiSuccess {Integer} list.shareNum 分享数
+     * @apiSuccess {String} list.createTime 发布时间
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -64,6 +73,11 @@ public class JournalApi extends CommonController {
 
         Page<Journal> page = journalService.iPage(userId, pageNum, pageSize);
 
+        // 获取杂志的详情图片列表
+        for (Journal journal : page.getContent()) {
+            journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
+        }
+
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
@@ -72,10 +86,19 @@ public class JournalApi extends CommonController {
     }
 
     /**
-     * 根据日志id查询日志信息
+     * @api {post} /api/journal/info 日志详情
      *
-     * @param response
-     * @param journalId
+     * @apiName journal.info
+     * @apiGroup journal
+     *
+     * @apiParam {Integer} journalId 日志id
+     *
+     * @apiSuccess {Object} journalInfo 日志详情
+     * @apiSuccess {Integer} journalInfo.id 日志id
+     * @apiSuccess {String} journalInfo.content 内容
+     * @apiSuccess {Integer} journalInfo.forwardNum 转发数
+     * @apiSuccess {Integer} journalInfo.shareNum 分享数
+     * @apiSuccess {String} journalInfo.createTime 发布时间
      */
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response, Integer journalId) {
@@ -85,12 +108,14 @@ public class JournalApi extends CommonController {
         }
 
         Journal journal = journalService.getById(journalId);
-        journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
 
         if (null == journal) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
+
+        journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
+        journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
 
         Result obj = new Result(true).data(createMap("journalInfo", journal));
         String result = JsonUtil.obj2ApiJson(obj, "user");
@@ -98,13 +123,14 @@ public class JournalApi extends CommonController {
     }
 
     /**
-     * 发布日志
+     * @api {post} /api/journal/addJournal 发布日志
      *
-     * @param request
-     * @param response
-     * @param userId
-     * @param content
-     * @param multipartRequest
+     * @apiName journal.addJournal
+     * @apiGroup journal
+     *
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {String} content 内容
+     * @apiParam {Stream} imgList 图片数组
      */
     @RequestMapping(value = "/addJournal")
     public void addJournal(ServletRequest request, HttpServletResponse response, Integer userId, String content, MultipartRequest multipartRequest) {
@@ -152,11 +178,13 @@ public class JournalApi extends CommonController {
     }
 
     /**
-     * 转发日志
+     * @api {post} /api/journal/forward 转发日志
      *
-     * @param response
-     * @param userId
-     * @param journalId
+     * @apiName journal.forward
+     * @apiGroup journal
+     *
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} journalId 日志id
      */
     @RequestMapping(value = "/forward")
     public void forward(HttpServletResponse response, Integer userId, Integer journalId) {

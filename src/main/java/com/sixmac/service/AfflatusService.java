@@ -1,6 +1,7 @@
 package com.sixmac.service;
 
 import com.sixmac.entity.Afflatus;
+import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
@@ -18,7 +19,7 @@ public interface AfflatusService extends ICommonService<Afflatus> {
     public Page<Afflatus> iPage(Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
 
     // 查询猜你所想列表
-    public List<Afflatus> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId);
+    public List<BeanVo> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId);
 
     // 审核灵感集
     public void changeCheck(Integer afflatusId, Integer status, String reason);

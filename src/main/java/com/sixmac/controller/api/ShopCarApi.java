@@ -38,12 +38,24 @@ public class ShopCarApi {
     private ProductsService productsService;
 
     /**
-     * 购物车列表
+     * @api {post} /api/shopCar/list 购物车列表
+     * @apiName  shopCar.list
+     * @apiGroup shopCar
      *
-     * @param response
-     * @param userId
-     * @param pageNum
-     * @param pageSize
+     * @apiParam {Integer} userId 用户id
+     *
+     * @apiSuccess {Object} list 购物车列表
+     * @apiSuccess {Integer} list.id 购物车id
+     * @apiSuccess {String} list.cover 商品封面图
+     * @apiSuccess {String} list.name 商品名称
+     * @apiSuccess {String} list.colors 颜色
+     * @apiSuccess {String} list.sizes 尺寸
+     * @apiSuccess {String} list.materials 材质
+     * @apiSuccess {String} list.price 价格
+     * @apiSuccess {Integer} list.count 数量
+     * @apiSuccess {Integer} list.merchantId 所属商户id
+     * @apiSuccess {Integer} list.productId 商品id
+     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -70,19 +82,21 @@ public class ShopCarApi {
     }
 
     /**
-     * 加入购物车
+     * @api {post} /api/shopCar/addShopCar 加入购物车
+     * @apiName  shopCar.addShopCar
+     * @apiGroup shopCar
      *
-     * @param response
-     * @param userId
-     * @param merchantId
-     * @param productId
-     * @param cover
-     * @param name
-     * @param colors
-     * @param sizes
-     * @param materials
-     * @param price
-     * @param count
+     * @apiParam {Integer} userId 用户id
+     * @apiParam {Integer} merchantId 所属商户id
+     * @apiParam {Integer} productId 商品id
+     * @apiParam {String} cover 商品封面图
+     * @apiParam {String} name 商品名称
+     * @apiParam {String} colors 颜色
+     * @apiParam {String} sizes 尺寸
+     * @apiParam {String} materials 材质
+     * @apiParam {String} price 价格
+     * @apiParam {Integer} count 数量
+     *
      */
     @RequestMapping("addShopCar")
     public void addShopCar(HttpServletResponse response,
@@ -118,36 +132,40 @@ public class ShopCarApi {
     }
 
     /**
-     * 删除购物车
+     * @api {post} /api/shopCar/deleteShopCar 删除购物车
+     * @apiName  shopCar.deleteShopCar
+     * @apiGroup shopCar
      *
-     * @param response
-     * @param shopcarId
+     * @apiParam {Integer} shopCarId 购物车id
+     *
      */
     @RequestMapping("deleteShopCar")
     public void deleteShopCar(HttpServletResponse response,
-                              Integer shopcarId) {
-        if (null == shopcarId) {
+                              Integer shopCarId) {
+        if (null == shopCarId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
-        Shopcar shopcar = shopcarService.getById(shopcarId);
+        Shopcar shopcar = shopcarService.getById(shopCarId);
 
         if (null == shopcar) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
 
-        shopcarService.deleteById(shopcarId);
+        shopcarService.deleteById(shopCarId);
 
         WebUtil.printApi(response, new Result(true));
     }
 
     /**
-     * 清空购物车
+     * @api {post} /api/shopCar/cleanShopCar 清空购物车
+     * @apiName  shopCar.cleanShopCar
+     * @apiGroup shopCar
      *
-     * @param response
-     * @param userId
+     * @apiParam {Integer} userId 用户id
+     *
      */
     @RequestMapping("cleanShopCar")
     public void cleanShopCar(HttpServletResponse response,
