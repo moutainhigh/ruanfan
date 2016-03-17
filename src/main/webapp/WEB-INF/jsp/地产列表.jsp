@@ -27,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="javascript:void(0)" class="btn btn-outline btn-primary btn-lg" role="button" onclick="brandList.fn.addInfo()">新增地产</a>
+                        <a href="javascript:void(0)" class="btn btn-outline btn-primary btn-lg" role="button" onclick="propertysList.fn.addInfo()">新增地产</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -45,9 +45,9 @@
                                 <thead>
                                 <tr>
                                     <th>名称</th>
-                                    <th>商品数量</th>
+                                    <th>楼盘数量</th>
                                     <th>图标</th>
-                                    <th>更新时间</th>
+                                    <th>创建时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -74,22 +74,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">分类信息</h4>
+                    <h4 class="modal-title">地产信息</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="infoForm" method="post" action="brand/save" class="form-horizontal" role="form">
-                        <input type="hidden" id="hiddenbrandId" name="brandId"/>
+                    <form id="infoForm" method="post" action="propertys/save" class="form-horizontal" role="form" enctype="multipart/form-data">
+                        <input type="hidden" id="hiddenpropertysId" name="propertysId"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">分类名称:</label>
+                            <label class="col-sm-3 control-label">地产名称:</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" id="brandName" maxlength="20" placeholder="请输入分类名称"/>
+                                <input type="text" class="form-control" id="propertysName" maxlength="20" placeholder="请输入地产名称"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">图标:</label>
                             <div class="col-sm-5">
                                 <input type="file" name="mainImage" id="mainImage" style="display:none;"/>
-                                <a href="javascript:void(0);" onclick="brandList.fn.AddImg()">
+                                <a href="javascript:void(0);" onclick="propertysList.fn.AddImg()">
                                     <img id="mainPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
                                 </a>
                             </div>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" onclick="brandList.fn.subInfo()" class="btn btn-primary">确定</button>
+                    <button type="button" onclick="propertysList.fn.subInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -116,12 +116,12 @@
                     <h4 class="modal-title">删除提示</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="brandId"/>
-                    确定删除该地产列表？
+                    <input type="hidden" id="propertysId"/>
+                    确定删除该地产？
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" onclick="brandList.fn.subDelInfo()" class="btn btn-primary">确定</button>
+                    <button type="button" onclick="propertysList.fn.subDelInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -138,15 +138,15 @@
 
 <script type="text/javascript">
 
-    var brandList = {
+    var propertysList = {
         v: {
-            id: "brandList",
+            id: "propertysList",
             list: [],
             dTable: null
         },
         fn: {
             init: function () {
-                brandList.fn.dataTableInit();
+                propertysList.fn.dataTableInit();
 
                 //套图主图预览
                 $("#mainImage").uploadPreview({
@@ -156,20 +156,20 @@
                 });
             },
             dataTableInit: function () {
-                brandList.v.dTable = $sixmac.dataTable($('#dataTables'), {
+                propertysList.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching": false,
                     "ordering": false,
                     "ajax": {
-                        "url": "brand/list",
+                        "url": "propertys/list",
                         "type": "POST"
                     },
                     "columns": [
                         {"data": "name"},
-                        {"data": "productNum"},
+                        {"data": "childNum"},
                         {"data": null},
-                        {"data": "updateTime"},
+                        {"data": "createTime"},
                         {"data": ""}
                     ],
                     "columnDefs": [
@@ -179,6 +179,10 @@
                             "<i class='fa fa-edit'></i>" +
                             "</button>" +
                             "&nbsp;&nbsp;" +
+                            "<a title='楼盘列表' class='btn btn-info btn-circle tables'>" +
+                            "<i class='fa fa-table'></i>" +
+                            "</a>" +
+                            "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
                             "</button>",
@@ -186,7 +190,7 @@
                         }
                     ],
                     "createdRow": function (row, data, index) {
-                        brandList.v.list.push(data);
+                        propertysList.v.list.push(data);
                         if (null != data.cover && data.cover != '') {
                             $('td', row).eq(2).html("<img src='" + data.cover + "' width='60px' height='60px' />");
                         } else {
@@ -199,19 +203,21 @@
                         $('td', row).eq(4).css('line-height', '65px');
                     },
                     rowCallback: function (row, data) {
-                        var items = brandList.v.list;
+                        var items = propertysList.v.list;
 
                         $('td', row).last().find(".edit").click(function () {
                             // 编辑
-                            brandList.fn.editInfo(data);
+                            propertysList.fn.editInfo(data);
                         });
+
+                        $('td', row).last().find(".tables").attr("href", 'propertys/childInfo?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
-                            if (data.productNum > 0) {
-                                $sixmac.notify("该分类有关联商品，无法删除", "error");
+                            if (data.childNum > 0) {
+                                $sixmac.notify("该地产有关联楼盘，无法删除", "error");
                             } else {
-                                brandList.fn.delInfo(data.id);
+                                propertysList.fn.delInfo(data.id);
                             }
                         });
                     },
@@ -231,9 +237,13 @@
                 $("#infoModal").modal("show");
             },
             editInfo: function (data) {
-                $('#hiddenbrandId').val(data.id);
-                $('#brandName').val(data.name);
-                $('#mainPicture').prop('src', data.cover);
+                $('#hiddenpropertysId').val(data.id);
+                $('#propertysName').val(data.name);
+                if (null == data.cover || data.cover == '') {
+                    $('#mainPicture').prop('src', 'static/images/add.jpg');
+                } else {
+                    $('#mainPicture').prop('src', data.cover);
+                }
 
                 $("#infoModal").modal("show");
             },
@@ -242,19 +252,19 @@
                 $('#mainImage').click();
             },
             delInfo: function (id) {
-                $('#brandId').val(id);
+                $('#propertysId').val(id);
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
-                var brandId = $('#brandId').val();
+                var propertysId = $('#propertysId').val();
 
-                $sixmac.ajax("brand/delete", {
-                    "brandId": brandId
+                $sixmac.ajax("propertys/delete", {
+                    "propertyId": propertysId
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
                         $("#delModal").modal("hide");
-                        brandList.v.dTable.ajax.reload(null, false);
+                        propertysList.v.dTable.ajax.reload(null, false);
                     } else {
                         $sixmac.notify("操作失败", "error");
                     }
@@ -262,18 +272,18 @@
             },
             subInfo: function () {
                 var flag = true;
-                var brandId = $('#hiddenbrandId').val();
-                var productName = $('#brandName').val();
-                var url = $('#mainImage').val();
+                var propertysId = $('#hiddenpropertysId').val();
+                var productName = $('#propertysName').val();
+                var url = $('#mainPicture').prop('src');
 
                 if (null == productName || productName == '') {
-                    $sixmac.notify("请输入分类名称", "error");
+                    $sixmac.notify("请输入地产名称", "error");
                     flag = false;
                     return;
                 }
 
-                if (null == url || url == '') {
-                    $sixmac.notify("请上传分类图标", "error");
+                if (null == url || url == '' || url == _basePath + 'static/images/add.jpg') {
+                    $sixmac.notify("请上传地产图标", "error");
                     flag = false;
                     return;
                 }
@@ -281,17 +291,17 @@
                 // 所有的验证通过后，执行新增操作
                 if (flag) {
                     $("#infoForm").ajaxSubmit({
-                        url: _basePath + "brand/save",
+                        url: _basePath + "propertys/save",
                         dataType: "json",
                         data: {
-                            "id": brandId,
+                            "id": propertysId,
                             "name": productName
                         },
                         success: function (result) {
                             if (result > 0) {
                                 $sixmac.notify("操作成功", "success");
                                 $("#infoModal").modal("hide");
-                                brandList.v.dTable.ajax.reload(null, false);
+                                propertysList.v.dTable.ajax.reload(null, false);
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }
@@ -303,7 +313,7 @@
     }
 
     $(document).ready(function () {
-        brandList.fn.init();
+        propertysList.fn.init();
     });
 
 </script>

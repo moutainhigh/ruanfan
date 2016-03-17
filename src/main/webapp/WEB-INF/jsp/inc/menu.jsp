@@ -80,7 +80,7 @@
                         <a href="virtualType/index"><i class="fa fa-cubes fa-fw"></i>虚拟体验分类</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>地产类型</a>
+                        <a href="propertys/index"><i class="fa fa-cubes fa-fw"></i>地产类型</a>
                     </li>
                 </ul>
             </li>

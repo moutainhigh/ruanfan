@@ -124,4 +124,69 @@ public class PropertysServiceImpl implements PropertysService {
     public List<Propertys> pageByParentId(Integer parentId) {
         return null;
     }
+
+    @Override
+    public Page<Propertys> page(Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
+            @Override
+            public Predicate toPredicate(Root<Propertys> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                Predicate pre = cb.notEqual(root.get("id").as(Integer.class), 0);
+                predicateList.add(pre);
+
+                Predicate pre1 = cb.equal(root.get("parentId").as(Integer.class), 0);
+                predicateList.add(pre1);
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
+
+    @Override
+    public Page<Propertys> pageChild(Integer parentId, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
+            @Override
+            public Predicate toPredicate(Root<Propertys> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                Predicate pre = cb.notEqual(root.get("id").as(Integer.class), 0);
+                predicateList.add(pre);
+
+
+                if (parentId != null) {
+                    Predicate pre1 = cb.equal(root.get("parentId").as(Integer.class), parentId);
+                    predicateList.add(pre1);
+                }
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
 }

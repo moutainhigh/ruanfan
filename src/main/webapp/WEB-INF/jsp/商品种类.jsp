@@ -77,7 +77,7 @@
                     <h4 class="modal-title">分类信息</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="infoForm" method="post" action="productType/save" class="form-horizontal" role="form">
+                    <form id="infoForm" method="post" action="productType/save" class="form-horizontal" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="hiddenProductTypeId" name="productTypeId"/>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">分类名称:</label>
@@ -233,7 +233,12 @@
             editInfo: function (data) {
                 $('#hiddenProductTypeId').val(data.id);
                 $('#productTypeName').val(data.name);
-                $('#mainPicture').prop('src', data.url);
+
+                if (null == data.url || data.url == '') {
+                    $('#mainPicture').prop('src', 'static/images/add.jpg');
+                } else {
+                    $('#mainPicture').prop('src', data.url);
+                }
 
                 $("#infoModal").modal("show");
             },
@@ -264,7 +269,7 @@
                 var flag = true;
                 var productTypeId = $('#hiddenProductTypeId').val();
                 var productName = $('#productTypeName').val();
-                var url = $('#mainImage').val();
+                var url = $('#mainPicture').prop('src');
 
                 if (null == productName || productName == '') {
                     $sixmac.notify("请输入分类名称", "error");
@@ -272,7 +277,7 @@
                     return;
                 }
 
-                if (null == url || url == '') {
+                if (null == url || url == '' || url == _basePath + 'static/images/add.jpg') {
                     $sixmac.notify("请上传分类图标", "error");
                     flag = false;
                     return;
