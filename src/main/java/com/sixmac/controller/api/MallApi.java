@@ -119,21 +119,21 @@ public class MallApi extends CommonController {
      *
      * @apiParam {Integer} spikesId 秒杀id       <必传 />
      *
-     * @apiSuccess {Object} list 秒杀列表
-     * @apiSuccess {Integer} list.id 秒杀id
-     * @apiSuccess {String} list.name 秒杀名称
-     * @apiSuccess {String} list.price 价格
-     * @apiSuccess {String} list.oldPrice 原价
-     * @apiSuccess {String} list.startTime 开始时间
-     * @apiSuccess {String} list.endTime 结束时间
-     * @apiSuccess {Integer} list.count 交易数量
-     * @apiSuccess {String} list.labels 标签
-     * @apiSuccess {String} list.colors 颜色
-     * @apiSuccess {String} list.sizes 尺寸
-     * @apiSuccess {String} list.materials 材质
-     * @apiSuccess {String} list.description 描述
-     * @apiSuccess {String} list.createTime 创建时间
-     * @apiSuccess {String} list.cover 封面图
+     * @apiSuccess {Object} spikeInfo 秒杀详情
+     * @apiSuccess {Integer} spikeInfo.id 秒杀id
+     * @apiSuccess {String} spikeInfo.name 秒杀名称
+     * @apiSuccess {String} spikeInfo.price 价格
+     * @apiSuccess {String} spikeInfo.oldPrice 原价
+     * @apiSuccess {String} spikeInfo.startTime 开始时间
+     * @apiSuccess {String} spikeInfo.endTime 结束时间
+     * @apiSuccess {Integer} spikeInfo.count 交易数量
+     * @apiSuccess {String} spikeInfo.labels 标签
+     * @apiSuccess {String} spikeInfo.colors 颜色
+     * @apiSuccess {String} spikeInfo.sizes 尺寸
+     * @apiSuccess {String} spikeInfo.materials 材质
+     * @apiSuccess {String} spikeInfo.description 描述
+     * @apiSuccess {String} spikeInfo.createTime 创建时间
+     * @apiSuccess {String} spikeInfo.cover 封面图
      *
      */
     @RequestMapping("spikeInfo")
@@ -152,7 +152,7 @@ public class MallApi extends CommonController {
 
         spikes.setCover(PathUtils.getRemotePath() + imageService.getById(spikes.getCoverId()).getPath());
 
-        Result obj = new Result(true).data(spikes);
+        Result obj = new Result(true).data(createMap("spikeInfo", spikes));
         String result = JsonUtil.obj2ApiJson(obj, "coverId");
         WebUtil.printApi(response, result);
     }
