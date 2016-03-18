@@ -23,6 +23,13 @@ public interface Constant {
 
     String MEMBER_TYPE_BUSINESS = "BUSINESS";
 
+    // 新建用户默认头像
+    String DEFAULT_HEAD_PATH = "static/images/default.png";
+
+    // 删除标记
+    Integer IS_CUT_YES = 1;
+    Integer IS_CUT_NO = 0;
+
     // 点赞状态
     Integer GAM_LOVE_YES = 0;  // 已赞
     Integer GAM_LOVE_NO = 1;   // 未赞
@@ -99,4 +106,9 @@ public interface Constant {
     // 设计师类型
     Integer DESIGNER_TYPE_ONE = 1;    // 独立设计师
     Integer DESIGNER_TYPE_TWO = 2;    // 设计公司
+
+    // 个人消息类型
+    Integer MESSAGE_PLUS_DESIGNERS = 1;   // 设计师
+    Integer MESSAGE_PLUS_MERCHANTS = 2;   // 商户
+    Integer MESSAGE_PLUS_USERS = 3;       // 用户
 }

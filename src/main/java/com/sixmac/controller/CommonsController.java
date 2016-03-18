@@ -44,6 +44,34 @@ public class CommonsController {
     @Autowired
     private VrtypeService vrtypeService;
 
+    @Autowired
+    private ProvinceService provinceService;
+
+    @Autowired
+    private CityService cityService;
+
+    /**
+     * 省份列表
+     *
+     * @return
+     */
+    @RequestMapping("/provinceList")
+    @ResponseBody
+    public List<Province> provinceList() {
+        return provinceService.findAll();
+    }
+
+    /**
+     * 根据省份id查询城市列表
+     *
+     * @return
+     */
+    @RequestMapping("/cityList")
+    @ResponseBody
+    public List<City> cityList(Integer provinceId) {
+        return cityService.findListByProvinceId(provinceId);
+    }
+
     /**
      * 设计师列表
      *

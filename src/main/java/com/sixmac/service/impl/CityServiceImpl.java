@@ -66,4 +66,9 @@ public class CityServiceImpl implements CityService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<City> findListByProvinceId(Integer provinceId) {
+        return cityDao.findListByProvinceId(provinceId);
+    }
 }

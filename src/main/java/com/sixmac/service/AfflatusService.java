@@ -23,4 +23,7 @@ public interface AfflatusService extends ICommonService<Afflatus> {
 
     // 审核灵感集
     public void changeCheck(Integer afflatusId, Integer status, String reason);
+
+    // 根据设计师id查询对应的灵感集列表
+    public List<Afflatus> findListByDesignerId(Integer designerId);
 }

@@ -20,9 +20,11 @@ public class Designers {
     private City city;
     private Integer star;
     private String price;
-    private String desc;
+    private String content;
+    private String description;
     private String descs;
     private Integer isCheck;
+    private Integer isCut;
     private Integer status;
     private Date createTime;
     private List<Gams> gamsList;
@@ -120,12 +122,20 @@ public class Designers {
         this.price = price;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getContent() {
+        return content;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDescs() {
@@ -142,6 +152,14 @@ public class Designers {
 
     public void setIsCheck(Integer isCheck) {
         this.isCheck = isCheck;
+    }
+
+    public Integer getIsCut() {
+        return isCut;
+    }
+
+    public void setIsCut(Integer isCut) {
+        this.isCut = isCut;
     }
 
     public Integer getStatus() {

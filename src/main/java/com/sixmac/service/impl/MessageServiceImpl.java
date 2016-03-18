@@ -66,4 +66,9 @@ public class MessageServiceImpl implements MessageService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Message> findListByType(Integer type) {
+        return messageDao.findListByType(type, 0);
+    }
 }

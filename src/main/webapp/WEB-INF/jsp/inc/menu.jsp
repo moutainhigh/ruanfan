@@ -11,7 +11,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>用户管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>设计师列表</a>
+                        <a href="designers/index"><i class="fa fa-plus-square fa-fw"></i>设计师列表</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>商户列表</a>

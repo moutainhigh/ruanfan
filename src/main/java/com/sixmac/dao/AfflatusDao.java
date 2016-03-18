@@ -17,4 +17,7 @@ public interface AfflatusDao extends JpaRepository<Afflatus, Integer>, JpaSpecif
 
     @Query("select a from Afflatus a where a.style.id = ?1")
     public List<Afflatus> iFindListByStyleId(Integer styleId);
+
+    @Query("select a from Afflatus a where a.designer.id = ?1")
+    public List<Afflatus> findListByDesignerId(Integer designerId);
 }

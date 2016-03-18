@@ -6,10 +6,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
 import com.sixmac.entity.vo.CodeVo;
-import com.sixmac.service.CityService;
-import com.sixmac.service.FeedbackService;
-import com.sixmac.service.OrdersinfoService;
-import com.sixmac.service.UsersService;
+import com.sixmac.service.*;
 import com.sixmac.utils.*;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,9 @@ public class UsersApi extends CommonController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private MessageService messageService;
 
     /**
      * @api {post} /api/users/sendCode 发送验证码
@@ -152,6 +152,7 @@ public class UsersApi extends CommonController {
         users.setType(1);
         users.setStatus(0);
         users.setCreateTime(new Date());
+        users.setHeadPath(Constant.DEFAULT_HEAD_PATH);
 
         try {
             Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
@@ -598,6 +599,29 @@ public class UsersApi extends CommonController {
         feedbackService.create(feedback);
 
         WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/users/messageList 系统消息列表
+     * @apiName  users.messageList
+     * @apiGroup users
+     *
+     * @apiParam {Integer} type 用户类型，1=设计师，2=商户，3=用户      <必传 />
+     *
+     * @apiSuccess {Object} list 系统消息列表
+     * @apiSuccess {Integer} list.id 消息id
+     * @apiSuccess {String} list.title 标题
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {String} list.createTime 创建时间
+     *
+     */
+    @RequestMapping(value = "/messageList")
+    public void messageList(HttpServletResponse response, Integer type) {
+        List<Message> list = messageService.findListByType(type);
+
+        Result obj = new Result(true).data(list);
+        String result = JsonUtil.obj2ApiJson(obj, "type");
+        WebUtil.printApi(response, result);
     }
 
     /**

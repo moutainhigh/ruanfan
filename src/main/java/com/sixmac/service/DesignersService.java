@@ -15,4 +15,10 @@ public interface DesignersService extends ICommonService<Designers> {
 
     // 根据设计师id查询作品列表
     public Page<Works> iPageWorks(Integer designerId, Integer pageNum, Integer pageSize);
+
+    // 设计师列表
+    public Page<Designers> page(String mobile, String nickName, Integer status, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
+
+    // 审核设计师
+    public void changeCheck(Integer designerId, Integer isCheck, String reason);
 }

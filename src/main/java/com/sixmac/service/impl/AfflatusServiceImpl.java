@@ -5,6 +5,7 @@ import com.sixmac.dao.*;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Message;
+import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.AfflatusService;
 import com.sixmac.utils.PathUtils;
@@ -34,25 +35,10 @@ public class AfflatusServiceImpl implements AfflatusService {
     private AfflatusDao afflatusDao;
 
     @Autowired
-    private MessageDao messageDao;
+    private MessageplusDao messageplusDao;
 
     @Autowired
     private ImageDao imageDao;
-
-    @Autowired
-    private CollectDao collectDao;
-
-    @Autowired
-    private GamsDao gamsDao;
-
-    @Autowired
-    private ReserveDao reserveDao;
-
-    @Autowired
-    private CommentDao commentDao;
-
-    @Autowired
-    private LabelDao labelDao;
 
     @Override
     public List<Afflatus> findAll() {
@@ -207,9 +193,10 @@ public class AfflatusServiceImpl implements AfflatusService {
         afflatusDao.save(afflatus);
 
         // 添加系统消息
-        Message message = new Message();
+        Messageplus message = new Messageplus();
         message.setTitle("系统消息");
-        message.setType(Constant.MESSAGE_DESIGNERS);
+        message.setSourceId(afflatus.getDesigner().getId());
+        message.setType(Constant.MESSAGE_PLUS_DESIGNERS);
         if (afflatus.getType() == 1) {
             message.setDescription("发布的灵感单图审核" + (status == 1 ? "通过" : "不通过，驳回原因：" + reason));
         } else {
@@ -217,6 +204,11 @@ public class AfflatusServiceImpl implements AfflatusService {
         }
         message.setCreateTime(new Date());
 
-        messageDao.save(message);
+        messageplusDao.save(message);
+    }
+
+    @Override
+    public List<Afflatus> findListByDesignerId(Integer designerId) {
+        return afflatusDao.findListByDesignerId(designerId);
     }
 }
