@@ -156,8 +156,9 @@
                     },
                     rowCallback: function (row, data) {
                         var items = propertyList.v.list;
+                        var parentId = $('#parentId').val();
 
-                        $('td', row).last().find(".edit").attr("href", 'propertys/addChild?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'propertys/addChild?id=' + data.id + '&parentId=' + parentId);
 
                         $('td', row).last().find(".delete").click(function () {
                             propertyList.fn.delInfo(data.id);

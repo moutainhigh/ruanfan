@@ -101,7 +101,7 @@
                                 <img class="imgs" name="kfImage" src="static/images/add.jpg" style="height: 100px;width: 100px; z-index: 1;" onclick="propertyInfo.fn.AddImg2()"/>
                                 <input name="imageIdTemp" type="hidden"/>
                                 <input type="text" class="form-control" name="urlInfo" maxlength="200" style="width: 280px;margin-top: 5px;" placeholder="请输入展示链接"/>
-                                <input type="text" class="form-control" name="qq" maxlength="200" style="width: 280px;margin-top: 5px;margin-bottom: 5px;" placeholder="客服QQ"/>
+                                <input type="text" class="form-control" name="qq" maxlength="20" style="width: 280px;margin-top: 5px;margin-bottom: 5px;" placeholder="客服QQ"/>
                                 <button type="button" class="btn btn-primary" onclick="propertyInfo.fn.clearDiv(this)">删除</button>
                             </div>
                         </div>
@@ -131,10 +131,10 @@
             dTable: null,
             mainImageStatus: 0,
             imageSize: 0,
-            hxImages: new Array(),
-            kfImages: new Array(),
-            urls: new Array(),
-            qqs: new Array()
+            hxImages: '',
+            kfImages: '',
+            urls: '',
+            qqs: ''
         },
         fn: {
             init: function () {
@@ -178,12 +178,12 @@
             getSerImages: function () {
                 var imgList = ${imageList };
 
-                // 计算当前灵感图数量
+                // 计算当前户型数量
                 propertyInfo.v.imageSize = imgList.length;
 
                 $.each(imgList, function (i, item) {
                     if (null != item) {
-                        propertyInfo.fn.insertImage(item.path, item.id, item.description);
+                        propertyInfo.fn.insertImage(item.path, item.id, item.serverPath, item.url, item.qq);
                     } else {
                         $('#laseBaseDiv').html('暂无');
                     }
@@ -239,7 +239,7 @@
 
                 propertyInfo.v.imageSize = propertyInfo.v.imageSize + 1;
             },
-            insertImage: function (path, pathK, id, url, qq) {
+            insertImage: function (path, id, pathK, url, qq) {
                 var tempDiv = $("#tempDiv").clone();
                 tempDiv.prop('id', '');
                 tempDiv.css("display", "block");
@@ -285,49 +285,105 @@
 
                 // 检测户型数据是否合格
                 $("img[name='hxImage']").each(function (index, item) {
-                    if($(this).prop('src') == 'static/images/add.jpg'){
-                        $sixmac.notify("户型图片不能为空", "error");
-                        flag = false;
-                        return;
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        if ($(this).prop('src') == _basePath + 'static/images/add.jpg') {
+                            flag = false;
+                            return;
+                        }
+                    }
+                });
+
+                if (!flag) {
+                    $sixmac.notify("户型图片不能为空", "error");
+                    return;
+                }
+
+                $("img[name='kfImage']").each(function (index, item) {
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        if ($(this).prop('src') == _basePath + 'static/images/add.jpg') {
+                            flag = false;
+                            return;
+                        }
+                    }
+                });
+
+                if (!flag) {
+                    $sixmac.notify("客服头像不能为空", "error");
+                    return;
+                }
+
+                $("input[name='urlInfo']").each(function (index, item) {
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        if (null == $(this).val() || $(this).val() == '') {
+                            flag = false;
+                            return;
+                        }
+                    }
+                });
+
+                if (!flag) {
+                    $sixmac.notify("展示链接不能为空", "error");
+                    return;
+                }
+
+                $("input[name='qq']").each(function (index, item) {
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        if (null == $(this).val() || $(this).val() == '') {
+                            flag = false;
+                            return;
+                        }
+                    }
+                });
+
+                if (!flag) {
+                    $sixmac.notify("客服QQ不能为空", "error");
+                    return;
+                }
+
+                return flag;
+            },
+            getData: function () {
+                $("img[name='hxImage']").each(function (index, item) {
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        propertyInfo.v.hxImages += $(this).prop('src') + ',';
                     }
                 });
 
                 $("img[name='kfImage']").each(function (index, item) {
-                    if($(this).prop('src') == 'static/images/add.jpg'){
-                        $sixmac.notify("客服头像不能为空", "error");
-                        flag = false;
-                        return;
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        propertyInfo.v.kfImages += $(this).prop('src') + ',';
                     }
                 });
 
                 $("input[name='urlInfo']").each(function (index, item) {
-                    if($(this).prop('src') == 'static/images/add.jpg'){
-                        $sixmac.notify("客服头像不能为空", "error");
-                        flag = false;
-                        return;
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        propertyInfo.v.urls += $(this).val().trim() + ',';
                     }
                 });
 
                 $("input[name='qq']").each(function (index, item) {
-                    if($(this).prop('src') == 'static/images/add.jpg'){
-                        $sixmac.notify("客服头像不能为空", "error");
-                        flag = false;
-                        return;
+                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
+                        propertyInfo.v.qqs += $(this).val().trim() + ',';
                     }
                 });
-
-                return flag;
             },
             subInfo: function () {
                 // 所有的验证通过后，执行新增操作
                 if (propertyInfo.fn.checkData()) {
+                    propertyInfo.fn.getData();
+
                     $("#propertyInfoForm").ajaxSubmit({
-                        url: _basePath + "propertyInfo/addChildInfo",
+                        url: _basePath + "propertys/addChildInfo",
                         dataType: "json",
-                        data: {},
+                        data: {
+                            "hxImages": propertyInfo.v.hxImages,
+                            "kfImages": propertyInfo.v.kfImages,
+                            "urls": propertyInfo.v.urls,
+                            "qqs": propertyInfo.v.qqs
+                        },
                         success: function (result) {
                             if (result > 0) {
-                                window.location.href = _basePath + "propertyInfo/index";
+                                window.location.href = _basePath + "propertys/index";
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }

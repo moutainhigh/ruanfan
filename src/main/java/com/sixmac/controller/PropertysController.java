@@ -4,12 +4,15 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.Image;
+import com.sixmac.entity.Propertyinfo;
 import com.sixmac.entity.Propertys;
 import com.sixmac.entity.Vrtype;
 import com.sixmac.service.ImageService;
+import com.sixmac.service.PropertyinfoService;
 import com.sixmac.service.PropertysService;
 import com.sixmac.service.VrtypeService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +39,7 @@ public class PropertysController extends CommonController {
     private PropertysService propertysService;
 
     @Autowired
-    private ImageService imageService;
+    private PropertyinfoService propertyInfoService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -78,7 +81,7 @@ public class PropertysController extends CommonController {
 
         // 循环查找每个楼盘的户型信息
         for (Propertys propertys : page.getContent()) {
-            propertys.setChildNum(imageService.iFindList(propertys.getId(), Constant.IMAGE_PROPERTYS).size());
+            propertys.setChildNum(propertyInfoService.findListByPropertyId(propertys.getId()).size());
         }
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
@@ -161,14 +164,16 @@ public class PropertysController extends CommonController {
             Propertys property = propertysService.getById(id);
             model.addAttribute("propertyInfo", property);
 
-            // 如果灵感集不为空，则查询对应的图片集合
+            // 如果楼盘信息不为空，则查询对应的户型信息集合
             if (null != property) {
-                List<Image> imageList = imageService.iFindList(property.getId(), Constant.IMAGE_PROPERTYS);
-                for (Image image : imageList) {
+                List<Propertyinfo> propertyList = propertyInfoService.findListByPropertyId(id);
+                for (Propertyinfo propertyInfo : propertyList) {
                     map = new HashMap<String, Object>();
-                    map.put("id", image.getId());
-                    map.put("path", image.getPath());
-                    map.put("description", image.getDescription());
+                    map.put("id", propertyInfo.getId());
+                    map.put("path", propertyInfo.getPath());
+                    map.put("serverPath", propertyInfo.getServerPath());
+                    map.put("url", propertyInfo.getUrl());
+                    map.put("qq", propertyInfo.getQq());
 
                     list.add(map);
                 }
@@ -196,8 +201,10 @@ public class PropertysController extends CommonController {
                                 String address,
                                 String labels,
                                 Integer parentId,
-                                String tempAddImages,
-                                String tempDelImages,
+                                String hxImages,
+                                String kfImages,
+                                String urls,
+                                String qqs,
                                 MultipartRequest multipartRequest) {
         try {
             Propertys propertys = null;
@@ -227,23 +234,27 @@ public class PropertysController extends CommonController {
                 propertysService.create(propertys);
             }
 
+            // 先清除所有相关联的户型信息
+            propertyInfoService.clearInfoByPropertyId(propertys.getId());
+
             // 保存户型图片信息
-            String[] addStrings = tempAddImages.split(",");
-            for (String addStr : addStrings) {
-                if (null != addStr && !addStr.equals("")) {
-                    image = imageService.getById(Integer.parseInt(addStr));
-                    image.setObjectId(propertys.getId());
-                    image.setObjectType(Constant.IMAGE_PROPERTYS);
+            String[] hxStrings = hxImages.split(",");
+            String[] kfStrings = kfImages.split(",");
+            String[] urlStrings = urls.split(",");
+            String[] qqStrings = qqs.split(",");
 
-                    imageService.update(image);
-                }
-            }
+            Propertyinfo propertyInfo = null;
 
-            // 删除户型图片信息
-            String[] delStrings = tempDelImages.split(",");
-            for (String delStr : delStrings) {
-                if (null != delStr && !delStr.equals("")) {
-                    imageService.deleteById(Integer.parseInt(delStr));
+            for (int i = 0; i < hxStrings.length; i++) {
+                if (!hxStrings[i].equals("") && !kfStrings[i].equals("") && !urlStrings[i].equals("") && !qqStrings[i].equals("")) {
+                    propertyInfo = new Propertyinfo();
+                    propertyInfo.setPath(hxStrings[i].replace(PathUtils.getRemotePath(), ""));
+                    propertyInfo.setServerPath(kfStrings[i].replace(PathUtils.getRemotePath(), ""));
+                    propertyInfo.setUrl(urlStrings[i]);
+                    propertyInfo.setQq(qqStrings[i]);
+                    propertyInfo.setProperty(propertys);
+
+                    propertyInfoService.create(propertyInfo);
                 }
             }
 
