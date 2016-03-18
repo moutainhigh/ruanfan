@@ -1,7 +1,9 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.MessageplusDao;
 import com.sixmac.dao.ProductsDao;
+import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Products;
 import com.sixmac.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Autowired
     private ProductsDao productsDao;
+
+    @Autowired
+    private MessageplusDao messageplusDao;
 
     @Override
     public List<Products> findAll() {
@@ -115,5 +121,70 @@ public class ProductsServiceImpl implements ProductsService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public Page<Products> page(String name, String merchantName, Integer isCheck, Integer type, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Products> page = productsDao.findAll(new Specification<Products>() {
+            @Override
+            public Predicate toPredicate(Root<Products> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                if (name != null) {
+                    Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
+                    predicateList.add(pre);
+                }
+
+                if (merchantName != null) {
+                    Predicate pre = cb.like(root.get("merchant").get("nickName").as(String.class), "%" + merchantName + "%");
+                    predicateList.add(pre);
+                }
+
+                if (isCheck != null) {
+                    Predicate pre = cb.equal(root.get("isCheck").as(Integer.class), isCheck);
+                    predicateList.add(pre);
+                }
+
+                if (type != null) {
+                    Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
+                    predicateList.add(pre);
+                }
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
+
+    @Override
+    @Transactional
+    public void changeCheck(Integer productId, Integer isCheck, String reason) {
+        Products products = productsDao.findOne(productId);
+        products.setIsCheck(isCheck);
+
+        // 修改审核状态
+        productsDao.save(products);
+
+        // 添加系统消息
+        Messageplus message = new Messageplus();
+        message.setTitle("系统消息");
+        message.setSourceId(products.getMerchant().getId());
+        message.setType(Constant.MESSAGE_PLUS_MERCHANTS);
+        message.setDescription("发布的商品 " + products.getName() + " 审核" + (isCheck == 1 ? "通过" : "不通过，驳回原因：" + reason));
+        message.setCreateTime(new Date());
+
+        messageplusDao.save(message);
     }
 }

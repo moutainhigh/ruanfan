@@ -11,4 +11,10 @@ public interface ProductsService extends ICommonService<Products> {
 
     // 商品列表
     public Page<Products> iPage(Integer type, String name, Integer brandId, Integer sortId, Integer isHot, Integer pageNum, Integer pageSize);
+
+    // 商品列表
+    public Page<Products> page(String name, String merchantName, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
+
+    // 审核商品
+    public void changeCheck(Integer productId, Integer isCheck, String reason);
 }

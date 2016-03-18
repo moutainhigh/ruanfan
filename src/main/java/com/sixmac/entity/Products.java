@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -33,6 +34,7 @@ public class Products {
     private String brandName;
     private Integer sortId;
     private String sortName;
+    private Date createTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -247,5 +249,15 @@ public class Products {
 
     public void setSortName(String sortName) {
         this.sortName = sortName;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "createTime")
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

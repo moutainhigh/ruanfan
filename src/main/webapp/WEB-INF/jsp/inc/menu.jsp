@@ -29,7 +29,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>商品管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>商品列表</a>
+                        <a href="product/index"><i class="fa fa-plus-square fa-fw"></i>商品列表</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>商品套餐</a>
