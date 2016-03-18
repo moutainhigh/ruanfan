@@ -39,6 +39,9 @@ public class CommonsController {
     private ProductsService productsService;
 
     @Autowired
+    private ProducttypeService producttypeService;
+
+    @Autowired
     private LabelService labelService;
 
     @Autowired
@@ -49,6 +52,31 @@ public class CommonsController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private MerchantsService merchantsService;
+
+    /**
+     * 发布人列表
+     *
+     * @return
+     */
+    @RequestMapping("/merchantList")
+    @ResponseBody
+    public List<Merchants> merchantList() {
+        return merchantsService.findAll();
+    }
+
+    /**
+     * 商品分类列表
+     *
+     * @return
+     */
+    @RequestMapping("/sortList")
+    @ResponseBody
+    public List<Producttype> sortList() {
+        return producttypeService.findAll();
+    }
 
     /**
      * 省份列表

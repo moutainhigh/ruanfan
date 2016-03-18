@@ -85,6 +85,8 @@
 <script src="static/js/sb-admin-2.js"></script>
 
 <script src="static/js/global.js"></script>
+<script src="static/js/jscolor.js"></script>
+<script src="static/js/jscolor.min.js"></script>
 
 <script type="text/javascript">
     $(function () {
