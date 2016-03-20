@@ -111,4 +111,12 @@ public interface Constant {
     Integer MESSAGE_PLUS_DESIGNERS = 1;   // 设计师
     Integer MESSAGE_PLUS_MERCHANTS = 2;   // 商户
     Integer MESSAGE_PLUS_USERS = 3;       // 用户
+
+    // 是否推荐
+    Integer RECOMMEND_STATUS_YES = 1;
+    Integer RECOMMEND_STATUS_NO = 0;
+
+    // 是否上架
+    Integer ADDED_STATUS_YES = 0;
+    Integer ADDED_STATUS_NO = 1;
 }

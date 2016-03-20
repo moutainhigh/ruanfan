@@ -132,7 +132,6 @@ public class AfflatusController extends CommonController {
     /**
      * 保存灵感集
      *
-     * @param response
      * @param id
      * @param name
      * @param type
@@ -147,8 +146,7 @@ public class AfflatusController extends CommonController {
      */
     @RequestMapping(value = "/save")
     @ResponseBody
-    public Integer save(HttpServletResponse response,
-                        Integer id,
+    public Integer save(Integer id,
                         String name,
                         Integer type,
                         Integer styleId,

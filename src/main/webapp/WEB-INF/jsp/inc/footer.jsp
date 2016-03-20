@@ -84,6 +84,10 @@
 <!-- Custom Theme JavaScript -->
 <script src="static/js/sb-admin-2.js"></script>
 
+<script src="ueditor1_4_3/ueditor.config.js"></script>
+<script src="ueditor1_4_3/ueditor.all.js"></script>
+<script src="ueditor1_4_3/lang/zh-cn/zh-cn.js"></script>
+
 <script src="static/js/global.js"></script>
 <script src="static/js/jscolor.js"></script>
 <script src="static/js/jscolor.min.js"></script>

@@ -18,7 +18,6 @@
     <mvc:annotation-driven />
 
     <mvc:resources mapping="/static/**" location="/static/"/>
-    <mvc:resources mapping="/doc/**" location="/doc/"/>
 
     <mvc:resources mapping="/ueditor1_4_3/**" location="/ueditor1_4_3/"/>
 
