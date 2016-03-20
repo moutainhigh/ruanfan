@@ -732,11 +732,11 @@
                     var responseText = (ret._raw || ret),
                         json = utils.str2json(responseText);
                     if (json.state == 'SUCCESS') {
-                        uploadVideoList[$file.index()] = {
+                        uploadVideoList.push({
                             'url': json.url,
                             'type': json.type,
                             'original':json.original
-                        };
+                        });
                         $file.append('<span class="success"></span>');
                     } else {
                         $file.find('.error').text(json.state).show();
