@@ -28,7 +28,7 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form id="productForm" method="post" action="product/save" class="form-horizontal" role="form">
+                        <form id="productForm" method="post" action="product/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
                             <input type="hidden" id="productId" name="id" value="${product.id}">
                             <input type="hidden" id="tempCoverId" value="${product.coverId}">
                             <input type="hidden" id="merchantId" value="${product.merchant.id}">
@@ -75,8 +75,9 @@
                                 <div class="col-sm-4">
                                     <select id="typeList" style="width: 200px;" class="form-control">
                                         <option value="">请选择分类</option>
-                                        <option value="1">独立商品</option>
-                                        <option value="2">设计公司</option>
+                                        <option value="1">单品</option>
+                                        <option value="2">艺术品</option>
+                                        <option value="3">设计师品牌</option>
                                     </select>
                                 </div>
                             </div>
@@ -165,7 +166,7 @@
                             </div>
                         </form>
 
-                        <span style="display: none;" id="spqq">${product.content}</span>
+                        <span style="display: none;" id="spqq">${product.description}</span>
 
                         <form id="tempImageForm" method="post" action="common/addTempImage" enctype="multipart/form-data" class="form-horizontal" role="form">
                             <input type="file" name="tempImage" id="tempImage" data-rule="required" style="display:none;" onchange="product.fn.saveTempImage()"/>
@@ -310,6 +311,7 @@
                 tempDiv.css("display", "block");
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
+                tempDiv.children(":first").next().next().next().prop("value", id);
                 tempDiv.insertBefore("#lastImageDiv");
 
                 // 让所有的克隆出来的
@@ -453,7 +455,7 @@
                 }
 
                 var val = $('input:radio[name="settingCover"]:checked').val();
-                if (null == val) {
+                if (null == val || val == 'undefined') {
                     $sixmac.notify("请选择一张封面图", "error");
                     flag = false;
                     return;
@@ -482,7 +484,7 @@
                                 "name": $('#name').val(),
                                 "price": $('#price').val(),
                                 "oldPrice": $('#oldPrice').val(),
-                                "coverId": $('input:radio[name="settingCover"]:checked').val(),
+                                "coverId": $("input[type='radio']:checked").val(),
                                 "place": $('#place').val(),
                                 "labels": $('#labels').val(),
                                 "colors": $('#colors').val(),
