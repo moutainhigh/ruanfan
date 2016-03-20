@@ -88,10 +88,10 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">地理位置:</label>
                                 <div class="col-sm-2">
-                                    <select id="provinceList" style="width: 200px;" class="form-control"></select>
+                                    <select id="provinceList" style="width: 150px;" class="form-control"></select>
                                 </div>
-                                <div class="col-sm-2" style="margin-left: -3%">
-                                    <select id="cityList" style="width: 200px;" class="form-control"></select>
+                                <div class="col-sm-2" style="margin-left: 0px;">
+                                    <select id="cityList" style="width: 150px;" class="form-control"></select>
                                 </div>
                             </div>
 

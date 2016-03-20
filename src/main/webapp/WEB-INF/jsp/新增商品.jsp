@@ -41,7 +41,7 @@
                                 <label class="col-sm-2 control-label">商品名称:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="name" name="name" maxlength="20" data-rule="required" value="${product.name}" placeholder="请输入商品名称"/>
+                                    <input type="text" class="form-control" id="name" name="name" maxlength="50" data-rule="required" value="${product.name}" placeholder="请输入商品名称"/>
                                 </div>
                             </div>
 
@@ -49,7 +49,7 @@
                                 <label class="col-sm-2 control-label">现价:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="price" name="price" maxlength="11" data-rule="required" value="${product.price}" placeholder="请输入现价"/>
+                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" data-rule="required" value="${product.price}" placeholder="请输入现价"/>
                                 </div>
                             </div>
 
@@ -57,7 +57,7 @@
                                 <label class="col-sm-2 control-label">原价:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="oldPrice" name="oldPrice" maxlength="11" data-rule="required" value="${product.oldPrice}" placeholder="请输入原价"/>
+                                    <input type="text" class="form-control" id="oldPrice" name="oldPrice" maxlength="20" data-rule="required" value="${product.oldPrice}" placeholder="请输入原价"/>
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@
                                 <label class="col-sm-2 control-label">产地:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="place" name="place" maxlength="11" data-rule="required" value="${product.place}" placeholder="请输入产地"/>
+                                    <input type="text" class="form-control" id="place" name="place" maxlength="200" data-rule="required" value="${product.place}" placeholder="请输入产地"/>
                                 </div>
                             </div>
 
@@ -117,7 +117,7 @@
                                 <label class="col-sm-2 control-label">标签:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="labels" name="labels" maxlength="11" data-rule="required" value="${product.labels}" placeholder="使用空格隔开"/>
+                                    <input type="text" class="form-control" id="labels" name="labels" maxlength="200" data-rule="required" value="${product.labels}" placeholder="使用空格隔开"/>
                                 </div>
                             </div>
 
@@ -136,7 +136,7 @@
                                 <label class="col-sm-2 control-label">尺寸:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="sizes" name="sizes" maxlength="11" data-rule="required" value="${product.sizes}" placeholder="使用空格隔开"/>
+                                    <input type="text" class="form-control" id="sizes" name="sizes" maxlength="200" data-rule="required" value="${product.sizes}" placeholder="使用空格隔开"/>
                                 </div>
                             </div>
 
@@ -144,7 +144,7 @@
                                 <label class="col-sm-2 control-label">材质:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="materials" name="materials" maxlength="11" data-rule="required" value="${product.materials}" placeholder="使用空格隔开"/>
+                                    <input type="text" class="form-control" id="materials" name="materials" maxlength="200" data-rule="required" value="${product.materials}" placeholder="使用空格隔开"/>
                                 </div>
                             </div>
 
