@@ -27,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="product/add" class="btn btn-outline btn-primary btn-lg" role="button">新增秒杀</a>
+                        <a href="spikes/add" class="btn btn-outline btn-primary btn-lg" role="button">新增秒杀</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -80,6 +80,28 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">删除提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="spikeId" />
+                        确定删除该秒杀信息？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" onclick="spikeList.fn.subInfo()" class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- Modal end -->
 
     </div>
     <!-- /#page-wrapper -->
@@ -159,7 +181,7 @@
                     rowCallback: function (row, data) {
                         var items = spikeList.v.list;
 
-                        $('td', row).last().find(".edit").attr("href", 'product/add?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'spikes/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
@@ -172,6 +194,25 @@
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
+                    }
+                });
+            },
+            delInfo: function (id) {
+                $('#spikeId').val(id);
+                $("#delModal").modal("show");
+            },
+            subInfo: function () {
+                var spikeId = $('#spikeId').val();
+
+                $sixmac.ajax("spikes/delete", {
+                    "spikeId": spikeId,
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        $("#delModal").modal("hide");
+                        spikeList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
                     }
                 });
             }
