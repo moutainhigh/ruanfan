@@ -8,7 +8,8 @@
 <!-- Timeline CSS -->
 <link href="static/css/plugins/timeline.css" rel="stylesheet">
 
-
+<!-- datepicker -->
+<link href="static/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 
 <!--<link href="static/css/plugins/notifIt.css" rel="stylesheet">-->
 

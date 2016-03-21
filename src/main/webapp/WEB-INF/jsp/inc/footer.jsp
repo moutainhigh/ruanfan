@@ -66,7 +66,6 @@
 <script src="static/js/plugins/jquery.form.min.js"></script>
 
 
-
 <script src="static/js/plugins/validator-0.7.3/jquery.validator.js"></script>
 
 <script src="static/js/plugins/validator-0.7.3/local/zh_CN.js"></script>
@@ -91,6 +90,10 @@
 <script src="static/js/global.js"></script>
 <script src="static/js/jscolor.js"></script>
 <script src="static/js/jscolor.min.js"></script>
+
+<!-- datepicker -->
+<script src="static/datepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="static/datepicker/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <script type="text/javascript">
     $(function () {

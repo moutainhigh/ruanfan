@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>商品详情</title>
+    <title>秒杀详情</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 <body>
@@ -18,8 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">商品列表</h1>
-                <h4 style="margin-left: 10px;" id="showH">——新增商品</h4>
+                <h1 class="page-header">秒杀管理</h1>
+                <h4 style="margin-left: 10px;" id="showH">——新增秒杀</h4>
             </div>
         </div>
 
@@ -28,28 +28,23 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form id="productForm" method="post" action="product/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
-                            <input type="hidden" id="productId" name="id" value="${product.id}">
-                            <input type="hidden" id="tempCoverId" value="${product.coverId}">
-                            <input type="hidden" id="merchantId" value="${product.merchant.id}">
-                            <input type="hidden" id="sortId" value="${product.sort.id}">
-                            <input type="hidden" id="tempTypeId" value="${product.type}"/>
-                            <span id="tempAddImageIds" style="display: none"></span>
-                            <span id="tempDelImageIds" style="display: none"></span>
+                        <form id="spikesForm" method="post" action="spikes/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
+                            <input type="hidden" id="spikesId" name="id" value="${spikes.id}">
+                            <input type="hidden" id="tempCoverId" value="${spikes.coverId}">
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">商品名称:</label>
+                                <label class="col-sm-2 control-label">秒杀名称:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="name" name="name" maxlength="50" data-rule="required" value="${product.name}" placeholder="请输入商品名称"/>
+                                    <input type="text" class="form-control" id="name" name="name" maxlength="50" data-rule="required" value="${spikes.name}" placeholder="请输入秒杀名称"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">现价:</label>
+                                <label class="col-sm-2 control-label">秒杀价:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" data-rule="required" value="${product.price}" placeholder="请输入现价"/>
+                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" data-rule="required" value="${spikes.price}" placeholder="请输入现价"/>
                                 </div>
                             </div>
 
@@ -57,36 +52,17 @@
                                 <label class="col-sm-2 control-label">原价:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="oldPrice" name="oldPrice" maxlength="20" data-rule="required" value="${product.oldPrice}" placeholder="请输入原价"/>
+                                    <input type="text" class="form-control" id="oldPrice" name="oldPrice" maxlength="20" data-rule="required" value="${spikes.oldPrice}" placeholder="请输入原价"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">选择发布者:</label>
+                                <label class="col-sm-2 control-label">秒杀时间:</label>
 
                                 <div class="col-sm-4">
-                                    <select id="merchantList" style="width: 200px;" class="form-control"></select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">分类:</label>
-
-                                <div class="col-sm-4">
-                                    <select id="typeList" style="width: 200px;" class="form-control">
-                                        <option value="">请选择分类</option>
-                                        <option value="1">单品</option>
-                                        <option value="2">艺术品</option>
-                                        <option value="3">设计师品牌</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">产品种类:</label>
-
-                                <div class="col-sm-4">
-                                    <select id="sortList" style="width: 200px;" class="form-control"></select>
+                                    <input type="text" class="form-control input-append date form_datetime" style="width: 180px;" readonly id="startTime" name="startTime" maxlength="20" data-rule="required" value="" placeholder="开始时间">
+                                    &nbsp; 至 &nbsp;
+                                    <input type="text" class="form-control input-append date form_datetime" style="width: 180px;" readonly id="endTime" name="endTime" maxlength="20" data-rule="required" value="" placeholder="结束时间">
                                 </div>
                             </div>
 
@@ -95,7 +71,7 @@
 
                                 <div class="col-sm-10">
                                     <div style="float: left;margin-bottom: 30px;" id="lastImageDiv">
-                                        <a href="javascript:void(0);" onclick="product.fn.AddTempImg()">
+                                        <a href="javascript:void(0);" onclick="spikes.fn.AddTempImg()">
                                             <img id="tempPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inherit; margin-bottom: 6px;" border="1"/>
                                         </a>
                                     </div>
@@ -107,18 +83,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">产地:</label>
-
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="place" name="place" maxlength="200" data-rule="required" value="${product.place}" placeholder="请输入产地"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="col-sm-2 control-label">标签:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="labels" name="labels" maxlength="200" data-rule="required" value="${product.labels}" placeholder="使用空格隔开"/>
+                                    <input type="text" class="form-control" id="labels" name="labels" maxlength="200" data-rule="required" value="${spikes.labels}" placeholder="使用空格隔开"/>
                                 </div>
                             </div>
 
@@ -126,10 +94,10 @@
                                 <label class="col-sm-2 control-label">颜色:</label>
 
                                 <div class="col-sm-4" style="margin-bottom: -8px;">
-                                    <input type="text" class="form-control" id="colors" name="colors" style="margin-bottom: 5px;width: 400px;" readonly data-rule="required" value="${product.colors}" placeholder="点击左下方色块，选择颜色，然后点旁边按钮确定"/>
+                                    <input type="text" class="form-control" id="colors" name="colors" style="margin-bottom: 5px;width: 400px;" readonly data-rule="required" value="${spikes.colors}" placeholder="点击左下方色块，选择颜色，然后点旁边按钮确定"/>
                                     <input id="baseColor" style="width: 100px;" class="form-control jscolor" value="ab2567">
-                                    <button type="button" class="btn btn-success" onclick="product.fn.confirmColor()">选择颜色</button>
-                                    <button type="button" class="btn btn-danger" onclick="product.fn.clearColors()">清空</button>
+                                    <button type="button" class="btn btn-success" onclick="spikes.fn.confirmColor()">选择颜色</button>
+                                    <button type="button" class="btn btn-danger" onclick="spikes.fn.clearColors()">清空</button>
                                 </div>
                             </div>
 
@@ -137,7 +105,7 @@
                                 <label class="col-sm-2 control-label">尺寸:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="sizes" name="sizes" maxlength="200" data-rule="required" value="${product.sizes}" placeholder="使用空格隔开"/>
+                                    <input type="text" class="form-control" id="sizes" name="sizes" maxlength="200" data-rule="required" value="${spikes.sizes}" placeholder="使用空格隔开"/>
                                 </div>
                             </div>
 
@@ -145,7 +113,7 @@
                                 <label class="col-sm-2 control-label">材质:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="materials" name="materials" maxlength="200" data-rule="required" value="${product.materials}" placeholder="使用空格隔开"/>
+                                    <input type="text" class="form-control" id="materials" name="materials" maxlength="200" data-rule="required" value="${spikes.materials}" placeholder="使用空格隔开"/>
                                 </div>
                             </div>
 
@@ -160,22 +128,22 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-6" style="text-align: center">
-                                    <button type="button" class="btn btn-primary" onclick="product.fn.subInfo()">提交</button>
-                                    <button type="button" class="btn btn-primary" onclick="product.fn.goBack()">返回</button>
+                                    <button type="button" class="btn btn-primary" onclick="spikes.fn.subInfo()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="spikes.fn.goBack()">返回</button>
                                 </div>
                             </div>
                         </form>
 
-                        <span style="display: none;" id="spqq">${product.description}</span>
+                        <span style="display: none;" id="spqq">${spikes.description}</span>
 
                         <form id="tempImageForm" method="post" action="common/addTempImage" enctype="multipart/form-data" class="form-horizontal" role="form">
-                            <input type="file" name="tempImage" id="tempImage" data-rule="required" style="display:none;" onchange="product.fn.saveTempImage()"/>
+                            <input type="file" name="tempImage" id="tempImage" data-rule="required" style="display:none;" onchange="spikes.fn.saveTempImage()"/>
                         </form>
 
                         <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 15px;">
                             <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
-                            <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 203px; left: 184px; display: none;" class="axx" onclick="product.fn.deleteImage(this)">
+                            <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 203px; left: 184px; display: none;" class="axx" onclick="spikes.fn.deleteImage(this)">
                                 <img id="pic" src="static/images/xx.png" style="height: 16px; width: 16px; display: inline;" border="1"/>
                             </a>
                             <input type="radio" name="settingCover"/>设为封面
@@ -200,7 +168,7 @@
 
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
-    var id = $("#productId").val();
+    var id = $("#spikesId").val();
     var editor1 = new baidu.editor.ui.Editor();
     editor1.render('container');
     if (null != id && id != '') {
@@ -209,10 +177,11 @@
         });
     }
 </script>
+
 <script type="text/javascript">
-    var product = {
+    var spikes = {
         v: {
-            id: "product",
+            id: "spikes",
             list: [],
             dTable: null,
             mainImageStatus: 0,
@@ -224,59 +193,45 @@
                     async: false
                 });
 
-                if ($("#productId").val() != "") {
-                    $("#showH").text("——编辑商品");
+                if ($("#spikesId").val() != "") {
+                    $("#showH").text("——编辑秒杀");
                 }
 
-                // 页面加载时，自动加载下拉框
-                product.fn.getSelectList();
+                $('.form_datetime').datetimepicker({
+                    language: 'zh-CN',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: 1,
+                    format: 'yyyy-mm-dd hh:ii'
+                });
 
                 // 加载数据
-                product.fn.loadData();
-
-                $('#provinceList').change(function () {
-                    var provinceId = $(this).val();
-                    product.fn.loadCity(provinceId);
-                });
+                spikes.fn.loadData();
             },
             loadData: function () {
-                // 选择商品分类
-                var type = $('#tempTypeId').val();
-                if (null != type && type != '') {
-                    $('#typeList').val(type);
-                }
-
-                // 选择发布者
-                var merchantId = $('#merchantId').val();
-                if (null != merchantId && merchantId != '') {
-                    $('#merchantList').val(merchantId);
-                }
-
-                // 选择商品种类
-                var sort = $('#sortId').val();
-                if (null != sort && sort != '') {
-                    $('#sortList').val(sort);
-                }
-
-                // 加载商品图片
-                product.fn.getSerImages();
+                // 加载秒杀图片
+                spikes.fn.getSerImages();
             },
             getSerImages: function () {
                 var imgList = ${imageList };
 
-                // 计算当前商品图片数量
-                product.v.imageSize = imgList.length;
+                // 计算当前秒杀图片数量
+                spikes.v.imageSize = imgList.length;
 
                 $.each(imgList, function (i, item) {
                     if (null != item) {
-                        product.fn.insertImage(item.path, item.id);
+                        spikes.fn.insertImage(item.path, item.id);
                     } else {
                         $('#lastImageDiv').html('暂无');
                     }
                 });
 
                 // 选中封面图
-                var id = $('#productId').val();
+                var id = $('#spikesId').val();
                 var coverId = $('#tempCoverId').val();
                 if (null != id && id != '') {
                     $('input:radio[name="settingCover"]').each(function () {
@@ -296,9 +251,9 @@
                     success: function (data) {
                         if (null != data.path && data.path != '') {
                             $('#tempAddImageIds').html($('#tempAddImageIds').html() + data.id + ',');
-                            product.fn.insertImage(data.path, data.id);
+                            spikes.fn.insertImage(data.path, data.id);
 
-                            product.v.imageSize = product.v.imageSize + 1;
+                            spikes.v.imageSize = spikes.v.imageSize + 1;
                         } else {
                             $sixmac.notify("图片格式不正确", "error");
                         }
@@ -316,9 +271,9 @@
 
                 // 让所有的克隆出来的
                 tempDiv.hover(function () {
-                    product.fn.mouseover($(this));
+                    spikes.fn.mouseover($(this));
                 }, function () {
-                    product.fn.mouseOut($(this));
+                    spikes.fn.mouseOut($(this));
                 });
             },
             mouseover: function (mouse) {
@@ -328,7 +283,7 @@
                 $(mouse).children("a").fadeOut(300);
             },
             deleteImage: function (self) {
-                product.v.imageSize = product.v.imageSize - 1;
+                spikes.v.imageSize = spikes.v.imageSize - 1;
                 var imageId = $(self).prev().val();
                 $('#tempDelImageIds').html($('#tempDelImageIds').html() + imageId + ',');
                 $(self).parent().remove();
@@ -362,47 +317,7 @@
                 $('#colors').val('');
             },
             changeStatus: function () {
-                product.v.mainImageStatus = 1;
-            },
-            getSelectList: function () {
-                var merchantId = $('#merchantId').val();
-                var sortId = $('#sortId').val();
-
-                // 加载发布者列表
-                $sixmac.ajax("common/merchantList", null, function (result) {
-                    if (null != result) {
-                        // 获取返回的省份列表信息，并循环绑定到select中
-                        var content = "<option value=''>请选择发布人</option>";
-                        jQuery.each(result, function (i, item) {
-                            content += "<option value='" + item.id + "'>" + item.nickName + "</option>";
-                        });
-                        $('#merchantList').append(content);
-                    } else {
-                        $sixmac.notify("获取发布人信息失败", "error");
-                    }
-
-                    if (null != merchantId && merchantId != '') {
-                        $('#merchantList').val(merchantId);
-                    }
-                });
-
-                // 加载商品分类列表
-                $sixmac.ajax("common/sortList", null, function (result) {
-                    if (null != result) {
-                        // 获取返回的省份列表信息，并循环绑定到select中
-                        var content = "<option value=''>请选择商品分类</option>";
-                        jQuery.each(result, function (i, item) {
-                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
-                        });
-                        $('#sortList').append(content);
-                    } else {
-                        $sixmac.notify("获取商品分类信息失败", "error");
-                    }
-
-                    if (null != sortId && sortId != '') {
-                        $('#sortList').val(sortId);
-                    }
-                });
+                spikes.v.mainImageStatus = 1;
             },
             AddImg: function () {
                 // a标签绑定onclick事件
@@ -412,43 +327,21 @@
                 var flag = true;
                 var name = $('#name').val();
                 var price = $('#price').val();
-                var merchantId = $('#merchantList option:selected').val();
-                var type = $('#typeList option:selected').val();
-                var sort = $('#sortList option:selected').val();
-                var place = $('#place').val();
                 var content = editor1.getContent();
 
                 if (null == name || name == '') {
-                    $sixmac.notify("请输入商品名称", "error");
+                    $sixmac.notify("请输入秒杀名称", "error");
                     flag = false;
                     return;
                 }
 
                 if (null == price || price == '') {
-                    $sixmac.notify("请输入商品价格", "error");
+                    $sixmac.notify("请输入秒杀价格", "error");
                     flag = false;
                     return;
                 }
 
-                if (null == merchantId || merchantId == '') {
-                    $sixmac.notify("请选择发布者", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (null == type || type == '') {
-                    $sixmac.notify("请选择分类", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (null == sort || sort == '') {
-                    $sixmac.notify("请选择商品种类", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (product.v.imageSize == 0) {
+                if (spikes.v.imageSize == 0) {
                     $sixmac.notify("请至少上传一张图片", "error");
                     flag = false;
                     return;
@@ -461,14 +354,8 @@
                     return;
                 }
 
-                if (null == place || place == '') {
-                    $sixmac.notify("请输入商品产地", "error");
-                    flag = false;
-                    return;
-                }
-
                 if (null == content || content == '') {
-                    $sixmac.notify("请输入商品描述", "error");
+                    $sixmac.notify("请输入秒杀描述", "error");
                     flag = false;
                     return;
                 }
@@ -477,29 +364,25 @@
             },
             subInfo: function () {
                 // 所有的验证通过后，执行新增操作
-                if (product.fn.checkData()) {
-                    $.post(_basePath + "product/save",
+                if (spikes.fn.checkData()) {
+                    $.post(_basePath + "spikes/save",
                             {
-                                "id": $('#productId').val(),
+                                "id": $('#spikesId').val(),
                                 "name": $('#name').val(),
                                 "price": $('#price').val(),
                                 "oldPrice": $('#oldPrice').val(),
                                 "coverId": $("input[type='radio']:checked").val(),
-                                "place": $('#place').val(),
                                 "labels": $('#labels').val(),
                                 "colors": $('#colors').val(),
                                 "sizes": $('#sizes').val(),
                                 "materials": $('#materials').val(),
-                                "type": $('#typeList option:selected').val(),
-                                "sort": $('#sortList option:selected').val(),
-                                "merchantId": $('#merchantList option:selected').val(),
                                 "tempAddImageIds": $("#tempAddImageIds").html(),
                                 "tempDelImageIds": $("#tempDelImageIds").html(),
                                 "content": editor1.getContent()
                             },
                             function (data) {
                                 if (data > 0) {
-                                    window.location.href = _basePath + "product/index";
+                                    window.location.href = _basePath + "spikes/index";
                                 } else {
                                     $sixmac.notify("操作失败", "error");
                                 }
@@ -507,13 +390,13 @@
                 }
             },
             goBack: function () {
-                window.location.href = "product/index";
+                window.location.href = "spikes/index";
             }
         }
     }
 
     $(document).ready(function () {
-        product.fn.init();
+        spikes.fn.init();
     });
 
 </script>
