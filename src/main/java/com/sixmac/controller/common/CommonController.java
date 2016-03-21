@@ -26,7 +26,7 @@ public class CommonController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(String.class, new CustomStringEditor());
+        // binder.registerCustomEditor(String.class, new CustomStringEditor());
         binder.registerCustomEditor(MultipartFile.class, new CustomFileEditor());
         binder.registerCustomEditor(Double.class, new CustomDoubleEditor());
         binder.registerCustomEditor(Float.class, new CustomFloatEditor());

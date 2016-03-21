@@ -24,6 +24,7 @@ public class Packages {
     private String cover;
     private Integer brandId;
     private String brandName;
+    private Integer productNum;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -145,5 +146,14 @@ public class Packages {
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    @Transient
+    public Integer getProductNum() {
+        return productNum;
+    }
+
+    public void setProductNum(Integer productNum) {
+        this.productNum = productNum;
     }
 }

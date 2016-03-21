@@ -56,6 +56,9 @@ public class CommonsController {
     @Autowired
     private MerchantsService merchantsService;
 
+    @Autowired
+    private BrandService brandService;
+
     /**
      * 发布人列表
      *
@@ -65,6 +68,17 @@ public class CommonsController {
     @ResponseBody
     public List<Merchants> merchantList() {
         return merchantsService.findAll();
+    }
+
+    /**
+     * 品牌列表
+     *
+     * @return
+     */
+    @RequestMapping("/brandList")
+    @ResponseBody
+    public List<Brand> brandList() {
+        return brandService.findAll();
     }
 
     /**
@@ -172,6 +186,17 @@ public class CommonsController {
         } else {
             return list;
         }
+    }
+
+    /**
+     * 根据商品id查询对应的封面图信息
+     *
+     * @return
+     */
+    @RequestMapping("/findCoverByProductId")
+    @ResponseBody
+    public Image findCoverByProductId(Integer productId) {
+        return imageService.getById(productsService.getById(productId).getCoverId());
     }
 
     /**

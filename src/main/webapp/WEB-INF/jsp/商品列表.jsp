@@ -334,25 +334,6 @@
                         $sixmac.notify("操作失败", "error");
                     }
                 });
-            },
-            delInfo: function (id) {
-                $('#productId').val(id);
-                $("#delModal").modal("show");
-            },
-            subDelInfo: function () {
-                var productId = $('#productId').val();
-
-                $sixmac.ajax("product/delete", {
-                    "productId": productId
-                }, function (result) {
-                    if (result == 1) {
-                        $sixmac.notify("操作成功", "success");
-                        $("#delModal").modal("hide");
-                        masterProductList.v.dTable.ajax.reload(null, false);
-                    } else {
-                        $sixmac.notify("操作失败", "error");
-                    }
-                });
             }
         }
     }

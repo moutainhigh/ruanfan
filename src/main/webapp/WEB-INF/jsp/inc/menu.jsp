@@ -32,7 +32,7 @@
                         <a href="product/index"><i class="fa fa-plus-square fa-fw"></i>商品列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>商品套餐</a>
+                        <a href="packages/index"><i class="fa fa-cart-plus fa-fw"></i>商品套餐</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>秒杀管理</a>
