@@ -9,4 +9,6 @@ import org.springframework.data.domain.Page;
  */
 public interface SpikesService extends ICommonService<Spikes> {
 
+    // 秒杀列表
+    public Page<Spikes> page(String name, Integer status, Integer pageNum, Integer pageSize);
 }

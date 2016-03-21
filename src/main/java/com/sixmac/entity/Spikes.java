@@ -24,6 +24,7 @@ public class Spikes {
     private String description;
     private Date createTime;
     private String cover;
+    private Integer status;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -152,5 +153,14 @@ public class Spikes {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    @Transient
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

@@ -35,7 +35,7 @@
                         <a href="packages/index"><i class="fa fa-cart-plus fa-fw"></i>商品套餐</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>秒杀管理</a>
+                        <a href="spikes/index"><i class="fa fa-map-marker fa-fw"></i>秒杀管理</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>订单列表</a>
