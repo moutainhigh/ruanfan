@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">秒杀列表</h1>
+                <h1 class="page-header">秒杀管理</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
