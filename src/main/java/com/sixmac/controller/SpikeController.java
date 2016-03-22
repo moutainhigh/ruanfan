@@ -7,6 +7,7 @@ import com.sixmac.entity.Image;
 import com.sixmac.entity.Spikes;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.SpikesService;
+import com.sixmac.utils.DateUtils;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,98 @@ public class SpikeController extends CommonController {
     public Integer delete(Integer spikeId) {
         try {
             spikesService.deleteById(spikeId);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 新增秒杀信息
+     *
+     * @param id
+     * @param name
+     * @param price
+     * @param oldPrice
+     * @param startTime
+     * @param endTime
+     * @param coverId
+     * @param labels
+     * @param colors
+     * @param sizes
+     * @param materials
+     * @param content
+     * @param tempAddImageIds
+     * @param tempDelImageIds
+     * @return
+     */
+    @RequestMapping("/save")
+    @ResponseBody
+    public Integer save(Integer id,
+                        String name,
+                        String price,
+                        String oldPrice,
+                        String startTime,
+                        String endTime,
+                        Integer coverId,
+                        String labels,
+                        String colors,
+                        String sizes,
+                        String materials,
+                        String content,
+                        String tempAddImageIds,
+                        String tempDelImageIds) {
+        try {
+            String[] addImageIds = tempAddImageIds.split(",");
+            String[] delImageIds = tempDelImageIds.split(",");
+            Spikes spikes = null;
+
+            if (null == id) {
+                spikes = new Spikes();
+            } else {
+                spikes = spikesService.getById(id);
+            }
+
+            spikes.setName(name);
+            spikes.setPrice(price);
+            spikes.setOldPrice(oldPrice);
+            spikes.setCoverId(coverId);
+            spikes.setStartTime(DateUtils.stringToDateWithFormat(startTime, "yyyy-MM-dd HH:mm:ss"));
+            spikes.setEndTime(DateUtils.stringToDateWithFormat(endTime, "yyyy-MM-dd HH:mm:ss"));
+            spikes.setLabels(labels);
+            spikes.setColors(colors);
+            spikes.setSizes(sizes);
+            spikes.setMaterials(materials);
+            spikes.setDescription(content);
+
+            if (null == id) {
+                spikes.setCount(0);
+                spikes.setCreateTime(new Date());
+                spikesService.create(spikes);
+            } else {
+                spikesService.update(spikes);
+            }
+
+            // 保存商品图片集合
+            Image image = null;
+            for (String imageId : addImageIds) {
+                if (null != imageId && !imageId.equals("")) {
+                    image = imageService.getById(Integer.parseInt(imageId));
+                    image.setObjectId(spikes.getId());
+                    image.setObjectType(Constant.IMAGE_SPIKES);
+
+                    imageService.update(image);
+                }
+            }
+
+            // 删除商品图片
+            for (String imageId : delImageIds) {
+                if (null != imageId && !imageId.equals("")) {
+                    imageService.deleteById(Integer.parseInt(imageId));
+                }
+            }
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();

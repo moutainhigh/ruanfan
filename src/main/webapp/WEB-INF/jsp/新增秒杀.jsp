@@ -31,6 +31,8 @@
                         <form id="spikesForm" method="post" action="spikes/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
                             <input type="hidden" id="spikesId" name="id" value="${spikes.id}">
                             <input type="hidden" id="tempCoverId" value="${spikes.coverId}">
+                            <span id="tempAddImageIds" style="display: none"></span>
+                            <span id="tempDelImageIds" style="display: none"></span>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">秒杀名称:</label>
@@ -60,9 +62,9 @@
                                 <label class="col-sm-2 control-label">秒杀时间:</label>
 
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control input-append date form_datetime" style="width: 180px;" readonly id="startTime" name="startTime" maxlength="20" data-rule="required" value="" placeholder="开始时间">
+                                    <input type="text" class="form-control input-append date form_datetime" style="width: 180px;" readonly id="startTime" name="startTime" maxlength="20" data-rule="required" value="${spikes.startTime}" placeholder="开始时间">
                                     &nbsp; 至 &nbsp;
-                                    <input type="text" class="form-control input-append date form_datetime" style="width: 180px;" readonly id="endTime" name="endTime" maxlength="20" data-rule="required" value="" placeholder="结束时间">
+                                    <input type="text" class="form-control input-append date form_datetime" style="width: 180px;" readonly id="endTime" name="endTime" maxlength="20" data-rule="required" value="${spikes.endTime}" placeholder="结束时间">
                                 </div>
                             </div>
 
@@ -94,7 +96,7 @@
                                 <label class="col-sm-2 control-label">颜色:</label>
 
                                 <div class="col-sm-4" style="margin-bottom: -8px;">
-                                    <input type="text" class="form-control" id="colors" name="colors" style="margin-bottom: 5px;width: 400px;" readonly data-rule="required" value="${spikes.colors}" placeholder="点击左下方色块，选择颜色，然后点旁边按钮确定"/>
+                                    <input type="text" class="form-control" id="colors" name="colors" style="margin-bottom: 5px;" readonly data-rule="required" value="${spikes.colors}" placeholder="点击左下方色块，选择颜色，然后点旁边按钮确定"/>
                                     <input id="baseColor" style="width: 100px;" class="form-control jscolor" value="ab2567">
                                     <button type="button" class="btn btn-success" onclick="spikes.fn.confirmColor()">选择颜色</button>
                                     <button type="button" class="btn btn-danger" onclick="spikes.fn.clearColors()">清空</button>
@@ -206,7 +208,7 @@
                     startView: 2,
                     forceParse: 0,
                     showMeridian: 1,
-                    format: 'yyyy-mm-dd hh:ii'
+                    format: 'yyyy-mm-dd hh:ii:ss'
                 });
 
                 // 加载数据
@@ -328,6 +330,8 @@
                 var name = $('#name').val();
                 var price = $('#price').val();
                 var content = editor1.getContent();
+                var startTime = $('#startTime').val();
+                var endTime = $('#endTime').val();
 
                 if (null == name || name == '') {
                     $sixmac.notify("请输入秒杀名称", "error");
@@ -340,6 +344,18 @@
                     flag = false;
                     return;
                 }
+
+                if (null == startTime || startTime == '') {
+                    $sixmac.notify("请输入开始时间", "error");
+                    flag = false;
+                    return;
+                }
+                if (null == endTime || endTime == '') {
+                    $sixmac.notify("请输入结束时间", "error");
+                    flag = false;
+                    return;
+                }
+
 
                 if (spikes.v.imageSize == 0) {
                     $sixmac.notify("请至少上传一张图片", "error");
@@ -371,6 +387,8 @@
                                 "name": $('#name').val(),
                                 "price": $('#price').val(),
                                 "oldPrice": $('#oldPrice').val(),
+                                "startTime": $('#startTime').val(),
+                                "endTime": $('#endTime').val(),
                                 "coverId": $("input[type='radio']:checked").val(),
                                 "labels": $('#labels').val(),
                                 "colors": $('#colors').val(),
