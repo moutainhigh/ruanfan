@@ -11,10 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/3/9 0009.
@@ -58,6 +55,12 @@ public class CommonsController {
 
     @Autowired
     private BrandService brandService;
+
+    @Autowired
+    private PackagesService packagesService;
+
+    @Autowired
+    private SpikesService spikesService;
 
     /**
      * 发布人列表
@@ -167,6 +170,28 @@ public class CommonsController {
     @ResponseBody
     public List<Products> productList() {
         return productsService.findAll();
+    }
+
+    /**
+     * 套餐列表
+     *
+     * @return
+     */
+    @RequestMapping("/packageList")
+    @ResponseBody
+    public List<Packages> packageList() {
+        return packagesService.findAll();
+    }
+
+    /**
+     * 秒杀列表
+     *
+     * @return
+     */
+    @RequestMapping("/spikeList")
+    @ResponseBody
+    public List<Spikes> spikeList() {
+        return spikesService.findAll();
     }
 
     /**

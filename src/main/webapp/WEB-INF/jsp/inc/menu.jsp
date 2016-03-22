@@ -89,7 +89,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>站长工具<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>广告banner</a>
+                        <a href="banner/index"><i class="fa fa-plus-square fa-fw"></i>广告banner</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>范票</a>
