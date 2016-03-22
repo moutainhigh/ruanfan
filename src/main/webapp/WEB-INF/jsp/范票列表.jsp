@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>广告banner列表</title>
+    <title>范票列表</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 
@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">广告banner</h1>
+                <h1 class="page-header">范票</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -27,21 +27,27 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="banner/add" class="btn btn-outline btn-primary btn-lg" role="button">新增广告</a>
+                        <a href="coupon/add" class="btn btn-outline btn-primary btn-lg" role="button">新增范票</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
+                                    <col class="gradeA odd"/>
+                                    <col class="gradeA even"/>
+                                    <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th>广告图</th>
-                                    <th>更新时间</th>
+                                    <th>名称</th>
+                                    <th>封面</th>
+                                    <th>面值</th>
+                                    <th>类型</th>
+                                    <th>添加时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -67,12 +73,12 @@
                         <h4 class="modal-title">删除提示</h4>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" id="bannerId"/>
-                        确定删除该广告banner信息？
+                        <input type="hidden" id="couponId"/>
+                        确定删除该范票信息？
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" onclick="bannerList.fn.subInfo()" class="btn btn-primary">确定</button>
+                        <button type="button" onclick="couponList.fn.subInfo()" class="btn btn-primary">确定</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -92,29 +98,32 @@
 
 <script type="text/javascript">
 
-    var bannerList = {
+    var couponList = {
         v: {
-            id: "bannerList",
+            id: "couponList",
             list: [],
             dTable: null
         },
         fn: {
             init: function () {
-                bannerList.fn.dataTableInit();
+                couponList.fn.dataTableInit();
             },
             dataTableInit: function () {
-                bannerList.v.dTable = $sixmac.dataTable($('#dataTables'), {
+                couponList.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching": false,
                     "ordering": false,
                     "ajax": {
-                        "url": "banner/list",
+                        "url": "coupon/list",
                         "type": "POST"
                     },
                     "columns": [
+                        {"data": "name"},
                         {"data": null},
-                        {"data": "updateTime"},
+                        {"data": "money"},
+                        {"data": "type"},
+                        {"data": "createTime"},
                         {"data": ""}
                     ],
                     "columnDefs": [
@@ -131,26 +140,29 @@
                         }
                     ],
                     "createdRow": function (row, data, index) {
-                        bannerList.v.list.push(data);
+                        couponList.v.list.push(data);
 
                         if (data.cover == '') {
-                            $('td', row).eq(0).html("暂无");
+                            $('td', row).eq(1).html("暂无");
                         } else {
-                            $('td', row).eq(0).html("<img src='" + data.cover + "' width='100px' height='100px' />");
+                            $('td', row).eq(1).html("<img src='" + data.cover + "' width='100px' height='100px' />");
                         }
 
                         $('td', row).eq(0).css('line-height', '102px');
                         $('td', row).eq(1).css('line-height', '102px');
                         $('td', row).eq(2).css('line-height', '102px');
+                        $('td', row).eq(3).css('line-height', '102px');
+                        $('td', row).eq(4).css('line-height', '102px');
+                        $('td', row).eq(5).css('line-height', '102px');
                     },
                     rowCallback: function (row, data) {
-                        var items = bannerList.v.list;
+                        var items = couponList.v.list;
 
-                        $('td', row).last().find(".edit").attr("href", 'banner/add?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'coupon/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
-                            bannerList.fn.delInfo(data.id);
+                            couponList.fn.delInfo(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -162,19 +174,19 @@
                 });
             },
             delInfo: function (id) {
-                $('#bannerId').val(id);
+                $('#couponId').val(id);
                 $("#delModal").modal("show");
             },
             subInfo: function () {
-                var bannerId = $('#bannerId').val();
+                var couponId = $('#couponId').val();
 
-                $sixmac.ajax("banner/delete", {
-                    "bannerId": bannerId,
+                $sixmac.ajax("coupon/delete", {
+                    "couponId": couponId,
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
                         $("#delModal").modal("hide");
-                        bannerList.v.dTable.ajax.reload(null, false);
+                        couponList.v.dTable.ajax.reload(null, false);
                     } else {
                         $sixmac.notify("操作失败", "error");
                     }
@@ -184,7 +196,7 @@
     }
 
     $(document).ready(function () {
-        bannerList.fn.init();
+        couponList.fn.init();
     });
 
 </script>

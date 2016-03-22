@@ -92,7 +92,7 @@
                         <a href="banner/index"><i class="fa fa-plus-square fa-fw"></i>广告banner</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>范票</a>
+                        <a href="coupon/index"><i class="fa fa-cart-plus fa-fw"></i>范票</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>预约列表</a>

@@ -6,7 +6,7 @@ package com.sixmac.core;
 public interface Constant {
 
     // 云片网appkey
-    String YUNPIAN_APPKEY = "sdfsdfsdfsdfsdfsdfd";
+    String YUNPIAN_APPKEY = "cec686130509bef38a8e4ce9c1a6fbed";
 
     // 云片网select
 
