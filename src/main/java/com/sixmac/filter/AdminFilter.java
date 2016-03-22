@@ -66,19 +66,19 @@ public class AdminFilter implements Filter {
             }
         }
 
-        // Users member = (Users) httpRequest.getSession().getAttribute(Constant.SESSION_MEMBER_GLOBLE);
-        // if (member != null) {
+        String member = (String) httpRequest.getSession().getAttribute(Constant.CURRENT_USER_NAME);
+        if (null != member && !member.equals("session_member_id")) {
             chain.doFilter(request, response);
-        //     return;
-        // }
+            return;
+        }
 
-        /*String xRequested = httpRequest.getHeader("X-Requested-With");
+        String xRequested = httpRequest.getHeader("X-Requested-With");
         if (xRequested != null && xRequested.indexOf("XMLHttpRequest") != -1) {
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             WebUtil.print(httpResponse, "重新登录！");
         } else {
             httpResponse.sendRedirect(contextPath + "/login");
-        }*/
+        }
     }
 
     @Override

@@ -2,17 +2,12 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.*;
-import com.sixmac.entity.Coupon;
-import com.sixmac.entity.Usercoupon;
-import com.sixmac.entity.Users;
-import com.sixmac.entity.Usersother;
+import com.sixmac.entity.*;
 import com.sixmac.service.UsersService;
 import com.sixmac.utils.PathUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -26,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -99,24 +93,44 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Boolean login(HttpServletRequest request, String username, String password, String remark) {
-        return null;
-    }
-
-    @Override
-    public Boolean login(HttpServletRequest request, String username, String password, String type, String remark) {
-        return null;
-    }
-
-    @Override
-    public void logOut(HttpServletRequest request, String type) {
-        HttpSession session = request.getSession(false);
-        if (Constant.MEMBER_TYPE_GLOBLE.equals(type)) {
-            session.removeAttribute(Constant.SESSION_MEMBER_GLOBLE);
-        } else if (Constant.MEMBER_TYPE_BUSINESS.equals(type)) {
-            session.removeAttribute(Constant.SESSION_MEMBER_BUSINESS);
+    public Sysusers sysUserLogin(HttpSession session, String username, String password) {
+        Sysusers sysusers = usersDao.sysUserLogin(username, password);
+        if (null != sysusers) {
+            putSession(session, sysusers.getId(), sysusers.getAccount(), Constant.MASTER_TYPE_ADMIN);
+            return sysusers;
         }
 
+        return null;
+    }
+
+    @Override
+    public Merchants merchantLogin(HttpSession session, String username, String password) {
+        Merchants merchants = usersDao.merchantLogin(username, password);
+        if (null != merchants) {
+            putSession(session, merchants.getId(), merchants.getNickName(), Constant.MASTER_TYPE_MERCHANT);
+            return merchants;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Designers desingerLogin(HttpSession session, String username, String password) {
+        Designers designers = usersDao.designerLogin(username, password);
+        if (null != designers) {
+            putSession(session, designers.getId(), designers.getNickName(), Constant.MASTER_TYPE_DESIGNER);
+            return designers;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void logOut(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.removeAttribute(Constant.CURRENT_USER_ID);
+        session.removeAttribute(Constant.CURRENT_USER_NAME);
+        session.removeAttribute(Constant.CURRENT_USER_TYPE);
     }
 
     @Override
@@ -212,5 +226,12 @@ public class UsersServiceImpl implements UsersService {
     public Users iFindOneByMobile(String mobile) {
         Users users = usersDao.iFindOneByMobile(mobile);
         return users;
+    }
+
+    // 将登录人的信息放入session中
+    private void putSession(HttpSession session, Integer id, String name, Integer type) {
+        session.setAttribute(Constant.CURRENT_USER_ID, id);
+        session.setAttribute(Constant.CURRENT_USER_NAME, name);
+        session.setAttribute(Constant.CURRENT_USER_TYPE, type);
     }
 }

@@ -4,7 +4,7 @@
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li>
-                <a href="dashboard"><i class="fa fa-gear fa-fw"></i>控制面板</a>
+                <a href="backend/dashboard"><i class="fa fa-gear fa-fw"></i>控制面板</a>
             </li>
 
             <li>

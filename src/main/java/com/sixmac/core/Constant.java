@@ -14,14 +14,25 @@ public interface Constant {
 
     int PAGE_DEF_SZIE = 20;
 
-    String SESSION_MEMBER_GLOBLE = "session_globle_member";
-    String SESSION_MEMBER_BUSINESS = "session_business_member";
+    String MEMBER_TYPE_ADMIN = "ADMIN";
 
-    String EVENT_WINE_ONLINE_HOME = "WINE_ONLINE_HOME";
+    String MEMBER_TYPE_MERCHANT = "MERCHANT";
 
-    String MEMBER_TYPE_GLOBLE = "GLOBLE";
+    String MEMBER_TYPE_DESIGNER = "DESIGNER";
 
-    String MEMBER_TYPE_BUSINESS = "BUSINESS";
+    // 当前登录人id
+    String CURRENT_USER_ID = "session_member_id";
+
+    // 当前登录人姓名
+    String CURRENT_USER_NAME = "session_member_name";
+
+    // 当前登录人类型
+    String CURRENT_USER_TYPE = "session_member_type";
+
+    // 管理后台登录人类型
+    Integer MASTER_TYPE_ADMIN = 1;
+    Integer MASTER_TYPE_MERCHANT = 2;
+    Integer MASTER_TYPE_DESIGNER = 3;
 
     // 新建用户默认头像
     String DEFAULT_HEAD_PATH = "static/images/default.png";

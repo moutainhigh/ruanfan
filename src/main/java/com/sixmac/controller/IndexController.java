@@ -2,6 +2,9 @@ package com.sixmac.controller;
 
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
+import com.sixmac.entity.Designers;
+import com.sixmac.entity.Merchants;
+import com.sixmac.entity.Sysusers;
 import com.sixmac.service.UsersService;
 import com.sixmac.utils.IdenCode;
 import com.sixmac.utils.Md5Util;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +31,7 @@ public class IndexController extends CommonController {
     private UsersService usersService;
 
     @RequestMapping(value = "/login")
-    public String login(HttpServletRequest request,
-                        HttpServletResponse response,
-                        String error,
+    public String login(String error,
                         ModelMap model) {
         if (StringUtils.isNotBlank(error)) {
             model.addAttribute("error", error);
@@ -38,44 +40,77 @@ public class IndexController extends CommonController {
     }
 
     @RequestMapping(value = "/login/check")
-    public String checkLogin(String username,
+    public String checkLogin(String account,
                              String password,
-                             HttpServletRequest request, HttpServletResponse response,
-                             String remark,
-                             String idencode,
+                             Integer type,
+                             HttpServletRequest request,
+                             String code,
                              ModelMap model) {
+        HttpSession session = request.getSession();
+
         // 验证码
-        if (!idencode.equalsIgnoreCase((String) request.getSession().getAttribute("code"))) {
+        if (!code.equalsIgnoreCase((String) request.getSession().getAttribute("code"))) {
             model.addAttribute("error", "验证码不正确");
             return "redirect:/login";
         }
-        Boolean success = usersService.login(request, username, Md5Util.md5(password), Constant.MEMBER_TYPE_GLOBLE, remark);
-        if (success) {
-            return "redirect:/dashboard";
+
+        // 根据当前登录人的类型进行不同类型的登录操作
+        switch (type) {
+            case 1:
+                // 管理员
+                Sysusers sysusers = usersService.sysUserLogin(session, account, Md5Util.md5(password));
+                if (null != sysusers) {
+                    return "backend/控制面板";
+                }
+                break;
+            case 2:
+                // 商户
+                Merchants merchants = usersService.merchantLogin(session, account, Md5Util.md5(password));
+                if (null != merchants) {
+                    return "merchant/控制面板";
+                }
+                break;
+            case 3:
+                // 设计师
+                Designers designers = usersService.desingerLogin(session, account, Md5Util.md5(password));
+                if (null != designers) {
+                    return "designer/控制面板";
+                }
+                break;
         }
+
         model.addAttribute("error", "用户名或密码错误!");
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request,
-                         HttpServletResponse response,
                          ModelMap model) {
-        usersService.logOut(request, Constant.MEMBER_TYPE_GLOBLE);
+        usersService.logOut(request);
         return "登录";
     }
 
     @RequestMapping(value = "/")
-    public String index() {
-        return "redirect:/dashboard";
-    }
+    public String index(HttpServletRequest request) {
+        // 根据当前登录人的不同类型，选择跳转到不同的后台
+        HttpSession session = request.getSession();
+        Integer type = (Integer) session.getAttribute(Constant.CURRENT_USER_TYPE);
 
+        String url = "";
 
-    @RequestMapping(value = "/dashboard")
-    public String dashboard(HttpServletRequest request,
-                            HttpServletResponse response,
-                            ModelMap model) {
-        return "控制面板";
+        switch (type) {
+            case 1:
+                url = "redirect:/backend/dashboard";
+                break;
+            case 2:
+                url = "redirect:/merchant/dashboard";
+                break;
+            case 3:
+                url = "redirect:/designer/dashboard";
+                break;
+        }
+
+        return url;
     }
 
     /**

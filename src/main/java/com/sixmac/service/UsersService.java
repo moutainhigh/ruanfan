@@ -1,22 +1,27 @@
 package com.sixmac.service;
 
-import com.sixmac.entity.Usercoupon;
-import com.sixmac.entity.Users;
+import com.sixmac.entity.*;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2016/3/4 0004 下午 2:52.
  */
 public interface UsersService extends ICommonService<Users> {
 
-    public Boolean login(HttpServletRequest request, String username, String password, String remark);
+    // 总后台管理员登录
+    public Sysusers sysUserLogin(HttpSession session, String username, String password);
 
-    public Boolean login(HttpServletRequest request, String username, String password, String type, String remark);
+    // 商户登录
+    public Merchants merchantLogin(HttpSession session, String username, String password);
 
-    public void logOut(HttpServletRequest request, String type);
+    // 设计师登录
+    public Designers desingerLogin(HttpSession session, String username, String password);
+
+    public void logOut(HttpServletRequest request);
 
     // 将用户的优惠券标记为已使用
     public void usedCoupon(Integer userId, Integer couponId);

@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ include file="../inc/taglibs.jsp" %>
+<%@ include file="../backend/inc/taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-    <%@ include file="../inc/meta.jsp" %>
+    <%@ include file="../backend/inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
     <title>error</title>
-    <%@ include file="../inc/css.jsp" %>
+    <%@ include file="../backend/inc/css.jsp" %>
 
 </head>
 
