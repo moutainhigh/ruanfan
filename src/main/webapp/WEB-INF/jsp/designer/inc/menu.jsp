@@ -23,7 +23,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>账户管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>个人资料</a>
+                        <a href="designer/info"><i class="fa fa-cart-plus fa-fw"></i>个人资料</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>介绍信息</a>

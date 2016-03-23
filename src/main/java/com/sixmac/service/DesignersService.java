@@ -1,6 +1,7 @@
 package com.sixmac.service;
 
 import com.sixmac.entity.Designers;
+import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Works;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
@@ -26,4 +27,7 @@ public interface DesignersService extends ICommonService<Designers> {
 
     // 查询是否有相同手机号信息的设计师集合
     public List<Designers> findListByMobile(String mobile);
+
+    // 根据设计师id查询该设计师审核失败的原因
+    public Messageplus findReasonByDesignerId(Integer designerId);
 }

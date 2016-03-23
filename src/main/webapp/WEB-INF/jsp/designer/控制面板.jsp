@@ -9,7 +9,6 @@
     <title>控制面板</title>
     <%@ include file="inc/css.jsp" %>
 </head>
-
 <body>
 
 <div id="posts" class="wrapper">
@@ -32,7 +31,4 @@
 
 <%@ include file="inc/footer.jsp" %>
 </body>
-<!-- 实例化编辑器 -->
-
-
 </html>

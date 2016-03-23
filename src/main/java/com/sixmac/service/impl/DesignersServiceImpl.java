@@ -245,4 +245,13 @@ public class DesignersServiceImpl implements DesignersService {
     public List<Designers> findListByMobile(String mobile) {
         return designersDao.findListByMobile(mobile);
     }
+
+    @Override
+    public Messageplus findReasonByDesignerId(Integer designerId) {
+        List<Messageplus> list = designersDao.findListByDesignerId(designerId);
+        if (null != list && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
 }
