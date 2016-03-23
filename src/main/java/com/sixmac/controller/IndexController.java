@@ -8,12 +8,14 @@ import com.sixmac.entity.Sysusers;
 import com.sixmac.service.*;
 import com.sixmac.utils.IdenCode;
 import com.sixmac.utils.Md5Util;
+import com.sixmac.utils.WebUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.krb5.internal.crypto.Des;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +34,9 @@ public class IndexController extends CommonController {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private SysusersService sysusersService;
 
     @Autowired
     private MerchantsService merchantsService;
@@ -234,19 +239,57 @@ public class IndexController extends CommonController {
         return map;
     }
 
+    /**
+     * 检测当前登录人旧密码是否正确
+     *
+     * @param request
+     * @param response
+     * @param oldPwd
+     */
     @RequestMapping("/check/oldPwd")
     public void checkOldPwd(HttpServletRequest request,
                             HttpServletResponse response,
                             String oldPwd) {
+        Integer id = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
+        Integer type = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_TYPE);
+
+        // type有三种类型
+        // 1、管理员
+        // 2、商家
+        // 3、设计师
+        switch (type) {
+            case 1:
+                Sysusers sysusers = sysusersService.getById(id);
+                checkOldPwd(oldPwd, sysusers.getPassword(), request, response);
+                break;
+            case 2:
+                Merchants merchants = merchantsService.getById(id);
+                checkOldPwd(oldPwd, merchants.getPassword(), request, response);
+                break;
+            case 3:
+                Designers designers = designersService.getById(id);
+                checkOldPwd(oldPwd, designers.getPassword(), request, response);
+                break;
+        }
+    }
+
+    /**
+     * 检测旧密码是否正确
+     *
+     * @param oldPwd
+     * @param pwd
+     * @param request
+     * @param response
+     */
+    private void checkOldPwd(String oldPwd, String pwd, HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> result = new HashMap<String, String>();
-        // Member member = loginService.getMember(request, Constant.MEMBER_TYPE_GLOBLE);
-        /*if(!member.getPassword().equals(Md5Util.md5(oldPwd))){
-            result.put("error","旧密码不正确!");
+        if (!pwd.equals(Md5Util.md5(oldPwd))) {
+            result.put("error", "旧密码不正确!");
             WebUtil.print(response, result);
-        }else{
-            result.put("ok","");
+        } else {
+            result.put("ok", "");
             WebUtil.print(response, result);
-        }*/
+        }
     }
 
     @RequestMapping("/modifyPwd")
