@@ -32,14 +32,18 @@ public class DesignerIndexController extends CommonController {
     private CityService cityService;
 
     @RequestMapping(value = "/dashboard")
-    public String dashboard() {
+    public String dashboard(HttpServletRequest request, ModelMap model) {
+        Designers designers = getDesigner(request, model, designersService);
+        if (designers.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
+            return "designer/个人资料待审核";
+        }
+
         return "designer/控制面板";
     }
 
     @RequestMapping(value = "/info")
     public String info(HttpServletRequest request, ModelMap model) {
-        Designers designers = getDesigner(request, model);
-        model.addAttribute("designer", designers);
+        Designers designers = getDesigner(request, model, designersService);
 
         if (designers.getIsCheck() == Constant.CHECK_STATUS_SUCCESS) {
             return "designer/个人资料审核通过";
@@ -122,11 +126,13 @@ public class DesignerIndexController extends CommonController {
      * 获取当前登录的设计师信息
      *
      * @param request
+     * @param model
      * @return
      */
-    private Designers getDesigner(HttpServletRequest request, ModelMap model) {
+    public static Designers getDesigner(HttpServletRequest request, ModelMap model, DesignersService designersService) {
         Integer designerId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
         Designers designers = designersService.getById(designerId);
+        model.addAttribute("designer", designers);
 
         // 查询审核失败的原因
         Messageplus messageplus = designersService.findReasonByDesignerId(designerId);
@@ -135,5 +141,16 @@ public class DesignerIndexController extends CommonController {
         }
 
         return designers;
+    }
+
+    /**
+     * 获取当前登录的设计师信息
+     *
+     * @param request
+     * @return
+     */
+    public static Designers getDesigner(HttpServletRequest request, DesignersService designersService) {
+        Integer designerId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
+        return designersService.getById(designerId);
     }
 }

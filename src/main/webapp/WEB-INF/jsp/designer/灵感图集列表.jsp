@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>灵感图集列表</title>
+    <title>灵感图列表</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 
@@ -18,8 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">灵感图集</h1>
-                <h4 style="margin-left: 10px;">——灵感集列表</h4>
+                <h1 class="page-header">灵感图片</h1>
+                <h4 style="margin-left: 10px;">——灵感图列表</h4>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -28,14 +28,11 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="backend/afflatus/add" class="btn btn-outline btn-primary btn-lg" role="button">新增灵感集</a>
+                        <a href="designer/afflatus/add" class="btn btn-outline btn-primary btn-lg" role="button">新增灵感图片</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control" id="afflatusName" maxlength="20" placeholder="灵感名称"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="designerName" maxlength="20" placeholder="发布者"/>
                             </div>
                             <div class="form-group">
                                 <label>状态：</label>
@@ -70,7 +67,6 @@
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
-                                    <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
@@ -79,7 +75,6 @@
                                     <th>状态</th>
                                     <th>区域</th>
                                     <th>风格</th>
-                                    <th>发布者</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -96,60 +91,24 @@
             </div>
         </div>
 
-
     </div>
     <!-- /#page-wrapper -->
 
     <!-- Modal -->
-    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">转为虚拟体验</h4>
+                    <h4 class="modal-title">提示</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="infoForm" method="post" action="backend/afflatus/changeVR" class="form-horizontal" role="form">
-                        <input type="hidden" id="hiddenAfflatusId" name="afflatusId"/>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">分类:</label>
-                            <div class="col-sm-5">
-                                <select id="typeList" style="width: 200px;" class="form-control"></select>
-                            </div>
-                        </div>
-                    </form>
+                    <input type="hidden" id="hiddenAfflatusId" name="afflatusId"/>
+                    确定要删除该灵感图么？
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" onclick="afflatusList.fn.subInfo()" class="btn btn-primary">保存</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- Modal end -->
-
-    <!-- Modal -->
-    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">驳回原因</h4>
-                </div>
-                <div class="modal-body">
-                    <form method="post" class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <textarea cols="40" rows="5" id="reason" style="resize: none;" class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" onclick="afflatusList.fn.subCheckInfo()" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" onclick="afflatusList.fn.subCheckInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -191,7 +150,7 @@
                     "searching": false,
                     "ordering": false,
                     "ajax": {
-                        "url": "backend/afflatus/list",
+                        "url": "designer/afflatus/list",
                         "type": "POST"
                     },
                     "columns": [
@@ -200,7 +159,6 @@
                         {"data": "status"},
                         {"data": "area.name"},
                         {"data": "style.name"},
-                        {"data": "designer.nickName"},
                         {"data": ""}
                     ],
                     "columnDefs": [
@@ -210,17 +168,12 @@
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='转为虚拟体验' class='btn btn-info btn-circle delete'>" +
+                            "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
+                            "<i class='fa fa-remove'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='提交审核' class='btn btn-warning btn-circle checkStatus'>" +
                             "<i class='fa fa-recycle'></i>" +
-                            "</button>" +
-                            "&nbsp;&nbsp;" +
-                            "<button type='button' title='审核通过' style='display: none' class='btn btn-primary btn-circle checkyes'>" +
-                            "<i class='fa fa-check'></i>" +
-                            "</button>" +
-                            "&nbsp;&nbsp;" +
-                            "&nbsp;&nbsp;" +
-                            "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'>" +
-                            "<i class='fa fa-close'></i>" +
                             "</button>",
                             "targets": -1
                         }
@@ -243,36 +196,20 @@
                         }
                     },
                     rowCallback: function (row, data) {
-                        if (data.status == 0) {
-                            $('td', row).last().find(".checkyes").css("display", '');
-                            $('td', row).last().find(".checkno").css("display", '');
-                            $('td', row).last().find(".delete").css("display", 'none');
-                        }
-
-                        if (data.status == 2) {
-                            $('td', row).last().find(".delete").css("display", 'none');
-                        }
-
-                        $('td', row).last().find(".edit").attr("href", 'backend/afflatus/show?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'designer/afflatus/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
-                            // 转化为虚拟体验
-                            afflatusList.fn.changeType(data.id);
+                            // 删除
+                            afflatusList.fn.delInfo(data.id);
                         });
 
-                        $('td', row).last().find(".checkyes").click(function () {
-                            // 审核为通过
-                            afflatusList.fn.changeCheck(data.id, 1);
-                        });
-
-                        $('td', row).last().find(".checkno").click(function () {
-                            // 审核为不通过
-                            afflatusList.fn.checkNo(data.id);
+                        $('td', row).last().find(".checkStatus").click(function () {
+                            // 提交审核
+                            afflatusList.fn.subToCheck(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
                         aoData.afflatusName = $("#afflatusName").val();
-                        aoData.designerName = $("#designerName").val();
                         aoData.status = $("#statusList option:selected").val();
                         aoData.areaId = $("#areaList option:selected").val();
                         aoData.styleId = $("#styleList option:selected").val();
@@ -282,77 +219,30 @@
                     }
                 });
             },
-            checkNo: function (id) {
-                $('#hiddenAfflatusId').val(id);
-
-                $("#checkModal").modal("show");
-            },
-            subCheckInfo: function () {
-                var flag = true;
-                var reason = $('#reason').val();
-                var id = $('#hiddenAfflatusId').val();
-
-                if (null == reason || reason.trim().length == 0) {
-                    $sixmac.notify("请输入驳回原因", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (flag) {
-                    $sixmac.ajax("backend/afflatus/changeCheck", {
-                        "afflatusId": id,
-                        "status": 2,
-                        "reason": reason
-                    }, function (result) {
-                        if (result == 1) {
-                            $sixmac.notify("操作成功", "success");
-                            $("#checkModal").modal("hide");
-                            afflatusList.v.dTable.ajax.reload(null, false);
-                        } else {
-                            $sixmac.notify("操作失败", "error");
-                        }
-                    });
-                }
-            },
-            changeType: function (id) {
-                $('#hiddenAfflatusId').val(id);
-
-                $('#typeList').val('');
-                $("#infoModal").modal("show");
-            },
-            subInfo: function () {
-                var flag = true;
-                var typeId = $('#typeList option:selected').val();
-                var afflatusId = $('#hiddenAfflatusId').val();
-
-                if (null == typeId || typeId == '') {
-                    $sixmac.notify("请选择虚拟体验分类", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (flag) {
-                    $sixmac.ajax("backend/afflatus/changeVR", {
-                        "afflatusId": afflatusId,
-                        "typeId": typeId
-                    }, function (result) {
-                        if (result == 1) {
-                            $sixmac.notify("转换成功", "success");
-                            $("#infoModal").modal("hide");
-                            afflatusList.v.dTable.ajax.reload(null, false);
-                        } else {
-                            $sixmac.notify("转换失败", "error");
-                        }
-                    });
-                }
-            },
-            changeCheck: function (id, status) {
-                $sixmac.ajax("backend/afflatus/changeCheck", {
-                    "afflatusId": id,
-                    "status": status
+            subToCheck: function (id) {
+                $sixmac.ajax("designer/afflatus/subToCheck", {
+                    "afflatusId": id
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
+                        afflatusList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
+                    }
+                });
+            },
+            delInfo: function (id) {
+                $('#hiddenAfflatusId').val(id);
+
+                $("#delModal").modal("show");
+            },
+            subCheckInfo: function () {
+                $sixmac.ajax("designer/afflatus/delete", {
+                    "afflatusId": id
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        $("#delModal").modal("hide");
                         afflatusList.v.dTable.ajax.reload(null, false);
                     } else {
                         $sixmac.notify("操作失败", "error");
@@ -382,18 +272,6 @@
                         $('#styleList').append(content);
                     } else {
                         $sixmac.notify("获取风格信息失败", "error");
-                    }
-                });
-                $sixmac.ajax("common/vrtypeList", null, function (result) {
-                    if (null != result) {
-                        // 获取返回的分类列表信息，并循环绑定到label中
-                        var content = "<option value=''>请选择虚拟体验分类</option>";
-                        jQuery.each(result, function (i, item) {
-                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
-                        });
-                        $('#typeList').append(content);
-                    } else {
-                        $sixmac.notify("获取虚拟体验分类信息失败", "error");
                     }
                 });
             }

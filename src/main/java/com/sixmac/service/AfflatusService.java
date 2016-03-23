@@ -16,6 +16,9 @@ public interface AfflatusService extends ICommonService<Afflatus> {
     public Page<Afflatus> page(String afflatusName, String designerName, Integer status, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
 
     // 灵感集列表
+    public Page<Afflatus> page(Integer designerId, String afflatusName, Integer status, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
+
+    // 灵感集列表
     public Page<Afflatus> iPage(Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
 
     // 查询猜你所想列表

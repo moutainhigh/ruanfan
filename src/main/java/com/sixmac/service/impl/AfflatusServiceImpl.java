@@ -130,6 +130,54 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
+    public Page<Afflatus> page(Integer designerId, String afflatusName, Integer status, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Afflatus> page = afflatusDao.findAll(new Specification<Afflatus>() {
+            @Override
+            public Predicate toPredicate(Root<Afflatus> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                if (afflatusName != null && !afflatusName.equals("")) {
+                    Predicate pre = cb.like(root.get("name").as(String.class), "%" + afflatusName + "%");
+                    predicateList.add(pre);
+                }
+
+                if (null != status) {
+                    Predicate pre = cb.equal(root.get("status").as(Integer.class), status);
+                    predicateList.add(pre);
+                }
+
+                if (styleId != null) {
+                    Predicate pre = cb.equal(root.get("style").get("id").as(Integer.class), styleId);
+                    predicateList.add(pre);
+                }
+
+                if (areaId != null) {
+                    Predicate pre = cb.equal(root.get("area").get("id").as(Integer.class), areaId);
+                    predicateList.add(pre);
+                }
+
+                Predicate pre1 = cb.equal(root.get("designer").get("id").as(Integer.class), designerId);
+                predicateList.add(pre1);
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
+
+    @Override
     public Page<Afflatus> iPage(Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 

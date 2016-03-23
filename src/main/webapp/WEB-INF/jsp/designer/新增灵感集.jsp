@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>灵感图集</title>
+    <title>灵感图片</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 <body>
@@ -18,8 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">灵感图集</h1>
-                <h4 style="margin-left: 10px;" id="showH">——新增灵感图集</h4>
+                <h1 class="page-header">灵感图片</h1>
+                <h4 style="margin-left: 10px;" id="showH">——新增灵感图片</h4>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form id="afflatusForm" method="post" enctype="multipart/form-data" action="backend/afflatus/save" class="form-horizontal" role="form">
+                        <form id="afflatusForm" method="post" enctype="multipart/form-data" action="designer/afflatus/save" class="form-horizontal" role="form">
                             <input type="hidden" id="id" name="id" value="${afflatus.id}">
                             <input type="hidden" id="tempCoverId" value="${afflatus.coverId}">
                             <input type="hidden" id="tempType" value="${afflatus.type}">
@@ -54,13 +54,6 @@
                                 <label class="col-sm-2 control-label">灵感图名称:</label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="name" name="name" maxlength="20" data-rule="required" value="${afflatus.name}" placeholder="请输入灵感图名称"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">发布人:</label>
-                                <div class="col-sm-3">
-                                    <select id="designerList" style="width: 200px;" class="form-control"></select>
                                 </div>
                             </div>
 
@@ -155,7 +148,7 @@
                 });
 
                 if ($("#id").val() != "") {
-                    $("#showH").text("——编辑灵感图集");
+                    $("#showH").text("——编辑灵感图片");
                 }
 
                 // 页面加载时，自动加载下拉框
@@ -211,7 +204,7 @@
                         }
                     }
 
-                    // 加载灵感图集图片数组
+                    // 加载灵感图片图片数组
                     afflatus.fn.getSerImages();
                 } else {
                     $("#lastImageDiv").css('display', '');
@@ -259,7 +252,7 @@
                 tempDiv.css("display", "block");
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
-                tempDiv.children(":first").next().next().next().prop("href", "backend/afflatus/addTempLabel?id=" + id);
+                tempDiv.children(":first").next().next().next().prop("href", "designer/afflatus/addTempLabel?id=" + id);
                 tempDiv.children(":first").next().next().next().next().val(id);
                 tempDiv.insertBefore("#lastImageDiv");
 
@@ -319,23 +312,6 @@
                 }
             },
             getSelectList: function () {
-                $sixmac.ajax("common/designerList", null, function (result) {
-                    if (null != result) {
-                        // 获取返回的分类列表信息，并循环绑定到label中
-                        var content = "<option value=''>请选择发布人</option>";
-                        jQuery.each(result, function (i, item) {
-                            content += "<option value='" + item.id + "'>" + item.nickName + "</option>";
-                        });
-                        $('#designerList').append(content);
-                    } else {
-                        $sixmac.notify("获取发布人信息失败", "error");
-                    }
-
-                    var designerId = $('#tempDesignerId').val();
-                    if (null != designerId && designerId != '') {
-                        $('#designerList').val(designerId);
-                    }
-                });
                 $sixmac.ajax("common/areaList", null, function (result) {
                     if (null != result) {
                         // 获取返回的分类列表信息，并循环绑定到label中
@@ -374,7 +350,6 @@
             subInfo: function () {
                 var flag = true;
                 var type = $('#typeList option:selected').val();
-                var designerId = $('#designerList option:selected').val();
                 var styleId = $('#styleList option:selected').val();
                 var areaId = $('#areaList option:selected').val();
                 var name = $('#name').val();
@@ -386,12 +361,6 @@
                         flag = false;
                         return;
                     }
-                }
-
-                if (designerId == '') {
-                    $sixmac.notify("请选择发布人", "error");
-                    flag = false;
-                    return;
                 }
 
                 if (styleId == '') {
@@ -428,10 +397,9 @@
                 // 所有的验证通过后，执行新增操作
                 if (flag) {
                     $("#afflatusForm").ajaxSubmit({
-                        url: _basePath + "backend/afflatus/save",
+                        url: _basePath + "designer/afflatus/save",
                         dataType: "json",
                         data: {
-                            "designerId": designerId,
                             "styleId": styleId,
                             "areaId": areaId,
                             "tempAddImageIds": $("#tempAddImageIds").html(),
@@ -439,7 +407,7 @@
                         },
                         success: function (result) {
                             if (result > 0) {
-                                window.location.href = _basePath + "backend/afflatus/index";
+                                window.location.href = _basePath + "designer/afflatus/index";
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }

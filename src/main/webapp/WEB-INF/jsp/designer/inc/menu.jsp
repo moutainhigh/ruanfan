@@ -11,7 +11,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>灵感集管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>灵感图片</a>
+                        <a href="designer/afflatus/index"><i class="fa fa-cart-plus fa-fw"></i>灵感图片</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>作品列表</a>

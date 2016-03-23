@@ -1,12 +1,9 @@
-package com.sixmac.controller.backend;
+package com.sixmac.controller.designer;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.entity.Afflatus;
-import com.sixmac.entity.Image;
-import com.sixmac.entity.Label;
-import com.sixmac.entity.Virtuals;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
@@ -17,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -24,8 +22,8 @@ import java.util.*;
  * Created by Administrator on 2016/3/9 0009.
  */
 @Controller
-@RequestMapping(value = "backend/afflatus")
-public class AfflatusController extends CommonController {
+@RequestMapping(value = "designer/afflatus")
+public class DesignerAfflatusController extends CommonController {
 
     @Autowired
     private AfflatusService afflatusService;
@@ -51,29 +49,33 @@ public class AfflatusController extends CommonController {
     @Autowired
     private VirtualsService virtualsService;
 
-    @Autowired
-    private MessageService messageService;
-
     @RequestMapping("index")
-    public String index(ModelMap model) {
-        return "backend/灵感图集列表";
+    public String index(ModelMap model, HttpServletRequest request) {
+        Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
+        if (designers.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
+            return "designer/个人资料待审核";
+        }
+
+        return "designer/灵感图集列表";
     }
 
     @RequestMapping("/list")
-    public void list(HttpServletResponse response,
+    public void list(HttpServletRequest request,
+                     HttpServletResponse response,
                      String afflatusName,
-                     String designerName,
                      Integer status,
                      Integer styleId,
                      Integer areaId,
                      Integer draw,
                      Integer start,
                      Integer length) {
+        Designers designers = DesignerIndexController.getDesigner(request, designersService);
+
         if (null == start || start == 0) {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Afflatus> page = afflatusService.page(afflatusName, designerName, status, styleId, areaId, pageNum, length);
+        Page<Afflatus> page = afflatusService.page(designers.getId(), afflatusName, status, styleId, areaId, pageNum, length);
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
@@ -103,33 +105,7 @@ public class AfflatusController extends CommonController {
 
         model.addAttribute("imageList", JSONArray.fromObject(list));
 
-        return "backend/新增灵感集";
-    }
-
-    @RequestMapping("show")
-    public String show(ModelMap model, Integer id) {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = null;
-
-        // 如果id不为空，则该操作是编辑，否则是新增
-        Afflatus afflatus = afflatusService.getById(id);
-        model.addAttribute("afflatus", afflatus);
-
-        // 如果灵感集不为空，则查询对应的图片集合
-        if (null != afflatus) {
-            List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
-            for (Image image : imageList) {
-                map = new HashMap<String, Object>();
-                map.put("id", image.getId());
-                map.put("path", image.getPath());
-
-                list.add(map);
-            }
-        }
-
-        model.addAttribute("imageList", JSONArray.fromObject(list));
-
-        return "backend/灵感集详情";
+        return "designer/新增灵感集";
     }
 
     /**
@@ -140,7 +116,6 @@ public class AfflatusController extends CommonController {
      * @param type
      * @param styleId
      * @param areaId
-     * @param designerId
      * @param settingCover
      * @param labels
      * @param tempAddImageIds
@@ -149,12 +124,12 @@ public class AfflatusController extends CommonController {
      */
     @RequestMapping(value = "/save")
     @ResponseBody
-    public Integer save(Integer id,
+    public Integer save(HttpServletRequest request,
+                        Integer id,
                         String name,
                         Integer type,
                         Integer styleId,
                         Integer areaId,
-                        Integer designerId,
                         Integer settingCover,
                         String labels,
                         String tempAddImageIds,
@@ -169,7 +144,7 @@ public class AfflatusController extends CommonController {
             }
             afflatus.setName(name);
             afflatus.setType(type);
-            afflatus.setDesigner(designersService.getById(designerId));
+            afflatus.setDesigner(DesignerIndexController.getDesigner(request, designersService));
             afflatus.setStyle(stylesService.getById(styleId));
             afflatus.setArea(areasService.getById(areaId));
             afflatus.setLabels(labels);
@@ -181,7 +156,7 @@ public class AfflatusController extends CommonController {
             } else {
                 afflatus.setShowNum(0);
                 afflatus.setShareNum(0);
-                afflatus.setStatus(Constant.CHECK_STATUS_SUCCESS);
+                afflatus.setStatus(Constant.CHECK_STATUS_DEFAULT);
                 afflatus.setCreateTime(new Date());
                 afflatusService.create(afflatus);
             }
@@ -214,6 +189,48 @@ public class AfflatusController extends CommonController {
     }
 
     /**
+     * 删除灵感集
+     *
+     * @param afflatusId
+     * @return
+     */
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public Integer delete(Integer afflatusId) {
+        try {
+            afflatusService.deleteById(afflatusId);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
+     * 灵感集提交审核
+     *
+     * @param afflatusId
+     * @return
+     */
+    @RequestMapping(value = "/subToCheck")
+    @ResponseBody
+    public Integer subToCheck(Integer afflatusId) {
+        try {
+            Afflatus afflatus = afflatusService.getById(afflatusId);
+            afflatus.setStatus(Constant.CHECK_STATUS_DEFAULT);
+
+            afflatusService.update(afflatus);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
      * 系列图添加标签
      *
      * @param id
@@ -231,60 +248,6 @@ public class AfflatusController extends CommonController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "backend/图片锚点";
-    }
-
-    /**
-     * 灵感集转换为虚拟体验
-     *
-     * @param afflatusId
-     * @param typeId
-     * @return
-     */
-    @RequestMapping("/changeVR")
-    @ResponseBody
-    public Integer changeVR(Integer afflatusId, Integer typeId) {
-        try {
-            // 根据灵感集id获取灵感集详情
-            Afflatus afflatus = afflatusService.getById(afflatusId);
-
-            // 创建虚拟体验实体类，准备开始复制信息
-            Virtuals virtuals = new Virtuals();
-            virtuals.setName(afflatus.getName());
-            virtuals.setStyle(afflatus.getStyle());
-            virtuals.setType(vrtypeService.getById(typeId));
-            virtuals.setLabels(afflatus.getLabels());
-            virtuals.setCover(imageService.getById(afflatus.getCoverId()).getPath());
-            virtuals.setUrl("");
-            virtuals.setCreateTime(new Date());
-
-            // 保存虚拟体验信息
-            virtualsService.create(virtuals);
-
-            return 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /**
-     * 审核灵感集
-     *
-     * @param afflatusId
-     * @param status
-     * @return
-     */
-    @RequestMapping("/changeCheck")
-    @ResponseBody
-    public Integer changeCheck(Integer afflatusId, Integer status, String reason) {
-        try {
-            afflatusService.changeCheck(afflatusId, status, reason);
-
-            return 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return "designer/图片锚点";
     }
 }
