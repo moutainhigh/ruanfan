@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.MerchantsDao;
 import com.sixmac.entity.Merchants;
+import com.sixmac.entity.Messageplus;
 import com.sixmac.service.MerchantsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,5 +71,14 @@ public class MerchantsServiceImpl implements MerchantsService {
     @Override
     public List<Merchants> findListByEmail(String email) {
         return merchantsDao.findListByEmail(email);
+    }
+
+    @Override
+    public Messageplus findReasonByMerchantId(Integer merchantId) {
+        List<Messageplus> list = merchantsDao.findReasonByMerchantId(merchantId);
+        if (null != list && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 }
