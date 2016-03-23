@@ -33,7 +33,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">灵感图集</h1>
+                <h1 class="page-header">灵感图片</h1>
                 <h4 style="margin-left: 10px;" id="showH">——添加标签</h4>
             </div>
         </div>

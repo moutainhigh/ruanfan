@@ -172,7 +172,7 @@
                             "<i class='fa fa-remove'></i>" +
                             "</button>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='提交审核' class='btn btn-warning btn-circle checkStatus'>" +
+                            "<button type='button' title='提交审核' style='display: none' class='btn btn-warning btn-circle checkStatus'>" +
                             "<i class='fa fa-recycle'></i>" +
                             "</button>",
                             "targets": -1
@@ -197,6 +197,10 @@
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".edit").attr("href", 'designer/afflatus/add?id=' + data.id);
+
+                        if (data.isCheck == 2) {
+                            $('td', row).last().find(".checkStatus").css('display', '');
+                        }
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
