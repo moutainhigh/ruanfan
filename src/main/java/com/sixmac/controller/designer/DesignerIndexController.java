@@ -38,19 +38,12 @@ public class DesignerIndexController extends CommonController {
 
     @RequestMapping(value = "/info")
     public String info(HttpServletRequest request, ModelMap model) {
-        Integer designerId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
-        Designers designers = designersService.getById(designerId);
+        Designers designers = getDesigner(request, model);
         model.addAttribute("designer", designers);
 
         if (designers.getIsCheck() == Constant.CHECK_STATUS_SUCCESS) {
             return "designer/个人资料审核通过";
         } else {
-            // 查询审核失败的原因
-            Messageplus messageplus = designersService.findReasonByDesignerId(designers.getId());
-            if (null != messageplus) {
-                model.addAttribute("reasonInfo", messageplus.getDescription());
-            }
-
             return "designer/个人资料待审核";
         }
     }
@@ -64,7 +57,6 @@ public class DesignerIndexController extends CommonController {
                         String nickName,
                         Integer cityId,
                         String content,
-                        Integer isSendCheck,
                         MultipartRequest multipartRequest) {
         try {
             Designers designers = designersService.getById(id);
@@ -124,5 +116,24 @@ public class DesignerIndexController extends CommonController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 获取当前登录的设计师信息
+     *
+     * @param request
+     * @return
+     */
+    private Designers getDesigner(HttpServletRequest request, ModelMap model) {
+        Integer designerId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
+        Designers designers = designersService.getById(designerId);
+
+        // 查询审核失败的原因
+        Messageplus messageplus = designersService.findReasonByDesignerId(designerId);
+        if (null != messageplus) {
+            model.addAttribute("reasonInfo", messageplus.getDescription());
+        }
+
+        return designers;
     }
 }
