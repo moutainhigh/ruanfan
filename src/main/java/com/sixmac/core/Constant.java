@@ -118,6 +118,10 @@ public interface Constant {
     Integer DESIGNER_TYPE_ONE = 1;    // 独立设计师
     Integer DESIGNER_TYPE_TWO = 2;    // 设计公司
 
+    // 商家类型
+    Integer MERCHANT_TYPE_ONE = 1;    // 品牌商家
+    Integer MERCHANT_TYPE_TWO = 2;    // 独立商家
+
     // 个人消息类型
     Integer MESSAGE_PLUS_DESIGNERS = 1;   // 设计师
     Integer MESSAGE_PLUS_MERCHANTS = 2;   // 商户

@@ -5,7 +5,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Designers;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Sysusers;
-import com.sixmac.service.UsersService;
+import com.sixmac.service.*;
 import com.sixmac.utils.IdenCode;
 import com.sixmac.utils.Md5Util;
 import org.apache.commons.lang.StringUtils;
@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +33,18 @@ public class IndexController extends CommonController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private MerchantsService merchantsService;
+
+    @Autowired
+    private DesignersService designersService;
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private StylesService stylesService;
+
     @RequestMapping(value = "/login")
     public String login(String error,
                         ModelMap model) {
@@ -37,6 +52,61 @@ public class IndexController extends CommonController {
             model.addAttribute("error", error);
         }
         return "登录";
+    }
+
+    @RequestMapping(value = "/login/register")
+    public String register(HttpServletRequest request) {
+        request.getSession().removeAttribute("error");
+        return "注册";
+    }
+
+    @RequestMapping(value = "/login/registerInfo")
+    @ResponseBody
+    public Integer registerInfo(Integer type,
+                                String mobile,
+                                String email,
+                                String nickName,
+                                String password) {
+        try {
+            // 先判断注册类型
+            if (type == 2) {
+                // 商家注册
+                Merchants merchants = new Merchants();
+                merchants.setNickName(nickName);
+                merchants.setPassword(Md5Util.md5(password));
+                merchants.setEmail(email);
+                merchants.setHead(Constant.DEFAULT_HEAD_PATH);
+                merchants.setType(Constant.MERCHANT_TYPE_TWO);
+                merchants.setStyle(stylesService.getById(1));
+                merchants.setCity(cityService.getById(1));
+                merchants.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
+                merchants.setStatus(Constant.BANNED_STATUS_YES);
+                merchants.setCreateTime(new Date());
+
+                merchantsService.create(merchants);
+            } else {
+                // 设计师注册
+                Designers designers = new Designers();
+                designers.setNickName(nickName);
+                designers.setMobile(mobile);
+                designers.setPassword(Md5Util.md5(password));
+                designers.setHead(Constant.DEFAULT_HEAD_PATH);
+                designers.setType(Constant.DESIGNER_TYPE_ONE);
+                designers.setCity(cityService.getById(1)); // 默认城市为北京
+                designers.setStar(0);
+                designers.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
+                designers.setIsCut(Constant.IS_CUT_NO);
+                designers.setStatus(Constant.BANNED_STATUS_YES);
+                designers.setCreateTime(new Date());
+
+                designersService.create(designers);
+            }
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @RequestMapping(value = "/login/check")
@@ -124,6 +194,44 @@ public class IndexController extends CommonController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 注册时检测邮箱是否存在
+     *
+     * @param email
+     * @return
+     */
+    @RequestMapping(value = "/login/emailCheck")
+    @ResponseBody
+    public Map<String, String> emailCheck(String email) {
+        Map<String, String> map = new HashMap<String, String>();
+        List<Merchants> merchantsList = merchantsService.findListByEmail(email);
+        if (null == merchantsList || merchantsList.size() == 0) {
+            map.put("ok", "");
+        } else {
+            map.put("error", "邮箱已存在");
+        }
+        return map;
+    }
+
+    /**
+     * 注册时检测手机号是否存在
+     *
+     * @param mobile
+     * @return
+     */
+    @RequestMapping(value = "/login/mobileCheck")
+    @ResponseBody
+    public Map<String, String> mobileCheck(String mobile) {
+        Map<String, String> map = new HashMap<String, String>();
+        List<Designers> designersList = designersService.findListByMobile(mobile);
+        if (null == designersList || designersList.size() == 0) {
+            map.put("ok", "");
+        } else {
+            map.put("error", "手机号已存在");
+        }
+        return map;
     }
 
     @RequestMapping("/check/oldPwd")

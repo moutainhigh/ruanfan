@@ -24,8 +24,8 @@
                         <fieldset>
                             <div class="form-group" style="text-align: center;">
                                 <input id="returnType" type="hidden" value="${returnType}"/>
-                                <input id="desiner" type="radio" name="type" value="3"/><label for="desiner">设计师</label>
-                                <input id="bussness" type="radio" name="type" value="2" style="margin-left: 20%;"/><label for="bussness">商户</label>
+                                <input id="designer" type="radio" name="type" value="3"/><label for="designer">设计师</label>
+                                <input id="merchant" type="radio" name="type" value="2" style="margin-left: 20%;"/><label for="merchant">商家</label>
                                 <input id="manager" type="radio" name="type" value="1" style="margin-left: 20%;" checked="checked"/><label for="manager">管理员</label>
                             </div>
                             <div class="form-group  <c:if test="${empty error}">has_error</c:if>">
@@ -105,7 +105,7 @@
 
 
     function registPage() {
-        window.location.href = _basePath + "login/registPage";
+        window.location.href = _basePath + "login/register";
     }
 
 

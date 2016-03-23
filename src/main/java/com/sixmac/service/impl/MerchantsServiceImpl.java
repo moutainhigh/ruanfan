@@ -66,4 +66,9 @@ public class MerchantsServiceImpl implements MerchantsService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Merchants> findListByEmail(String email) {
+        return merchantsDao.findListByEmail(email);
+    }
 }

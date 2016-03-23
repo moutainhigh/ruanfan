@@ -5,6 +5,8 @@ import com.sixmac.entity.Works;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/3/7 0007 下午 1:52.
  */
@@ -21,4 +23,7 @@ public interface DesignersService extends ICommonService<Designers> {
 
     // 审核设计师
     public void changeCheck(Integer designerId, Integer isCheck, String reason);
+
+    // 查询是否有相同手机号信息的设计师集合
+    public List<Designers> findListByMobile(String mobile);
 }

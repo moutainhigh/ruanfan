@@ -13,4 +13,7 @@ public interface MerchantsDao extends JpaRepository<Merchants, Integer> {
 
     @Query("select a from Merchants a where a.style.id = ?1")
     public List<Merchants> iFindListByStyleId(Integer styleId);
+
+    @Query("select a from Merchants a where a.email = ?1")
+    public List<Merchants> findListByEmail(String email);
 }

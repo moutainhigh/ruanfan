@@ -22,7 +22,7 @@
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
-            <h2 style="text-align: center;">欢迎进入软范后台管理系统</h2>
+            <h2 style="text-align: center;">欢迎进入软范设计师后台管理系统</h2>
         </div>
     </div>
     <!-- /#page-wrapper -->

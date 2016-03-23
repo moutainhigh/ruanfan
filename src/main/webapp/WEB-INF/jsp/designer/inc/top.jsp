@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="javascript:void(0)">软范后台管理系统</a>
+    <a class="navbar-brand" href="designer/dashboard">软范设计师后台管理系统</a>
 </div>
 <!-- /.navbar-header -->
 

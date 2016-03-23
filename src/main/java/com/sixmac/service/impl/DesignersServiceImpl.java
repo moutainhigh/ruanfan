@@ -240,4 +240,9 @@ public class DesignersServiceImpl implements DesignersService {
 
         messageplusDao.save(message);
     }
+
+    @Override
+    public List<Designers> findListByMobile(String mobile) {
+        return designersDao.findListByMobile(mobile);
+    }
 }
