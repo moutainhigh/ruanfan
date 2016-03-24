@@ -12,7 +12,7 @@ import java.util.List;
 public interface PropertysService extends ICommonService<Propertys> {
 
     // 地产列表
-    public Page<Propertys> iPage(String name, Integer pageNum, Integer pageSize);
+    public Page<Propertys> iPage(String name, String address, Integer pageNum, Integer pageSize);
 
     // 根据地产id查询楼盘列表
     public List<Propertys> iPageByParentId(Integer parentId);

@@ -38,7 +38,8 @@ public class PropertysApi {
      * @apiName property.list
      * @apiGroup property
      *
-     * @apiParam {String} name 名称or地区
+     * @apiParam {String} name 名称
+     * @apiParam {String} address 地区
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      *
@@ -61,6 +62,7 @@ public class PropertysApi {
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
                      String name,
+                     String address,
                      Integer pageNum,
                      Integer pageSize) {
         if (null == pageNum || null == pageSize) {
@@ -68,7 +70,7 @@ public class PropertysApi {
             return;
         }
 
-        Page<Propertys> page = propertysService.iPage(name, pageNum, pageSize);
+        Page<Propertys> page = propertysService.iPage(name, address, pageNum, pageSize);
 
         for (Propertys propertys : page.getContent()) {
             propertys.setChildList(propertysService.iPageByParentId(propertys.getId()));

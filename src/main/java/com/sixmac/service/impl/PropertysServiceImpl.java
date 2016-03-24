@@ -75,7 +75,7 @@ public class PropertysServiceImpl implements PropertysService {
     }
 
     @Override
-    public Page<Propertys> iPage(String name, Integer pageNum, Integer pageSize) {
+    public Page<Propertys> iPage(String name, String address, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
@@ -83,10 +83,12 @@ public class PropertysServiceImpl implements PropertysService {
             public Predicate toPredicate(Root<Propertys> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
+
                 if (name != null) {
                     Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
                     predicateList.add(pre);
                 }
+
                 Predicate pre1 = cb.equal(root.get("parentId").as(Integer.class), 0);
                 predicateList.add(pre1);
 
