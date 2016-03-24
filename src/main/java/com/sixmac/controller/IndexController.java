@@ -142,6 +142,10 @@ public class IndexController extends CommonController {
                 // 商户
                 Merchants merchants = usersService.merchantLogin(session, account, Md5Util.md5(password));
                 if (null != merchants) {
+                    if (merchants.getStatus() == Constant.BANNED_STATUS_NO) {
+                        model.addAttribute("error", "该商家已被禁用");
+                        return "redirect:/login";
+                    }
                     return "merchant/控制面板";
                 }
                 break;
@@ -149,6 +153,10 @@ public class IndexController extends CommonController {
                 // 设计师
                 Designers designers = usersService.desingerLogin(session, account, Md5Util.md5(password));
                 if (null != designers) {
+                    if (designers.getStatus() == Constant.BANNED_STATUS_NO) {
+                        model.addAttribute("error", "该设计师已被禁用");
+                        return "redirect:/login";
+                    }
                     return "designer/控制面板";
                 }
                 break;

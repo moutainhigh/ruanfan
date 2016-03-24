@@ -98,26 +98,20 @@
     <!-- /#page-wrapper -->
 
     <!-- Modal -->
-    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">驳回原因</h4>
+                    <h4 class="modal-title">提示</h4>
                 </div>
                 <div class="modal-body">
-                    <form method="post" class="form-horizontal" role="form">
-                        <input type="hidden" id="hiddenProductId"/>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <textarea cols="40" rows="5" id="reason" style="resize: none;" class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </form>
+                    <input type="hidden" id="hiddenProductId"/>
+                    确定删除该商品？
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" onclick="masterProductList.fn.subCheckInfo()" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" onclick="masterProductList.fn.subDelInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -249,42 +243,30 @@
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
                         masterProductList.v.dTable.ajax.reload(null, false);
+                    } else if (result == -1) {
+                        $sixmac.notify("必须审核通过才能上架", "error");
                     } else {
                         $sixmac.notify("操作失败", "error");
                     }
                 });
             },
-            checkNo: function (id) {
+            delInfo: function (id) {
                 $('#hiddenProductId').val(id);
 
-                $("#checkModal").modal("show");
+                $("#delModal").modal("show");
             },
-            subCheckInfo: function () {
-                var flag = true;
-                var reason = $('#reason').val();
-                var id = $('#hiddenProductId').val();
-
-                if (null == reason || reason.trim().length == 0) {
-                    $sixmac.notify("请输入驳回原因", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (flag) {
-                    $sixmac.ajax("merchant/product/changeCheck", {
-                        "productId": id,
-                        "isCheck": 2,
-                        "reason": reason
-                    }, function (result) {
-                        if (result == 1) {
-                            $sixmac.notify("操作成功", "success");
-                            $("#checkModal").modal("hide");
-                            masterProductList.v.dTable.ajax.reload(null, false);
-                        } else {
-                            $sixmac.notify("操作失败", "error");
-                        }
-                    });
-                }
+            subDelInfo: function () {
+                $sixmac.ajax("merchant/product/delete", {
+                    "productId": $('#hiddenProductId').val()
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        $("#delModal").modal("hide");
+                        masterProductList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
+                    }
+                });
             }
         }
     }

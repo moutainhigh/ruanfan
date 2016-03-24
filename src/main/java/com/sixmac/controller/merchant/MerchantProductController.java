@@ -170,10 +170,16 @@ public class MerchantProductController extends CommonController {
             if (null == id) {
                 product.setIsHot(Constant.RECOMMEND_STATUS_NO);
                 product.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
-                product.setStatus(Constant.ADDED_STATUS_YES);
+                product.setStatus(Constant.BANNED_STATUS_YES);
+                product.setIsAdd(Constant.ADDED_STATUS_NO);
                 product.setCreateTime(new Date());
                 productsService.create(product);
             } else {
+                // 如果审核没通过，则将该商品状态更改为待审核
+                if (product.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
+                    product.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
+                }
+
                 productsService.update(product);
             }
 
@@ -235,32 +241,15 @@ public class MerchantProductController extends CommonController {
     public Integer changeAdd(Integer productId, Integer isAdd) {
         try {
             Products products = productsService.getById(productId);
+
+            // 必须审核通过的才可以上架
+            if (products.getIsCheck() != Constant.CHECK_STATUS_SUCCESS && isAdd == Constant.ADDED_STATUS_YES) {
+                return -1;
+            }
             products.setIsAdd(isAdd);
 
             productsService.update(products);
 
-            return 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    /**
-     * 商品提交审核
-     *
-     * @param productId
-     * @return
-     */
-    @RequestMapping(value = "/subToCheck")
-    @ResponseBody
-    public Integer subToCheck(Integer productId) {
-        try {
-            Products products = productsService.getById(productId);
-            products.setStatus(Constant.CHECK_STATUS_DEFAULT);
-
-            productsService.update(products);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();

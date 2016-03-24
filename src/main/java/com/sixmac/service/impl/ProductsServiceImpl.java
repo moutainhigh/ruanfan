@@ -57,7 +57,9 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public Products deleteById(int id) {
         Products products = getById(id);
-        productsDao.delete(products);
+        products.setStatus(Constant.BANNED_STATUS_NO);
+        products.setIsAdd(Constant.ADDED_STATUS_NO);
+        productsDao.save(products);
         return products;
     }
 
@@ -109,8 +111,17 @@ public class ProductsServiceImpl implements ProductsService {
                     predicateList.add(pre);
                 }
 
+                // 已上架的商品才可以被查出来
                 Predicate pre1 = cb.equal(root.get("isAdd").as(Integer.class), Constant.ADDED_STATUS_YES);
                 predicateList.add(pre1);
+
+                // 审核通过的商品才可以被查出来
+                Predicate pre2 = cb.equal(root.get("isCheck").as(Integer.class), Constant.CHECK_STATUS_SUCCESS);
+                predicateList.add(pre2);
+
+                // 没有禁用的商品才可以被查出来
+                Predicate pre3 = cb.equal(root.get("status").as(Integer.class), Constant.BANNED_STATUS_YES);
+                predicateList.add(pre3);
 
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
@@ -156,6 +167,9 @@ public class ProductsServiceImpl implements ProductsService {
                     Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
                     predicateList.add(pre);
                 }
+
+                Predicate pre1 = cb.equal(root.get("status").as(Integer.class), Constant.BANNED_STATUS_YES);
+                predicateList.add(pre1);
 
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
@@ -221,6 +235,9 @@ public class ProductsServiceImpl implements ProductsService {
                     Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
                     predicateList.add(pre);
                 }
+
+                Predicate pre1 = cb.equal(root.get("status").as(Integer.class), Constant.BANNED_STATUS_YES);
+                predicateList.add(pre1);
 
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
