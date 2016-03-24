@@ -98,4 +98,9 @@ public class AttentionsServiceImpl implements AttentionsService {
 
         return list;
     }
+
+    @Override
+    public List<Attentions> iFindListByUserId(Integer userId) {
+        return attentionsDao.iFindListByUserId(userId);
+    }
 }

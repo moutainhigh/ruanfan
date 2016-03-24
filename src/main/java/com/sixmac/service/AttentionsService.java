@@ -19,4 +19,7 @@ public interface AttentionsService extends ICommonService<Attentions> {
 
     // 根据关注目标id和关注目标类型查询关注信息集合
     public List<Attentions> iFindList(Integer objectId, Integer objectType);
+
+    // 根据用户id查询该用户的关注信息集合
+    public List<Attentions> iFindListByUserId(Integer userId);
 }

@@ -68,7 +68,8 @@ public class UsersServiceImpl implements UsersService {
     @Transactional
     public Users deleteById(int id) {
         Users users = getById(id);
-        usersDao.delete(users);
+        users.setStatus(Constant.BANNED_STATUS_NO);
+        usersDao.save(users);
         return users;
     }
 
@@ -226,6 +227,49 @@ public class UsersServiceImpl implements UsersService {
     public Users iFindOneByMobile(String mobile) {
         Users users = usersDao.iFindOneByMobile(mobile);
         return users;
+    }
+
+    @Override
+    public Page<Users> page(String mobile, String nickName, Integer status, Integer type, Integer pageNum, Integer pageSize) {
+        Page<Users> page = usersDao.findAll(new Specification<Users>() {
+            @Override
+            public Predicate toPredicate(Root<Users> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                if (mobile != null) {
+                    Predicate pre = cb.like(root.get("mobile").as(String.class), "%" + mobile + "%");
+                    predicateList.add(pre);
+                }
+
+                if (nickName != null) {
+                    Predicate pre = cb.like(root.get("nickName").as(String.class), "%" + nickName + "%");
+                    predicateList.add(pre);
+                }
+
+                if (status != null) {
+                    Predicate pre = cb.equal(root.get("status").as(Integer.class), status);
+                    predicateList.add(pre);
+                }
+
+                if (type != null) {
+                    Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
+                    predicateList.add(pre);
+                }
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+
+        return page;
     }
 
     // 将登录人的信息放入session中

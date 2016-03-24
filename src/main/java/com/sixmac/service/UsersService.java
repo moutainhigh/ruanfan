@@ -40,4 +40,6 @@ public interface UsersService extends ICommonService<Users> {
 
     // 移动端根据用户手机号获取用户信息
     public Users iFindOneByMobile(String mobile);
+
+    public Page<Users> page(String mobile, String nickName, Integer status, Integer type, Integer pageNum, Integer pageSize);
 }

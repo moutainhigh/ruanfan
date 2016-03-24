@@ -17,7 +17,7 @@
                         <a href="backend/merchants/index"><i class="fa fa-cart-plus fa-fw"></i>商户列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>会员列表</a>
+                        <a href="backend/users/index"><i class="fa fa-map-marker fa-fw"></i>会员列表</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>管理人员</a>
