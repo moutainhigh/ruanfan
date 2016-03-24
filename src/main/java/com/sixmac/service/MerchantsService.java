@@ -3,6 +3,7 @@ package com.sixmac.service;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.service.common.ICommonService;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,4 +17,9 @@ public interface MerchantsService extends ICommonService<Merchants> {
 
     // 根据商家id查询该商家审核失败的原因
     public Messageplus findReasonByMerchantId(Integer merchantId);
+
+    public Page<Merchants> page(String email, String nickName, Integer status, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
+
+    // 审核商户
+    public void changeCheck(Integer merchantId, Integer isCheck, String reason);
 }

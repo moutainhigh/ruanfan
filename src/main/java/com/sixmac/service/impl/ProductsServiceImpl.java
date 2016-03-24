@@ -108,6 +108,10 @@ public class ProductsServiceImpl implements ProductsService {
                     Predicate pre = cb.equal(root.get("isHot").as(Integer.class), isHot);
                     predicateList.add(pre);
                 }
+
+                Predicate pre1 = cb.equal(root.get("isAdd").as(Integer.class), Constant.ADDED_STATUS_YES);
+                predicateList.add(pre1);
+
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }
@@ -186,5 +190,50 @@ public class ProductsServiceImpl implements ProductsService {
         message.setCreateTime(new Date());
 
         messageplusDao.save(message);
+    }
+
+    @Override
+    public Page<Products> page(Integer merchantId, String name, Integer isCheck, Integer type, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Products> page = productsDao.findAll(new Specification<Products>() {
+            @Override
+            public Predicate toPredicate(Root<Products> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                if (merchantId != null) {
+                    Predicate pre = cb.equal(root.get("merchant").get("id").as(Integer.class), merchantId);
+                    predicateList.add(pre);
+                }
+
+                if (name != null) {
+                    Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
+                    predicateList.add(pre);
+                }
+
+                if (isCheck != null) {
+                    Predicate pre = cb.equal(root.get("isCheck").as(Integer.class), isCheck);
+                    predicateList.add(pre);
+                }
+
+                if (type != null) {
+                    Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
+                    predicateList.add(pre);
+                }
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
     }
 }

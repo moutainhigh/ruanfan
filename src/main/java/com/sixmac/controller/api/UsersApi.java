@@ -122,13 +122,13 @@ public class UsersApi extends CommonController {
                          MultipartRequest multipartRequest,
                          String code,
                          String codeType) {
-        if (null == mobile || null == password || null == nickname /*|| null == code || null == codeType*/) {
+        if (null == mobile || null == password || null == nickname || null == code || null == codeType) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
         // 检测验证码
-        // checkCode(response, mobile, code, codeType);
+        checkCode(response, mobile, code, codeType);
 
         // 检测手机号是否唯一，如果不唯一，返回错误码
         if (null != usersService.iFindOneByMobile(mobile)) {
@@ -280,13 +280,13 @@ public class UsersApi extends CommonController {
      */
     @RequestMapping(value = "/forgetPwd")
     public void forgetPwd(HttpServletResponse response, String mobile, String password, String code, String codeType) {
-        if (null == mobile || null == password/* || null == code || null == codeType*/) {
+        if (null == mobile || null == password || null == code || null == codeType) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
         // 检测验证码
-        // checkCode(response, mobile, code, codeType);
+        checkCode(response, mobile, code, codeType);
 
         // 根据手机号获取用户信息，并返回该用户的信息
         Users users = usersService.iFindOneByMobile(mobile);

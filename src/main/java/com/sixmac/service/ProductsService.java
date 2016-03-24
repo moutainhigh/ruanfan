@@ -17,4 +17,7 @@ public interface ProductsService extends ICommonService<Products> {
 
     // 审核商品
     public void changeCheck(Integer productId, Integer isCheck, String reason);
+
+    // 商品列表
+    public Page<Products> page(Integer merchantId, String name, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
 }

@@ -27,19 +27,20 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form id="merchantForm" method="post" enctype="multipart/form-data" action="merchant/savePlus" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
+                        <form id="merchantForm" method="post" enctype="multipart/form-data" action="merchant/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
                             <input type="hidden" id="id" name="id" value="${merchant.id}">
                             <input type="hidden" id="provinceId" value="${merchant.city.province.id}">
                             <input type="hidden" id="cityId" value="${merchant.city.id}">
                             <input type="hidden" id="tempHead" value="${merchant.head}"/>
                             <input type="hidden" id="tempTypeId" value="${merchant.type}"/>
+                            <input type="hidden" id="tempStyleId" value="${merchant.style.id}"/>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">头像:</label>
                                 <div class="col-sm-10" style="padding-top: 5.5px;">
                                     <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="merchant.fn.changeStatus()"/>
                                     <a href="javascript:void(0);" onclick="merchant.fn.AddImg()">
-                                        <img id="mainPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
+                                        <img id="mainPicture" src="${merchant.head}" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
                                     </a>
                                 </div>
                             </div>
@@ -47,22 +48,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">资质证明:</label>
                                 <div class="col-sm-4">
-                                    <img src="${merchant.license}" style="height: 200px; width: 200px;" border="1"/>
+                                    <img src="${merchant.license}" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">手机号:</label>
+                                <label class="col-sm-2 control-label">账号:</label>
                                 <div class="col-sm-4" style="padding-top: 5.5px;">
-                                    ${merchant.mobile}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">设计师类型:</label>
-                                <div class="col-sm-4" style="padding-top: 5.5px;">
-                                    <c:if test="${merchant.type == 1}">独立设计师</c:if>
-                                    <c:if test="${merchant.type == 2}">设计公司</c:if>
+                                    ${merchant.email}
                                 </div>
                             </div>
 
@@ -70,6 +63,28 @@
                                 <label class="col-sm-2 control-label">昵称:</label>
                                 <div class="col-sm-4" style="padding-top: 5.5px;">
                                     ${merchant.nickName}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商家类型:</label>
+                                <div class="col-sm-4" style="padding-top: 5.5px;">
+                                    <c:if test="${merchant.type == 1}">品牌商家</c:if>
+                                    <c:if test="${merchant.type == 2}">独立商家</c:if>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">链接:</label>
+                                <div class="col-sm-4" style="padding-top: 5.5px;">
+                                    ${merchant.url}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">风格:</label>
+                                <div class="col-sm-2">
+                                    <select id="styleList" style="width: 150px;" class="form-control"></select>
                                 </div>
                             </div>
 
@@ -139,7 +154,6 @@
                 // 页面加载时，自动加载下拉框
                 merchant.fn.getSelectList();
 
-                // 加载数据
                 merchant.fn.loadData();
 
                 $('#provinceList').change(function () {
@@ -156,11 +170,35 @@
                 } else {
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
+
+                // 选择商家类型
+                var type = $('#tempTypeId').val();
+                if (null != type && type != '') {
+                    $('#typeList').val(type);
+                }
             },
             changeStatus: function () {
                 merchant.v.mainImageStatus = 1;
             },
             getSelectList: function () {
+                $sixmac.ajax("common/styleList", null, function (result) {
+                    if (null != result) {
+                        // 获取返回的风格列表信息，并循环绑定到select中
+                        var content = "<option value=''>请选择风格</option>";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                        });
+                        $('#styleList').append(content);
+                    } else {
+                        $sixmac.notify("获取风格信息失败", "error");
+                    }
+
+                    var styleId = $('#tempStyleId').val();
+                    if (null != styleId && styleId != '') {
+                        $('#styleList').val(styleId);
+                    }
+                });
+
                 var provinceId = $('#provinceId').val();
 
                 $sixmac.ajax("common/provinceList", null, function (result) {
@@ -203,7 +241,7 @@
                         });
                         $('#cityList').append(content);
                     } else {
-                        $sixmac.notify("获取城市信息失败", "error");
+                        $('#cityList').append("<option value=''>请选择所在城市</option>");
                     }
 
                     var cityId = $('#cityId').val();
@@ -219,9 +257,16 @@
             checkData: function () {
                 var flag = true;
                 var cityId = $('#cityList option:selected').val();
+                var styleId = $('#styleList option:selected').val();
 
                 if (merchant.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传头像", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (styleId == '') {
+                    $sixmac.notify("请选择风格", "error");
                     flag = false;
                     return;
                 }
@@ -241,8 +286,8 @@
                         url: _basePath + "merchant/savePlus",
                         dataType: "json",
                         data: {
-                            "type": $('#typeList option:selected').val(),
-                            "cityId": $('#cityList option:selected').val()
+                            "cityId": $('#cityList option:selected').val(),
+                            "styleId": $('#styleList option:selected').val()
                         },
                         success: function (result) {
                             if (result > 0) {

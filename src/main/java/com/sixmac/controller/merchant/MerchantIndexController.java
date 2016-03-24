@@ -87,7 +87,7 @@ public class MerchantIndexController extends CommonController {
 
             // 保存营业执照
             MultipartFile license = multipartRequest.getFile("mainImage2");
-            if (null != head) {
+            if (null != license) {
                 Map<String, Object> map = ImageUtil.saveImage(request, license, false);
                 merchants.setLicense(map.get("imgURL").toString());
             }

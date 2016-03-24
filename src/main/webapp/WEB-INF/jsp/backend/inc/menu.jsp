@@ -14,7 +14,7 @@
                         <a href="backend/designers/index"><i class="fa fa-plus-square fa-fw"></i>设计师列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>商户列表</a>
+                        <a href="backend/merchants/index"><i class="fa fa-cart-plus fa-fw"></i>商户列表</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>会员列表</a>

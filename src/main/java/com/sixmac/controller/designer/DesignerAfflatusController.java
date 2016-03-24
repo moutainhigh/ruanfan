@@ -3,7 +3,10 @@ package com.sixmac.controller.designer;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.entity.*;
+import com.sixmac.entity.Afflatus;
+import com.sixmac.entity.Designers;
+import com.sixmac.entity.Image;
+import com.sixmac.entity.Label;
 import com.sixmac.service.*;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
@@ -42,12 +45,6 @@ public class DesignerAfflatusController extends CommonController {
 
     @Autowired
     private LabelService labelService;
-
-    @Autowired
-    private VrtypeService vrtypeService;
-
-    @Autowired
-    private VirtualsService virtualsService;
 
     @RequestMapping("index")
     public String index(ModelMap model, HttpServletRequest request) {

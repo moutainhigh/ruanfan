@@ -26,6 +26,7 @@ public class Products {
     private Integer isHot;
     private Integer isCheck;
     private Integer status;
+    private Integer isAdd;
     private String description;
     private String cover;
     private Integer merchantId;
@@ -178,6 +179,14 @@ public class Products {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getIsAdd() {
+        return isAdd;
+    }
+
+    public void setIsAdd(Integer isAdd) {
+        this.isAdd = isAdd;
     }
 
     public String getDescription() {
