@@ -22,6 +22,7 @@ public class Merchants {
     private City city;
     private String description;
     private Integer isCheck;
+    private Integer isCut;
     private Integer status;
     private Date createTime;
 
@@ -133,6 +134,14 @@ public class Merchants {
 
     public void setIsCheck(Integer isCheck) {
         this.isCheck = isCheck;
+    }
+
+    public Integer getIsCut() {
+        return isCut;
+    }
+
+    public void setIsCut(Integer isCut) {
+        this.isCut = isCut;
     }
 
     public Integer getStatus() {

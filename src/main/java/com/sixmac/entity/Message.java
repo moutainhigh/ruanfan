@@ -11,7 +11,7 @@ import java.util.Date;
 public class Message {
     private Integer id;
     private String title;
-    private String type;
+    private Integer type;
     private String description;
     private Date createTime;
 
@@ -33,11 +33,11 @@ public class Message {
         this.title = title;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

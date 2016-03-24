@@ -71,16 +71,18 @@
 
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
-                                    <col class="gradeA even"/>
+                                    <col class="gradeA even" style="width: 6%"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
+                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
                                     <th>手机号</th>
                                     <th>昵称</th>
                                     <th>身份</th>
@@ -162,7 +164,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" class="form-horizontal" role="form">
-                        <input type="hidden" id="hiddenDesignerId" />
+                        <input type="hidden" id="hiddenDesignerId"/>
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <textarea cols="40" rows="5" id="reason" style="resize: none;" class="form-control"></textarea>
@@ -215,6 +217,7 @@
                         "type": "POST"
                     },
                     "columns": [
+                        {"data": null},
                         {"data": "mobile"},
                         {"data": "nickName"},
                         {"data": "type"},
@@ -250,18 +253,20 @@
                     "createdRow": function (row, data, index) {
                         designerList.v.list.push(data);
 
+                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
+
                         if (data.type == 1) {
-                            $('td', row).eq(2).html("独立设计师");
+                            $('td', row).eq(3).html("独立设计师");
                         } else {
-                            $('td', row).eq(2).html("设计公司");
+                            $('td', row).eq(3).html("设计公司");
                         }
 
                         if (data.isCheck == 0) {
-                            $('td', row).eq(3).html("待审核");
+                            $('td', row).eq(4).html("待审核");
                         } else if (data.isCheck == 1) {
-                            $('td', row).eq(3).html("审核通过");
+                            $('td', row).eq(4).html("审核通过");
                         } else {
-                            $('td', row).eq(3).html("审核不通过");
+                            $('td', row).eq(4).html("审核不通过");
                         }
                     },
                     rowCallback: function (row, data) {
@@ -275,11 +280,11 @@
 
                         //渲染样式
                         if (data.status == "0") {
-                            $('td', row).eq(4).html('启用');
+                            $('td', row).eq(5).html('启用');
                             $('td', row).last().find(".editStatus").addClass("btn-danger");
                             $('td', row).last().find(".editStatus").attr("title", "禁用");
                         } else {
-                            $('td', row).eq(4).html('禁用');
+                            $('td', row).eq(5).html('禁用');
                             $('td', row).last().find(".editStatus").addClass("btn-success");
                             $('td', row).last().find(".editStatus").attr("title", "启用");
                         }

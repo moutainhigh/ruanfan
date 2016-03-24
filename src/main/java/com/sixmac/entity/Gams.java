@@ -13,6 +13,7 @@ public class Gams {
     private Integer objectId;
     private Integer objectType;
     private Integer type;
+    private String description;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -56,5 +57,13 @@ public class Gams {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

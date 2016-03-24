@@ -184,10 +184,11 @@ public class JournalApi extends CommonController {
      * @apiGroup journal
      *
      * @apiParam {Integer} userId 用户id       <必传 />
-     * @apiParam {Integer} journalId 日志id       <必传 />
+     * @apiParam {Integer} journalId 日志id    <必传 />
+     * @apiParam {String} content 内容
      */
     @RequestMapping(value = "/forward")
-    public void forward(HttpServletResponse response, Integer userId, Integer journalId) {
+    public void forward(HttpServletResponse response, Integer userId, Integer journalId,String content) {
         if (null == userId || null == journalId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -227,6 +228,7 @@ public class JournalApi extends CommonController {
         gam.setObjectId(journalId);
         gam.setObjectType(Constant.GAM_JOURNAL);
         gam.setType(Constant.GAM_FORWARD);
+        gam.setDescription(content);
 
         gamsService.create(gam);
 

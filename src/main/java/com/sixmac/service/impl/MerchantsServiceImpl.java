@@ -57,7 +57,8 @@ public class MerchantsServiceImpl implements MerchantsService {
     @Override
     public Merchants deleteById(int id) {
         Merchants merchants = getById(id);
-        merchantsDao.delete(merchants);
+        merchants.setIsCut(Constant.IS_CUT_YES);
+        merchantsDao.save(merchants);
         return merchants;
     }
 
