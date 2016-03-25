@@ -15,14 +15,16 @@ import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/3/8 0008.
@@ -45,14 +47,11 @@ public class JournalApi extends CommonController {
 
     /**
      * @api {post} /api/journal/list 日志列表
-     *
      * @apiName journal.list
      * @apiGroup journal
-     *
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 日志列表
      * @apiSuccess {Integer} list.id 日志id
      * @apiSuccess {String} list.content 内容
@@ -86,12 +85,9 @@ public class JournalApi extends CommonController {
 
     /**
      * @api {post} /api/journal/info 日志详情
-     *
      * @apiName journal.info
      * @apiGroup journal
-     *
      * @apiParam {Integer} journalId 日志id       <必传 />
-     *
      * @apiSuccess {Object} journalInfo 日志详情
      * @apiSuccess {Integer} journalInfo.id 日志id
      * @apiSuccess {String} journalInfo.content 内容
@@ -123,23 +119,18 @@ public class JournalApi extends CommonController {
 
     /**
      * @api {post} /api/journal/addJournal 发布日志
-     *
      * @apiName journal.addJournal
      * @apiGroup journal
-     *
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {String} content 内容       <必传 />
-     * @apiParam {Stream} imgList 图片数组
+     * @apiParam {Object} imagesMap 图片数组Map
      */
     @RequestMapping(value = "/addJournal")
-    public void addJournal(ServletRequest request, HttpServletResponse response, Integer userId, String content, MultipartRequest multipartRequest) {
+    public void addJournal(ServletRequest request, HttpServletResponse response, Integer userId, String content, MultipartHttpServletRequest multipartRequest) {
         if (null == userId || null == content) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
-
-        // 获取图片集合
-        MultiValueMap<String, MultipartFile> list = multipartRequest.getMultiFileMap();
 
         Journal journal = new Journal();
         journal.setUser(usersService.getById(userId));
@@ -156,13 +147,11 @@ public class JournalApi extends CommonController {
             Map<String, Object> map = null;
             Image image = null;
 
-            //获取map集合中的所有键的Set集合
-            Set<String> keySet = list.keySet();
-            //有了Set集合就可以获取其迭代器，取值
-            Iterator<String> it = keySet.iterator();
-            while (it.hasNext()) {
-                String i = it.next();
-                MultipartFile file = (MultipartFile) list.get(i);
+            // 获取图片集合
+            Iterator<String> fileList = multipartRequest.getFileNames();
+            while (fileList.hasNext()) {
+                String fileName = fileList.next();
+                MultipartFile file = multipartRequest.getFile(fileName);
                 if (null != file) {
                     map = ImageUtil.saveImage(request, file, false);
                     image = new Image();
@@ -178,6 +167,7 @@ public class JournalApi extends CommonController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
         }
 
         WebUtil.printApi(response, new Result(true));
@@ -185,10 +175,8 @@ public class JournalApi extends CommonController {
 
     /**
      * @api {post} /api/journal/forward 转发日志
-     *
      * @apiName journal.forward
      * @apiGroup journal
-     *
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} journalId 日志id    <必传 />
      * @apiParam {String} content 内容

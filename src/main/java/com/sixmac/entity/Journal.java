@@ -14,7 +14,6 @@ import java.util.List;
 public class Journal {
     private Integer id;
     private Users user;
-    private String title;
     private String content;
     private Integer forwardNum;
     private Integer shareNum;
@@ -39,14 +38,6 @@ public class Journal {
 
     public void setUser(Users user) {
         this.user = user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
