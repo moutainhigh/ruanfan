@@ -47,18 +47,23 @@ public class OrdersApi {
 
     /**
      * @api {post} /api/orders/list 订单列表
-     * @apiName  orders.list
+     * @apiName orders.list
      * @apiGroup orders
-     *
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 收藏列表
      * @apiSuccess {Integer} list.id 收藏id
-     * @apiSuccess {Integer} list.objectId 收藏目标id
-     * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
-     *
+     * @apiSuccess {Integer} list.orderNum 收藏目标id
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -72,18 +77,22 @@ public class OrdersApi {
 
         Page<Orders> page = ordersService.iPage(userId, pageNum, pageSize);
 
+        for (Orders order : page.getContent()) {
+            // 根据订单id查询订单详情list
+            order.setList(ordersinfoService.findListByOrderId(order.getId()));
+        }
+
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "user");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "merchant", "order", "product", "star", "comment");
         WebUtil.printApi(response, result);
     }
 
     /**
      * @api {post} /api/orders/confirmOrder 确认订单
-     * @apiName  orders.confirmOrder
+     * @apiName orders.confirmOrder
      * @apiGroup orders
-     *
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} merchantId 商户id
      * @apiParam {Integer} couponId 优惠券id
@@ -196,12 +205,10 @@ public class OrdersApi {
 
     /**
      * @api {post} /api/orders/updateOrders 修改订单状态
-     * @apiName  orders.updateOrders
+     * @apiName orders.updateOrders
      * @apiGroup orders
-     *
      * @apiParam {String} orderNum 订单流水号       <必传 />
-     * @apiParam {Integer} status 订单状态       <必传 />
-     *
+     * @apiParam {Integer} status 订单状态， 1=付款，3=确认收货       <必传 />
      */
     @RequestMapping(value = "/updateOrders")
     public void updateOrders(HttpServletResponse response,

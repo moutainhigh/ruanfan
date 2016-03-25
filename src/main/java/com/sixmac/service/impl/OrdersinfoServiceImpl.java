@@ -66,4 +66,15 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Ordersinfo> findListByOrderId(Integer orderId) {
+        List<Ordersinfo> list = ordersinfoDao.findListByOrderId(orderId);
+
+        for (Ordersinfo orderInfo : list) {
+            orderInfo.setProductId(orderInfo.getProduct().getId());
+        }
+
+        return list;
+    }
 }

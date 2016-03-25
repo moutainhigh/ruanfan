@@ -13,6 +13,7 @@ public class Ordersinfo {
     private Merchants merchant;
     private Integer type;
     private Products product;
+    private Integer productId;
     private String productName;
     private String productPath;
     private String colors;
@@ -24,7 +25,7 @@ public class Ordersinfo {
     private String comment;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -69,6 +70,15 @@ public class Ordersinfo {
 
     public void setProduct(Products product) {
         this.product = product;
+    }
+
+    @Transient
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {

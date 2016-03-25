@@ -1,5 +1,6 @@
 package com.sixmac.utils;
 
+import com.sixmac.core.Constant;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -46,19 +47,20 @@ public class JavaSmsApi {
     public static void main(String[] args) throws IOException, URISyntaxException {
 
         //修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后获取
-        String apikey = "xxxxxxxxxxxxxxxxxxxxx";
+        String apikey = "cec686130509bef38a8e4ce9c1a6fbed";
 
         //修改为您要发送的手机号
-        String mobile = "130xxxxxxxx";
+        String mobile = "18717101121";
 
         /**************** 查账户信息调用示例 *****************/
-        System.out.println(JavaSmsApi.getUserInfo(apikey));
+        // System.out.println(JavaSmsApi.getUserInfo(apikey));
 
         /**************** 使用智能匹配模版接口发短信(推荐) *****************/
         //设置您要发送的内容(内容必须和某个模板匹配。以下例子匹配的是系统提供的1号模板）
-        String text = "【云片网】您的验证码是1234";
+        // String text = "【云片网】您的验证码是1234";
+        String text = "【娃哈哈营销大赛】您的验证码是2301";
         //发短信调用示例
-        // System.out.println(JavaSmsApi.sendSms(apikey, text, mobile));
+        System.out.println(JavaSmsApi.sendSms(apikey, text, mobile));
 
         /**************** 使用指定模板接口发短信(不推荐，建议使用智能匹配模版接口) *****************/
         //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
@@ -68,13 +70,13 @@ public class JavaSmsApi {
         String tpl_value = URLEncoder.encode("#code#", ENCODING) + "="
                 + URLEncoder.encode("1234", ENCODING) + "&"
                 + URLEncoder.encode("#company#", ENCODING) + "="
-                + URLEncoder.encode("云片网", ENCODING);
+                + URLEncoder.encode("娃哈哈营销大赛", ENCODING);
         //模板发送的调用示例
-        System.out.println(tpl_value);
-        System.out.println(JavaSmsApi.tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        //System.out.println(tpl_value);
+        //System.out.println(JavaSmsApi.tplSendSms(apikey, tpl_id, tpl_value, mobile));
 
         /**************** 使用接口发语音验证码 *****************/
-        String code = "1234";
+        // String code = "1234";
         //System.out.println(JavaSmsApi.sendVoice(apikey, mobile ,code));
     }
 
