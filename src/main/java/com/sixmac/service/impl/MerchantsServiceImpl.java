@@ -129,6 +129,9 @@ public class MerchantsServiceImpl implements MerchantsService {
                     predicateList.add(pre);
                 }
 
+                Predicate pre1 = cb.equal(root.get("isCut").as(Integer.class), Constant.IS_CUT_NO);
+                predicateList.add(pre1);
+
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }

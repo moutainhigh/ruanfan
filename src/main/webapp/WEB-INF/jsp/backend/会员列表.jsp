@@ -256,7 +256,6 @@
                             if (result > 0) {
                                 $sixmac.notify("操作成功", "success");
                                 masterusersList.v.dTable.ajax.reload();
-
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }

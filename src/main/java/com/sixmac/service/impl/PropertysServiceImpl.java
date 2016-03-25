@@ -89,6 +89,11 @@ public class PropertysServiceImpl implements PropertysService {
                     predicateList.add(pre);
                 }
 
+                if (address != null) {
+                    Predicate pre = cb.like(root.get("address").as(String.class), "%" + address + "%");
+                    predicateList.add(pre);
+                }
+
                 Predicate pre1 = cb.equal(root.get("parentId").as(Integer.class), 0);
                 predicateList.add(pre1);
 

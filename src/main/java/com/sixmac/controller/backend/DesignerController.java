@@ -7,6 +7,7 @@ import com.sixmac.entity.Designers;
 import com.sixmac.service.CityService;
 import com.sixmac.service.DesignersService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.Md5Util;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,26 @@ public class DesignerController extends CommonController {
     public Integer delete(Integer designerId) {
         try {
             designersService.deleteById(designerId);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 删除设计师信息
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/batchDel")
+    @ResponseBody
+    public Integer batchDel(String ids) {
+        try {
+            int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
+            designersService.deleteAll(arrayId);
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();

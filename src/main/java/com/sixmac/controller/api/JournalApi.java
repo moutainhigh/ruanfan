@@ -15,15 +15,14 @@ import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/3/8 0008.
@@ -140,7 +139,7 @@ public class JournalApi extends CommonController {
         }
 
         // 获取图片集合
-        List<MultipartFile> list = multipartRequest.getFiles("imgList");
+        MultiValueMap<String, MultipartFile> list = multipartRequest.getMultiFileMap();
 
         Journal journal = new Journal();
         journal.setUser(usersService.getById(userId));
@@ -156,7 +155,14 @@ public class JournalApi extends CommonController {
             // 保存日志图片集合
             Map<String, Object> map = null;
             Image image = null;
-            for (MultipartFile file : list) {
+
+            //获取map集合中的所有键的Set集合
+            Set<String> keySet = list.keySet();
+            //有了Set集合就可以获取其迭代器，取值
+            Iterator<String> it = keySet.iterator();
+            while (it.hasNext()) {
+                String i = it.next();
+                MultipartFile file = (MultipartFile) list.get(i);
                 if (null != file) {
                     map = ImageUtil.saveImage(request, file, false);
                     image = new Image();
@@ -188,7 +194,7 @@ public class JournalApi extends CommonController {
      * @apiParam {String} content 内容
      */
     @RequestMapping(value = "/forward")
-    public void forward(HttpServletResponse response, Integer userId, Integer journalId,String content) {
+    public void forward(HttpServletResponse response, Integer userId, Integer journalId, String content) {
         if (null == userId || null == journalId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;

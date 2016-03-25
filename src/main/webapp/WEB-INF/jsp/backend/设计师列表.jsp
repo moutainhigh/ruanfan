@@ -28,6 +28,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="backend/designers/add" class="btn btn-outline btn-primary btn-lg" role="button">新增设计师</a>
+                        <a href="javascript:void(0)" onclick="designerList.fn.batchDel()" class="btn btn-outline btn-danger btn-lg" role="button">批量删除</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -270,8 +271,6 @@
                         }
                     },
                     rowCallback: function (row, data) {
-                        var items = designerList.v.list;
-
                         if (data.isCheck == 0) {
                             // 未审核时，显示审核按钮
                             $('td', row).last().find(".checkyes").css("display", '');
@@ -403,6 +402,25 @@
                         $sixmac.notify("操作失败", "error");
                     }
                 });
+            },
+            batchDel: function () {
+                var checkBox = $("#dataTables tbody tr").find('input[type=checkbox]:checked');
+                var ids = checkBox.getInputId();
+                designerList.fn.deleteRow(checkBox, ids)
+            },
+            deleteRow: function (checkBox, ids) {
+                if (ids.length > 0) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("backend/designers/batchDel", {ids: JSON.stringify(ids)}, function (result) {
+                            if (result > 0) {
+                                $sixmac.notify("操作成功", "success");
+                                designerList.v.dTable.ajax.reload();
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        })
+                    }, '确定删除选中的所有设计师？', '确定');
+                }
             }
         }
     }

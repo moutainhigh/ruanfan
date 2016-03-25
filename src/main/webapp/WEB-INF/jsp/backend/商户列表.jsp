@@ -28,6 +28,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="backend/merchants/add" class="btn btn-outline btn-primary btn-lg" role="button">新增商户</a>
+                        <a href="javascript:void(0)" onclick="merchantList.fn.batchDel()" class="btn btn-outline btn-danger btn-lg" role="button">批量删除</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -71,6 +72,7 @@
 
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
+                                    <col class="gradeA odd" style="width: 6%"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
@@ -81,6 +83,7 @@
                                 </colgroup>
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
                                     <th>账号</th>
                                     <th>昵称</th>
                                     <th>身份</th>
@@ -162,7 +165,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" class="form-horizontal" role="form">
-                        <input type="hidden" id="hiddenMerchantId" />
+                        <input type="hidden" id="hiddenMerchantId"/>
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <textarea cols="40" rows="5" id="reason" style="resize: none;" class="form-control"></textarea>
@@ -215,6 +218,7 @@
                         "type": "POST"
                     },
                     "columns": [
+                        {"data": null},
                         {"data": "email"},
                         {"data": "nickName"},
                         {"data": "type"},
@@ -249,19 +253,20 @@
                     ],
                     "createdRow": function (row, data, index) {
                         merchantList.v.list.push(data);
+                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
                         if (data.type == 1) {
-                            $('td', row).eq(2).html("品牌商家");
+                            $('td', row).eq(3).html("品牌商家");
                         } else {
-                            $('td', row).eq(2).html("独立商家");
+                            $('td', row).eq(3).html("独立商家");
                         }
 
                         if (data.isCheck == 0) {
-                            $('td', row).eq(3).html("待审核");
+                            $('td', row).eq(4).html("待审核");
                         } else if (data.isCheck == 1) {
-                            $('td', row).eq(3).html("审核通过");
+                            $('td', row).eq(4).html("审核通过");
                         } else {
-                            $('td', row).eq(3).html("审核不通过");
+                            $('td', row).eq(4).html("审核不通过");
                         }
                     },
                     rowCallback: function (row, data) {
@@ -275,11 +280,11 @@
 
                         //渲染样式
                         if (data.status == "0") {
-                            $('td', row).eq(4).html('启用');
+                            $('td', row).eq(5).html('启用');
                             $('td', row).last().find(".editStatus").addClass("btn-danger");
                             $('td', row).last().find(".editStatus").attr("title", "禁用");
                         } else {
-                            $('td', row).eq(4).html('禁用');
+                            $('td', row).eq(5).html('禁用');
                             $('td', row).last().find(".editStatus").addClass("btn-success");
                             $('td', row).last().find(".editStatus").attr("title", "启用");
                         }
@@ -398,6 +403,25 @@
                         $sixmac.notify("操作失败", "error");
                     }
                 });
+            },
+            batchDel: function () {
+                var checkBox = $("#dataTables tbody tr").find('input[type=checkbox]:checked');
+                var ids = checkBox.getInputId();
+                merchantList.fn.deleteRow(checkBox, ids)
+            },
+            deleteRow: function (checkBox, ids) {
+                if (ids.length > 0) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("backend/merchants/batchDel", {ids: JSON.stringify(ids)}, function (result) {
+                            if (result > 0) {
+                                $sixmac.notify("操作成功", "success");
+                                merchantList.v.dTable.ajax.reload();
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        })
+                    }, '确定删除选中的所有商户？', '确定');
+                }
             }
         }
     }
