@@ -18,7 +18,6 @@
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">登录软范管理系统</h3>
-                    <h3 class="panel-title">登录软范管理系统</h3>
                 </div>
                 <div class="panel-body">
                     <form id="loginForm" role="form" action="login/check" method="post">
