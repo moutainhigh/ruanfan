@@ -2,6 +2,7 @@ package com.sixmac.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 public class RandomUtil {
@@ -16,6 +17,18 @@ public class RandomUtil {
             shortBuffer.append(chars[x % 0x3E]);
         }
         return shortBuffer.toString();
+
+    }
+
+    public static String getCode() {
+        StringBuffer sb = new StringBuffer("");
+        // 产生4位随机数
+        Random rand = new Random();
+        for (int i = 0; i < 4; i++) {
+            int m = rand.nextInt(9);
+            sb.append(m);
+        }
+        return sb.toString();
 
     }
 

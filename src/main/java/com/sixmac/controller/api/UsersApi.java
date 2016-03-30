@@ -62,7 +62,7 @@ public class UsersApi extends CommonController {
         }
 
         // 生成验证码
-        String code = RandomUtil.generateShortUuid();
+        String code = RandomUtil.getCode();
 
         // 发送验证码（云片网）
         try {
