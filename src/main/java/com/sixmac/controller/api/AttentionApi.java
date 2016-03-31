@@ -74,7 +74,7 @@ public class AttentionApi {
         Map<String, Object> dataMap = APIFactory.fittingPlus(page, list);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "type", "description");
         WebUtil.printApi(response, result);
     }
 
@@ -119,6 +119,7 @@ public class AttentionApi {
                 attentionVo.setName(users.getNickName());
                 attentionVo.setPath(PathUtils.getRemotePath() + users.getHeadPath());
                 attentionVo.setDescription("");
+                attentionVo.setType(type);
             } else {
                 // type为2代表设计师
                 designers = designersService.getById(attentions.getObjectId());
@@ -126,6 +127,7 @@ public class AttentionApi {
                 attentionVo.setName(designers.getNickName());
                 attentionVo.setPath(PathUtils.getRemotePath() + designers.getHead());
                 attentionVo.setDescription(designers.getDescription());
+                attentionVo.setType(type);
             }
 
             list.add(attentionVo);
