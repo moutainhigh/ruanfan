@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -549,13 +550,11 @@ public class UsersApi extends CommonController {
      * @apiParam {Stream} pic 图片（二进制流文件）
      */
     @RequestMapping(value = "/addFeedBack")
-    public void addFeedBack(ServletRequest request, HttpServletResponse response, Integer userId, String type, String content, MultipartRequest multipartRequest) {
+    public void addFeedBack(ServletRequest request, HttpServletResponse response, Integer userId, String type, String content, @RequestParam("pic") MultipartFile multipartFile) {
         if (null == userId || null == type || null == content) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
-
-        MultipartFile multipartFile = multipartRequest.getFile("pic");
 
         Feedback feedback = new Feedback();
         feedback.setUser(usersService.getById(userId));
