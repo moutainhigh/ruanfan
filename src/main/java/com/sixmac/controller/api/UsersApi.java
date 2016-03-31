@@ -190,10 +190,17 @@ public class UsersApi extends CommonController {
             return;
         }
 
+        Users user = usersService.iLogin(mobile);
+
+        if (null == user) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0018));
+            return;
+        }
+
         Users users = usersService.iLogin(mobile, password);
 
         if (null == users) {
-            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0019));
             return;
         }
 

@@ -3,6 +3,7 @@ package com.sixmac.service;
 import com.sixmac.entity.Attentions;
 import com.sixmac.entity.Users;
 import com.sixmac.service.common.ICommonService;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -22,4 +23,10 @@ public interface AttentionsService extends ICommonService<Attentions> {
 
     // 根据用户id查询该用户的关注信息集合
     public List<Attentions> iFindListByUserId(Integer userId);
+
+    // 根据用户id查询关注列表（分页）
+    public Page<Attentions> iPage(Integer userId, Integer pageNum, Integer pageSize);
+
+    // 根据用户id查询关注列表（分页）
+    public Page<Attentions> iPageFans(Integer userId, Integer pageNum, Integer pageSize);
 }

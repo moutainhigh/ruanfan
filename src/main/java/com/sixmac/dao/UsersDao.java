@@ -15,6 +15,9 @@ public interface UsersDao extends JpaRepository<Users, Integer>, JpaSpecificatio
     @Query("select a from Users a where a.mobile = ?1 and a.password = ?2")
     public Users iLogin(String mobile, String password);
 
+    @Query("select a from Users a where a.mobile = ?1")
+    public Users iLogin(String mobile);
+
     @Query("select a from Usersother a where a.openId = ?1 and a.type = ?2")
     public Usersother iTLogin(String openId, Integer type);
 

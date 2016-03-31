@@ -49,4 +49,16 @@ public class ErrorCode {
 
     // 用户不存在
     public static final String ERROR_CODE_0015 = "error_0015";
+
+    // 优惠券不存在
+    public static final String ERROR_CODE_0016 = "error_0016";
+
+    // 已经领取过优惠券
+    public static final String ERROR_CODE_0017 = "error_0017";
+
+    // 手机号码不存在
+    public static final String ERROR_CODE_0018 = "error_0018";
+
+    // 手机号或密码错误
+    public static final String ERROR_CODE_0019 = "error_0019";
 }

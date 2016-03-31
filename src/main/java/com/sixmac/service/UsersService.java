@@ -29,6 +29,9 @@ public interface UsersService extends ICommonService<Users> {
     // 移动端用户登录
     public Users iLogin(String mobile, String password);
 
+    // 移动端用户通过手机号登录
+    public Users iLogin(String mobile);
+
     // 移动端用户第三方登录
     public Users iTLogin(Integer type, String openId, String head, String nickname);
 

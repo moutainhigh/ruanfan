@@ -79,6 +79,7 @@ public class GamsServiceImpl implements GamsService {
 
         for (Gams gams : list) {
             gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
+            gams.setGamHead(gams.getUser().getHeadPath());
         }
 
         return list;

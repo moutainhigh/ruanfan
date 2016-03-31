@@ -155,6 +155,15 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public Users iLogin(String mobile) {
+        Users users = usersDao.iLogin(mobile);
+        if (null != users) {
+            users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
+        }
+        return users;
+    }
+
+    @Override
     @Transactional
     public Users iTLogin(Integer type, String openId, String head, String nickname) {
         Usersother usersother = usersDao.iTLogin(openId, type);

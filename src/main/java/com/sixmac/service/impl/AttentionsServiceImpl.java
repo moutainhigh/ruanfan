@@ -103,4 +103,14 @@ public class AttentionsServiceImpl implements AttentionsService {
     public List<Attentions> iFindListByUserId(Integer userId) {
         return attentionsDao.iFindListByUserId(userId);
     }
+
+    @Override
+    public Page<Attentions> iPage(Integer userId, Integer pageNum, Integer pageSize) {
+        return attentionsDao.pageByUserId(userId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public Page<Attentions> iPageFans(Integer userId, Integer pageNum, Integer pageSize) {
+        return attentionsDao.pageFansByUserId(userId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
 }

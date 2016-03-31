@@ -14,6 +14,7 @@ public class Gams {
     private Integer objectType;
     private Integer type;
     private String description;
+    private String gamHead;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -65,5 +66,14 @@ public class Gams {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Transient
+    public String getGamHead() {
+        return gamHead;
+    }
+
+    public void setGamHead(String gamHead) {
+        this.gamHead = gamHead;
     }
 }

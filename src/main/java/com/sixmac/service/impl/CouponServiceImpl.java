@@ -2,7 +2,10 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CouponDao;
+import com.sixmac.dao.UsercouponDao;
+import com.sixmac.dao.UsersDao;
 import com.sixmac.entity.Coupon;
+import com.sixmac.entity.Usercoupon;
 import com.sixmac.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,12 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private CouponDao couponDao;
+
+    @Autowired
+    private UsercouponDao usercouponDao;
+
+    @Autowired
+    private UsersDao usersDao;
 
     @Override
     public List<Coupon> findAll() {
@@ -65,5 +74,25 @@ public class CouponServiceImpl implements CouponService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public Coupon getByNum(String couponNum) {
+        return couponDao.getByNum(couponNum);
+    }
+
+    @Override
+    public void addUserCouponInfo(Integer userId, Coupon coupon) {
+        Usercoupon usercoupon = new Usercoupon();
+        usercoupon.setUser(usersDao.findOne(userId));
+        usercoupon.setCoupon(coupon);
+        usercoupon.setStatus(Constant.CHECK_STATUS_DEFAULT);
+
+        usercouponDao.save(usercoupon);
+    }
+
+    @Override
+    public Usercoupon getByUserIdAndCouponId(Integer userId, Integer couponId) {
+        return usercouponDao.getByUserIdAndCouponId(userId, couponId);
     }
 }

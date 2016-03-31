@@ -83,6 +83,8 @@ public class AfflatusApi extends CommonController {
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
+                     String key,
+                     String labels,
                      Integer type,
                      Integer styleId,
                      Integer areaId,
@@ -164,7 +166,8 @@ public class AfflatusApi extends CommonController {
      */
     @RequestMapping("info")
     public void afflatusInfo(HttpServletResponse response,
-                             Integer afflatusId) {
+                             Integer afflatusId,
+                             Integer userId) {
         if (null == afflatusId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -211,7 +214,7 @@ public class AfflatusApi extends CommonController {
         afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password", "user", "gamsList", "product", "thuPath", "width", "height", "labelId");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password", "user", "product", "thuPath", "width", "height", "labelId");
         WebUtil.printApi(response, result);
     }
 }
