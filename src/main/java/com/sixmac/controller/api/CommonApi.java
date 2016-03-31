@@ -5,6 +5,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Collect;
+import com.sixmac.entity.Comment;
 import com.sixmac.entity.Journal;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -37,20 +39,20 @@ public class CommonApi {
     @Autowired
     private JournalService journalService;
 
+    @Autowired
+    private CommentService commentService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
-     * @apiName  common.collectList
+     * @apiName common.collectList
      * @apiGroup common
-     *
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
-     *
      * @apiSuccess {Object} list 收藏列表
      * @apiSuccess {Integer} list.id 收藏id
      * @apiSuccess {Integer} list.objectId 收藏目标id
      * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
-     *
      */
     @RequestMapping(value = "/collectList")
     public void collectList(HttpServletResponse response,
@@ -73,14 +75,12 @@ public class CommonApi {
 
     /**
      * @api {post} /api/common/collect 收藏 or 取消收藏
-     * @apiName  common.collect
+     * @apiName common.collect
      * @apiGroup common
-     *
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} objectId 目标id        <必传 />
      * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品     <必传 />
      * @apiParam {Integer} action 类型，0=收藏，1=取消收藏        <必传 />
-     *
      */
     @RequestMapping("/collect")
     public void collect(HttpServletResponse response, Integer userId, Integer objectId, Integer objectType, Integer action) {
@@ -118,12 +118,10 @@ public class CommonApi {
 
     /**
      * @api {post} /api/common/share 分享
-     * @apiName  common.share
+     * @apiName common.share
      * @apiGroup common
-     *
      * @apiParam {Integer} objectId 分享目标id      <必传 />
      * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志       <必传 />
-     *
      */
     @RequestMapping("/share")
     public void share(HttpServletResponse response, Integer objectId, Integer objectType) {
@@ -164,5 +162,38 @@ public class CommonApi {
         }
 
         WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/common/comment 发布评论
+     * @apiName common.comment
+     * @apiGroup common
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} objectId 评论对象id        <必传 />
+     * @apiParam {Integer} objectType 评论对象类型，1=设计师，2=设计作品，3=灵感集     <必传 />
+     * @apiParam {String} content 评论内容        <必传 />
+     */
+    @RequestMapping("/comment")
+    public void comment(HttpServletResponse response, Integer userId, Integer objectId, Integer objectType, String content) {
+        if (null == userId || null == objectId || null == objectType || null == content) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        try {
+            Comment comment = new Comment();
+            comment.setUser(usersService.getById(userId));
+            comment.setObjectId(objectId);
+            comment.setObjectType(objectType);
+            comment.setContent(content);
+            comment.setCreateTime(new Date());
+
+            commentService.create(comment);
+
+            WebUtil.printApi(response, new Result(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+        }
     }
 }
