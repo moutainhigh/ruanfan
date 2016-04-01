@@ -311,6 +311,8 @@ public class UsersApi extends CommonController {
      * @apiSuccess {String} userInfo.comArea 小区面积
      * @apiSuccess {String} userInfo.createTime 注册时间
      * @apiSuccess {Integer} userInfo.cityId 所在城市id
+     * @apiSuccess {Integer} userInfo.fansNum 粉丝数
+     * @apiSuccess {Integer} userInfo.attentionNUm 关注数
      */
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response, Integer userId) {
@@ -579,7 +581,6 @@ public class UsersApi extends CommonController {
      * @api {post} /api/users/messageList 系统消息列表
      * @apiName users.messageList
      * @apiGroup users
-     * @apiParam {Integer} type 用户类型，1=设计师，2=商户，3=用户      <必传 />
      * @apiSuccess {Object} list 系统消息列表
      * @apiSuccess {Integer} list.id 消息id
      * @apiSuccess {String} list.title 标题
@@ -587,8 +588,8 @@ public class UsersApi extends CommonController {
      * @apiSuccess {String} list.createTime 创建时间
      */
     @RequestMapping(value = "/messageList")
-    public void messageList(HttpServletResponse response, Integer type) {
-        List<Message> list = messageService.findListByType(type);
+    public void messageList(HttpServletResponse response) {
+        List<Message> list = messageService.findListByType(3);
 
         Result obj = new Result(true).data(list);
         String result = JsonUtil.obj2ApiJson(obj, "type");

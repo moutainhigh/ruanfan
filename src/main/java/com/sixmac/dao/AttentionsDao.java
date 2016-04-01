@@ -28,4 +28,7 @@ public interface AttentionsDao extends JpaRepository<Attentions, Integer> {
 
     @Query("select a from Attentions a where a.objectId = ?1 and a.objectType = 1")
     public Page<Attentions> pageFansByUserId(Integer userId, Pageable pageable);
+
+    @Query("select a from Attentions a where a.objectId = ?1 and a.objectType = 1")
+    public List<Attentions> findListByUserId(Integer userId);
 }

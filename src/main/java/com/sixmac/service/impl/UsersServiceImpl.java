@@ -44,6 +44,9 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersotherDao usersotherDao;
 
+    @Autowired
+    private AttentionsDao attentionsDao;
+
     @Override
     public List<Users> findAll() {
         return usersDao.findAll();
@@ -61,7 +64,15 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users getById(int id) {
-        return usersDao.findOne(id);
+        Users users = usersDao.findOne(id);
+
+        // 查询粉丝数
+        users.setFansNum(attentionsDao.iFindListByUserId(id).size());
+
+        // 查询关注数
+        users.setAttentionNum(attentionsDao.findListByUserId(id).size());
+
+        return users;
     }
 
     @Override

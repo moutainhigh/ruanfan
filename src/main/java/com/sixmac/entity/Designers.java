@@ -37,6 +37,7 @@ public class Designers {
     private Integer commentNum;
     private Integer isGam;
     private Integer isAttention;
+    private Integer workNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -268,5 +269,14 @@ public class Designers {
 
     public void setIsAttention(Integer isAttention) {
         this.isAttention = isAttention;
+    }
+
+    @Transient
+    public Integer getWorkNum() {
+        return workNum;
+    }
+
+    public void setWorkNum(Integer workNum) {
+        this.workNum = workNum;
     }
 }

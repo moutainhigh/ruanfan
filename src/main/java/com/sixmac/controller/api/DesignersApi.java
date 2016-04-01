@@ -229,6 +229,7 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} designerInfo.reserveNum 预约数
      * @apiSuccess {Integer} designerInfo.gamNum 点赞数
      * @apiSuccess {Integer} designerInfo.commentNum 评论数
+     * @apiSuccess {Integer} designerInfo.workNum 作品数
      * @apiSuccess {Integer} designerInfo.isGam 是否点赞，0=是，1=否（当userId传入时才回返回值，否则返回""）
      * @apiSuccess {Integer} designerInfo.isAttention 是否关注，0=是，1=否（当userId传入时才回返回值，否则返回""）
      *

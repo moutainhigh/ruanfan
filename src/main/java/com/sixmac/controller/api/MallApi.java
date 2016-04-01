@@ -43,16 +43,14 @@ public class MallApi extends CommonController {
 
     /**
      * @api {post} /api/mall/bannerList 首页banner图列表
-     * @apiName  mall.bannerList
+     * @apiName mall.bannerList
      * @apiGroup mall
-     *
      * @apiSuccess {Object} list 首页banner图列表
      * @apiSuccess {Integer} list.id banner图id
      * @apiSuccess {String} list.cover 图片路径
      * @apiSuccess {Integer} list.type 类型，1=商品，2=套餐商品，3=特价商品
      * @apiSuccess {Integer} list.sourceId 关联目标id
      * @apiSuccess {String} list.updateTime 更新时间
-     *
      */
     @RequestMapping(value = "/bannerList")
     public void bannerList(HttpServletResponse response) {
@@ -62,17 +60,17 @@ public class MallApi extends CommonController {
             banner.setCover(PathUtils.getRemotePath() + banner.getCover());
         }
 
-        WebUtil.printApi(response, new Result(true).data(list));
+        Result obj = new Result(true).data(createMap("list", list));
+        String result = JsonUtil.obj2ApiJson(obj);
+        WebUtil.printApi(response, result);
     }
 
     /**
      * @api {post} /api/mall/spikeList 秒杀列表
-     * @apiName  mall.spikeList
+     * @apiName mall.spikeList
      * @apiGroup mall
-     *
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 秒杀列表
      * @apiSuccess {Integer} list.id 秒杀id
      * @apiSuccess {String} list.name 秒杀名称
@@ -88,7 +86,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} list.description 描述
      * @apiSuccess {String} list.createTime 创建时间
      * @apiSuccess {String} list.cover 封面图
-     *
      */
     @RequestMapping(value = "/spikeList")
     public void spikeList(HttpServletResponse response,
@@ -114,11 +111,9 @@ public class MallApi extends CommonController {
 
     /**
      * @api {post} /api/mall/spikeInfo 秒杀详情
-     * @apiName  mall.spikeInfo
+     * @apiName mall.spikeInfo
      * @apiGroup mall
-     *
      * @apiParam {Integer} spikesId 秒杀id       <必传 />
-     *
      * @apiSuccess {Object} spikeInfo 秒杀详情
      * @apiSuccess {Integer} spikeInfo.id 秒杀id
      * @apiSuccess {String} spikeInfo.name 秒杀名称
@@ -134,7 +129,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} spikeInfo.description 描述
      * @apiSuccess {String} spikeInfo.createTime 创建时间
      * @apiSuccess {String} spikeInfo.cover 封面图
-     *
      */
     @RequestMapping("spikeInfo")
     public void spikeInfo(HttpServletResponse response,
@@ -159,9 +153,8 @@ public class MallApi extends CommonController {
 
     /**
      * @api {post} /api/mall/list 商品列表
-     * @apiName  mall.list
+     * @apiName mall.list
      * @apiGroup mall
-     *
      * @apiParam {Integer} type 分类，1=单品，2=艺术品，3=设计师品牌
      * @apiParam {String} name 名称
      * @apiParam {Integer} brandId 品牌id
@@ -169,7 +162,6 @@ public class MallApi extends CommonController {
      * @apiParam {Integer} isHot 是否首页推荐，0=否，1=是
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 商品列表
      * @apiSuccess {Integer} list.id 商品id
      * @apiSuccess {String} list.name 商品名称
@@ -189,7 +181,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} list.brandName 品牌名称
      * @apiSuccess {Integer} list.sortId 分类id
      * @apiSuccess {String} list.sortName 分类名称
-     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -226,11 +217,9 @@ public class MallApi extends CommonController {
 
     /**
      * @api {post} /api/mall/info 商品详情
-     * @apiName  mall.info
+     * @apiName mall.info
      * @apiGroup mall
-     *
      * @apiParam {Integer} productId 商品id       <必传 />
-     *
      * @apiSuccess {Object} productInfo 商品详情
      * @apiSuccess {Integer} productInfo.id 商品id
      * @apiSuccess {String} productInfo.name 商品名称
@@ -250,7 +239,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.brandName 品牌名称
      * @apiSuccess {Integer} productInfo.sortId 分类id
      * @apiSuccess {String} productInfo.sortName 分类名称
-     *
      */
     @RequestMapping("info")
     public void info(HttpServletResponse response,
@@ -281,13 +269,11 @@ public class MallApi extends CommonController {
 
     /**
      * @api {post} /api/mall/packageList 套餐列表
-     * @apiName  mall.packageList
+     * @apiName mall.packageList
      * @apiGroup mall
-     *
      * @apiParam {Integer} brandId 品牌id
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 套餐列表
      * @apiSuccess {Integer} list.id 套餐id
      * @apiSuccess {String} list.name 套餐名称
@@ -372,11 +358,9 @@ public class MallApi extends CommonController {
 
     /**
      * @api {post} /api/mall/packageInfo 套餐详情
-     * @apiName  mall.packageInfo
+     * @apiName mall.packageInfo
      * @apiGroup mall
-     *
      * @apiParam {Integer} packageId 套餐id       <必传 />
-     *
      * @apiSuccess {Object} packageInfo 套餐列表
      * @apiSuccess {Integer} packageInfo.id 套餐id
      * @apiSuccess {String} packageInfo.name 套餐名称
