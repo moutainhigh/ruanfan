@@ -70,6 +70,7 @@ public interface Constant {
     Integer COMMENT_DESIGNERS = 1;  // 设计师
     Integer COMMENT_WORKS = 2;      // 设计作品
     Integer COMMENT_AFFLATUS = 3;   // 灵感集
+    Integer COMMENT_JOURNAL = 4;    // 日志
 
     // 关注目标类型
     Integer ATTENTION_USERS = 1;      // 用户
