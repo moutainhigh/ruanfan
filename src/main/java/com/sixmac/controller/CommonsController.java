@@ -62,6 +62,20 @@ public class CommonsController {
     @Autowired
     private SpikesService spikesService;
 
+    @Autowired
+    private RolesService rolesService;
+
+    /**
+     * 权限列表
+     *
+     * @return
+     */
+    @RequestMapping("/roleList")
+    @ResponseBody
+    public List<Roles> roleList() {
+        return rolesService.findAll();
+    }
+
     /**
      * 发布人列表
      *

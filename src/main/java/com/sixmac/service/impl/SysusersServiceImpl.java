@@ -8,9 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,5 +71,37 @@ public class SysusersServiceImpl implements SysusersService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public Page<Sysusers> page(final String account, Integer roleId, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Sysusers> page = sysusersDao.findAll(new Specification<Sysusers>() {
+            @Override
+            public Predicate toPredicate(Root<Sysusers> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (null != account && account != "") {
+                    Predicate pre = cb.like(root.get("account").as(String.class), "%" + account + "%");
+                    predicateList.add(pre);
+                }
+                if (roleId != null) {
+                    Predicate pre = cb.equal(root.get("role").get("id").as(Integer.class), roleId);
+                    predicateList.add(pre);
+                }
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
     }
 }

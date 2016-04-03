@@ -33,6 +33,9 @@ public class UsersServiceImpl implements UsersService {
     private UsersDao usersDao;
 
     @Autowired
+    private SysusersDao sysusersDao;
+
+    @Autowired
     private UsercouponDao usercouponDao;
 
     @Autowired
@@ -108,6 +111,10 @@ public class UsersServiceImpl implements UsersService {
     public Sysusers sysUserLogin(HttpSession session, String username, String password) {
         Sysusers sysusers = usersDao.sysUserLogin(username, password);
         if (null != sysusers) {
+            // 更新最后一次登录时间
+            sysusers.setLoginTime(new Date());
+            sysusersDao.save(sysusers);
+
             putSession(session, sysusers.getId(), sysusers.getAccount(), Constant.MASTER_TYPE_ADMIN);
             return sysusers;
         }

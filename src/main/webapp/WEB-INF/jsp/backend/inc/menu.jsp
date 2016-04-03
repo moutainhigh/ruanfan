@@ -20,7 +20,7 @@
                         <a href="backend/users/index"><i class="fa fa-map-marker fa-fw"></i>会员列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>管理人员</a>
+                        <a href="backend/sysUser/index"><i class="fa fa-cubes fa-fw"></i>管理人员</a>
                     </li>
                 </ul>
             </li>
