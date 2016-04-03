@@ -49,6 +49,10 @@ public interface Constant {
     Integer ATTENTION_STATUS_YES = 0;  // 已关注
     Integer ATTENTION_STATUS_NO = 1;   // 未关注
 
+    // 评论状态
+    Integer COMMENT_STATUS_YES = 0;  // 已评论
+    Integer COMMENT_STATUS_NO = 1;   // 未评论
+
     // 排序方式
     Integer SORT_TYPE_ASC = 1;   // 正序
     Integer SORT_TYPE_DESC = 2;  // 倒序

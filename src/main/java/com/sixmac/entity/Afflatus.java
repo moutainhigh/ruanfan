@@ -34,6 +34,8 @@ public class Afflatus {
     private String designerHead;
     private String designerName;
     private List<Image> imageList;
+    private Integer isComment;
+    private Integer isGam;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -229,5 +231,23 @@ public class Afflatus {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
+    }
+
+    @Transient
+    public Integer getIsComment() {
+        return isComment;
+    }
+
+    public void setIsComment(Integer isComment) {
+        this.isComment = isComment;
+    }
+
+    @Transient
+    public Integer getIsGam() {
+        return isGam;
+    }
+
+    public void setIsGam(Integer isGam) {
+        this.isGam = isGam;
     }
 }

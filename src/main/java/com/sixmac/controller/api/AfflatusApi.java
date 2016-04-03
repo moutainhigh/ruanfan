@@ -5,10 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Afflatus;
-import com.sixmac.entity.Collect;
-import com.sixmac.entity.Image;
-import com.sixmac.entity.Label;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
@@ -55,16 +52,13 @@ public class AfflatusApi extends CommonController {
 
     /**
      * @api {post} /api/afflatus/list 灵感集列表
-     *
      * @apiName afflatus.list
      * @apiGroup afflatus
-     *
      * @apiParam {Integer} type 类型：1单图 2套图      <必传 />
      * @apiParam {Integer} styleId 风格id
      * @apiParam {Integer} areaId 区域id
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
-     *
      * @apiSuccess {Object} list 灵感集列表
      * @apiSuccess {Integer} list.id 灵感集id
      * @apiSuccess {Integer} list.name 灵感集名称
@@ -119,18 +113,18 @@ public class AfflatusApi extends CommonController {
 
     /**
      * @api {post} /api/afflatus/info 灵感集详情
-     *
      * @apiName afflatus.info
      * @apiGroup afflatus
-     *
      * @apiParam {Integer} afflatusId 灵感集id     <必传 />
-     *
+     * @apiParam {Integer} userId 用户id
      * @apiSuccess {Object} afflatusInfo 灵感集详情
      * @apiSuccess {Integer} afflatusInfo.id 灵感集id
      * @apiSuccess {String} afflatusInfo.name 灵感集名称
      * @apiSuccess {Integer} afflatusInfo.type 类型：1单图   2套图
      * @apiSuccess {Integer} afflatusInfo.showNum 浏览量
      * @apiSuccess {Integer} afflatusInfo.shareNum 分享数
+     * @apiSuccess {Integer} afflatusInfo.isComment 是否评论
+     * @apiSuccess {Integer} afflatusInfo.isGam 是否点赞
      * @apiSuccess {String} afflatusInfo.labels 标签
      * @apiSuccess {Integer} afflatusInfo.status 状态，0=待审核，1=审核通过，2=审核不通过
      * @apiSuccess {String} afflatusInfo.createTime 创建时间
@@ -204,6 +198,15 @@ public class AfflatusApi extends CommonController {
         }
 
         afflatus.setImageList(imageList);
+
+        // 如果userId不为空的话，查询是否评论过、点赞过
+        if (null != userId) {
+            List<Comment> commentList = commentService.iFindList(userId, afflatusId, Constant.COMMENT_AFFLATUS);
+            afflatus.setIsComment(null == commentList || commentList.size() == 0 ? Constant.COMMENT_STATUS_NO : Constant.COMMENT_STATUS_YES);
+
+            Gams gams = gamsService.iFindOne(userId, afflatusId, Constant.GAM_AFFLATUS, Constant.GAM_LOVE);
+            afflatus.setIsGam(null == gams ? Constant.GAM_LOVE_NO : Constant.GAM_LOVE_YES);
+        }
 
         // 查看详情的同时，增加浏览量
         afflatus.setShowNum(afflatus.getShowNum() + 1);

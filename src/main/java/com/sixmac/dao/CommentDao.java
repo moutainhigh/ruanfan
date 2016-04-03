@@ -13,4 +13,7 @@ public interface CommentDao extends JpaRepository<Comment, Integer> {
 
     @Query("select a from Comment a where a.objectId = ?1 and a.objectType = ?2")
     public List<Comment> iFindList(Integer objectId, Integer objectType);
+
+    @Query("select a from Comment a where a.user.id = ?1 and a.objectId = ?2 and a.objectType = ?3")
+    public List<Comment> iFindList(Integer userId, Integer objectId, Integer objectType);
 }

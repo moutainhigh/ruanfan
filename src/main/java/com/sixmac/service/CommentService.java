@@ -12,4 +12,7 @@ public interface CommentService extends ICommonService<Comment> {
 
     // 根据评论对象id和评论对象类型查询列表
     public List<Comment> iFindList(Integer objectId, Integer objectType);
+
+    // 根据用户id、评论对象id和评论对象类型查询列表
+    public List<Comment> iFindList(Integer userId, Integer objectId, Integer objectType);
 }

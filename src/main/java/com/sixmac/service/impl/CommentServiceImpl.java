@@ -81,4 +81,18 @@ public class CommentServiceImpl implements CommentService {
 
         return list;
     }
+
+    @Override
+    public List<Comment> iFindListByUserId(Integer userId, Integer objectId, Integer objectType) {
+        List<Comment> list = commentDao.iFindList(userId, objectId, objectType);
+
+        for (Comment comment : list) {
+            comment.getUser().setHeadPath(PathUtils.getRemotePath() + comment.getUser().getHeadPath());
+            comment.setUserId(comment.getUser().getId());
+            comment.setUserName(comment.getUser().getNickName());
+            comment.setUserHead(comment.getUser().getHeadPath());
+        }
+
+        return list;
+    }
 }
