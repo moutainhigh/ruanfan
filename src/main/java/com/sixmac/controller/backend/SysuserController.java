@@ -54,4 +54,9 @@ public class SysuserController extends CommonController {
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
+
+    @RequestMapping("delete")
+    public void delete() {
+
+    }
 }
