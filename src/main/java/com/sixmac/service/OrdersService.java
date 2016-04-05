@@ -14,4 +14,6 @@ public interface OrdersService extends ICommonService<Orders> {
 
     // 根据订单流水号获取订单详情
     public Orders iFindOneByOrderNum(String orderNum);
+
+    public Page<Orders> page(String orderNum, String mobile, String nickName, Integer status, Integer type, int pageNum, int pageSize);
 }

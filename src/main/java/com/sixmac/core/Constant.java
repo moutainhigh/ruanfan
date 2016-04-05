@@ -139,4 +139,10 @@ public interface Constant {
     // 是否上架
     Integer ADDED_STATUS_YES = 0;
     Integer ADDED_STATUS_NO = 1;
+
+    // 消息类型
+    String MESSAGE_STATUS_ALL = "全部";
+    String MESSAGE_STATUS_DESIGNER = "设计师";
+    String MESSAGE_STATUS_MERCHANT = "商户";
+    String MESSAGE_STATUS_USER = "用户";
 }

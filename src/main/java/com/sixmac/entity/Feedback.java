@@ -15,6 +15,7 @@ public class Feedback {
     private String path;
     private String description;
     private Date createTime;
+    private Integer status;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -68,5 +69,13 @@ public class Feedback {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

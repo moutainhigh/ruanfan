@@ -4,13 +4,20 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.MessageDao;
 import com.sixmac.entity.Message;
 import com.sixmac.service.MessageService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,7 +75,43 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> findListByType(Integer type) {
-        return messageDao.findListByType(type, 0);
+    public List<Message> findListByType(String type) {
+        return messageDao.findListByType(type);
+    }
+
+    @Override
+    public Page<Message> page(String title, String type, String description, int pageNum, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+
+        Page<Message> page = messageDao.findAll(new Specification<Message>() {
+            @Override
+            public Predicate toPredicate(Root<Message> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (StringUtils.isNotBlank(title)) {
+                    Predicate pre = cb.like(root.get("title").as(String.class), "%" + title + "%");
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(type)) {
+                    Predicate pre = cb.like(root.get("type").as(String.class), "%" + type + "%");
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(description)) {
+                    Predicate pre = cb.like(root.get("description").as(String.class), "%" + description + "%");
+                    predicateList.add(pre);
+                }
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
     }
 }

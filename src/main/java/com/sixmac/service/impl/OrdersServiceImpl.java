@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.OrdersDao;
 import com.sixmac.entity.Orders;
 import com.sixmac.service.OrdersService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -104,5 +105,49 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public Orders iFindOneByOrderNum(String orderNum) {
         return ordersDao.iFindOneByOrderNum(orderNum);
+    }
+
+    @Override
+    public Page<Orders> page(String orderNum, String mobile, String nickName, Integer status, Integer type, int pageNum, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+
+        Page<Orders> page = ordersDao.findAll(new Specification<Orders>() {
+            @Override
+            public Predicate toPredicate(Root<Orders> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (StringUtils.isNotBlank(orderNum)) {
+                    Predicate pre = cb.like(root.get("orderNum").as(String.class),"%" + orderNum + "%");
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(mobile)) {
+                    Predicate pre = cb.like(root.get("user").get("mobile").as(String.class), "%" + mobile + "%");
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(nickName)) {
+                    Predicate pre = cb.like(root.get("merchant").get("nickName").as(String.class), "%" + nickName + "%");
+                    predicateList.add(pre);
+                }
+                if (status != null) {
+                    Predicate pre = cb.equal(root.get("status").as(Integer.class), status);
+                    predicateList.add(pre);
+                }
+                if (type != null) {
+                    Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
+                    predicateList.add(pre);
+                }
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
     }
 }

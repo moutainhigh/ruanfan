@@ -8,7 +8,7 @@
             </li>
 
             <li>
-                <a href="#"><i class="fa  fa-beer fa-fw"></i>用户管理<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-beer fa-fw"></i>用户管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="backend/designers/index"><i class="fa fa-plus-square fa-fw"></i>设计师列表</a>
@@ -38,10 +38,10 @@
                         <a href="backend/spikes/index"><i class="fa fa-map-marker fa-fw"></i>秒杀管理</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>订单列表</a>
+                        <a href="backend/orders/index1"><i class="fa fa-cubes fa-fw"></i>订单列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>评价列表</a>
+                        <a href="backend/ordersinfo/index"><i class="fa fa-cubes fa-fw"></i>评价列表</a>
                     </li>
                 </ul>
             </li>
@@ -95,22 +95,22 @@
                         <a href="backend/coupon/index"><i class="fa fa-cart-plus fa-fw"></i>范票</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>预约列表</a>
+                        <a href="backend/reserve/index"><i class="fa fa-map-marker fa-fw"></i>预约列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>反馈列表</a>
+                        <a href="backend/feedback/index"><i class="fa fa-cubes fa-fw"></i>反馈列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>举报列表</a>
+                        <a href="backend/report/index"><i class="fa fa-cubes fa-fw"></i>举报列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>收入列表</a>
+                        <a href="backend/income/index"><i class="fa fa-cubes fa-fw"></i>收入列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>操作日志</a>
+                        <a href="backend/operatis/index"><i class="fa fa-cubes fa-fw"></i>操作日志</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>单页列表</a>
+                        <a href="backend/singlepage/index"><i class="fa fa-cubes fa-fw"></i>单页列表</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>在线设计定制</a>
@@ -122,10 +122,10 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>消息管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>消息列表</a>
+                        <a href="backend/message/index"><i class="fa fa-plus-square fa-fw"></i>消息列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>添加消息</a>
+                        <a href="backend/message/add"><i class="fa fa-cart-plus fa-fw"></i>添加消息</a>
                     </li>
                 </ul>
             </li>
@@ -137,7 +137,7 @@
                         <a href="javascript:void(0)"><i class="fa fa-plus-square fa-fw"></i>日志列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>评论列表</a>
+                        <a href="backend/comment/index"><i class="fa fa-cart-plus fa-fw"></i>评论列表</a>
                     </li>
                 </ul>
             </li>

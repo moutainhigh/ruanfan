@@ -5,13 +5,20 @@ import com.sixmac.dao.CommentDao;
 import com.sixmac.entity.Comment;
 import com.sixmac.service.CommentService;
 import com.sixmac.utils.PathUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> iFindListByUserId(Integer userId, Integer objectId, Integer objectType) {
+    public List<Comment> iFindList(Integer userId, Integer objectId, Integer objectType) {
         List<Comment> list = commentDao.iFindList(userId, objectId, objectType);
 
         for (Comment comment : list) {
@@ -94,5 +101,38 @@ public class CommentServiceImpl implements CommentService {
         }
 
         return list;
+    }
+
+    @Override
+    public Page<Comment> page(String mobile, Integer objectType, int pageNum, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Comment> page = commentDao.findAll(new Specification<Comment>() {
+            @Override
+            public Predicate toPredicate(Root<Comment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (StringUtils.isNotBlank(mobile)) {
+                    Predicate pre = cb.like(root.get("user").get("mobile").as(String.class), "%" + mobile + "%");
+                    predicateList.add(pre);
+                }
+                if (objectType != null) {
+                    Predicate pre = cb.equal(root.get("objectType").as(Integer.class), objectType);
+                    predicateList.add(pre);
+                }
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
     }
 }

@@ -2,6 +2,7 @@ package com.sixmac.service;
 
 import com.sixmac.entity.Ordersinfo;
 import com.sixmac.service.common.ICommonService;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -10,6 +11,10 @@ import java.util.List;
  */
 public interface OrdersinfoService extends ICommonService<Ordersinfo> {
 
-    // 根据订单id查询订单详情list
+    // 评价列表（分页）
+    public Page<Ordersinfo> page(String mobile, String productName, String orderNum, int pagenum, int pagesize);
+
+    // 根据订单id查询订单详情列表
     public List<Ordersinfo> findListByOrderId(Integer orderId);
+
 }

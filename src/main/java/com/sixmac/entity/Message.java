@@ -11,12 +11,13 @@ import java.util.Date;
 public class Message {
     private Integer id;
     private String title;
-    private Integer type;
+    private String types;
     private String description;
     private Date createTime;
+    private Date updateTime;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -33,12 +34,12 @@ public class Message {
         this.title = title;
     }
 
-    public Integer getType() {
-        return type;
+    public String getTypes() {
+        return types;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setTypes(String types) {
+        this.types = types;
     }
 
     public String getDescription() {
@@ -50,12 +51,20 @@ public class Message {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "createTime")
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

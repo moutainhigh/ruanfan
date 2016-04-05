@@ -589,7 +589,7 @@ public class UsersApi extends CommonController {
      */
     @RequestMapping(value = "/messageList")
     public void messageList(HttpServletResponse response) {
-        List<Message> list = messageService.findListByType(3);
+        List<Message> list = messageService.findListByType(Constant.MESSAGE_STATUS_USER);
 
         Result obj = new Result(true).data(list);
         String result = JsonUtil.obj2ApiJson(obj, "type");
