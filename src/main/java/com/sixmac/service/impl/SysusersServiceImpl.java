@@ -104,4 +104,9 @@ public class SysusersServiceImpl implements SysusersService {
 
         return page;
     }
+
+    @Override
+    public List<Sysusers> findListByRoleId(Integer roleId) {
+        return sysusersDao.findListByRoleId(roleId);
+    }
 }

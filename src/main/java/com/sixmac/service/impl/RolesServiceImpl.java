@@ -66,4 +66,9 @@ public class RolesServiceImpl implements RolesService {
             deleteById(id);
         }
     }
+
+    @Override
+    public Page<Roles> page(Integer pageNum, Integer pageSize) {
+        return rolesDao.findAll(new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
 }

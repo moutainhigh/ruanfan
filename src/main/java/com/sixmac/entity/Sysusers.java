@@ -80,4 +80,5 @@ public class Sysusers {
     public void setRolemodulesList(List<Rolemodules> rolemodulesList) {
         this.rolemodulesList = rolemodulesList;
     }
+
 }

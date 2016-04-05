@@ -27,7 +27,8 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="backend/users/add" class="btn btn-outline btn-primary btn-lg" role="button">新增管理人员</a>
+                        <a href="backend/sysUser/add" class="btn btn-outline btn-primary btn-lg" role="button">新增管理人员</a>
+                        <a href="backend/roles/index" class="btn btn-outline btn-primary btn-lg" role="button">权限列表</a>
                         <a href="javascript:void(0)" onclick="sysUserList.fn.batchDel()" class="btn btn-outline btn-danger btn-lg" role="button">批量删除</a>
 
                         <form class="navbar-form navbar-right" role="search">
@@ -81,6 +82,27 @@
 
     </div>
     <!-- /#page-wrapper -->
+
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">删除提示</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="id"/>
+                    确定删除该管理人员？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" onclick="sysUserList.fn.subDelInfo()" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
@@ -176,7 +198,7 @@
                         $('td', row).last().find(".edit").attr("href", 'backend/sysUser/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
-                            // 删除
+                            sysUserList.fn.delInfo(data.id);
 
                         });
                     },
@@ -186,6 +208,25 @@
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
+                    }
+                });
+            },
+            delInfo: function (id) {
+                $('#id').val(id);
+                $("#delModal").modal("show");
+            },
+            subDelInfo: function () {
+                var id = $('#id').val();
+
+                $sixmac.ajax("backend/sysUser/delete", {
+                    "id": id
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        $("#delModal").modal("hide");
+                        sysUserList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
                     }
                 });
             },
