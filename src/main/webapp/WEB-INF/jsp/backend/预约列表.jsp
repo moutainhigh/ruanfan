@@ -111,13 +111,14 @@
                 <h4 class="modal-title">预约信息</h4>
             </div>
             <div class="modal-body">
-                <form id="infoForm" method="post"  class="form-horizontal" role="form">
+                <form id="infoForm" method="post" class="form-horizontal" role="form">
                     <input type="hidden" id="hiddenreserveId" name="reserveId"/>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">预约时间:</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="reseTime" data-rule="required" maxlength="20"
-                                   placeholder="请输入预约时间"/>
+                            <input type="text" class="form-control input-append date form_datetime"
+                                   style="width: 180px;" readonly id="reseTime" name="reseTime" maxlength="20"
+                                   data-rule="required" placeholder="请输入预约时间"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -154,6 +155,18 @@
         fn: {
             init: function () {
                 reserveList.fn.dataTableInit();
+
+                $('.form_datetime').datetimepicker({
+                    language: 'zh-CN',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: 1,
+                    format: 'yyyy-mm-dd hh:ii:ss'
+                });
 
                 // 查询
                 $("#c_search").click(function () {
