@@ -145,4 +145,9 @@ public interface Constant {
     String MESSAGE_STATUS_DESIGNER = "设计师";
     String MESSAGE_STATUS_MERCHANT = "商户";
     String MESSAGE_STATUS_USER = "用户";
+
+    // 商品类型
+    Integer PRODUCT_TYPE_ONE = 1;   // 单品
+    Integer PRODUCT_TYPE_TWO = 2;   // 艺术品
+    Integer PRODUCT_TYPE_THREE = 3; // 设计师品牌
 }

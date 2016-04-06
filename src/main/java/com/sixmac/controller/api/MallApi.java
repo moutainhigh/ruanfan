@@ -66,6 +66,26 @@ public class MallApi extends CommonController {
     }
 
     /**
+     * @api {post} /api/mall/newProductList 首页最新三个类型的商品图
+     * @apiName mall.newProductList
+     * @apiGroup mall
+     * @apiSuccess {Object} list 首页banner图列表
+     * @apiSuccess {Integer} list.id banner图id
+     * @apiSuccess {String} list.cover 图片路径
+     * @apiSuccess {Integer} list.type 类型，1=商品，2=套餐商品，3=特价商品
+     * @apiSuccess {Integer} list.sourceId 关联目标id
+     * @apiSuccess {String} list.updateTime 更新时间
+     */
+    @RequestMapping(value = "/newProductList")
+    public void newProductList(HttpServletResponse response) {
+        List<Products> list = productsService.iFindList();
+
+        Result obj = new Result(true).data(createMap("list", list));
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "place", "labels", "colors", "sizes", "materials", "isHot", "isCheck", "isAdd", "description", "cover", "merchantId", "merchantName", "brandId", "brandName", "sortId", "sortName");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
      * @api {post} /api/mall/spikeList 秒杀列表
      * @apiName mall.spikeList
      * @apiGroup mall

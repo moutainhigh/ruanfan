@@ -4,6 +4,8 @@ import com.sixmac.entity.Products;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/3/8 0008 上午 10:37.
  */
@@ -20,4 +22,7 @@ public interface ProductsService extends ICommonService<Products> {
 
     // 商品列表
     public Page<Products> page(Integer merchantId, String name, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
+
+    // 查询最新的三个类型的商品信息
+    public List<Products> iFindList();
 }

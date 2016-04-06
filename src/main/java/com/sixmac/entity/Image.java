@@ -20,6 +20,7 @@ public class Image {
     private String description;
     private String demo;
     private Date createTime;
+    private String name;
     private List<Label> labelList;
 
     @Id
@@ -104,6 +105,15 @@ public class Image {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Transient

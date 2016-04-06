@@ -96,7 +96,9 @@ public class WorksServiceImpl implements WorksService {
             // 读取作品信息，并根据作品信息获取对应的图片信息
             for (Works work : tempList) {
                 image = imageDao.findOne(work.getCoverId());
+                image.setName(work.getName());
                 image.setPath(PathUtils.getRemotePath() + image.getPath());
+                image.setDemo(work.getDescription());
                 imageList.add(image);
             }
         }

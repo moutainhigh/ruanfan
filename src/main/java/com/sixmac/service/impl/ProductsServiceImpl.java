@@ -253,4 +253,25 @@ public class ProductsServiceImpl implements ProductsService {
 
         return page;
     }
+
+    @Override
+    public List<Products> iFindList() {
+        List<Products> list = new ArrayList<Products>();
+        List<Products> oneList = productsDao.iFindList(Constant.PRODUCT_TYPE_ONE);
+        if (null != oneList && oneList.size() > 0) {
+            list.add(oneList.get(0));
+        }
+
+        List<Products> twoList = productsDao.iFindList(Constant.PRODUCT_TYPE_TWO);
+        if (null != twoList && twoList.size() > 0) {
+            list.add(twoList.get(0));
+        }
+
+        List<Products> threeList = productsDao.iFindList(Constant.PRODUCT_TYPE_THREE);
+        if (null != threeList && threeList.size() > 0) {
+            list.add(threeList.get(0));
+        }
+
+        return list;
+    }
 }
