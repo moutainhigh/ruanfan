@@ -18,8 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">设计师列表</h1>
-                <h4 style="margin-left: 10px;" id="showH">——新增设计师</h4>
+                <h1 class="page-header">商户列表</h1>
+                <h4 style="margin-left: 10px;" id="showH">——新增商户</h4>
             </div>
         </div>
 
@@ -29,59 +29,62 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <form id="designersForm" method="post" enctype="multipart/form-data" action="backend/designers/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
-                            <input type="hidden" id="id" name="id" value="${designers.id}">
-                            <input type="hidden" id="provinceId" value="${designers.city.province.id}">
-                            <input type="hidden" id="cityId" value="${designers.city.id}">
-                            <input type="hidden" id="tempHead" value="${designers.head}"/>
-                            <input type="hidden" id="tempTypeId" value="${designers.type}"/>
+                            <input type="hidden" id="id" name="id" value="${merchants.id}">
+                            <input type="hidden" id="provinceId" value="${merchants.city.province.id}">
+                            <input type="hidden" id="cityId" value="${merchants.city.id}">
+                            <input type="hidden" id="tempTypeId" value="${merchants.type}"/>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">头像:</label>
+                                <label class="col-sm-2 control-label">邮箱:</label>
                                 <div class="col-sm-4">
-                                    <c:if test="${null==designers || designers.head == '' }"><img src="static/images/default.png" height="300px" width="280px"/></c:if>
-                                    <c:if test="${null!=designers && designers.head != '' }"><img src="${designers.head}" height="300px" width="280px"/></c:if>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">手机号:</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="mobile" name="mobile" maxlength="11" data-rule="required" value="${designers.mobile}" placeholder="请输入手机号"/>
+                                    <input type="text" class="form-control" id="email" name="email" maxlength="11" data-rule="required" value="${merchants.email}" placeholder="请输入邮箱"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">密码:</label>
                                 <div class="col-sm-4">
-                                    <input type="password" class="form-control" id="password" name="password" maxlength="16" data-rule="required" value="${designers.password}" placeholder="请输入密码"/>
+                                    <input type="password" class="form-control" id="password" name="password" maxlength="16" data-rule="required" value="${merchants.password}" placeholder="请输入密码"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">设计师类型:</label>
+                                <label class="col-sm-2 control-label">名称:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="nickName" name="nickName" maxlength="16" data-rule="required" value="${merchants.nickName}" placeholder="请输入名称"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">营业执照:</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="merchants.fn.changeStatus()"/>
+                                    <a href="javascript:void(0);" onclick="merchants.fn.AddImg()">
+                                        <img id="mainPicture" src="${merchants.license}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商家类型:</label>
                                 <div class="col-sm-4">
                                     <select id="typeList" style="width: 200px;" class="form-control">
-                                        <option value="">请选择设计师类型</option>
-                                        <option value="1">独立设计师</option>
-                                        <option value="2">设计公司</option>
+                                        <option value="">请选择商家类型</option>
+                                        <option value="1">品牌商家</option>
+                                        <option value="2">独立商家</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">昵称:</label>
+                                <label class="col-sm-2 control-label">风格类型:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="nickName" name="nickName" maxlength="500" value="${designers.nickName}" placeholder="请输入昵称"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">资质证明:</label>
-                                <div class="col-sm-10">
-                                    <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="designers.fn.changeStatus()"/>
-                                    <a href="javascript:void(0);" onclick="designers.fn.AddImg()">
-                                        <img id="mainPicture" src="${designers.proof}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
-                                    </a>
+                                    <select id="stileList" style="width: 200px;" class="form-control">
+                                        <option value="">请选择风格类型</option>
+                                        <option value="1">欧式</option>
+                                        <option value="2">美式</option>
+                                        <option value="3">日式</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -98,14 +101,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
-                                    <textarea name="content" cols="40" rows="6" class="form-control" style="resize: none">${designers.content}</textarea>
+                                    <textarea name="description" cols="40" rows="6" class="form-control" style="resize: none">${merchants.description}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-6" style="text-align: center">
-                                    <button type="button" class="btn btn-primary" onclick="designers.fn.subInfo()">提交</button>
-                                    <button type="button" class="btn btn-primary" onclick="designers.fn.goBack()">返回</button>
+                                    <button type="button" class="btn btn-primary" onclick="merchants.fn.subInfo()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="merchants.fn.goBack()">返回</button>
                                 </div>
                             </div>
                         </form>
@@ -129,9 +132,9 @@
 </body>
 
 <script type="text/javascript">
-    var designers = {
+    var merchants = {
         v: {
-            id: "designers",
+            id: "merchants",
             list: [],
             dTable: null,
             mainImageStatus: 0
@@ -143,7 +146,7 @@
                 });
 
                 if ($("#id").val() != "") {
-                    $("#showH").text("——编辑设计师");
+                    $("#showH").text("——编辑商户");
                 }
 
                 //套图主图预览
@@ -154,34 +157,40 @@
                 });
 
                 // 页面加载时，自动加载下拉框
-                designers.fn.getSelectList();
+                merchants.fn.getSelectList();
 
                 // 加载数据
-                designers.fn.loadData();
+                merchants.fn.loadData();
 
                 $('#provinceList').change(function () {
                     $('#cityId').val('');
 
                     var provinceId = $(this).val();
-                    designers.fn.loadCity(provinceId);
+                    merchants.fn.loadCity(provinceId);
                 });
             },
             loadData: function () {
                 var mainImagePath = $('#mainPicture').attr('src');
                 if (null != mainImagePath && mainImagePath != '') {
-                    designers.v.mainImageStatus = 1;
+                    merchants.v.mainImageStatus = 1;
                 } else {
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
 
-                // 选择设计师类型
+                // 选择商户类型
                 var type = $('#tempTypeId').val();
                 if (null != type && type != '') {
                     $('#typeList').val(type);
                 }
+
+                // 选择风格类型
+                var type = $('#tempTypeId').val();
+                if (null != type && type != '') {
+                    $('#stileList').val(type);
+                }
             },
             changeStatus: function () {
-                designers.v.mainImageStatus = 1;
+                merchants.v.mainImageStatus = 1;
             },
             getSelectList: function () {
                 var provinceId = $('#provinceId').val();
@@ -210,7 +219,7 @@
                     sourceId = provinceId;
                 }
 
-                designers.fn.loadCity(sourceId);
+                merchants.fn.loadCity(sourceId);
             },
             loadCity: function (sourceId) {
                 $('#cityList').html('');
@@ -241,14 +250,15 @@
             },
             checkData: function () {
                 var flag = true;
-                var mobile = $('#mobile').val();
+                var email = $('#email').val();
                 var password = $('#password').val();
                 var nickName = $('#nickName').val();
                 var typeId = $('#typeList option:selected').val();
+                var styleId = $('#styleList option:selected').val();
                 var cityId = $('#cityList option:selected').val();
 
-                if (null == mobile || mobile == '') {
-                    $sixmac.notify("请输入手机号", "error");
+                if (null == email || email == '') {
+                    $sixmac.notify("请输入邮箱", "error");
                     flag = false;
                     return;
                 }
@@ -259,20 +269,26 @@
                     return;
                 }
 
-                if (typeId == '') {
-                    $sixmac.notify("请选择设计师类型", "error");
-                    flag = false;
-                    return;
-                }
-
                 if (null == nickName || nickName == '') {
                     $sixmac.notify("请输入昵称", "error");
                     flag = false;
                     return;
                 }
 
-                if (designers.v.mainImageStatus == 0) {
-                    $sixmac.notify("请上传资质证明", "error");
+                if (typeId == '') {
+                    $sixmac.notify("请选择商户类型", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (styleId == '') {
+                    $sixmac.notify("请选择风格类型", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (merchants.v.mainImageStatus == 0) {
+                    $sixmac.notify("请上传营业执照", "error");
                     flag = false;
                     return;
                 }
@@ -287,17 +303,18 @@
             },
             subInfo: function () {
                 // 所有的验证通过后，执行新增操作
-                if (designers.fn.checkData()) {
+                if (merchants.fn.checkData()) {
                     $("#designersForm").ajaxSubmit({
-                        url: _basePath + "backend/designers/save",
+                        url: _basePath + "backend/merchants/save",
                         dataType: "json",
                         data: {
                             "type": $('#typeList option:selected').val(),
+                            "style": $('#styleList option:selected').val(),
                             "cityId": $('#cityList option:selected').val()
                         },
                         success: function (result) {
                             if (result > 0) {
-                                window.location.href = _basePath + "backend/designers/index";
+                                window.location.href = _basePath + "backend/merchants/index";
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }
@@ -306,13 +323,13 @@
                 }
             },
             goBack: function () {
-                window.location.href = "backend/designers/index";
+                window.location.href = "backend/merchants/index";
             }
         }
     }
 
     $(document).ready(function () {
-        designers.fn.init();
+        merchants.fn.init();
     });
 
 </script>
