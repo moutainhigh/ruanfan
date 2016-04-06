@@ -19,6 +19,8 @@ public class Journal {
     private Integer shareNum;
     private Date createTime;
     private List<Image> imageList;
+    private Integer gamsNum;
+    private Integer commentNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -81,5 +83,25 @@ public class Journal {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
+    }
+
+
+
+    @Transient
+    public Integer getGamsNum() {
+        return gamsNum;
+    }
+
+    public void setGamsNum(Integer gamsNum) {
+        this.gamsNum = gamsNum;
+    }
+
+    @Transient
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
     }
 }

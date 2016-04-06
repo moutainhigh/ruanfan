@@ -224,7 +224,7 @@
                 });
             },
             goBack: function () {
-                window.location.href = "backend/orders/index";
+                window.location.href = "backend/orders/index1";
             }
         }
     }

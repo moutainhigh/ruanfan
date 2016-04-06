@@ -12,6 +12,7 @@ import java.util.List;
 public class Orders {
     private Integer id;
     private String orderNum;
+    private Integer type;
     private Integer payType;
     private Date payTime;
     private Users user;
@@ -42,6 +43,14 @@ public class Orders {
 
     public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getPayType() {
