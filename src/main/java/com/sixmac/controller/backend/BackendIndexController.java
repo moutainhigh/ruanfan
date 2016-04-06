@@ -5,6 +5,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Designers;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Sysusers;
+import com.sixmac.service.OrdersinfoService;
 import com.sixmac.service.UsersService;
 import com.sixmac.utils.IdenCode;
 import com.sixmac.utils.Md5Util;
@@ -26,11 +27,15 @@ import java.util.Map;
 @RequestMapping(value = "backend")
 public class BackendIndexController extends CommonController {
 
+    @Autowired
+    private OrdersinfoService ordersinfoService;
 
     @RequestMapping(value = "/dashboard")
     public String dashboard(HttpServletRequest request,
                             HttpServletResponse response,
                             ModelMap model) {
+
+
         return "backend/控制面板";
     }
 }

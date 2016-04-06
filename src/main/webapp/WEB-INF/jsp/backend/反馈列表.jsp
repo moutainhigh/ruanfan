@@ -163,7 +163,7 @@
                         $('td', row).eq(7).css('line-height', '65px');
 
                         if (data.status == 1) {
-                            $('td', row).eq(7).html("已操作");
+                            $('td', row).eq(7).html("已处理");
                         }
                     },
                     rowCallback: function (row, data) {
