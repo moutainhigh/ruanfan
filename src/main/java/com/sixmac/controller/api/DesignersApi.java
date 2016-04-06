@@ -100,7 +100,7 @@ public class DesignersApi extends CommonController {
                      Integer cityId,
                      Integer pageNum,
                      Integer pageSize) {
-        if (null == type || null == pageNum || null == pageSize) {
+        if (/*null == type || */null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }

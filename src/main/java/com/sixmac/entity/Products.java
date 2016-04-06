@@ -2,6 +2,7 @@ package com.sixmac.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -36,6 +37,8 @@ public class Products {
     private Integer sortId;
     private String sortName;
     private Date createTime;
+    private List<Image> imageList;
+    private List<Products> similarList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -268,5 +271,23 @@ public class Products {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
+
+    @Transient
+    public List<Products> getSimilarList() {
+        return similarList;
+    }
+
+    public void setSimilarList(List<Products> similarList) {
+        this.similarList = similarList;
     }
 }

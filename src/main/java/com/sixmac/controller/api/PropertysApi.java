@@ -1,5 +1,6 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Propertyinfo;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "api/property")
-public class PropertysApi {
+public class PropertysApi extends CommonController {
 
     @Autowired
     private PropertysService propertysService;
@@ -34,15 +35,12 @@ public class PropertysApi {
 
     /**
      * @api {post} /api/property/list 地产列表
-     *
      * @apiName property.list
      * @apiGroup property
-     *
      * @apiParam {String} name 名称
      * @apiParam {String} address 地区
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 地产列表
      * @apiSuccess {Integer} list.id 地产id
      * @apiSuccess {String} list.name 地产名称
@@ -85,12 +83,9 @@ public class PropertysApi {
 
     /**
      * @api {post} /api/property/imageList 根据楼盘id查询对应的户型列表
-     *
      * @apiName property.imageList
      * @apiGroup property
-     *
      * @apiParam {Integer} propertyId 楼盘id       <必传 />
-     *
      * @apiSuccess {Object} list 户型列表
      * @apiSuccess {Integer} list.id 户型id
      * @apiSuccess {String} list.path 户型图片
@@ -113,7 +108,7 @@ public class PropertysApi {
             propertyInfo.setServerPath(PathUtils.getRemotePath() + propertyInfo.getServerPath());
         }
 
-        Result obj = new Result(true).data(list);
+        Result obj = new Result(true).data(createMap("list", list));
         String result = JsonUtil.obj2ApiJson(obj, "property");
         WebUtil.printApi(response, result);
     }

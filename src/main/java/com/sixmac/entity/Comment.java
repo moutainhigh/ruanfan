@@ -2,6 +2,7 @@ package com.sixmac.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -18,6 +19,7 @@ public class Comment {
     private Integer userId;
     private String userName;
     private String userHead;
+    private List<Replys> replysList;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -96,5 +98,14 @@ public class Comment {
 
     public void setUserHead(String userHead) {
         this.userHead = userHead;
+    }
+
+    @Transient
+    public List<Replys> getReplysList() {
+        return replysList;
+    }
+
+    public void setReplysList(List<Replys> replysList) {
+        this.replysList = replysList;
     }
 }

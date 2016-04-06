@@ -1,6 +1,7 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
@@ -226,6 +227,7 @@ public class MallApi extends CommonController {
             products.setBrandName(products.getBrand().getName());
             products.setSortId(products.getSort().getId());
             products.setSortName(products.getSort().getName());
+            products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
@@ -281,6 +283,9 @@ public class MallApi extends CommonController {
         products.setBrandName(products.getBrand().getName());
         products.setSortId(products.getSort().getId());
         products.setSortName(products.getSort().getName());
+        products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
+        // products.setSimilarList(null); 类似商品列表
+        // 商品评价列表
 
         Result obj = new Result(true).data(createMap("productInfo", products));
         String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");

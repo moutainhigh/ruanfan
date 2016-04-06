@@ -2,6 +2,7 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CommentDao;
+import com.sixmac.dao.ReplysDao;
 import com.sixmac.entity.Comment;
 import com.sixmac.service.CommentService;
 import com.sixmac.utils.PathUtils;
@@ -29,6 +30,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentDao commentDao;
+
+    @Autowired
+    private ReplysDao replysDao;
 
     @Override
     public List<Comment> findAll() {
@@ -84,6 +88,7 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserId(comment.getUser().getId());
             comment.setUserName(comment.getUser().getNickName());
             comment.setUserHead(comment.getUser().getHeadPath());
+            comment.setReplysList(replysDao.findAll());
         }
 
         return list;

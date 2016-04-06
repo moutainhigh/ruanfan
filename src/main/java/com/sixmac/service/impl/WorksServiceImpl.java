@@ -98,7 +98,7 @@ public class WorksServiceImpl implements WorksService {
                 image = imageDao.findOne(work.getCoverId());
                 image.setName(work.getName());
                 image.setPath(PathUtils.getRemotePath() + image.getPath());
-                image.setDemo(work.getDescription());
+                image.setDescription(work.getDescription());
                 imageList.add(image);
             }
         }

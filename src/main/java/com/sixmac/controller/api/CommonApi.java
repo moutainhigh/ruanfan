@@ -1,12 +1,10 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.common.exception.GeneralException;
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Afflatus;
-import com.sixmac.entity.Collect;
-import com.sixmac.entity.Comment;
-import com.sixmac.entity.Journal;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +24,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "api/common")
-public class CommonApi {
+public class CommonApi extends CommonController {
 
     @Autowired
     private CollectService collectService;
@@ -41,6 +40,9 @@ public class CommonApi {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private ProvinceService provinceService;
 
     /**
      * @api {post} /api/common/collectList 收藏列表
@@ -195,5 +197,23 @@ public class CommonApi {
             e.printStackTrace();
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
         }
+    }
+
+    /**
+     * @api {post} /api/common/provinceList 省份城市列表
+     * @apiName common.provinceList
+     * @apiGroup common
+     * @apiSuccess {Object} list 收藏列表
+     * @apiSuccess {Integer} list.id 收藏id
+     * @apiSuccess {Integer} list.objectId 收藏目标id
+     * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
+     */
+    @RequestMapping(value = "/provinceList")
+    public void provinceList(HttpServletResponse response) {
+        List<Province> list = provinceService.findAll();
+
+        Result obj = new Result(true).data(createMap("provinceList", list));
+        String result = JsonUtil.obj2ApiJson(obj);
+        WebUtil.printApi(response, result);
     }
 }
