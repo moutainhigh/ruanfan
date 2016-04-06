@@ -77,6 +77,7 @@ public class MerchantIndexController extends CommonController {
             merchants.setCity(cityService.getById(cityId));
             merchants.setDescription(content);
             merchants.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
+            merchants.setIsCut(Constant.IS_CUT_NO);
 
             // 保存头像
             MultipartFile head = multipartRequest.getFile("mainImage");
