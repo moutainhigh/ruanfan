@@ -79,7 +79,7 @@ public class JournalController extends CommonController {
 
     @RequestMapping(value = "/detail")
     public String detail(ModelMap model, Integer id) {
-        List<Image> list = new ArrayList<>();
+        List<Image> list = null;
         List<Map<String, Object>> imageList = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = null;
 
