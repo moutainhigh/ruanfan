@@ -15,4 +15,7 @@ public interface AddressService extends ICommonService<Address> {
 
     // 根据用户id查询对应的默认收货地址
     public Address findDefaultByUserId(Integer userId);
+
+    // 根据收货地址id和用户id查询对应的收货地址详情
+    public Address findOneByIdAndUserId(Integer addressId, Integer userId);
 }

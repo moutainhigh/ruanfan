@@ -73,4 +73,7 @@ public class ErrorCode {
 
     // 收货地址不存在
     public static final String ERROR_CODE_0023 = "error_0023";
+
+    // 收货地址不属于该用户
+    public static final String ERROR_CODE_0024 = "error_0024";
 }

@@ -76,4 +76,9 @@ public class AddressServiceImpl implements AddressService {
     public Address findDefaultByUserId(Integer userId) {
         return addressDao.findDefaultByUserId(userId);
     }
+
+    @Override
+    public Address findOneByIdAndUserId(Integer addressId, Integer userId) {
+        return addressDao.findOneByIdAndUserId(addressId, userId);
+    }
 }

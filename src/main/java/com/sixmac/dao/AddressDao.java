@@ -16,4 +16,7 @@ public interface AddressDao extends JpaRepository<Address, Integer> {
 
     @Query("select a from Address a where a.user.id = ?1 and a.isDefault = 1")
     public Address findDefaultByUserId(Integer userId);
+
+    @Query("select a from Address a where a.id = ?1 and a.user.id = ?2")
+    public Address findOneByIdAndUserId(Integer addressId, Integer userId);
 }
