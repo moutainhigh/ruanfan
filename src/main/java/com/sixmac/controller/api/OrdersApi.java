@@ -252,13 +252,13 @@ public class OrdersApi {
         }
     }
 
-    /**
+    /*/**
      * @api {post} /api/orders/commentOrder 评价订单
      * @apiName orders.commentOrder
      * @apiGroup orders
      * @apiParam {Integer} ordersInfoId 订单详情id       <必传 />
      */
-    @RequestMapping(value = "/commentOrder")
+    /*@RequestMapping(value = "/commentOrder")
     public void commentOrder(HttpServletResponse response,
                              Integer ordersInfoId,
                              Integer star,
@@ -286,5 +286,5 @@ public class OrdersApi {
             e.printStackTrace();
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
         }
-    }
+    }*/
 }
