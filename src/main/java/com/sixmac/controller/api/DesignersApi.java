@@ -60,15 +60,13 @@ public class DesignersApi extends CommonController {
 
     /**
      * @api {post} /api/designers/list 设计师列表
-     * @apiName  designers.list
+     * @apiName designers.list
      * @apiGroup designers
-     *
      * @apiParam {Integer} type 类型，1=独立设计师，2=设计公司       <必传 />
      * @apiParam {String} nickname 设计师昵称
      * @apiParam {Integer} cityId 所在城市id
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
-     *
      * @apiSuccess {Object} list 设计师列表
      * @apiSuccess {Integer} list.id 设计师id
      * @apiSuccess {String} list.nickname 设计师昵称
@@ -91,7 +89,6 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} list.imageList.createTime 创建时间
      * @apiSuccess {Integer} list.fansNum 粉丝数
      * @apiSuccess {Integer} list.reserveNum 预约数
-     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -135,13 +132,11 @@ public class DesignersApi extends CommonController {
 
     /**
      * @api {post} /api/designers/workList 设计作品列表
-     * @apiName  designers.workList
+     * @apiName designers.workList
      * @apiGroup designers
-     *
      * @apiParam {Integer} designerId 设计师id     <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
-     *
      * @apiSuccess {Object} list 设计作品列表
      * @apiSuccess {Integer} list.id 设计作品id
      * @apiSuccess {String} list.name 设计作品名称
@@ -154,7 +149,6 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} list.gamNum 点赞数
      * @apiSuccess {Integer} list.commentNum 评论数
      * @apiSuccess {Integer} list.collectNum 收藏数
-     *
      */
     @RequestMapping(value = "/workList")
     public void workList(HttpServletResponse response,
@@ -192,12 +186,10 @@ public class DesignersApi extends CommonController {
 
     /**
      * @api {post} /api/designers/info 查看设计师详情
-     * @apiName  designers.info
+     * @apiName designers.info
      * @apiGroup designers
-     *
      * @apiParam {Integer} designerId 设计师id     <必传 />
      * @apiParam {Integer} userId 当前登录用户id
-     *
      * @apiSuccess {Object} designerInfo 设计师详情
      * @apiSuccess {Integer} designerInfo.id 设计师id
      * @apiSuccess {String} designerInfo.nickName 设计师昵称
@@ -218,6 +210,13 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} designerInfo.commentList.userId 评论人id
      * @apiSuccess {String} designerInfo.commentList.userName 评论人昵称
      * @apiSuccess {String} designerInfo.commentList.userHead 评论人头像
+     * @apiSuccess {Object} designerInfo.commentList.replysList 评论回复列表
+     * @apiSuccess {Integer} designerInfo.commentList.replysList.id 评论回复id
+     * @apiSuccess {String} designerInfo.commentList.replysList.content 评论回复内容
+     * @apiSuccess {String} designerInfo.commentList.replysList.createTime 评论回复时间
+     * @apiSuccess {Integer} designerInfo.commentList.replysList.userId 评论回复人id
+     * @apiSuccess {String} designerInfo.commentList.replysList.userName 评论回复人名称
+     * @apiSuccess {String} designerInfo.commentList.replysList.userHead 评论回复人头像
      * @apiSuccess {Integer} designerInfo.cityId 所在城市id
      * @apiSuccess {Object} designerInfo.imageList 最新的设计作品列表（倒序，三张）
      * @apiSuccess {Integer} designerInfo.imageList.id 设计作品id
@@ -232,7 +231,6 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} designerInfo.workNum 作品数
      * @apiSuccess {Integer} designerInfo.isGam 是否点赞，0=是，1=否（当userId传入时才回返回值，否则返回""）
      * @apiSuccess {Integer} designerInfo.isAttention 是否关注，0=是，1=否（当userId传入时才回返回值，否则返回""）
-     *
      */
     @RequestMapping("info")
     public void designerInfo(HttpServletResponse response,
@@ -295,19 +293,17 @@ public class DesignersApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "isCheck", "objectId", "objectType", "gamsList", "thuPath", "width", "height", "user", "labelList", "isCut");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "comment", "password", "isCheck", "objectId", "objectType", "gamsList", "thuPath", "width", "height", "user", "labelList", "isCut");
         WebUtil.printApi(response, result);
     }
 
     /**
      * @api {post} /api/designers/attention 关注 or 取消关注
-     * @apiName  designers.attention
+     * @apiName designers.attention
      * @apiGroup designers
-     *
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} designerId 设计师id     <必传 />
      * @apiParam {Integer} action 类型，0=关注，1=取消关注        <必传 />
-     *
      */
     @RequestMapping("/attention")
     public void share(HttpServletResponse response, Integer userId, Integer designerId, Integer action) {
@@ -345,9 +341,8 @@ public class DesignersApi extends CommonController {
 
     /**
      * @api {post} /api/designers/reserve 预约设计师
-     * @apiName  designers.reserve
+     * @apiName designers.reserve
      * @apiGroup designers
-     *
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} designerId 设计师id       <必传 />
      * @apiParam {String} name 姓名       <必传 />
@@ -357,7 +352,6 @@ public class DesignersApi extends CommonController {
      * @apiParam {String} address 地址
      * @apiParam {String} resTime 预约时间
      * @apiParam {String} remark 备注（留言）
-     *
      */
     @RequestMapping("/reserve")
     public void reserve(HttpServletResponse response,

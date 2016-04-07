@@ -1,9 +1,7 @@
 package com.sixmac.service;
 
 import com.sixmac.entity.Roles;
-import com.sixmac.entity.Sysusers;
 import com.sixmac.service.common.ICommonService;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 import org.springframework.data.domain.Page;
 
 /**

@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.CommentDao;
 import com.sixmac.dao.ReplysDao;
 import com.sixmac.entity.Comment;
+import com.sixmac.entity.Replys;
 import com.sixmac.service.CommentService;
 import com.sixmac.utils.PathUtils;
 import org.apache.commons.lang.StringUtils;
@@ -81,6 +82,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> iFindList(Integer objectId, Integer objectType) {
+        List<Replys> replysList = null;
         List<Comment> list = commentDao.iFindList(objectId, objectType);
 
         for (Comment comment : list) {
@@ -88,7 +90,15 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserId(comment.getUser().getId());
             comment.setUserName(comment.getUser().getNickName());
             comment.setUserHead(comment.getUser().getHeadPath());
-            comment.setReplysList(replysDao.findAll());
+
+            replysList = replysDao.findListByCommentId(comment.getId());
+            for (Replys replys : replysList) {
+                replys.setUserId(replys.getUser().getId());
+                replys.setUserName(replys.getUser().getNickName());
+                replys.setUserHead(replys.getUser().getHeadPath());
+            }
+
+            comment.setReplysList(replysList);
         }
 
         return list;
