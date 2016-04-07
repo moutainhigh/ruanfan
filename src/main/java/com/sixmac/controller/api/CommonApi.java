@@ -2,6 +2,7 @@ package com.sixmac.controller.api;
 
 import com.sixmac.common.exception.GeneralException;
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
@@ -46,6 +47,9 @@ public class CommonApi extends CommonController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private GamsService gamsService;
 
     /**
      * @api {post} /api/common/collectList 收藏列表
@@ -164,6 +168,50 @@ public class CommonApi extends CommonController {
 
                 journalService.update(journal);
                 break;
+        }
+
+        WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/common/gam 点赞
+     * @apiName common.gam
+     * @apiGroup common
+     * @apiParam {Integer} userId 点赞人id      <必传 />
+     * @apiParam {Integer} objectId 点赞目标id      <必传 />
+     * @apiParam {Integer} objectType 点赞类型，1=日志，2=灵感集，3=设计师       <必传 />
+     * @apiParam {Integer} type 操作：1=点赞，2=取消点赞       <必传 />
+     */
+    @RequestMapping("/gam")
+    public void gam(HttpServletResponse response, Integer userId, Integer objectId, Integer objectType, Integer type) {
+        if (null == userId || null == objectId || null == objectType || null == type) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Gams gams = gamsService.iFindOne(userId, objectId, objectType, Constant.GAM_LOVE);
+
+        if (type == 1) {
+            // type为1时，是点赞
+            if (null != gams) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0020));
+                return;
+            }
+            gams = new Gams();
+            gams.setUser(usersService.getById(userId));
+            gams.setObjectId(objectId);
+            gams.setObjectType(objectType);
+            gams.setType(Constant.GAM_LOVE);
+
+            gamsService.create(gams);
+        } else {
+            // type为2时，是取消点赞
+            if (null == gams) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0021));
+                return;
+            }
+
+            gamsService.deleteById(gams.getId());
         }
 
         WebUtil.printApi(response, new Result(true));
