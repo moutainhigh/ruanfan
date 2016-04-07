@@ -12,6 +12,7 @@ import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -226,18 +227,64 @@ public class OrdersApi {
             return;
         }
 
-        Orders orders = ordersService.iFindOneByOrderNum(orderNum);
+        try {
+            Orders orders = ordersService.iFindOneByOrderNum(orderNum);
 
-        // 当status=1时，表示已经付款，此时应该更新当前订单状态和支付时间
-        if (status == 1) {
-            orders.setStatus(Constant.ORDERS_STATUS_001);
-            orders.setPayTime(new Date());
-        } else {
-            orders.setStatus(Constant.ORDERS_STATUS_003);
+            if (null == orders) {
+                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0022));
+                return;
+            }
+
+            // 当status=1时，表示已经付款，此时应该更新当前订单状态和支付时间
+            if (status == 1) {
+                orders.setStatus(Constant.ORDERS_STATUS_001);
+                orders.setPayTime(new Date());
+            } else {
+                orders.setStatus(Constant.ORDERS_STATUS_003);
+            }
+
+            ordersService.update(orders);
+
+            WebUtil.printApi(response, new Result(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+        }
+    }
+
+    /**
+     * @api {post} /api/orders/commentOrder 评价订单
+     * @apiName orders.commentOrder
+     * @apiGroup orders
+     * @apiParam {Integer} ordersInfoId 订单详情id       <必传 />
+     */
+    @RequestMapping(value = "/commentOrder")
+    public void commentOrder(HttpServletResponse response,
+                             Integer ordersInfoId,
+                             Integer star,
+                             String content) {
+        if (null == ordersInfoId || null == star || !StringUtils.isNotBlank(content)) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
         }
 
-        ordersService.update(orders);
+        try {
+            Ordersinfo ordersinfo = ordersinfoService.getById(ordersInfoId);
 
-        WebUtil.printApi(response, new Result(true));
+            if (null == ordersinfo) {
+                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0022));
+                return;
+            }
+
+            ordersinfo.setStar(star);
+            ordersinfo.setComment(content);
+
+            ordersinfoService.update(ordersinfo);
+
+            WebUtil.printApi(response, new Result(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+        }
     }
 }

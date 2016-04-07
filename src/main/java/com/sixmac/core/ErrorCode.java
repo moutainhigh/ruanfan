@@ -61,4 +61,13 @@ public class ErrorCode {
 
     // 手机号或密码错误
     public static final String ERROR_CODE_0019 = "error_0019";
+
+    // 已经点赞过
+    public static final String ERROR_CODE_0020 = "error_0020";
+
+    // 没有点赞过
+    public static final String ERROR_CODE_0021 = "error_0021";
+
+    // 订单不存在
+    public static final String ERROR_CODE_0022 = "error_0022";
 }
