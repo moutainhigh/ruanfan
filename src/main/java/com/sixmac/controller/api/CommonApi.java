@@ -44,6 +44,9 @@ public class CommonApi extends CommonController {
     @Autowired
     private ProvinceService provinceService;
 
+    @Autowired
+    private CityService cityService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
@@ -203,17 +206,23 @@ public class CommonApi extends CommonController {
      * @api {post} /api/common/provinceList 省份城市列表
      * @apiName common.provinceList
      * @apiGroup common
-     * @apiSuccess {Object} list 收藏列表
-     * @apiSuccess {Integer} list.id 收藏id
-     * @apiSuccess {Integer} list.objectId 收藏目标id
-     * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Object} provinceList 收藏列表
+     * @apiSuccess {Integer} provinceList.id 省份id
+     * @apiSuccess {String} provinceList.name 省份名称
+     * @apiSuccess {Object} provinceList.cityList 城市list
+     * @apiSuccess {Integer} provinceList.cityList.id 城市id
+     * @apiSuccess {String} provinceList.cityList.name 城市名称
      */
     @RequestMapping(value = "/provinceList")
     public void provinceList(HttpServletResponse response) {
         List<Province> list = provinceService.findAll();
 
+        for (Province province : list) {
+            province.setCityList(cityService.findListByProvinceId(province.getId()));
+        }
+
         Result obj = new Result(true).data(createMap("provinceList", list));
-        String result = JsonUtil.obj2ApiJson(obj);
+        String result = JsonUtil.obj2ApiJson(obj, "province");
         WebUtil.printApi(response, result);
     }
 }

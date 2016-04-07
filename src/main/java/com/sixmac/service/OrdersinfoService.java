@@ -17,4 +17,6 @@ public interface OrdersinfoService extends ICommonService<Ordersinfo> {
     // 根据订单id查询订单详情列表
     public List<Ordersinfo> findListByOrderId(Integer orderId);
 
+    // 根据商品id查询订单详情列表
+    public List<Ordersinfo> findListByProductId(Integer productId);
 }

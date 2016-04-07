@@ -1,5 +1,7 @@
 package com.sixmac.entity;
 
+import com.sixmac.entity.vo.AppraisalVo;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,7 @@ public class Products {
     private Date createTime;
     private List<Image> imageList;
     private List<Products> similarList;
+    private List<AppraisalVo> appraisalVoList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -289,5 +292,14 @@ public class Products {
 
     public void setSimilarList(List<Products> similarList) {
         this.similarList = similarList;
+    }
+
+    @Transient
+    public List<AppraisalVo> getAppraisalVoList() {
+        return appraisalVoList;
+    }
+
+    public void setAppraisalVoList(List<AppraisalVo> appraisalVoList) {
+        this.appraisalVoList = appraisalVoList;
     }
 }

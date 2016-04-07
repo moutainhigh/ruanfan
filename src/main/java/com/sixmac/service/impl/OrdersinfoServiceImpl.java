@@ -115,4 +115,9 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
         return ordersinfoDao.findListByOrderId(orderId);
     }
 
+    @Override
+    public List<Ordersinfo> findListByProductId(Integer productId) {
+        return ordersinfoDao.findListByProductId(productId);
+    }
+
 }

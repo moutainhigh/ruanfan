@@ -14,4 +14,7 @@ public interface OrdersinfoDao extends JpaRepository<Ordersinfo, Integer>, JpaSp
 
     @Query("select a from Ordersinfo a where a.order.id = ?1")
     public List<Ordersinfo> findListByOrderId(Integer orderId);
+
+    @Query("select a from Ordersinfo a where a.product.id = ?1 and a.star <> 0")
+    public List<Ordersinfo> findListByProductId(Integer productId);
 }

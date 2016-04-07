@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -9,6 +10,7 @@ import javax.persistence.*;
 public class Province {
     private Integer id;
     private String name;
+    private List<City> cityList;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,5 +28,14 @@ public class Province {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Transient
+    public List<City> getCityList() {
+        return cityList;
+    }
+
+    public void setCityList(List<City> cityList) {
+        this.cityList = cityList;
     }
 }

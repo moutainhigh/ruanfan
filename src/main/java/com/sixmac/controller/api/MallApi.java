@@ -5,6 +5,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
+import com.sixmac.entity.vo.AppraisalVo;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
@@ -41,6 +42,9 @@ public class MallApi extends CommonController {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private OrdersinfoService ordersinfoService;
 
     /**
      * @api {post} /api/mall/bannerList 首页banner图列表
@@ -261,6 +265,26 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.brandName 品牌名称
      * @apiSuccess {Integer} productInfo.sortId 分类id
      * @apiSuccess {String} productInfo.sortName 分类名称
+     * @apiSuccess {String} productInfo.createTime 创建时间
+     * @apiSuccess {Object} productInfo.imageList 商品图片列表
+     * @apiSuccess {Integer} productInfo.imageList.id 图片id
+     * @apiSuccess {String} productInfo.imageList.path 图片路径
+     * @apiSuccess {String} productInfo.imageList.description 图片描述
+     * @apiSuccess {String} productInfo.imageList.demo 图片备注
+     * @apiSuccess {String} productInfo.imageList.createTime 创建时间
+     * @apiSuccess {Object} productInfo.imageList.labelList 图片标签列表
+     * @apiSuccess {Integer} productInfo.imageList.labelList.id 标签id
+     * @apiSuccess {String} productInfo.imageList.labelList.name 标签名称
+     * @apiSuccess {String} productInfo.imageList.labelList.description 标签描述
+     * @apiSuccess {String} productInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
+     * @apiSuccess {String} productInfo.imageList.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
+     * @apiSuccess {Object} productInfo.similarList 类似商品列表
+     * @apiSuccess {Object} productInfo.appraisalVoList 商品评价列表
+     * @apiSuccess {Object} productInfo.appraisalVoList.userId 评价人id
+     * @apiSuccess {Object} productInfo.appraisalVoList.userName 评价人名称
+     * @apiSuccess {Object} productInfo.appraisalVoList.star 评价星级
+     * @apiSuccess {Object} productInfo.appraisalVoList.content 评价内容
+     * @apiSuccess {Object} productInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("info")
     public void info(HttpServletResponse response,
@@ -286,9 +310,24 @@ public class MallApi extends CommonController {
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
         // products.setSimilarList(null); 类似商品列表
         // 商品评价列表
+        List<Ordersinfo> ordersinfoList = ordersinfoService.findListByProductId(productId);
+        List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
+        AppraisalVo appra = null;
+
+        for (Ordersinfo ordersInfo : ordersinfoList) {
+            appra = new AppraisalVo();
+            appra.setUserId(ordersInfo.getOrder().getUser().getId());
+            appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
+            appra.setStar(ordersInfo.getStar());
+            appra.setContent(ordersInfo.getComment());
+            appra.setCreateTime(ordersInfo.getOrder().getCreateTime());
+
+            appraisalVoList.add(appra);
+        }
+        products.setAppraisalVoList(appraisalVoList);
 
         Result obj = new Result(true).data(createMap("productInfo", products));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "objectId", "objectType");
         WebUtil.printApi(response, result);
     }
 
