@@ -153,4 +153,5 @@ public interface Constant {
     Integer PRODUCT_TYPE_ONE = 1;   // 单品
     Integer PRODUCT_TYPE_TWO = 2;   // 艺术品
     Integer PRODUCT_TYPE_THREE = 3; // 设计师品牌
+
 }

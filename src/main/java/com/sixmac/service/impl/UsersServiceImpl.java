@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.*;
 import com.sixmac.entity.*;
@@ -20,6 +21,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -297,6 +299,11 @@ public class UsersServiceImpl implements UsersService {
         }, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
 
         return page;
+    }
+
+    @Override
+    public List<Users> findListNew() {
+        return usersDao.findListNew(CommonController.getOldDate());
     }
 
     // 将登录人的信息放入session中

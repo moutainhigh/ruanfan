@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.PackageproductsDao;
 import com.sixmac.dao.PackagesDao;
@@ -157,4 +158,5 @@ public class PackagesServiceImpl implements PackagesService {
 
         return page;
     }
+
 }

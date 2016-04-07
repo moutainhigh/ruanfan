@@ -135,7 +135,7 @@ public class IndexController extends CommonController {
                 // 管理员
                 Sysusers sysusers = usersService.sysUserLogin(session, account, Md5Util.md5(password));
                 if (null != sysusers) {
-                    return "backend/控制面板";
+                    return "redirect:/backend/dashboard";
                 }
                 break;
             case 2:

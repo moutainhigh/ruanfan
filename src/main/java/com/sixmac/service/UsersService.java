@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004 下午 2:52.
@@ -45,4 +46,7 @@ public interface UsersService extends ICommonService<Users> {
     public Users iFindOneByMobile(String mobile);
 
     public Page<Users> page(String mobile, String nickName, Integer status, Integer type, Integer pageNum, Integer pageSize);
+
+    // 查询新增会员列表
+    public List<Users> findListNew();
 }

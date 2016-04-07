@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004 下午 2:47.
@@ -25,4 +26,5 @@ public interface SpikesDao extends JpaRepository<Spikes, Integer>, JpaSpecificat
 
     @Query("select a from Spikes a where a.name like ?1")
     public Page<Spikes> findAllNoThing(String name, Pageable pageable);
+
 }

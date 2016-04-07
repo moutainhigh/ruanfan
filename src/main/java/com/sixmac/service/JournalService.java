@@ -16,4 +16,7 @@ public interface JournalService extends ICommonService<Journal> {
 
     // 根据用户id查询对应的日志列表
     public List<Journal> iFindListByUserId(Integer userId);
+
+    //查询新增日志
+    public  List<Journal> FindListNew();
 }

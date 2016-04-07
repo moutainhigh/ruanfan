@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.JournalDao;
 import com.sixmac.entity.Journal;
@@ -109,5 +110,10 @@ public class JournalServiceImpl implements JournalService {
     @Override
     public List<Journal> iFindListByUserId(Integer userId) {
         return journalDao.iFindListByUserId(userId);
+    }
+
+    @Override
+    public List<Journal> FindListNew() {
+        return journalDao.findListNew(CommonController.getOldDate());
     }
 }

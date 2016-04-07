@@ -72,8 +72,6 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
                             </table>
                         </div>
 

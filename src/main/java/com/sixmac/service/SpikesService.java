@@ -4,6 +4,8 @@ import com.sixmac.entity.Spikes;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/3/8 0008 上午 10:28.
  */
@@ -11,4 +13,5 @@ public interface SpikesService extends ICommonService<Spikes> {
 
     // 秒杀列表
     public Page<Spikes> page(String name, Integer status, Integer pageNum, Integer pageSize);
+
 }

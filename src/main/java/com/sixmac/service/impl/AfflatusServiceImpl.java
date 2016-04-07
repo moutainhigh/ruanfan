@@ -259,4 +259,9 @@ public class AfflatusServiceImpl implements AfflatusService {
     public List<Afflatus> findListByDesignerId(Integer designerId) {
         return afflatusDao.findListByDesignerId(designerId);
     }
+
+    @Override
+    public List<Afflatus> findListByStatus() {
+        return afflatusDao.findListBystatus();
+    }
 }

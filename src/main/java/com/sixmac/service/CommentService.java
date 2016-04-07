@@ -18,4 +18,7 @@ public interface CommentService extends ICommonService<Comment> {
     public List<Comment> iFindList(Integer userId, Integer objectId, Integer objectType);
 
     public Page<Comment> page(String mobile, Integer objectType, int pageNum, int pageSize);
+
+    //查询新增评论
+    public  List<Comment> findListNew();
 }

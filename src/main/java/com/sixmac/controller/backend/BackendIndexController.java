@@ -2,11 +2,8 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.entity.Designers;
-import com.sixmac.entity.Merchants;
-import com.sixmac.entity.Sysusers;
-import com.sixmac.service.OrdersinfoService;
-import com.sixmac.service.UsersService;
+import com.sixmac.entity.*;
+import com.sixmac.service.*;
 import com.sixmac.utils.IdenCode;
 import com.sixmac.utils.Md5Util;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,13 +26,105 @@ import java.util.Map;
 public class BackendIndexController extends CommonController {
 
     @Autowired
-    private OrdersinfoService ordersinfoService;
+    private UsersService usersService;
+
+    @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private ReserveService reserveService;
+
+    @Autowired
+    private AfflatusService afflatusService;
+
+    @Autowired
+    private  JournalService journalService;
+
+    @Autowired
+    private  PackagesService packagesService;
+
+    @Autowired
+    private ProductsService productsService;
+
+    @Autowired
+    private SpikesService spikesService;
 
     @RequestMapping(value = "/dashboard")
     public String dashboard(HttpServletRequest request,
                             HttpServletResponse response,
                             ModelMap model) {
+        // 查询新增会员数量
+        List<Users> addUserList = usersService.findListNew();
+        model.addAttribute("addUserNum", addUserList.size());
 
+        //查询新增订单
+        List<Orders> addOrdersList = ordersService.findListNew();
+        model.addAttribute("addOrdersNum",addOrdersList.size());
+
+        //查询新增评价
+        List<Comment> addCommentsList = commentService.findListNew();
+        model.addAttribute("addCommentsNum",addCommentsList.size());
+
+        //查询新增预约
+        List<Reserve> addReserveList = reserveService.findListNew();
+        model.addAttribute("addReserveNum",addReserveList.size());
+
+        //查询待审核商品
+        List<Products> isCheckList = productsService.findListCheck();
+        model.addAttribute("checkNum",isCheckList.size());
+
+        //查询带待审核灵感图
+        List<Afflatus> afflatusesList = afflatusService.findListByStatus();
+        model.addAttribute("afflausesNum",afflatusesList.size());
+
+        //查询新增日志
+        List<Journal> journalsList = journalService.FindListNew();
+        model.addAttribute("journalsNum",journalsList.size());
+
+
+        //查询待发货订单数量
+        List<Orders> list1 = ordersService.findListByStatus(Constant.ORDERS_STATUS_001);
+        model.addAttribute("num1",list1.size());
+
+        // 查询待支付订单数量
+        List<Orders> list2 = ordersService.findListByStatus(Constant.ORDERS_STATUS_000);
+        model.addAttribute("num2", list2.size());
+
+        //查询待确认订单数量
+        List<Orders> list3 = ordersService.findListByStatus(Constant.ORDERS_STATUS_002);
+        model.addAttribute("num3",list3.size());
+
+        //查询已完成订单数量
+        List<Orders> list4 = ordersService.findListByStatus(Constant.ORDERS_STATUS_004);
+        model.addAttribute("num4",list4.size());
+
+
+        // 查询商品总数
+        List<Products> productsList = productsService.findList();
+        model.addAttribute("productTotalNum",productsList.size());
+
+        //查询上架商品数量
+        List<Products> productsAddList = productsService.findListAdd();
+        model.addAttribute("addNum",productsAddList.size());
+
+        //查询下架商品数量
+        List<Products> productsesDownList = productsService.findListDown();
+        model.addAttribute("downNum",productsesDownList.size());
+
+        //查询商品套餐数量
+        List<Packages> packagesList = packagesService.findAll();
+        model.addAttribute("packagesNum",packagesList.size());
+
+        //查询秒杀商品数量
+        List<Spikes> spikesList = spikesService.findAll();
+        model.addAttribute("spikesNum",spikesList.size());
+
+        //查询昨日新增商品
+        List<Products> newList = productsService.findListNew();
+        model.addAttribute("productNewNum",newList.size());
 
         return "backend/控制面板";
     }

@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.ReserveDao;
 import com.sixmac.entity.Reserve;
@@ -92,6 +93,11 @@ public class ReserveServiceImpl implements ReserveService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Reserve> findListNew() {
+        return reserveDao.findListNew(CommonController.getOldDate());
     }
 
     @Override
