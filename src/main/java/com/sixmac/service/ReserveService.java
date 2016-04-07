@@ -19,4 +19,7 @@ public interface ReserveService extends ICommonService<Reserve> {
 
     // 批量确认联系
     public void batchConfirm(int[] ids, String reserveTime, String reserveAddress);
+
+    //查询预约列表
+    public List<Reserve> findListNew();
 }

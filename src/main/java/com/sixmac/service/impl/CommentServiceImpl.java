@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CommentDao;
 import com.sixmac.dao.ReplysDao;
@@ -149,5 +150,10 @@ public class CommentServiceImpl implements CommentService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public List<Comment> findListNew() {
+        return commentDao.findListNew(CommonController.getOldDate());
     }
 }

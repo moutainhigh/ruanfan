@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,4 +16,5 @@ public interface PackagesDao extends JpaRepository<Packages, Integer>, JpaSpecif
 
     @Query("select a from Packageproducts a where a.packages.id = ?1")
     public List<Packageproducts> findListByPackageId(Integer packageId);
+
 }

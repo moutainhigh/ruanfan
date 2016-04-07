@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,4 +15,7 @@ public interface JournalDao extends JpaRepository<Journal, Integer>, JpaSpecific
 
     @Query("select a from Journal a where a.user.id = ?1")
     public List<Journal> iFindListByUserId(Integer userId);
+
+    @Query("select a from Journal a where a.createTime > ?1")
+    public List<Journal> findListNew(Date oldDate);
 }

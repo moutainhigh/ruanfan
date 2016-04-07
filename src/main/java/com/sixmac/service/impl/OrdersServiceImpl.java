@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.OrdersDao;
 import com.sixmac.entity.Orders;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -149,5 +151,15 @@ public class OrdersServiceImpl implements OrdersService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public List<Orders> findListByStatus(Integer status) {
+        return ordersDao.findListByStatus(status);
+    }
+
+    @Override
+    public List<Orders> findListNew() {
+        return ordersDao.findListNew(CommonController.getOldDate());
     }
 }

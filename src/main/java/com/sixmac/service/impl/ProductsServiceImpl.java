@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.MessageplusDao;
 import com.sixmac.dao.ProductsDao;
@@ -278,5 +279,30 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public List<Products> iFindListBySortAndStyle(Integer productId, Integer type, Integer sortId) {
         return productsDao.iFindList(type, sortId, productId);
+    }
+
+    @Override
+    public List<Products> findList() {
+        return productsDao.findList();
+    }
+
+    @Override
+    public List<Products> findListCheck() {
+        return productsDao.findListCheck();
+    }
+
+    @Override
+    public List<Products> findListAdd() {
+        return productsDao.findListAdd();
+    }
+
+    @Override
+    public List<Products> findListDown() {
+        return productsDao.findListDown();
+    }
+
+    @Override
+    public List<Products> findListNew() {
+        return productsDao.findListNew(CommonController.getYesterday());
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,6 @@ public interface ReserveDao extends JpaRepository<Reserve, Integer>, JpaSpecific
     @Query("select a from Reserve a where a.designer.id = ?1 order by a.id desc")
     public List<Reserve> iFindListByDesignerId(Integer designerId);
 
-    //@Query("select a from Reserve a where a.name like ?1 and a.mobile like ?2 and a.email like ?3 and a.designer.nickName = ?4")
-    //public Page<Reserve> pageTable(String name, String mobile, String email, Integer styleId, Pageable pageable);
+    @Query("select a from Reserve a where a.reseTime > ?1")
+    public List<Reserve> findListNew(Date oldDate);
 }

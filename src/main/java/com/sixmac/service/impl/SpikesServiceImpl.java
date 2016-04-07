@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.SpikesDao;
 import com.sixmac.entity.Spikes;
@@ -97,4 +98,5 @@ public class SpikesServiceImpl implements SpikesService {
 
         return null;
     }
+
 }

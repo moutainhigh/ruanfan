@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,4 +33,7 @@ public interface UsersDao extends JpaRepository<Users, Integer>, JpaSpecificatio
 
     @Query("select a from Designers a where a.mobile = ?1 and a.password = ?2")
     public Designers designerLogin(String mobile, String password);
+
+    @Query("select a from Users a where a.createTime > ?1")
+    public List<Users> findListNew(Date oldDate);
 }

@@ -20,4 +20,5 @@ public interface PackagesService extends ICommonService<Packages> {
 
     // 套餐列表
     public Page<Packages> page(String name, Integer brandId, Integer pageNum, Integer pageSize);
+
 }

@@ -36,6 +36,7 @@
                         <form id="productForm" method="post" action="backend/roles/save"
                               class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
                             <input type="hidden" id="id" name="id" value="${roles.id}"/>
+                            <input type="hidden" id="tempType" value="${roles.name}"/>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">角色名称:</label>
