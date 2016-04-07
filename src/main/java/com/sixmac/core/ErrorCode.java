@@ -70,4 +70,7 @@ public class ErrorCode {
 
     // 订单不存在
     public static final String ERROR_CODE_0022 = "error_0022";
+
+    // 收货地址不存在
+    public static final String ERROR_CODE_0023 = "error_0023";
 }
