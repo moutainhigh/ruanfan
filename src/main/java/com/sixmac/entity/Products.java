@@ -26,6 +26,7 @@ public class Products {
     private String colors;
     private String sizes;
     private String materials;
+    private Integer count;
     private Integer isHot;
     private Integer isCheck;
     private Integer status;
@@ -161,6 +162,14 @@ public class Products {
 
     public void setMaterials(String materials) {
         this.materials = materials;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public Integer getIsHot() {

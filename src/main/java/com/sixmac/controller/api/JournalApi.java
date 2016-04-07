@@ -94,6 +94,14 @@ public class JournalApi extends CommonController {
      * @apiSuccess {Integer} journalInfo.forwardNum 转发数
      * @apiSuccess {Integer} journalInfo.shareNum 分享数
      * @apiSuccess {String} journalInfo.createTime 发布时间
+     * @apiSuccess {String} journalInfo.imageList 日志图片列表
+     * @apiSuccess {Integer} journalInfo.imageList.id 图片id
+     * @apiSuccess {String} journalInfo.imageList.path 图片路径
+     * @apiSuccess {String} journalInfo.imageList.description 图片描述
+     * @apiSuccess {String} journalInfo.imageList.demo 图片备注
+     * @apiSuccess {String} journalInfo.imageList.createTime 创建时间
+     * @apiSuccess {Integer} journalInfo.gamsNum 点赞数数
+     * @apiSuccess {Integer} journalInfo.commentNum 评论数
      */
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response, Integer journalId) {
@@ -113,7 +121,7 @@ public class JournalApi extends CommonController {
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
 
         Result obj = new Result(true).data(createMap("journalInfo", journal));
-        String result = JsonUtil.obj2ApiJson(obj, "user");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "labelList");
         WebUtil.printApi(response, result);
     }
 

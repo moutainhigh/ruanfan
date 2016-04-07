@@ -185,6 +185,71 @@ public class DesignersApi extends CommonController {
     }
 
     /**
+     * @api {post} /api/designers/workInfo 设计作品详情
+     * @apiName designers.workInfo
+     * @apiGroup designers
+     * @apiParam {Integer} workId 设计作品id     <必传 />
+     * @apiSuccess {Object} workInfo 设计作品列表
+     * @apiSuccess {Integer} workInfo.id 设计作品id
+     * @apiSuccess {String} workInfo.name 设计作品名称
+     * @apiSuccess {String} workInfo.labels 标签
+     * @apiSuccess {String} workInfo.description 描述
+     * @apiSuccess {String} workInfo.createTime 创建时间
+     * @apiSuccess {String} workInfo.cover 封面图
+     * @apiSuccess {String} workInfo.designerHead 设计师头像
+     * @apiSuccess {Integer} workInfo.reserveNum 预约数
+     * @apiSuccess {Integer} workInfo.gamNum 点赞数
+     * @apiSuccess {Integer} workInfo.commentNum 评论数
+     * @apiSuccess {Integer} workInfo.collectNum 收藏数
+     * @apiSuccess {Object} workInfo.imageList 设计作品图片列表
+     * @apiSuccess {Integer} workInfo.imageList.id 图片id
+     * @apiSuccess {String} workInfo.imageList.path 图片路径
+     * @apiSuccess {String} workInfo.imageList.description 图片描述
+     * @apiSuccess {String} workInfo.imageList.demo 图片备注
+     * @apiSuccess {String} workInfo.imageList.createTime 创建时间
+     * @apiSuccess {Object} workInfo.imageList.labelList 图片标签列表
+     * @apiSuccess {Integer} workInfo.imageList.labelList.id 标签id
+     * @apiSuccess {String} workInfo.imageList.labelList.name 标签名称
+     * @apiSuccess {String} workInfo.imageList.labelList.description 标签描述
+     * @apiSuccess {String} workInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
+     * @apiSuccess {String} workInfo.imageList.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
+     */
+    @RequestMapping(value = "/workInfo")
+    public void workInfo(HttpServletResponse response,
+                         Integer workId) {
+        if (null == workId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Works work = worksService.getById(workId);
+
+        if (null == work) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
+        }
+
+        work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
+
+        // 设计师头像、预约数、点赞数、评论数、收藏数
+        work.setDesignerHead(PathUtils.getRemotePath() + work.getDesigner().getHead());
+
+        work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
+
+        work.setGamNum(gamsService.iFindList(work.getDesigner().getId(), Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+
+        work.setCommentNum(commentService.iFindList(work.getId(), Constant.COMMENT_WORKS).size());
+
+        work.setCollectNum(collectService.iFindList(work.getId(), Constant.COLLECT_WORKS).size());
+
+        work.setImageList(imageService.iFindList(workId, Constant.IMAGE_WORKS));
+
+        Result obj = new Result(true).data(createMap("workInfo", work));
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "objectId", "objectType");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
      * @api {post} /api/designers/info 查看设计师详情
      * @apiName designers.info
      * @apiGroup designers

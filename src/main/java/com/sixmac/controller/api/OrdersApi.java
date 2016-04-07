@@ -5,6 +5,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Orders;
 import com.sixmac.entity.Ordersinfo;
+import com.sixmac.entity.Products;
 import com.sixmac.entity.Users;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
@@ -159,6 +160,7 @@ public class OrdersApi {
         JSONArray orderinfos = JSONArray.fromObject(orderInfoList);
         Map<String, Object> mapInfo = null;
         Ordersinfo ordersinfo = null;
+        Products products = null;
         for (Object orderMap : orderinfos) {
             // 获取单个订单详情
             mapInfo = JsonUtil.jsontoMap(orderMap);
@@ -170,7 +172,8 @@ public class OrdersApi {
                 ordersinfo.setMerchant(merchantsService.getById(Integer.parseInt(mapInfo.get("merchantId").toString())));
             }
             ordersinfo.setType(Integer.parseInt(mapInfo.get("type").toString()));
-            ordersinfo.setProduct(productsService.getById(Integer.parseInt(mapInfo.get("id").toString())));
+            products = productsService.getById(Integer.parseInt(mapInfo.get("id").toString()));
+            ordersinfo.setProduct(products);
             ordersinfo.setProductName(mapInfo.get("name").toString());
             ordersinfo.setProductPath(mapInfo.get("path").toString());
             ordersinfo.setColors(mapInfo.get("colors").toString());
@@ -181,6 +184,10 @@ public class OrdersApi {
 
             // 增加订单详情
             ordersinfoService.create(ordersinfo);
+
+            // 修改商品交易数量
+            products.setCount(products.getCount() + ordersinfo.getCount());
+            productsService.update(products);
 
             // 判断是否传入了购物车id，如果传入，则表示该订单详情是从购物车中添加的，此时应该删除该购物车信息
             if (null != mapInfo.get("shopCarId") && !mapInfo.get("shopCarId").equals("")) {

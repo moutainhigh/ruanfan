@@ -175,6 +175,7 @@ public class ProductController extends CommonController {
 
     /**
      * 新增商品信息
+     *
      * @param id
      * @param name
      * @param price
@@ -237,6 +238,7 @@ public class ProductController extends CommonController {
             product.setDescription(content);
 
             if (null == id) {
+                product.setCount(0);
                 product.setIsHot(Constant.RECOMMEND_STATUS_NO);
                 product.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
                 product.setStatus(Constant.ADDED_STATUS_YES);
