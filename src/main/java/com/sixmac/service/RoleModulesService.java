@@ -12,4 +12,7 @@ public interface RoleModulesService extends ICommonService<Rolemodules> {
 
     // 根据角色id查询角色对应的权限列表
     public List<Rolemodules> findListByRoleId(Integer roleId);
+
+    // 根据角色id删除角色对应的权限
+    public void deleteByRoleId(Integer roleId);
 }

@@ -71,4 +71,13 @@ public class RolemodulesServiceImpl implements RoleModulesService {
     public List<Rolemodules> findListByRoleId(Integer roleId) {
         return rolemodulesDao.findListByRoleId(roleId);
     }
+
+    @Override
+    @Transactional
+    public void deleteByRoleId(Integer roleId) {
+        List<Rolemodules> list = rolemodulesDao.findListByRoleId(roleId);
+        for (Rolemodules rolemodules : list) {
+            deleteById(rolemodules.getId());
+        }
+    }
 }

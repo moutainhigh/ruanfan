@@ -3,23 +3,23 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Producttype;
+import com.sixmac.entity.Rolemodules;
 import com.sixmac.entity.Roles;
-import com.sixmac.entity.Sysusers;
+import com.sixmac.service.ModulesService;
+import com.sixmac.service.RoleModulesService;
 import com.sixmac.service.RolesService;
 import com.sixmac.service.SysusersService;
-import com.sixmac.utils.Md5Util;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +31,12 @@ public class RolesController extends CommonController {
 
     @Autowired
     private RolesService rolesService;
+
+    @Autowired
+    private ModulesService modulesService;
+
+    @Autowired
+    private RoleModulesService roleModulesService;
 
     @Autowired
     private SysusersService sysusersService;
@@ -62,32 +68,65 @@ public class RolesController extends CommonController {
 
     @RequestMapping("/add")
     public String add(ModelMap model, Integer id) {
+        StringBuffer sb = new StringBuffer("");
+
         if (id != null) {
             Roles roles = rolesService.getById(id);
             model.addAttribute("roles", roles);
+
+            if (null != roles) {
+                List<Rolemodules> rolemodulesList = roleModulesService.findListByRoleId(roles.getId());
+
+                for (Rolemodules rolemodules : rolemodulesList) {
+                    sb.append(rolemodules.getModule().getId() + ",");
+                }
+
+                if (sb.length() > 0) {
+                    model.addAttribute("roleModuleIds", sb.toString().substring(0, sb.length() - 1));
+                } else {
+                    model.addAttribute("roleModuleIds", "");
+                }
+            } else {
+                model.addAttribute("roleModuleIds", "");
+            }
         }
         return "backend/新增权限";
     }
 
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id, String name, Integer count) {
+    public Integer save(Integer id, String name, String types) {
         try {
+            // 解析权限id
+            int[] moduleIds = JsonUtil.json2Obj(types, int[].class);
+
             Roles roles = null;
+            Rolemodules rolemodules = null;
 
             if (null == id) {
                 roles = new Roles();
+                roles.setName(name);
+
+                rolesService.create(roles);
             } else {
                 roles = rolesService.getById(id);
-            }
+                roles.setName(name);
 
-            roles.setName(name);
-            roles.setCount(count);
-
-            if (null == id) {
-                roles.setUpdateTime(new Date());
                 rolesService.update(roles);
             }
+
+            // 先删除该角色对应的所有权限
+            roleModulesService.deleteByRoleId(roles.getId());
+
+            // 然后逐个保存该角色的权限
+            for (int moduleId : moduleIds) {
+                rolemodules = new Rolemodules();
+                rolemodules.setRole(roles);
+                rolemodules.setModule(modulesService.getById(moduleId));
+
+                roleModulesService.create(rolemodules);
+            }
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
