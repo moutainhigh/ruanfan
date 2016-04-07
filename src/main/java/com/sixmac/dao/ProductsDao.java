@@ -14,4 +14,7 @@ public interface ProductsDao extends JpaRepository<Products, Integer>, JpaSpecif
 
     @Query("select a from Products a where a.isCheck = 1 and a.isAdd = 0 and a.status = 0 and a.type = ?1 order by a.id desc")
     public List<Products> iFindList(Integer type);
+
+    @Query("select a from Products a where a.isCheck = 1 and a.isAdd = 0 and a.status = 0 and a.type = ?1 and a.sort.id = ?2 and a.id <> ?3")
+    public List<Products> iFindList(Integer type, Integer sortId, Integer productId);
 }

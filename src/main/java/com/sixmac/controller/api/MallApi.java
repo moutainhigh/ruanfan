@@ -278,13 +278,13 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.imageList.labelList.description 标签描述
      * @apiSuccess {String} productInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
      * @apiSuccess {String} productInfo.imageList.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
-     * @apiSuccess {Object} productInfo.similarList 类似商品列表
+     * @apiSuccess {Object} productInfo.similarList 类似商品列表（信息与本接口相同）
      * @apiSuccess {Object} productInfo.appraisalVoList 商品评价列表
-     * @apiSuccess {Object} productInfo.appraisalVoList.userId 评价人id
-     * @apiSuccess {Object} productInfo.appraisalVoList.userName 评价人名称
-     * @apiSuccess {Object} productInfo.appraisalVoList.star 评价星级
-     * @apiSuccess {Object} productInfo.appraisalVoList.content 评价内容
-     * @apiSuccess {Object} productInfo.appraisalVoList.createTime 评价时间
+     * @apiSuccess {Integer} productInfo.appraisalVoList.userId 评价人id
+     * @apiSuccess {String} productInfo.appraisalVoList.userName 评价人名称
+     * @apiSuccess {Integer} productInfo.appraisalVoList.star 评价星级
+     * @apiSuccess {String} productInfo.appraisalVoList.content 评价内容
+     * @apiSuccess {String} productInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("info")
     public void info(HttpServletResponse response,
@@ -308,7 +308,7 @@ public class MallApi extends CommonController {
         products.setSortId(products.getSort().getId());
         products.setSortName(products.getSort().getName());
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
-        // products.setSimilarList(null); 类似商品列表
+        products.setSimilarList(productsService.iFindListBySortAndStyle(products.getType(), products.getSort().getId(), productId));
         // 商品评价列表
         List<Ordersinfo> ordersinfoList = ordersinfoService.findListByProductId(productId);
         List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();

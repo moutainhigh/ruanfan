@@ -274,4 +274,9 @@ public class ProductsServiceImpl implements ProductsService {
 
         return list;
     }
+
+    @Override
+    public List<Products> iFindListBySortAndStyle(Integer productId, Integer type, Integer sortId) {
+        return productsDao.iFindList(type, sortId, productId);
+    }
 }

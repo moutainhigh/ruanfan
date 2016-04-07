@@ -25,4 +25,7 @@ public interface ProductsService extends ICommonService<Products> {
 
     // 查询最新的三个类型的商品信息
     public List<Products> iFindList();
+
+    // 根据类别和种类id查询类似的商品列表
+    public List<Products> iFindListBySortAndStyle(Integer productId, Integer type, Integer sortId);
 }
