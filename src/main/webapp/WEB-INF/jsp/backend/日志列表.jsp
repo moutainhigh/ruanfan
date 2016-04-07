@@ -74,6 +74,29 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">删除提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="journalId"/>
+                        确定删除该日志？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" onclick="journal.fn.subDelInfo()" class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- Modal end -->
+
 
     </div>
     <!-- /#page-wrapper -->
@@ -133,7 +156,7 @@
                             "targets": -1
                         }
                     ],
-                    "createdRow": function (row, data, index) {
+                    "createdRow": function (row, data) {
                         journal.v.list.push(data);
 
                     },
@@ -141,6 +164,7 @@
 
                         $('td', row).last().find(".edit").attr("href", 'backend/journal/detail?id=' + data.id);
 
+                        //$('td', row).last().find(".delete").attr("href", 'backend/journal/delete?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
 
@@ -156,14 +180,14 @@
                 });
             },
             delInfo: function (id) {
-                $('#bookId').val(id);
+                $('#journalId').val(id);
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
-                var bookId = $('#bookId').val();
+                var id = $('#journalId').val();
 
                 $sixmac.ajax("backend/journal/delete", {
-                    "id": bookId
+                    "id": id
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
