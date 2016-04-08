@@ -213,6 +213,20 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} workInfo.imageList.labelList.description 标签描述
      * @apiSuccess {String} workInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
      * @apiSuccess {String} workInfo.imageList.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
+     * @apiSuccess {Object} workInfo.commentList 评论列表
+     * @apiSuccess {Integer} workInfo.commentList.id 评论id
+     * @apiSuccess {String} workInfo.commentList.content 评论内容
+     * @apiSuccess {String} workInfo.commentList.createTime 评论时间
+     * @apiSuccess {Integer} workInfo.commentList.userId 评论人id
+     * @apiSuccess {String} workInfo.commentList.userName 评论人昵称
+     * @apiSuccess {String} workInfo.commentList.userHead 评论人头像
+     * @apiSuccess {Object} workInfo.commentList.replysList 评论回复列表
+     * @apiSuccess {Integer} workInfo.commentList.replysList.id 评论回复id
+     * @apiSuccess {String} workInfo.commentList.replysList.content 评论回复内容
+     * @apiSuccess {String} workInfo.commentList.replysList.createTime 评论回复时间
+     * @apiSuccess {Integer} workInfo.commentList.replysList.userId 评论回复人id
+     * @apiSuccess {String} workInfo.commentList.replysList.userName 评论回复人名称
+     * @apiSuccess {String} workInfo.commentList.replysList.userHead 评论回复人头像
      */
     @RequestMapping(value = "/workInfo")
     public void workInfo(HttpServletResponse response,
