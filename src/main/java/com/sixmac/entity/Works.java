@@ -24,6 +24,7 @@ public class Works {
     private Integer commentNum;
     private Integer collectNum;
     private List<Image> imageList;
+    private List<Comment> commentList;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -148,5 +149,14 @@ public class Works {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
+    }
+
+    @Transient
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }

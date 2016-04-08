@@ -28,15 +28,14 @@ public class VirtualApi {
 
     /**
      * @api {post} /api/virtual/list VR虚拟列表
-     * @apiName  virtual.list
+     * @apiName virtual.list
      * @apiGroup virtual
-     *
      * @apiParam {String} name 名称
      * @apiParam {Integer} styleId 风格id
      * @apiParam {Integer} typeId 分类id
+     * @apiParam {Integer} userId 用户id
      * @apiParam {Integer} pageNum 页码
      * @apiParam {Integer} pageSize 每页显示条数
-     *
      * @apiSuccess {Object} list VR虚拟列表
      * @apiSuccess {Integer} list.id VR虚拟id
      * @apiSuccess {String} list.name VR虚拟名称
@@ -44,13 +43,13 @@ public class VirtualApi {
      * @apiSuccess {String} list.cover 封面图
      * @apiSuccess {String} list.url 链接地址
      * @apiSuccess {String} list.createTime 创建时间
-     *
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
                      String name,
                      Integer styleId,
                      Integer typeId,
+                     Integer userId,
                      Integer pageNum,
                      Integer pageSize) {
         if (null == pageNum || null == pageSize) {
@@ -59,6 +58,10 @@ public class VirtualApi {
         }
 
         Page<Virtuals> page = virtualsService.iPage(name, styleId, typeId, pageNum, pageSize);
+
+        for (Virtuals virtuals : page.getContent()) {
+
+        }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
