@@ -196,4 +196,35 @@ public class PropertysServiceImpl implements PropertysService {
 
         return page;
     }
+
+    @Override
+    public Page<Propertys> pageChild(Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
+            @Override
+            public Predicate toPredicate(Root<Propertys> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                Predicate pre = cb.notEqual(root.get("id").as(Integer.class), 0);
+                predicateList.add(pre);
+
+                Predicate pre1 = cb.notEqual(root.get("parentId").as(Integer.class), 0);
+                predicateList.add(pre1);
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
 }

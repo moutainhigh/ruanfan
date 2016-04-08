@@ -25,4 +25,7 @@ public interface PropertysService extends ICommonService<Propertys> {
 
     // 根据地产id查询对应的楼盘列表
     public Page<Propertys> pageChild(Integer parentId, Integer pageNum, Integer pageSize);
+
+    // 查询楼盘列表
+    public Page<Propertys> pageChild(Integer pageNum, Integer pageSize);
 }

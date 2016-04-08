@@ -92,6 +92,7 @@ public interface Constant {
     Integer IMAGE_PROPERTYS = 6;  // 楼盘
     Integer IMAGE_JOURNAL = 7;    // 日志图
     Integer IMAGE_WORKS = 8;      // 设计作品
+    Integer IMAGE_CUSTOM = 9;     // 设计定制户型图
 
     // 优惠券使用状态
     Integer COUPON_STATUS_YES = 1;   // 已使用
