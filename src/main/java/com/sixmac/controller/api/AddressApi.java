@@ -5,6 +5,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Address;
 import com.sixmac.service.AddressService;
+import com.sixmac.service.UsersService;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class AddressApi extends CommonController {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private UsersService usersService;
 
     /**
      * @api {post} /api/address/list 收货地址列表
@@ -128,12 +132,12 @@ public class AddressApi extends CommonController {
         }
 
         Address addressInfo = new Address();
-
+        addressInfo.setUser(usersService.getById(userId));
         addressInfo.setName(name);
         addressInfo.setMobile(mobile);
         addressInfo.setAddress(address);
 
-        Address defaultAddress = addressService.findDefaultByUserId(addressInfo.getUser().getId());
+        Address defaultAddress = addressService.findDefaultByUserId(userId);
 
         if (null == isDefault || isDefault == 0) {
             if (null == defaultAddress) {

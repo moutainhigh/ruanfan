@@ -2,11 +2,13 @@ package com.sixmac.service.impl;
 
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
+import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.MessageplusDao;
 import com.sixmac.dao.ProductsDao;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Products;
 import com.sixmac.service.ProductsService;
+import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +36,9 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Autowired
     private MessageplusDao messageplusDao;
+
+    @Autowired
+    private ImageDao imageDao;
 
     @Override
     public List<Products> findAll() {
@@ -271,6 +276,10 @@ public class ProductsServiceImpl implements ProductsService {
         List<Products> threeList = productsDao.iFindList(Constant.PRODUCT_TYPE_THREE);
         if (null != threeList && threeList.size() > 0) {
             list.add(threeList.get(0));
+        }
+
+        for (Products product : list) {
+            product.setCover(PathUtils.getRemotePath() + imageDao.findOne(product.getCoverId()).getPath());
         }
 
         return list;
