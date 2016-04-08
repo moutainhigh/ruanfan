@@ -86,7 +86,7 @@ public class MallApi extends CommonController {
         List<Products> list = productsService.iFindList();
 
         Result obj = new Result(true).data(createMap("list", list));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "place", "labels", "colors", "sizes", "materials", "isHot", "isCheck", "isAdd", "description", "cover", "merchantId", "merchantName", "brandId", "brandName", "sortId", "sortName");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "place", "labels", "colors", "sizes", "materials", "isHot", "isCheck", "isAdd", "description", "merchantId", "merchantName", "brandId", "brandName", "sortId", "sortName");
         WebUtil.printApi(response, result);
     }
 
