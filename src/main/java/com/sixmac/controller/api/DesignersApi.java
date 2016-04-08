@@ -189,6 +189,7 @@ public class DesignersApi extends CommonController {
      * @apiName designers.workInfo
      * @apiGroup designers
      * @apiParam {Integer} workId 设计作品id     <必传 />
+     * @apiParam {Integer} userId 用户id
      * @apiSuccess {Object} workInfo 设计作品列表
      * @apiSuccess {Integer} workInfo.id 设计作品id
      * @apiSuccess {String} workInfo.name 设计作品名称
@@ -199,6 +200,8 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} workInfo.designerHead 设计师头像
      * @apiSuccess {Integer} workInfo.reserveNum 预约数
      * @apiSuccess {Integer} workInfo.gamNum 点赞数
+     * @apiSuccess {Integer} workInfo.isGam 是否点赞
+     * @apiSuccess {Integer} workInfo.isCollect 是否收藏
      * @apiSuccess {Integer} workInfo.commentNum 评论数
      * @apiSuccess {Integer} workInfo.collectNum 收藏数
      * @apiSuccess {Object} workInfo.imageList 设计作品图片列表
@@ -230,7 +233,8 @@ public class DesignersApi extends CommonController {
      */
     @RequestMapping(value = "/workInfo")
     public void workInfo(HttpServletResponse response,
-                         Integer workId) {
+                         Integer workId,
+                         Integer userId) {
         if (null == workId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -265,6 +269,14 @@ public class DesignersApi extends CommonController {
         work.setCollectNum(collectService.iFindList(work.getId(), Constant.COLLECT_WORKS).size());
 
         work.setImageList(imageService.iFindList(workId, Constant.IMAGE_WORKS));
+
+        if (null != userId) {
+            Gams gams = gamsService.iFindOne(userId, workId, Constant.GAM_WORKS, Constant.SORT_TYPE_DESC);
+            work.setIsGam(null != gams ? Constant.GAM_LOVE_YES : Constant.GAM_LOVE_NO);
+
+            Collect collect = collectService.iFindOne(userId, workId, Constant.COLLECT_WORKS);
+            work.setIsCollect(null != collect ? Constant.GAM_LOVE_YES : Constant.GAM_LOVE_NO);
+        }
 
         Result obj = new Result(true).data(createMap("workInfo", work));
         String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "objectId", "objectType");

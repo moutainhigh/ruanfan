@@ -26,6 +26,8 @@ public class Works {
     private List<Image> imageList;
     private List<Comment> commentList;
     private List<Gams> gamsList;
+    private Integer isGam;
+    private Integer isCollect;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -168,5 +170,23 @@ public class Works {
 
     public void setGamsList(List<Gams> gamsList) {
         this.gamsList = gamsList;
+    }
+
+    @Transient
+    public Integer getIsGam() {
+        return isGam;
+    }
+
+    public void setIsGam(Integer isGam) {
+        this.isGam = isGam;
+    }
+
+    @Transient
+    public Integer getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(Integer isCollect) {
+        this.isCollect = isCollect;
     }
 }

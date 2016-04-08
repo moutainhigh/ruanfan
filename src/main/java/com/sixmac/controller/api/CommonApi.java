@@ -179,7 +179,7 @@ public class CommonApi extends CommonController {
      * @apiGroup common
      * @apiParam {Integer} userId 点赞人id      <必传 />
      * @apiParam {Integer} objectId 点赞目标id      <必传 />
-     * @apiParam {Integer} objectType 点赞类型，1=日志，2=灵感集，3=设计师       <必传 />
+     * @apiParam {Integer} objectType 点赞类型，1=日志，2=灵感集，3=设计师，4=设计作品       <必传 />
      * @apiParam {Integer} type 操作：1=点赞，2=取消点赞       <必传 />
      */
     @RequestMapping("/gam")
