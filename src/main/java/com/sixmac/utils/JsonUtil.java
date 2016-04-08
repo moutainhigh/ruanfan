@@ -104,15 +104,6 @@ public class JsonUtil {
                 .replaceAll("\"image\":null", "\"image\":{}")
                 .replaceAll(":null", ":\"\"");
 
-        lastStr = lastStr.replace(">", "&gt;");
-        lastStr = lastStr.replace("<", "&lt;");
-        lastStr = lastStr.replace(" ", "&nbsp;");
-        lastStr = lastStr.replace("\"", "&quot;");
-        lastStr = lastStr.replace("\'", "&#39;");
-        lastStr = lastStr.replace("\\", "\\\\");//对斜线的转义
-        lastStr = lastStr.replace("\n", "\\n");
-        lastStr = lastStr.replace("\r", "\\r");
-
         return lastStr;
     }
 
