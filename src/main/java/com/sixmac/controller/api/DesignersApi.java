@@ -236,7 +236,11 @@ public class DesignersApi extends CommonController {
 
         work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
 
-        work.setGamNum(gamsService.iFindList(work.getDesigner().getId(), Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+        List<Gams> gamsList = gamsService.iFindList(work.getDesigner().getId(), Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC);
+
+        work.setGamNum(gamsList.size());
+
+        work.setGamsList(gamsList);
 
         List<Comment> commentList = commentService.iFindList(work.getId(), Constant.COMMENT_WORKS);
 
