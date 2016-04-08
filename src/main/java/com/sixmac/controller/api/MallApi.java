@@ -308,7 +308,7 @@ public class MallApi extends CommonController {
         products.setSortId(products.getSort().getId());
         products.setSortName(products.getSort().getName());
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
-        products.setSimilarList(productsService.iFindListBySortAndStyle(products.getType(), products.getSort().getId(), productId));
+        products.setSimilarList(productsService.iFindListBySortAndStyle(productId, products.getType(), products.getSort().getId()));
         // 商品评价列表
         List<Ordersinfo> ordersinfoList = ordersinfoService.findListByProductId(productId);
         List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
