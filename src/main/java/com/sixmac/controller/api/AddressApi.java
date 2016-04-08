@@ -133,7 +133,7 @@ public class AddressApi extends CommonController {
         addressInfo.setMobile(mobile);
         addressInfo.setAddress(address);
 
-        Address defaultAddress = addressService.findDefaultByUserId(addressInfo.getUser().getId());
+        Address defaultAddress = addressService.findDefaultByUserId(userId);
 
         if (null == isDefault || isDefault == 0) {
             if (null == defaultAddress) {
