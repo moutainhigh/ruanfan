@@ -3,6 +3,7 @@ package com.sixmac.entity;
 import com.sixmac.entity.vo.AppraisalVo;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,9 +41,9 @@ public class Products {
     private Integer sortId;
     private String sortName;
     private Date createTime;
-    private List<Image> imageList;
-    private List<Products> similarList;
-    private List<AppraisalVo> appraisalVoList;
+    private List<Image> imageList = new ArrayList<Image>();
+    private List<Products> similarList = new ArrayList<Products>();
+    private List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

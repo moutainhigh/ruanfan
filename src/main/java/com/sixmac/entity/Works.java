@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,13 +25,13 @@ public class Works {
     private Integer commentNum;
     private Integer collectNum;
     private List<Image> imageList;
-    private List<Comment> commentList;
-    private List<Gams> gamsList;
+    private List<Comment> commentList = new ArrayList<Comment>();
+    private List<Gams> gamsList = new ArrayList<Gams>();
     private Integer isGam;
     private Integer isCollect;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
