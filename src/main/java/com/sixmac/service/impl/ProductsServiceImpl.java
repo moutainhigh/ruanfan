@@ -287,7 +287,13 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public List<Products> iFindListBySortAndStyle(Integer productId, Integer type, Integer sortId) {
-        return productsDao.iFindList(type, sortId, productId);
+        List<Products> list = productsDao.iFindList(type, sortId, productId);
+
+        for (Products product : list) {
+            product.setCover(PathUtils.getRemotePath() + imageDao.findOne(product.getCoverId()).getPath());
+        }
+
+        return list;
     }
 
     @Override
