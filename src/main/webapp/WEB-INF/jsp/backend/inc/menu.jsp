@@ -113,7 +113,7 @@
                         <a href="backend/singlepage/index"><i class="fa fa-cubes fa-fw"></i>单页列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>在线设计定制</a>
+                        <a href="backend/custom/index"><i class="fa fa-cubes fa-fw"></i>在线设计定制</a>
                     </li>
                 </ul>
             </li>
