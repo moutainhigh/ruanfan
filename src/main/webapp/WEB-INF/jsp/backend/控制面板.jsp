@@ -23,7 +23,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header" style="text-align: center;">欢迎进入软范后台管理系统</h1>
+                <h1 class="page-header" style="text-align: center;">${sessionScope.menu_sysUser.account}，欢迎进入软范后台管理系统</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -46,6 +46,7 @@
 
         <div class="panel-body">
             <h3>订单统计信息:</h3>
+
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered table-hover">
                     <colgroup>
@@ -74,6 +75,7 @@
 
         <div class="panel-body">
             <h3>商品统计信息:</h3>
+
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered table-hover">
                     <colgroup>
@@ -114,6 +116,7 @@
 
         <div class="panel-body">
             <h3>统计访问:</h3>
+
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered table-hover">
                     <colgroup>
@@ -140,7 +143,4 @@
 
 <%@ include file="inc/footer.jsp" %>
 </body>
-<!-- 实例化编辑器 -->
-
-
 </html>
