@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class RolesController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Roles> page = rolesService.find(pageNum, length);
+        Page<Roles> page = rolesService.page(pageNum, length);
 
         for (Roles roles : page.getContent()) {
             // 循环查询每个角色的人员数量
@@ -111,7 +112,7 @@ public class RolesController extends CommonController {
             } else {
                 roles = rolesService.getById(id);
                 roles.setName(name);
-
+                roles.setUpdateTime(new Date());
                 rolesService.update(roles);
             }
 

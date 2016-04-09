@@ -69,6 +69,6 @@ public class RolesServiceImpl implements RolesService {
 
     @Override
     public Page<Roles> page(Integer pageNum, Integer pageSize) {
-        return rolesDao.findAll(new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+        return rolesDao.page(new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id"));
     }
 }

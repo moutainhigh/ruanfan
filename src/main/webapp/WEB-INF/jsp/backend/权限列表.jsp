@@ -29,6 +29,7 @@
                     <form id="productForm" method="post" action="backend/roles/save"
                           class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
                         <input type="hidden" id="id" name="id" value="${roles.id}"/>
+
                         <div class="panel-heading">
                             <a href="backend/roles/add" class="btn btn-outline btn-primary btn-lg" role="button">新增权限</a>
                         </div>
@@ -145,7 +146,6 @@
                     ],
                     "createdRow": function (row, data, index) {
                         roles.v.list.push(data);
-
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".edit").attr("href", 'backend/roles/add?id=' + data.id);
