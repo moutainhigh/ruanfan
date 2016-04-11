@@ -98,6 +98,7 @@ public class OrdersApi {
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} merchantId 商户id
      * @apiParam {Integer} couponId 优惠券id
+     * @apiParam {Integer} type 订单类型，1=商品订单，2=套餐订单，3=秒杀订单       <必传 />
      * @apiParam {Integer} payType 支付方式，1=支付宝，2=微信       <必传 />
      * @apiParam {Integer} score 使用积分数
      * @apiParam {String} consignee 收货人       <必传 />
@@ -124,6 +125,7 @@ public class OrdersApi {
                              Integer userId,
                              Integer merchantId,
                              Integer couponId,
+                             Integer type,
                              Integer payType,
                              Integer score,
                              String consignee,
@@ -133,7 +135,7 @@ public class OrdersApi {
                              String realPrice,
                              String demo,
                              String orderInfoList) {
-        if (null == userId || null == consignee || null == mobile || null == address || null == payType || null == price || null == realPrice || null == orderInfoList) {
+        if (null == userId || null == type || null == consignee || null == mobile || null == address || null == payType || null == price || null == realPrice || null == orderInfoList) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -146,6 +148,7 @@ public class OrdersApi {
             orders.setMerchant(merchantsService.getById(merchantId));
         }
         orders.setConsignee(consignee);
+        orders.setType(type);
         orders.setMobile(mobile);
         orders.setAddress(address);
         orders.setPrice(price);
