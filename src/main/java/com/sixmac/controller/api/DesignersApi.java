@@ -230,6 +230,11 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} workInfo.commentList.replysList.userId 评论回复人id
      * @apiSuccess {String} workInfo.commentList.replysList.userName 评论回复人名称
      * @apiSuccess {String} workInfo.commentList.replysList.userHead 评论回复人头像
+     * @apiSuccess {Object} workInfo.gamsList 点赞列表
+     * @apiSuccess {Integer} workInfo.gamsList.id 点赞id
+     * @apiSuccess {String} workInfo.gamsList.description 描述
+     * @apiSuccess {String} workInfo.gamsList.gamUserId 点赞人id
+     * @apiSuccess {Integer} workInfo.gamsList.gamHead 点赞人头像
      */
     @RequestMapping(value = "/workInfo")
     public void workInfo(HttpServletResponse response,
@@ -279,7 +284,7 @@ public class DesignersApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("workInfo", work));
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "objectId", "objectType", "user");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "objectId", "objectType", "user", "type");
         WebUtil.printApi(response, result);
     }
 
