@@ -28,10 +28,11 @@
                 <div class="panel panel-default">
                     <form id="productForm" method="post" action="backend/roles/save"
                           class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
-                        <input type="hidden" id="id" name="id" value="${roles.id}"/>
+                        <input type="hidden" id="roleId" name="id" value="${roles.id}"/>
 
                         <div class="panel-heading">
                             <a href="backend/roles/add" class="btn btn-outline btn-primary btn-lg" role="button">新增权限</a>
+                            <a href="backend/sysUser/index" class="btn btn-outline btn-primary btn-lg" role="button">返回</a>
                         </div>
                     </form>
                     <!-- /.panel-heading -->

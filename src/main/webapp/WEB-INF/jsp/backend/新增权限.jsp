@@ -59,6 +59,22 @@
 
                                             </th>
                                         </tr>
+
+                                        <c:forEach var="n" items="${sd}">
+                                            <tr>
+                                                <td class="textAling">1</td>
+                                                <td class="textAling">用户管理</td>
+                                                <td>
+                                                    <div>
+                                                        <input type="checkbox" name="roles" value="8"/>管理设计师
+                                                        <input type="checkbox" name="roles" value="9"/>管理商户
+                                                        <input type="checkbox" name="roles" value="10"/>管理会员
+                                                        <input type="checkbox" name="roles" value="11"/>管理管理人员
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+
                                         <tr>
                                             <td class="textAling">1</td>
                                             <td class="textAling">用户管理</td>
@@ -71,6 +87,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td class="textAling">2</td>
                                             <td class="textAling">商品管理</td>

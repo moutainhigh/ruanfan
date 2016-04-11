@@ -200,8 +200,8 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} workInfo.designerHead 设计师头像
      * @apiSuccess {Integer} workInfo.reserveNum 预约数
      * @apiSuccess {Integer} workInfo.gamNum 点赞数
-     * @apiSuccess {Integer} workInfo.isGam 是否点赞
-     * @apiSuccess {Integer} workInfo.isCollect 是否收藏
+     * @apiSuccess {Integer} workInfo.isGam 是否点赞，0=是，1=否
+     * @apiSuccess {Integer} workInfo.isCollect 是否收藏，0=是，1=否
      * @apiSuccess {Integer} workInfo.commentNum 评论数
      * @apiSuccess {Integer} workInfo.collectNum 收藏数
      * @apiSuccess {Object} workInfo.imageList 设计作品图片列表
@@ -279,7 +279,7 @@ public class DesignersApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("workInfo", work));
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "objectId", "objectType", "user");
         WebUtil.printApi(response, result);
     }
 

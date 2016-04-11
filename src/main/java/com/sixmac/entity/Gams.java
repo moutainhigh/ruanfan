@@ -14,6 +14,7 @@ public class Gams {
     private Integer objectType;
     private Integer type;
     private String description;
+    private Integer gamUserId;
     private String gamHead;
 
     @Id
@@ -66,6 +67,15 @@ public class Gams {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Transient
+    public Integer getGamUserId() {
+        return gamUserId;
+    }
+
+    public void setGamUserId(Integer gamUserId) {
+        this.gamUserId = gamUserId;
     }
 
     @Transient

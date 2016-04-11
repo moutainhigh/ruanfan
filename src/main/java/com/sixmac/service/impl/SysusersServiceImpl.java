@@ -90,6 +90,8 @@ public class SysusersServiceImpl implements SysusersService {
                     Predicate pre = cb.equal(root.get("role").get("id").as(Integer.class), roleId);
                     predicateList.add(pre);
                 }
+                Predicate pre1 = cb.notEqual(root.get("role").get("id").as(Integer.class), 1);
+                predicateList.add(pre1);
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }
