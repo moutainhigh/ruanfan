@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">消息列表</h1>
+                <h1 class="page-header">管理消息</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增消息</h4>
             </div>
         </div>

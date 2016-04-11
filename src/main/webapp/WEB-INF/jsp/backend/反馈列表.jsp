@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">反馈列表</h1>
+                <h1 class="page-header">管理反馈</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>

@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">灵感图集</h1>
+                <h1 class="page-header">管理灵感图集</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增灵感图集</h4>
             </div>
         </div>
@@ -104,6 +104,7 @@
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="button" class="btn btn-primary" onclick="afflatus.fn.subInfo()">提交</button>
+                                    <a href="backend/afflatus/index" type="button" class="btn btn-primary">返回</a>
                                 </div>
                             </div>
                         </form>

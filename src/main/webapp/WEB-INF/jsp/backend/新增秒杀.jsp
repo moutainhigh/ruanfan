@@ -18,8 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">秒杀管理</h1>
-                <h4 style="margin-left: 10px;" id="showH">——新增秒杀</h4>
+                <h1 class="page-header">管理秒杀商品</h1>
+                <h4 style="margin-left: 10px;" id="showH">——新增秒杀商品</h4>
             </div>
         </div>
 
@@ -196,7 +196,7 @@
                 });
 
                 if ($("#spikesId").val() != "") {
-                    $("#showH").text("——编辑秒杀");
+                    $("#showH").text("——编辑秒杀商品");
                 }
 
                 $('.form_datetime').datetimepicker({

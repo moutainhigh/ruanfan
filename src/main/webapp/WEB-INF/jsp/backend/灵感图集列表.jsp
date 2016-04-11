@@ -18,8 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">灵感图集</h1>
-                <h4 style="margin-left: 10px;">——灵感集列表</h4>
+                <h1 class="page-header">管理灵感图集</h1>
+                <h4 style="margin-left: 10px;">——灵感图集列表</h4>
             </div>
             <!-- /.col-lg-12 -->
         </div>

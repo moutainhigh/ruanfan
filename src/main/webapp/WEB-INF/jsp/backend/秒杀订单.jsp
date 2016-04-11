@@ -18,7 +18,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">订单列表</h1>
+                <h1 class="page-header">管理订单</h1>
+                <h4 style="margin-left: 10px;">——秒杀订单列表</h4>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -143,7 +144,7 @@
                         {
                             "data": null,
                             "defaultContent": "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
-                            "<i class='fa fa-edit'></i>" +
+                            "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='已发货' style='display: none' class='btn btn-success btn-circle check'>" +

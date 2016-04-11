@@ -32,7 +32,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">日志列表</h1>
+                <h1 class="page-header">管理日志</h1>
                 <h4 style="margin-left: 10px;">——查看日志详情</h4>
             </div>
         </div>
