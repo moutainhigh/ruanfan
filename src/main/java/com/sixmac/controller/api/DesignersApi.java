@@ -276,7 +276,7 @@ public class DesignersApi extends CommonController {
         work.setImageList(imageService.iFindList(workId, Constant.IMAGE_WORKS));
 
         if (null != userId) {
-            Gams gams = gamsService.iFindOne(userId, workId, Constant.GAM_WORKS, Constant.SORT_TYPE_DESC);
+            Gams gams = gamsService.iFindOne(userId, workId, Constant.GAM_WORKS, Constant.GAM_LOVE);
             work.setIsGam(null != gams ? Constant.GAM_LOVE_YES : Constant.GAM_LOVE_NO);
 
             Collect collect = collectService.iFindOne(userId, workId, Constant.COLLECT_WORKS);
