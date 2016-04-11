@@ -504,7 +504,7 @@ public class MallApi extends CommonController {
 
         packages.setImageList(imageService.iFindList(packageId, Constant.IMAGE_PACKAGES));
 
-        packages.setSimilarList(null);
+        packages.setSimilarList(packagesService.iFindListByBrand(packageId, packages.getBrand().getId()));
 
         // 套餐评价列表
         packages.setAppraisalVoList(findList(packageId, Constant.ORDERS_TYPE_PACKAGE));
@@ -533,7 +533,7 @@ public class MallApi extends CommonController {
         return appraisalVoList;
     }
 
-    private void changeList(List<Products> list){
+    private void changeList(List<Products> list) {
         for (Products product : list) {
             product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
             product.setMerchantId(product.getMerchant().getId());
