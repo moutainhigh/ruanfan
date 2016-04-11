@@ -479,6 +479,12 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} packageInfo.cover 封面图
      * @apiSuccess {Integer} packageInfo.brandId 品牌id
      * @apiSuccess {String} packageInfo.brandName 品牌名称
+     * @apiSuccess {Object} packageInfo.imageList 套餐图片列表
+     * @apiSuccess {Integer} packageInfo.imageList.id 图片id
+     * @apiSuccess {String} packageInfo.imageList.path 图片路径
+     * @apiSuccess {String} packageInfo.imageList.description 描述
+     * @apiSuccess {String} packageInfo.imageList.demo 备注
+     * @apiSuccess {String} packageInfo.imageList.createTime 创建时间
      */
     @RequestMapping("packageInfo")
     public void packageInfo(HttpServletResponse response,
@@ -519,8 +525,10 @@ public class MallApi extends CommonController {
 
         packages.setProductsList(productList);
 
+        packages.setImageList(imageService.iFindList(packageId, Constant.IMAGE_PACKAGES));
+
         Result obj = new Result(true).data(createMap("packageInfo", packages));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "productNum");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType");
         WebUtil.printApi(response, result);
     }
 }
