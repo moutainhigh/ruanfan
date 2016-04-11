@@ -113,7 +113,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">商品清单:</label>
-                                <div class="col-sm-3" style="padding-top: 6.5px;">
+                                <div class="col-sm-5" style="padding-top: 6.5px;">
                                     <table style="text-align: left;" width="100%">
                                         <c:if test="${orderInfoList.size() == 0}">暂无</c:if>
                                         <c:forEach var="n" items="${orderInfoList}">
