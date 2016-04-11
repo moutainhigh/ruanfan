@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -11,6 +12,7 @@ public class Modules {
     private Integer id;
     private String name;
     private Integer parentId;
+    private List<Modules> moduleList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +38,14 @@ public class Modules {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    @Transient
+    public List<Modules> getModuleList() {
+        return moduleList;
+    }
+
+    public void setModuleList(List<Modules> moduleList) {
+        this.moduleList = moduleList;
     }
 }

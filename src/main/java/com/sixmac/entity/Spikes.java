@@ -1,7 +1,11 @@
 package com.sixmac.entity;
 
+import com.sixmac.entity.vo.AppraisalVo;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -25,6 +29,7 @@ public class Spikes {
     private Date createTime;
     private String cover;
     private Integer status;
+    private List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -162,5 +167,14 @@ public class Spikes {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public List<AppraisalVo> getAppraisalVoList() {
+        return appraisalVoList;
+    }
+
+    public void setAppraisalVoList(List<AppraisalVo> appraisalVoList) {
+        this.appraisalVoList = appraisalVoList;
     }
 }

@@ -3,6 +3,7 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.bean.Result;
+import com.sixmac.entity.Modules;
 import com.sixmac.entity.Rolemodules;
 import com.sixmac.entity.Roles;
 import com.sixmac.service.ModulesService;
@@ -69,6 +70,14 @@ public class RolesController extends CommonController {
 
     @RequestMapping("/add")
     public String add(ModelMap model, Integer id) {
+        List<Modules> moduleList = modulesService.findListByParentId(0);
+
+        for (Modules module : moduleList) {
+            module.setModuleList(modulesService.findListByParentId(module.getId()));
+        }
+
+        model.addAttribute("moduleList", moduleList);
+
         StringBuffer sb = new StringBuffer("");
 
         if (id != null) {

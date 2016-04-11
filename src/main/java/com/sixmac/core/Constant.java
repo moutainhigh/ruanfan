@@ -99,6 +99,11 @@ public interface Constant {
     Integer COUPON_STATUS_YES = 1;   // 已使用
     Integer COUPON_STATUS_NO = 0;    // 未使用
 
+    // 订单类型
+    Integer ORDERS_TYPE_PRODUCT = 1; // 商品订单
+    Integer ORDERS_TYPE_PACKAGE = 2; // 套餐订单
+    Integer ORDERS_TYPE_SPIKE = 3;   // 秒杀订单
+
     // 订单状态
     Integer ORDERS_STATUS_000 = 0;   // 待付款
     Integer ORDERS_STATUS_001 = 1;   // 待发货

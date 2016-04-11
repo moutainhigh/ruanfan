@@ -59,104 +59,19 @@
 
                                             </th>
                                         </tr>
-
-                                        <c:forEach var="n" items="${sd}">
+                                        <c:forEach var="n" items="${moduleList}" varStatus="index">
                                             <tr>
-                                                <td class="textAling">1</td>
-                                                <td class="textAling">用户管理</td>
+                                                <td class="textAling">${index.index + 1}</td>
+                                                <td class="textAling">${n.name}</td>
                                                 <td>
                                                     <div>
-                                                        <input type="checkbox" name="roles" value="8"/>管理设计师
-                                                        <input type="checkbox" name="roles" value="9"/>管理商户
-                                                        <input type="checkbox" name="roles" value="10"/>管理会员
-                                                        <input type="checkbox" name="roles" value="11"/>管理管理人员
+                                                        <c:forEach var="m" items="${n.moduleList}">
+                                                            <input type="checkbox" name="roles" value="${m.id}"/>${m.name}
+                                                        </c:forEach>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
-
-                                        <tr>
-                                            <td class="textAling">1</td>
-                                            <td class="textAling">用户管理</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="8"/>管理设计师
-                                                    <input type="checkbox" name="roles" value="9"/>管理商户
-                                                    <input type="checkbox" name="roles" value="10"/>管理会员
-                                                    <input type="checkbox" name="roles" value="11"/>管理管理人员
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="textAling">2</td>
-                                            <td class="textAling">商品管理</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="12"/>管理商品单品
-                                                    <input type="checkbox" name="roles" value="13"/>管理商品套餐
-                                                    <input type="checkbox" name="roles" value="14"/>管理秒杀商品
-                                                    <input type="checkbox" name="roles" value="15"/>管理订单
-                                                    <input type="checkbox" name="roles" value="16"/>管理评价
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="textAling">3</td>
-                                            <td class="textAling">灵感集管理</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="17"/>管理灵感图集
-                                                    <input type="checkbox" name="roles" value="18"/>管理虚拟体验
-                                                    <input type="checkbox" name="roles" value="19"/>管理杂志
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="textAling">4</td>
-                                            <td class="textAling">分类管理</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="20"/>管理商品种类
-                                                    <input type="checkbox" name="roles" value="21"/>管理品牌分类
-                                                    <input type="checkbox" name="roles" value="22"/>管理风格分类
-                                                    <input type="checkbox" name="roles" value="23"/>管理灵感图区域分类
-                                                    <input type="checkbox" name="roles" value="24"/>管理虚拟体验分类
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="textAling">5</td>
-                                            <td class="textAling">站长工具</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="25"/>管理广告banner
-                                                    <input type="checkbox" name="roles" value="26"/>管理饭票
-                                                    <input type="checkbox" name="roles" value="27"/>管理预约
-                                                    <input type="checkbox" name="roles" value="28"/>管理反馈
-                                                    <input type="checkbox" name="roles" value="29"/>管理收入
-                                                    <input type="checkbox" name="roles" value="30"/>管理操作日志
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="textAling">6</td>
-                                            <td class="textAling">消息管理</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="31"/>管理消息
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="textAling">7</td>
-                                            <td class="textAling">日志管理</td>
-                                            <td>
-                                                <div>
-                                                    <input type="checkbox" name="roles" value="32"/>管理日志
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </table>
                                 </div>
                             </div>

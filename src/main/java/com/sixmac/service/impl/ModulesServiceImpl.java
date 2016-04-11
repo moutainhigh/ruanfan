@@ -66,4 +66,9 @@ public class ModulesServiceImpl implements ModulesService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Modules> findListByParentId(Integer parentId) {
+        return modulesDao.findListByParentId(parentId);
+    }
 }

@@ -116,8 +116,8 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
-    public List<Ordersinfo> findListByProductId(Integer productId) {
-        return ordersinfoDao.findListByProductId(productId);
+    public List<Ordersinfo> findListBySourceId(Integer productId, Integer type) {
+        return ordersinfoDao.findListBySourceId(productId, type);
     }
 
 }

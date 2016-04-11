@@ -154,6 +154,12 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} spikeInfo.description 描述
      * @apiSuccess {String} spikeInfo.createTime 创建时间
      * @apiSuccess {String} spikeInfo.cover 封面图
+     * @apiSuccess {Object} spikeInfo.appraisalVoList 评价列表
+     * @apiSuccess {Integer} spikeInfo.appraisalVoList.userId 评价人id
+     * @apiSuccess {String} spikeInfo.appraisalVoList.userName 评价人名称
+     * @apiSuccess {Integer} spikeInfo.appraisalVoList.star 评价星级
+     * @apiSuccess {String} spikeInfo.appraisalVoList.content 评价内容
+     * @apiSuccess {String} spikeInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("spikeInfo")
     public void spikeInfo(HttpServletResponse response,
@@ -168,6 +174,23 @@ public class MallApi extends CommonController {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
+
+        // 商品评价列表
+        List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(spikesId, Constant.ORDERS_TYPE_SPIKE);
+        List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
+        AppraisalVo appra = null;
+
+        for (Ordersinfo ordersInfo : ordersinfoList) {
+            appra = new AppraisalVo();
+            appra.setUserId(ordersInfo.getOrder().getUser().getId());
+            appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
+            appra.setStar(ordersInfo.getStar());
+            appra.setContent(ordersInfo.getComment());
+            appra.setCreateTime(ordersInfo.getOrder().getCreateTime());
+
+            appraisalVoList.add(appra);
+        }
+        spikes.setAppraisalVoList(appraisalVoList);
 
         spikes.setCover(PathUtils.getRemotePath() + imageService.getById(spikes.getCoverId()).getPath());
 
@@ -310,7 +333,7 @@ public class MallApi extends CommonController {
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
         products.setSimilarList(productsService.iFindListBySortAndStyle(productId, products.getType(), products.getSort().getId()));
         // 商品评价列表
-        List<Ordersinfo> ordersinfoList = ordersinfoService.findListByProductId(productId);
+        List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(productId, Constant.ORDERS_TYPE_PRODUCT);
         List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
         AppraisalVo appra = null;
 
