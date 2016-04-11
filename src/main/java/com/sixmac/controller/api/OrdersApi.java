@@ -108,7 +108,7 @@ public class OrdersApi {
      * @apiParam {String} demo 备注
      * @apiParam {Object} orderInfoList 订单详情（json格式字符串）       <必传 />
      * @apiParam {Integer} orderInfoList.shopCarId 购物车id
-     * @apiParam {Integer} orderInfoList.merchantId 商品所属商户id，type为1时传入，type为0时不传
+     * @apiParam {Integer} orderInfoList.merchantId 商品所属商户id，type为1时传入，type为2时不传
      * @apiParam {Integer} orderInfoList.type 类型，1=商品，2=秒杀       <必传 />
      * @apiParam {Integer} orderInfoList.id 商品id or 秒杀id       <必传 />
      * @apiParam {String} orderInfoList.name 名称       <必传 />
@@ -167,7 +167,7 @@ public class OrdersApi {
             mapInfo = JsonUtil.jsontoMap(orderMap);
             ordersinfo = new Ordersinfo();
             ordersinfo.setOrder(orders);
-            if (null != mapInfo.get("type") && !mapInfo.get("type").equals("") && mapInfo.get("type").equals("1")) {
+            if (null != mapInfo.get("type") && !mapInfo.get("type").equals("") && mapInfo.get("type").toString().equals("1")) {
                 // 当type为1时，表示传入的是商品，此时应该记录该商品所属商家信息
                 // 当type为0时，表示传入的是秒杀，此时不记录商家信息
                 ordersinfo.setMerchant(merchantsService.getById(Integer.parseInt(mapInfo.get("merchantId").toString())));
@@ -197,7 +197,7 @@ public class OrdersApi {
         }
 
         // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数
-        if (score > 0) {
+        if (null != score && score > 0) {
             Users users = usersService.getById(userId);
             users.setScore(users.getScore() - score);
             usersService.update(users);
