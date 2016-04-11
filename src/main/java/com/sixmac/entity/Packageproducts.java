@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "packageproducts")
 public class Packageproducts {
     private Integer id;
+    private Integer type;
     private Packages packages;
     private Products product;
     private String path;
@@ -21,6 +22,14 @@ public class Packageproducts {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @ManyToOne

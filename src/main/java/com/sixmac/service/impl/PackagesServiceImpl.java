@@ -60,7 +60,7 @@ public class PackagesServiceImpl implements PackagesService {
         Packages packages = getById(id);
 
         // 删除商品套餐的同时，删除套餐和商品的关联信息
-        List<Packageproducts> list = packageproductsDao.findListByPackageId(id);
+        List<Packageproducts> list = packageproductsDao.findListByPackageId(id, packages.getType());
         for (Packageproducts packageProduct : list) {
             packageproductsDao.delete(packageProduct.getId());
         }

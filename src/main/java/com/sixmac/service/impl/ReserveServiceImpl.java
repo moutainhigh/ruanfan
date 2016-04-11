@@ -102,7 +102,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public List<Reserve> iFindListByDesignerId(Integer designerId) {
-        return reserveDao.iFindListByDesignerId(designerId);
+        return reserveDao.iFindListByDesignerId(designerId, Constant.RESERVE_TYPE_DESIGNER);
     }
 
     @Override

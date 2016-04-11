@@ -10,11 +10,12 @@ import java.util.Date;
 @Table(name = "reserve")
 public class Reserve {
     private Integer id;
+    private Integer type;
     private String name;
     private String mobile;
     private String email;
     private Users user;
-    private Designers designer;
+    private Integer objectId;
     private Date reseTime;
     private Styles style;
     private String address;
@@ -67,14 +68,20 @@ public class Reserve {
         this.user = user;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "designerId")
-    public Designers getDesigner() {
-        return designer;
+    public Integer getType() {
+        return type;
     }
 
-    public void setDesigner(Designers designer) {
-        this.designer = designer;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(Integer objectId) {
+        this.objectId = objectId;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

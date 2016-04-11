@@ -34,9 +34,6 @@ public class DesignersApi extends CommonController {
     private UsersService usersService;
 
     @Autowired
-    private StylesService stylesService;
-
-    @Autowired
     private ReserveService reserveService;
 
     @Autowired
@@ -439,62 +436,6 @@ public class DesignersApi extends CommonController {
 
             attentionsService.deleteById(attentions.getId());
         }
-
-        WebUtil.printApi(response, new Result(true));
-    }
-
-    /**
-     * @api {post} /api/designers/reserve 预约设计师
-     * @apiName designers.reserve
-     * @apiGroup designers
-     * @apiParam {Integer} userId 用户id       <必传 />
-     * @apiParam {Integer} designerId 设计师id       <必传 />
-     * @apiParam {String} name 姓名       <必传 />
-     * @apiParam {String} mobile 联系方式       <必传 />
-     * @apiParam {String} email 电子邮箱        <必传 />
-     * @apiParam {Integer} styleId 喜爱的风格id      <必传 />
-     * @apiParam {String} address 地址
-     * @apiParam {String} resTime 预约时间
-     * @apiParam {String} remark 备注（留言）
-     */
-    @RequestMapping("/reserve")
-    public void reserve(HttpServletResponse response,
-                        Integer userId,
-                        Integer designerId,
-                        String name,
-                        String mobile,
-                        String email,
-                        Integer styleId,
-                        String address,
-                        String resTime,
-                        String remark) {
-        if (null == userId || null == designerId || null == name || null == mobile || null == email || null == styleId) {
-            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
-            return;
-        }
-
-        Reserve reserve = new Reserve();
-        reserve.setName(name);
-        reserve.setMobile(mobile);
-        reserve.setEmail(email);
-        reserve.setUser(usersService.getById(userId));
-        reserve.setDesigner(designersService.getById(designerId));
-        if (null != resTime) {
-            try {
-                Date date = DateUtils.stringToDateWithFormat(resTime, "yyyy-MM-dd HH:mm:ss");
-                reserve.setReseTime(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        reserve.setStyle(stylesService.getById(styleId));
-        reserve.setAddress(address);
-        reserve.setRemark(remark);
-        reserve.setReseAddress(address);
-        reserve.setCreateTime(new Date());
-        reserve.setStatus(0);
-
-        reserveService.create(reserve);
 
         WebUtil.printApi(response, new Result(true));
     }

@@ -66,4 +66,9 @@ public class CustominfoServiceImpl implements CustominfoService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Custominfo> findListByCustomId(Integer customId) {
+        return custominfoDao.findListByCustomId(customId);
+    }
 }

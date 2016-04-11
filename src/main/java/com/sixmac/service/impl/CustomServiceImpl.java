@@ -66,4 +66,9 @@ public class CustomServiceImpl implements CustomService {
             deleteById(id);
         }
     }
+
+    @Override
+    public List<Custom> findListByParams(String name) {
+        return customDao.findListByParams(name);
+    }
 }

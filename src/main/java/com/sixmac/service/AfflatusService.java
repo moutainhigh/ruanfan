@@ -19,7 +19,7 @@ public interface AfflatusService extends ICommonService<Afflatus> {
     public Page<Afflatus> page(Integer designerId, String afflatusName, Integer status, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
 
     // 灵感集列表
-    public Page<Afflatus> iPage(Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
+    public Page<Afflatus> iPage(String key, String labels, Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize);
 
     // 查询猜你所想列表
     public List<BeanVo> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId);

@@ -9,6 +9,7 @@ import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.AfflatusService;
 import com.sixmac.utils.PathUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -178,7 +179,7 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
-    public Page<Afflatus> iPage(Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
+    public Page<Afflatus> iPage(String key, String labels, Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Afflatus> page = afflatusDao.findAll(new Specification<Afflatus>() {
@@ -186,6 +187,14 @@ public class AfflatusServiceImpl implements AfflatusService {
             public Predicate toPredicate(Root<Afflatus> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (StringUtils.isNotBlank(key)) {
+                    Predicate pre = cb.equal(root.get("type").as(Integer.class), "%" + key + "%");
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(labels)) {
+                    Predicate pre = cb.equal(root.get("type").as(Integer.class), "%" + labels + "%");
+                    predicateList.add(pre);
+                }
                 if (null != type) {
                     Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
                     predicateList.add(pre);

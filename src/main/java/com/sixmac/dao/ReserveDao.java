@@ -13,8 +13,8 @@ import java.util.List;
  */
 public interface ReserveDao extends JpaRepository<Reserve, Integer>, JpaSpecificationExecutor<Reserve> {
 
-    @Query("select a from Reserve a where a.designer.id = ?1 order by a.id desc")
-    public List<Reserve> iFindListByDesignerId(Integer designerId);
+    @Query("select a from Reserve a where a.objectId = ?1 and a.type = ?2 order by a.id desc")
+    public List<Reserve> iFindListByDesignerId(Integer objectId, Integer type);
 
     @Query("select a from Reserve a where a.reseTime > ?1")
     public List<Reserve> findListNew(Date oldDate);

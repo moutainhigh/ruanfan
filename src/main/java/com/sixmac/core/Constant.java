@@ -164,4 +164,11 @@ public interface Constant {
     Integer PRODUCT_TYPE_TWO = 2;   // 艺术品
     Integer PRODUCT_TYPE_THREE = 3; // 设计师品牌
 
+    // 预约类型
+    Integer RESERVE_TYPE_DESIGNER = 1;  // 设计师
+    Integer RESERVE_TYPE_PACKAGE = 2;   // 设计定制套餐
+
+    // 套餐类型
+    Integer PACKAGE_TYPE_PRODUCT = 1;  // 商品
+    Integer PACKAGE_TYPE_CUSTOM = 2;   // 设计定制
 }

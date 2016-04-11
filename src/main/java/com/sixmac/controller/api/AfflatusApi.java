@@ -89,7 +89,7 @@ public class AfflatusApi extends CommonController {
             return;
         }
 
-        Page<Afflatus> page = afflatusService.iPage(type, styleId, areaId, pageNum, pageSize);
+        Page<Afflatus> page = afflatusService.iPage(key, labels, type, styleId, areaId, pageNum, pageSize);
 
         for (Afflatus afflatus : page.getContent()) {
             afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());

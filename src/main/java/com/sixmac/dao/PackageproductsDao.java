@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface PackageproductsDao extends JpaRepository<Packageproducts, Integer> {
 
-    @Query("select a from Packageproducts a where a.packages.id = ?1")
-    public List<Packageproducts> findListByPackageId(Integer packageId);
+    @Query("select a from Packageproducts a where a.packages.id = ?1 and a.type = ?2")
+    public List<Packageproducts> findListByPackageId(Integer packageId, Integer type);
 }

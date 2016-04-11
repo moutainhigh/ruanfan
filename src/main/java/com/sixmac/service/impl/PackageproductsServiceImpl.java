@@ -3,7 +3,9 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.PackageproductsDao;
 import com.sixmac.entity.Packageproducts;
+import com.sixmac.entity.Packages;
 import com.sixmac.service.PackageproductsService;
+import com.sixmac.service.PackagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,9 @@ import java.util.List;
  */
 @Service
 public class PackageproductsServiceImpl implements PackageproductsService {
+
+    @Autowired
+    private PackagesService packagesService;
 
     @Autowired
     private PackageproductsDao packageproductsDao;
@@ -68,14 +73,16 @@ public class PackageproductsServiceImpl implements PackageproductsService {
     }
 
     @Override
-    public List<Packageproducts> findListByPackageId(Integer packageId) {
-        return packageproductsDao.findListByPackageId(packageId);
+    public List<Packageproducts> findListByPackageId(Integer packageId, Integer type) {
+        return packageproductsDao.findListByPackageId(packageId, type);
     }
 
     @Override
     @Transactional
     public void deleteByPackageId(Integer packageId) {
-        List<Packageproducts> list = packageproductsDao.findListByPackageId(packageId);
+        Packages packages = packagesService.getById(packageId);
+
+        List<Packageproducts> list = packageproductsDao.findListByPackageId(packageId, packages.getType());
         for (Packageproducts packageProduct : list) {
             packageproductsDao.delete(packageProduct.getId());
         }

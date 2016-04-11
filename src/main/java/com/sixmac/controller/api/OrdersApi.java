@@ -96,7 +96,7 @@ public class OrdersApi {
      * @apiName orders.confirmOrder
      * @apiGroup orders
      * @apiParam {Integer} userId 用户id       <必传 />
-     * @apiParam {Integer} merchantId 商户id
+     * @apiParam {Integer} merchantId 商户id   当商品全部是同一家商户时，传入商户id；如果商品来自多家，则不传
      * @apiParam {Integer} couponId 优惠券id
      * @apiParam {Integer} type 订单类型，1=商品订单，2=套餐订单，3=秒杀订单       <必传 />
      * @apiParam {Integer} payType 支付方式，1=支付宝，2=微信       <必传 />

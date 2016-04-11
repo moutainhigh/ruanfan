@@ -2,6 +2,7 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Packages;
@@ -48,6 +49,7 @@ public class PackagesController extends CommonController {
     @RequestMapping("/list")
     public void list(HttpServletResponse response,
                      String name,
+                     Integer type,
                      Integer brandId,
                      Integer draw,
                      Integer start,
@@ -60,7 +62,7 @@ public class PackagesController extends CommonController {
 
         for (Packages packages : page.getContent()) {
             // 获取商品套餐所包含的商品数量
-            packages.setProductNum(packageProductsService.findListByPackageId(packages.getId()).size());
+            packages.setProductNum(packageProductsService.findListByPackageId(packages.getId(), type).size());
         }
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
@@ -79,7 +81,7 @@ public class PackagesController extends CommonController {
             model.addAttribute("packages", packages);
 
             if (null != packages) {
-                List<Packageproducts> packageproductsList = packageProductsService.findListByPackageId(id);
+                List<Packageproducts> packageproductsList = packageProductsService.findListByPackageId(id, packages.getType());
                 for (Packageproducts packageProduct : packageproductsList) {
                     map = new HashMap<String, Object>();
                     map.put("id", packageProduct.getProduct().getCoverId());

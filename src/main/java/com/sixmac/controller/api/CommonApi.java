@@ -8,6 +8,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.DateUtils;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,12 @@ public class CommonApi extends CommonController {
 
     @Autowired
     private GamsService gamsService;
+
+    @Autowired
+    private StylesService stylesService;
+
+    @Autowired
+    private ReserveService reserveService;
 
     /**
      * @api {post} /api/common/collectList 收藏列表
@@ -248,6 +256,65 @@ public class CommonApi extends CommonController {
             e.printStackTrace();
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
         }
+    }
+
+    /**
+     * @api {post} /api/common/reserve 预约
+     * @apiName common.reserve
+     * @apiGroup common
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} type 预约类型，1=设计师，2=设计定制套餐       <必传 />
+     * @apiParam {Integer} objectId 目标id       <必传 />
+     * @apiParam {String} name 姓名       <必传 />
+     * @apiParam {String} mobile 联系方式       <必传 />
+     * @apiParam {String} email 电子邮箱        <必传 />
+     * @apiParam {Integer} styleId 喜爱的风格id      <必传 />
+     * @apiParam {String} address 地址
+     * @apiParam {String} resTime 预约时间
+     * @apiParam {String} remark 备注（留言）
+     */
+    @RequestMapping("/reserve")
+    public void reserve(HttpServletResponse response,
+                        Integer userId,
+                        Integer type,
+                        Integer objectId,
+                        String name,
+                        String mobile,
+                        String email,
+                        Integer styleId,
+                        String address,
+                        String resTime,
+                        String remark) {
+        if (null == userId || null == type || null == objectId || null == name || null == mobile || null == email || null == styleId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Reserve reserve = new Reserve();
+        reserve.setType(type);
+        reserve.setName(name);
+        reserve.setMobile(mobile);
+        reserve.setEmail(email);
+        reserve.setUser(usersService.getById(userId));
+        reserve.setObjectId(objectId);
+        if (null != resTime) {
+            try {
+                Date date = DateUtils.stringToDateWithFormat(resTime, "yyyy-MM-dd HH:mm:ss");
+                reserve.setReseTime(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        reserve.setStyle(stylesService.getById(styleId));
+        reserve.setAddress(address);
+        reserve.setRemark(remark);
+        reserve.setReseAddress(address);
+        reserve.setCreateTime(new Date());
+        reserve.setStatus(0);
+
+        reserveService.create(reserve);
+
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**
