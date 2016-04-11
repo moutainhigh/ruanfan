@@ -1,5 +1,7 @@
 package com.sixmac.entity;
 
+import com.sixmac.entity.vo.AppraisalVo;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +29,8 @@ public class Packages {
     private String brandName;
     private Integer productNum;
     private List<Image> imageList = new ArrayList<Image>();
+    private List<Packages> similarList = new ArrayList<Packages>();
+    private List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -166,5 +170,23 @@ public class Packages {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
+    }
+
+    @Transient
+    public List<Packages> getSimilarList() {
+        return similarList;
+    }
+
+    public void setSimilarList(List<Packages> similarList) {
+        this.similarList = similarList;
+    }
+
+    @Transient
+    public List<AppraisalVo> getAppraisalVoList() {
+        return appraisalVoList;
+    }
+
+    public void setAppraisalVoList(List<AppraisalVo> appraisalVoList) {
+        this.appraisalVoList = appraisalVoList;
     }
 }

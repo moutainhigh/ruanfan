@@ -159,4 +159,9 @@ public class PackagesServiceImpl implements PackagesService {
         return page;
     }
 
+    @Override
+    public List<Packages> iFindListByBrand(Integer packageId, Integer brandId) {
+        return packagesDao.iFindListByBrand(packageId, brandId);
+    }
+
 }

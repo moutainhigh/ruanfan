@@ -21,4 +21,6 @@ public interface PackagesService extends ICommonService<Packages> {
     // 套餐列表
     public Page<Packages> page(String name, Integer brandId, Integer pageNum, Integer pageSize);
 
+    // 根据品牌id查询类似的套餐列表
+    public List<Packages> iFindListByBrand(Integer packageId, Integer brandId);
 }
