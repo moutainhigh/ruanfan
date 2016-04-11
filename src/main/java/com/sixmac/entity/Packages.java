@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +21,12 @@ public class Packages {
     private String description;
     private Integer count;
     private Date createTime;
-    private List<Products> productsList;
+    private List<Products> productsList = new ArrayList<Products>();
     private String cover;
     private Integer brandId;
     private String brandName;
     private Integer productNum;
+    private List<Image> imageList = new ArrayList<Image>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -155,5 +157,14 @@ public class Packages {
 
     public void setProductNum(Integer productNum) {
         this.productNum = productNum;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 }
