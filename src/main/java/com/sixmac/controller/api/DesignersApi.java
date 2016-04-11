@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -108,6 +107,7 @@ public class DesignersApi extends CommonController {
             // 设置设计师所属城市id
             designer.setCityId(designer.getCity().getId());
             designer.setHead(PathUtils.getRemotePath() + designer.getHead());
+            designer.setProof(PathUtils.getRemotePath() + designer.getProof());
 
             // 获取每个独立设计师的最新三张作品图片
             if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
