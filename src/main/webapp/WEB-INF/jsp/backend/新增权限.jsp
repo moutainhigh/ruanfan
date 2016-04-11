@@ -9,11 +9,6 @@
     <title>用户管理</title>
     <%@ include file="inc/css.jsp" %>
 </head>
-<style>
-    .textAling {
-        text-align: center;
-    }
-</style>
 <body>
 
 <div id="posts" class="wrapper">
@@ -23,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">管理人员</h1>
+                <h1 class="page-header">管理管理人员</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增权限</h4>
             </div>
         </div>
@@ -53,20 +48,20 @@
                                 <div class="col-sm-11">
                                     <table border="1" style="line-height: 30px;">
                                         <tr width="100px">
-                                            <th width="6%;" class="textAling">序号</th>
-                                            <th width="12%;" class="textAling">功能名称</th>
+                                            <th width="6%;" style="text-align: center;">序号</th>
+                                            <th width="12%;" style="text-align: center;">功能名称</th>
                                             <th width="80%">
 
                                             </th>
                                         </tr>
                                         <c:forEach var="n" items="${moduleList}" varStatus="index">
                                             <tr>
-                                                <td class="textAling">${index.index + 1}</td>
-                                                <td class="textAling">${n.name}</td>
+                                                <td style="text-align: center;">${index.index + 1}</td>
+                                                <td style="text-align: center;">${n.name}</td>
                                                 <td>
-                                                    <div>
+                                                    <div style="padding-left: 10px; padding-right: 10px;">
                                                         <c:forEach var="m" items="${n.moduleList}">
-                                                            <input type="checkbox" name="roles" value="${m.id}"/>${m.name}
+                                                            <input type="checkbox" name="roles" value="${m.id}" />${m.name}
                                                         </c:forEach>
                                                     </div>
                                                 </td>
@@ -117,7 +112,7 @@
                 });
 
                 if ($("#id").val() != "") {
-                    $("#showH").text("——编辑消息");
+                    $("#showH").text("——编辑权限");
                 }
 
                 $('#sendto_alls').click(function () {

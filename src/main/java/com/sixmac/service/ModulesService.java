@@ -12,4 +12,7 @@ public interface ModulesService extends ICommonService<Modules> {
 
     // 根据权限模块父级id查询所对应的权限列表
     public List<Modules> findListByParentId(Integer parentId);
+
+    // 根据角色id查询对应的一级菜单列表
+    public List<Modules> findFirstList(Integer roleId);
 }

@@ -2,7 +2,9 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.ModulesDao;
+import com.sixmac.dao.RolemodulesDao;
 import com.sixmac.entity.Modules;
+import com.sixmac.entity.Rolemodules;
 import com.sixmac.service.ModulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +24,9 @@ public class ModulesServiceImpl implements ModulesService {
 
     @Autowired
     private ModulesDao modulesDao;
+
+    @Autowired
+    private RolemodulesDao rolemodulesDao;
 
     @Override
     public List<Modules> findAll() {
@@ -70,5 +76,18 @@ public class ModulesServiceImpl implements ModulesService {
     @Override
     public List<Modules> findListByParentId(Integer parentId) {
         return modulesDao.findListByParentId(parentId);
+    }
+
+    @Override
+    public List<Modules> findFirstList(Integer roleId) {
+        List<Modules> list = new ArrayList<Modules>();
+
+        List<Rolemodules> rolemodulesList = rolemodulesDao.findListByRoleIdGroupByParentId(roleId);
+
+        for (Rolemodules roleModule : rolemodulesList) {
+            list.add(modulesDao.findOne(roleModule.getModule().getParentId()));
+        }
+
+        return list;
     }
 }

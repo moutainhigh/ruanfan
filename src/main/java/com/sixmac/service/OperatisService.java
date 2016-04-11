@@ -9,8 +9,5 @@ import org.springframework.data.domain.Page;
  */
 public interface OperatisService extends ICommonService<Operatis> {
 
-    public Page<Operatis> findPage(Operatis operatis, int pageNum, int pageSize);
-
     public Page<Operatis> page(String name, String roleName, int pageNum, int pageSize);
-
 }

@@ -13,4 +13,7 @@ public interface RolemodulesDao extends JpaRepository<Rolemodules, Integer> {
 
     @Query("select a from Rolemodules a where a.role.id = ?1")
     public List<Rolemodules> findListByRoleId(Integer roleId);
+
+    @Query("select a from Rolemodules a where a.role.id = ?1 group by a.module.parentId")
+    public List<Rolemodules> findListByRoleIdGroupByParentId(Integer roleId);
 }

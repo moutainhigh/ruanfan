@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,9 @@ public class Modules {
     private Integer id;
     private String name;
     private Integer parentId;
-    private List<Modules> moduleList;
+    private String url;
+    private String styles;
+    private List<Modules> moduleList = new ArrayList<Modules>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +41,22 @@ public class Modules {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getStyles() {
+        return styles;
+    }
+
+    public void setStyles(String styles) {
+        this.styles = styles;
     }
 
     @Transient

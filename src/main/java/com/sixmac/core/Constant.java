@@ -8,6 +8,9 @@ public interface Constant {
     // 首页查询天数
     Integer days = 7;
 
+    // 管理员id
+    Integer ADMIN_ID = 1;
+
     // 云片网appkey
     String YUNPIAN_APPKEY = "0003c8a4216ac79cdd02327ff99b96ae";
 

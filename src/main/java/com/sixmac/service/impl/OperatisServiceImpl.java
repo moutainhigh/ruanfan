@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.core.Constant;
 import com.sixmac.dao.OperatisDao;
 import com.sixmac.entity.Operatis;
 import com.sixmac.service.OperatisService;
@@ -19,24 +20,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/3/30 0030.
+ * Created by Administrator on 2016/4/11 0011 下午 1:17.
  */
 @Service
 public class OperatisServiceImpl implements OperatisService {
 
     @Autowired
-    private OperatisDao dao;
+    private OperatisDao operatisDao;
 
     @Override
-    public Page<Operatis> findPage(Operatis operatis, int pageNum, int pageSize) {
-        return dao.findAll(new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    public List<Operatis> findAll() {
+        return operatisDao.findAll();
+    }
+
+    @Override
+    public Page<Operatis> find(int pageNum, int pageSize) {
+        return operatisDao.findAll(new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public Page<Operatis> find(int pageNum) {
+        return find(pageNum, Constant.PAGE_DEF_SZIE);
+    }
+
+    @Override
+    public Operatis getById(int id) {
+        return operatisDao.findOne(id);
+    }
+
+    @Override
+    public Operatis deleteById(int id) {
+        Operatis operatis = getById(id);
+        operatisDao.delete(operatis);
+        return operatis;
+    }
+
+    @Override
+    public Operatis create(Operatis operatis) {
+        return operatisDao.save(operatis);
+    }
+
+    @Override
+    public Operatis update(Operatis operatis) {
+        return operatisDao.save(operatis);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll(int[] ids) {
+        for (int id : ids) {
+            deleteById(id);
+        }
     }
 
     @Override
     public Page<Operatis> page(String name, String roleName, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
-        Page<Operatis> page = dao.findAll(new Specification<Operatis>() {
+        Page<Operatis> page = operatisDao.findAll(new Specification<Operatis>() {
             @Override
             public Predicate toPredicate(Root<Operatis> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate result = null;
@@ -62,49 +103,5 @@ public class OperatisServiceImpl implements OperatisService {
         }, pageRequest);
 
         return page;
-    }
-
-    @Override
-    public List<Operatis> findAll() {
-        return null;
-    }
-
-    @Override
-    public Page<Operatis> find(int pageNum, int pageSize) {
-        return null;
-    }
-
-    @Override
-    public Page<Operatis> find(int pageNum) {
-        return null;
-    }
-
-    @Override
-    public Operatis getById(int id) {
-        return null;
-    }
-
-    @Override
-    public Operatis deleteById(int id) {
-        dao.delete(id);
-        return null;
-    }
-
-    @Override
-    public Operatis create(Operatis operatis) {
-        return null;
-    }
-
-    @Override
-    public Operatis update(Operatis operatis) {
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public void deleteAll(int[] ids) {
-        for (int id : ids) {
-            deleteById(id);
-        }
     }
 }

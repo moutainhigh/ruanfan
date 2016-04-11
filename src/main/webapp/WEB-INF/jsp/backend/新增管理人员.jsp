@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">管理人员</h1>
+                <h1 class="page-header">管理管理人员</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增管理人员</h4>
             </div>
         </div>
@@ -102,12 +102,17 @@
                     async: false
                 });
 
+                if ($("#id").val() != "") {
+                    $("#showH").text("——编辑管理人员");
+                }
+
                 sysUser.fn.getSelectList();
             },
             checkData: function () {
                 var flag = true;
                 var account = $('#account').val();
                 var password = $('#password').val();
+                var roleId = $('#sysUserList option:selected').val();
 
                 if (null == account || account == '') {
                     $sixmac.notify('账号不能为空', "error");
@@ -117,6 +122,12 @@
 
                 if (null == password || password == '') {
                     $sixmac.notify('密码不能为空', "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == roleId || roleId == '') {
+                    $sixmac.notify('请选择权限', "error");
                     flag = false;
                     return;
                 }
@@ -134,8 +145,10 @@
                                 "roleId": $('#sysUserList option:selected').val()
                             },
                             function (data) {
-                                if (data > 0) {
+                                if (data == 1) {
                                     window.location.href = _basePath + "backend/sysUser/index";
+                                } else if (data == -1) {
+                                    $sixmac.notify("不允许新增超级管理员", "error");
                                 } else {
                                     $sixmac.notify("操作失败", "error");
                                 }
@@ -148,7 +161,9 @@
                         // 获取返回的角色列表信息，并循环绑定到label中
                         var content = "<option value=''>请选择权限</option>";
                         jQuery.each(result, function (i, item) {
-                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                            if (item.id != 1) {
+                                content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                            }
                         });
                         $('#sysUserList').append(content);
                     } else {

@@ -2,6 +2,7 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Sysusers;
 import com.sixmac.service.RoleModulesService;
@@ -77,6 +78,10 @@ public class SysuserController extends CommonController {
     @ResponseBody
     public Integer save(Integer id, Integer roleId, String account, String password) {
         try {
+            if (roleId == Constant.ADMIN_ID) {
+                return -1;
+            }
+
             Sysusers sysusers = null;
 
             if (null == id) {
