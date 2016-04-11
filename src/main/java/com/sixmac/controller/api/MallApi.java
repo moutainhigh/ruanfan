@@ -333,21 +333,7 @@ public class MallApi extends CommonController {
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
         products.setSimilarList(productsService.iFindListBySortAndStyle(productId, products.getType(), products.getSort().getId()));
         // 商品评价列表
-        List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(productId, Constant.ORDERS_TYPE_PRODUCT);
-        List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
-        AppraisalVo appra = null;
-
-        for (Ordersinfo ordersInfo : ordersinfoList) {
-            appra = new AppraisalVo();
-            appra.setUserId(ordersInfo.getOrder().getUser().getId());
-            appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
-            appra.setStar(ordersInfo.getStar());
-            appra.setContent(ordersInfo.getComment());
-            appra.setCreateTime(ordersInfo.getOrder().getCreateTime());
-
-            appraisalVoList.add(appra);
-        }
-        products.setAppraisalVoList(appraisalVoList);
+        products.setAppraisalVoList(findList(productId, Constant.ORDERS_TYPE_PRODUCT));
 
         Result obj = new Result(true).data(createMap("productInfo", products));
         String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "objectId", "objectType");
@@ -421,15 +407,7 @@ public class MallApi extends CommonController {
                 productList.add(pack.getProduct());
             }
 
-            for (Products product : productList) {
-                product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
-                product.setMerchantId(product.getMerchant().getId());
-                product.setMerchantName(product.getMerchant().getNickName());
-                product.setBrandId(product.getBrand().getId());
-                product.setBrandName(product.getBrand().getName());
-                product.setSortId(product.getSort().getId());
-                product.setSortName(product.getSort().getName());
-            }
+            changeList(productList);
 
             packages.setProductsList(productList);
 
@@ -485,6 +463,13 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} packageInfo.imageList.description 描述
      * @apiSuccess {String} packageInfo.imageList.demo 备注
      * @apiSuccess {String} packageInfo.imageList.createTime 创建时间
+     * @apiSuccess {Object} packageInfo.similarList 类似商品列表（信息与本接口相同）
+     * @apiSuccess {Object} packageInfo.appraisalVoList 商品评价列表
+     * @apiSuccess {Integer} packageInfo.appraisalVoList.userId 评价人id
+     * @apiSuccess {String} packageInfo.appraisalVoList.userName 评价人名称
+     * @apiSuccess {Integer} packageInfo.appraisalVoList.star 评价星级
+     * @apiSuccess {String} packageInfo.appraisalVoList.content 评价内容
+     * @apiSuccess {String} packageInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("packageInfo")
     public void packageInfo(HttpServletResponse response,
@@ -513,7 +498,43 @@ public class MallApi extends CommonController {
             productList.add(pack.getProduct());
         }
 
-        for (Products product : productList) {
+        changeList(productList);
+
+        packages.setProductsList(productList);
+
+        packages.setImageList(imageService.iFindList(packageId, Constant.IMAGE_PACKAGES));
+
+        packages.setSimilarList(null);
+
+        // 套餐评价列表
+        packages.setAppraisalVoList(findList(packageId, Constant.ORDERS_TYPE_PACKAGE));
+
+        Result obj = new Result(true).data(createMap("packageInfo", packages));
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType");
+        WebUtil.printApi(response, result);
+    }
+
+    private List<AppraisalVo> findList(Integer objectId, Integer type) {
+        List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(objectId, type);
+        List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
+        AppraisalVo appra = null;
+
+        for (Ordersinfo ordersInfo : ordersinfoList) {
+            appra = new AppraisalVo();
+            appra.setUserId(ordersInfo.getOrder().getUser().getId());
+            appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
+            appra.setStar(ordersInfo.getStar());
+            appra.setContent(ordersInfo.getComment());
+            appra.setCreateTime(ordersInfo.getOrder().getCreateTime());
+
+            appraisalVoList.add(appra);
+        }
+
+        return appraisalVoList;
+    }
+
+    private void changeList(List<Products> list){
+        for (Products product : list) {
             product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
             product.setMerchantId(product.getMerchant().getId());
             product.setMerchantName(product.getMerchant().getNickName());
@@ -522,13 +543,5 @@ public class MallApi extends CommonController {
             product.setSortId(product.getSort().getId());
             product.setSortName(product.getSort().getName());
         }
-
-        packages.setProductsList(productList);
-
-        packages.setImageList(imageService.iFindList(packageId, Constant.IMAGE_PACKAGES));
-
-        Result obj = new Result(true).data(createMap("packageInfo", packages));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType");
-        WebUtil.printApi(response, result);
     }
 }
