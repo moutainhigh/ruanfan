@@ -75,12 +75,12 @@ public class CustomApi extends CommonController {
      * @apiName custom.customList
      * @apiGroup custom
      * @apiParam {Integer} customId 楼盘id
-     * @apiSuccess {Object} list 楼盘列表
-     * @apiSuccess {Integer} list.id 楼盘id
-     * @apiSuccess {String} list.name 楼盘名称
-     * @apiSuccess {String} list.cover 楼盘封面图
-     * @apiSuccess {String} list.address 楼盘地址
+     * @apiSuccess {Object} list 户型列表
+     * @apiSuccess {Integer} list.id 户型id
+     * @apiSuccess {String} list.name 户型名称
+     * @apiSuccess {String} list.path 户型封面图
      * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {Object} list.packageList 创建时间
      */
     @RequestMapping(value = "/customList")
     public void customList(HttpServletResponse response, Integer customId) {
@@ -92,7 +92,6 @@ public class CustomApi extends CommonController {
         List<Custominfo> list = custominfoService.findListByCustomId(customId);
 
         for (Custominfo customInfo : list) {
-            customInfo.setImageList(imageService.iFindList(customInfo.getId(), Constant.IMAGE_CUSTOM));
             customInfo.setPackageList(customPackageService.findListByCustominfoId(customInfo.getId()));
         }
 

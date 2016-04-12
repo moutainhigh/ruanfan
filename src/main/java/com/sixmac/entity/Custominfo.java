@@ -17,7 +17,6 @@ public class Custominfo {
     private String name;
     private String path;
     private Date createTime;
-    private List<Image> imageList;
     private List<PackageVo> packageList;
 
     @Id
@@ -63,15 +62,6 @@ public class Custominfo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    @Transient
-    public List<Image> getImageList() {
-        return imageList;
-    }
-
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
     }
 
     @Transient

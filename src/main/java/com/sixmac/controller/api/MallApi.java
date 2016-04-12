@@ -305,6 +305,11 @@ public class MallApi extends CommonController {
      * @apiSuccess {Object} productInfo.appraisalVoList 商品评价列表
      * @apiSuccess {Integer} productInfo.appraisalVoList.userId 评价人id
      * @apiSuccess {String} productInfo.appraisalVoList.userName 评价人名称
+     * @apiSuccess {String} productInfo.appraisalVoList.userHead 评价人头像
+     * @apiSuccess {String} productInfo.appraisalVoList.colors 颜色
+     * @apiSuccess {String} productInfo.appraisalVoList.sizes 尺寸
+     * @apiSuccess {String} productInfo.appraisalVoList.materials 材质
+     * @apiSuccess {Integer} productInfo.appraisalVoList.count 数量
      * @apiSuccess {Integer} productInfo.appraisalVoList.star 评价星级
      * @apiSuccess {String} productInfo.appraisalVoList.content 评价内容
      * @apiSuccess {String} productInfo.appraisalVoList.createTime 评价时间
@@ -467,6 +472,11 @@ public class MallApi extends CommonController {
      * @apiSuccess {Object} packageInfo.appraisalVoList 商品评价列表
      * @apiSuccess {Integer} packageInfo.appraisalVoList.userId 评价人id
      * @apiSuccess {String} packageInfo.appraisalVoList.userName 评价人名称
+     * @apiSuccess {String} packageInfo.appraisalVoList.userHead 评价人头像
+     * @apiSuccess {String} packageInfo.appraisalVoList.colors 颜色
+     * @apiSuccess {String} packageInfo.appraisalVoList.sizes 尺寸
+     * @apiSuccess {String} packageInfo.appraisalVoList.materials 材质
+     * @apiSuccess {Integer} packageInfo.appraisalVoList.count 数量
      * @apiSuccess {Integer} packageInfo.appraisalVoList.star 评价星级
      * @apiSuccess {String} packageInfo.appraisalVoList.content 评价内容
      * @apiSuccess {String} packageInfo.appraisalVoList.createTime 评价时间
@@ -523,6 +533,11 @@ public class MallApi extends CommonController {
             appra = new AppraisalVo();
             appra.setUserId(ordersInfo.getOrder().getUser().getId());
             appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
+            appra.setUserHead(PathUtils.getRemotePath() + ordersInfo.getOrder().getUser().getHeadPath());
+            appra.setColors(ordersInfo.getColors());
+            appra.setSizes(ordersInfo.getSizes());
+            appra.setMaterials(ordersInfo.getMaterials());
+            appra.setCount(ordersInfo.getCount());
             appra.setStar(ordersInfo.getStar());
             appra.setContent(ordersInfo.getComment());
             appra.setCreateTime(ordersInfo.getOrder().getCreateTime());
