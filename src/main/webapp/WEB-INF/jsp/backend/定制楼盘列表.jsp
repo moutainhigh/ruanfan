@@ -27,25 +27,23 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="javascript:void(0)" class="btn btn-outline btn-primary btn-lg" role="button" onclick="customList.fn.addInfo()">新增楼盘</a>
+                        <a href="javascript:void(0)" class="btn btn-outline btn-primary btn-lg" role="button"
+                           onclick="customList.fn.addInfo()">新增楼盘</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
                         <div class="table-responsive">
-                            <input type="hidden" id="parentId" value="${parentId}"/>
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
-                                    <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
                                     <th>楼盘名称</th>
-                                    <th>户型数量</th>
                                     <th>图标</th>
                                     <th>创建时间</th>
                                     <th>操作</th>
@@ -69,44 +67,61 @@
     <!-- /#page-wrapper -->
 
     <!-- Modal -->
-        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">楼盘信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="infoForm" method="post" action="backend/custom/save" class="form-horizontal" role="form" enctype="multipart/form-data">
-                            <input type="hidden" id="hiddenpropertysId" name="propertysId"/>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">楼盘名称:</label>
-                                <div class="col-sm-5">
-                                    <input type="text" class="form-control" id="propertysName" maxlength="20" placeholder="请输入楼盘名称"/>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" onclick="customList.fn.subInfo()" class="btn btn-primary">确定</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-    <!-- Modal end -->
-
-    <!-- Modal -->
-    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">删除提示</h4>
+                    <h4 class="modal-title">楼盘信息</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="propertysId"/>
-                    确定删除该楼盘？
+                    <form id="infoForm" method="post" action="backend/custom/save" class="form-horizontal" role="form"
+                          enctype="multipart/form-data">
+                        <input type="hidden" id="hiddenpropertysId" name="propertysId"/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">楼盘名称:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="propertysName" maxlength="20"
+                                       placeholder="请输入楼盘名称"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">图标:</label>
+                            <div class="col-sm-5">
+                                <input type="file" name="mainImage" id="mainImage" style="display:none;"/>
+                                <a href="javascript:void(0);" onclick="customList.fn.AddImg()">
+                                    <img id="mainPicture" src="static/images/add.jpg"
+                                         style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;"
+                                         border="1"/>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" onclick="customList.fn.subInfo()" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- Modal end -->
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="customId"/>
+                    是否删除该楼盘？
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -115,14 +130,12 @@
             </div>
             <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
+        <!-- Modal end -->
+
     </div>
-    <!-- Modal end -->
+    <!-- /#wrapper -->
 
-</div>
-<!-- /#wrapper -->
-
-<%@ include file="inc/footer.jsp" %>
+    <%@ include file="inc/footer.jsp" %>
 </body>
 
 <script type="text/javascript">
@@ -156,7 +169,6 @@
                     },
                     "columns": [
                         {"data": "name"},
-                        {"data": "childNum"},
                         {"data": null},
                         {"data": "createTime"},
                         {"data": ""}
@@ -181,15 +193,14 @@
                     "createdRow": function (row, data, index) {
                         customList.v.list.push(data);
                         if (null != data.cover && data.cover != '') {
-                            $('td', row).eq(2).html("<img src='" + data.cover + "' width='60px' height='60px' />");
+                            $('td', row).eq(1).html("<img src='" + data.cover + "' width='60px' height='60px' />");
                         } else {
-                            $('td', row).eq(2).html("暂无");
+                            $('td', row).eq(1).html("暂无");
                         }
                         $('td', row).eq(0).css('line-height', '65px');
                         $('td', row).eq(1).css('line-height', '65px');
                         $('td', row).eq(2).css('line-height', '65px');
                         $('td', row).eq(3).css('line-height', '65px');
-                        $('td', row).eq(4).css('line-height', '65px');
                     },
                     rowCallback: function (row, data) {
                         var items = customList.v.list;
@@ -199,7 +210,7 @@
                             customList.fn.editInfo(data);
                         });
 
-                        $('td', row).last().find(".table").attr("href", 'backend/custom/addChild?id=' + data.id + '&parentId=' + parentId);
+                        $('td', row).last().find(".tables").attr("href", 'backend/custom/addChild?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
@@ -222,18 +233,27 @@
             editInfo: function (data) {
                 $('#hiddenpropertysId').val(data.id);
                 $('#propertysName').val(data.name);
+                if (data.cover == null) {
+                    $('#mainPicture').prop('src', 'static/images/add.jpg');
+                } else {
+                    $('#mainPicture').prop('src', data.cover);
+                }
 
                 $("#infoModal").modal("show");
             },
+            AddImg: function () {
+                // a标签绑定onclick事件
+                $('#mainImage').click();
+            },
             delInfo: function (id) {
-                $('#propertysId').val(id);
+                $('#customId').val(id);
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
-                var propertysId = $('#propertysId').val();
+                var customId = $('#customId').val();
 
                 $sixmac.ajax("backend/custom/delete", {
-                    "propertyId": propertysId
+                    "customId": customId
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
@@ -248,9 +268,16 @@
                 var flag = true;
                 var propertysId = $('#hiddenpropertysId').val();
                 var productName = $('#propertysName').val();
+                var url = $('#mainPicture').prop('src');
 
                 if (null == productName || productName == '') {
                     $sixmac.notify("请输入楼盘名称", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == url || url == '' || url == _basePath + 'static/images/add.jpg') {
+                    $sixmac.notify("请上传楼盘图标", "error");
                     flag = false;
                     return;
                 }
@@ -266,10 +293,10 @@
                         },
                         success: function (result) {
                             if (result > 0) {
+                                $sixmac.clearForm($('#infoForm'));
                                 $sixmac.notify("操作成功", "success");
                                 $("#infoModal").modal("hide");
                                 customList.v.dTable.ajax.reload(null, false);
-                                $sixmac.clearForm($('#infoForm'));
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }
