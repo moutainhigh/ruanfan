@@ -17,7 +17,7 @@ public interface ICommonService<T> {
 
     public T getById(int id);
 
-    public T deleteById(int id);
+    public  T deleteById(int id);
 
     public T create(T t);
 

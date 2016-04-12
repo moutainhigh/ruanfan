@@ -2,10 +2,11 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
-import com.sixmac.entity.Propertyinfo;
-import com.sixmac.entity.Propertys;
-import com.sixmac.service.PropertyinfoService;
-import com.sixmac.service.PropertysService;
+import com.sixmac.entity.Custom;
+import com.sixmac.entity.Custominfo;
+import com.sixmac.service.CustomService;
+import com.sixmac.service.CustominfoService;
+import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,10 +31,10 @@ import java.util.*;
 public class CustomController extends CommonController {
 
     @Autowired
-    private PropertysService propertysService;
+    private CustomService customService;
 
     @Autowired
-    private PropertyinfoService propertyInfoService;
+    private CustominfoService custominfoService;
 
     @RequestMapping(value = "/index")
     public String index(ModelMap model) {
@@ -47,12 +50,7 @@ public class CustomController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Propertys> page = propertysService.pageChild(pageNum, length);
-
-        // 循环查找每个楼盘的户型信息
-        for (Propertys propertys : page.getContent()) {
-            propertys.setChildNum(propertyInfoService.findListByPropertyId(propertys.getId()).size());
-        }
+        Page<Custom> page = customService.find(pageNum, length);
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
@@ -60,9 +58,9 @@ public class CustomController extends CommonController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer propertyId) {
+    public Integer delete(Integer customId) {
         try {
-            propertysService.deleteById(propertyId);
+            customService.deleteById(customId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,24 +70,29 @@ public class CustomController extends CommonController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, String productName) {
+    public Integer save(ServletRequest request, Integer id, String productName,MultipartRequest multipartRequest) {
         try {
-            Propertys propertys = null;
+            Custom custom = null;
 
             if (null != id) {
-                propertys = propertysService.getById(id);
+                custom = customService.getById(id);
             } else {
-                propertys = new Propertys();
+                custom = new Custom();
             }
 
-            propertys.setName(productName);
-            propertys.setParentId(1);
+            custom.setName(productName);
+
+            MultipartFile multipartFile = multipartRequest.getFile("mainImage");
+            if (null != multipartFile) {
+                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
+                custom.setCover(map.get("imgURL").toString());
+            }
 
             if (null != id) {
-                propertysService.update(propertys);
+                customService.update(custom);
             } else {
-                propertys.setCreateTime(new Date());
-                propertysService.create(propertys);
+                custom.setCreateTime(new Date());
+                customService.create(custom);
             }
 
             return 1;
@@ -106,30 +109,28 @@ public class CustomController extends CommonController {
     }
 
     @RequestMapping("addChild")
-    public String addChild(ModelMap model, Integer id, Integer parentId) {
+    public String addChild(ModelMap model, Integer id) {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = null;
 
         // 如果id不为空，则该操作是编辑，否则是新增
         if (null != id) {
-            Propertys property = propertysService.getById(id);
-            model.addAttribute("Propertyinfo", property);
+            Custom custom = customService.getById(id);
+            model.addAttribute("custom", custom);
 
             // 如果楼盘信息不为空，则查询对应的户型信息集合
-            if (null != property) {
-                List<Propertyinfo> propertyList = propertyInfoService.findListByPropertyId(id);
-                for (Propertyinfo propertyInfo : propertyList) {
+            if (null != custom) {
+                List<Custominfo> custominfoList = custominfoService.findListByCustomId(id);
+                for (Custominfo custominfo : custominfoList) {
                     map = new HashMap<String, Object>();
-                    map.put("id", propertyInfo.getId());
-                    map.put("path", propertyInfo.getPath());
-                    map.put("serverPath", propertyInfo.getServerPath());
+                    map.put("id", custominfo.getId());
+                    map.put("path", custominfo.getPath());
 
                     list.add(map);
                 }
             }
         }
 
-        model.addAttribute("parentId", parentId);
         model.addAttribute("imageList", JSONArray.fromObject(list));
 
         return "backend/新增户型";
@@ -140,46 +141,39 @@ public class CustomController extends CommonController {
     public Integer addChildInfo(ServletRequest request,
                                 Integer id,
                                 String name,
-                                Integer parentId,
-                                String hxImages,
-                                String kfImages
+                                String hxImages
     ) {
         try {
-            Propertys propertys = null;
+            Custom custom = null;
 
             if (null != id) {
-                propertys = propertysService.getById(id);
+                custom = customService.getById(id);
             } else {
-                propertys = new Propertys();
+                custom = new Custom();
             }
 
-            propertys.setName(name);
-            propertys.setParentId(parentId);
+            custom.setName(name);
 
             if (null != id) {
-                propertysService.update(propertys);
+                customService.update(custom);
             } else {
-                propertys.setCreateTime(new Date());
-                propertysService.create(propertys);
+                custom.setCreateTime(new Date());
+                customService.create(custom);
             }
 
-            // 先清除所有相关联的户型信息
-            propertyInfoService.clearInfoByPropertyId(propertys.getId());
 
             // 保存户型图片信息
             String[] hxStrings = hxImages.split(",");
-            String[] kfStrings = kfImages.split(",");
 
-            Propertyinfo propertyInfo = null;
+            Custominfo custominfo = null;
 
             for (int i = 0; i < hxStrings.length; i++) {
-                if (!hxStrings[i].equals("") && !kfStrings[i].equals("")) {
-                    propertyInfo = new Propertyinfo();
-                    propertyInfo.setPath(hxStrings[i].replace(PathUtils.getRemotePath(), ""));
-                    propertyInfo.setServerPath(kfStrings[i].replace(PathUtils.getRemotePath(), ""));
-                    propertyInfo.setProperty(propertys);
+                if (!hxStrings[i].equals("")) {
+                    custominfo = new Custominfo();
+                    custominfo.setPath(hxStrings[i].replace(PathUtils.getRemotePath(), ""));
+                    custominfo.setCustom(custom);
 
-                    propertyInfoService.create(propertyInfo);
+                    custominfoService.create(custominfo);
                 }
             }
 
