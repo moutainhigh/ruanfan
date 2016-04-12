@@ -7,10 +7,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Gams;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Journal;
-import com.sixmac.service.GamsService;
-import com.sixmac.service.ImageService;
-import com.sixmac.service.JournalService;
-import com.sixmac.service.UsersService;
+import com.sixmac.service.*;
 import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +41,9 @@ public class JournalApi extends CommonController {
 
     @Autowired
     private GamsService gamsService;
+
+    @Autowired
+    private CommentService commentService;
 
     /**
      * @api {post} /api/journal/list 日志列表
@@ -119,6 +119,8 @@ public class JournalApi extends CommonController {
 
         journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
+        journal.setGamsNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
+        journal.setCommentNum(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL).size());
 
         Result obj = new Result(true).data(createMap("journalInfo", journal));
         String result = JsonUtil.obj2ApiJson(obj, "user", "labelList");

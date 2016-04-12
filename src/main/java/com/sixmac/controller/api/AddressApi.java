@@ -142,6 +142,8 @@ public class AddressApi extends CommonController {
         if (null == isDefault || isDefault == 0) {
             if (null == defaultAddress) {
                 addressInfo.setIsDefault(1);
+            } else {
+                addressInfo.setIsDefault(0);
             }
         } else {
             if (null != defaultAddress) {

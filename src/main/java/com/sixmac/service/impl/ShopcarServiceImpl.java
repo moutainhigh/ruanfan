@@ -4,7 +4,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.ShopcarDao;
 import com.sixmac.entity.Shopcar;
 import com.sixmac.service.ShopcarService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -116,5 +115,15 @@ public class ShopcarServiceImpl implements ShopcarService {
         }*/
 
         return page;
+    }
+
+    @Override
+    public List<Shopcar> findListByUserId(Integer userId) {
+        return shopcarDao.findListByUserId(userId);
+    }
+
+    @Override
+    public List<Shopcar> findListByParams(Integer userId, Integer productId, String colors, String sizes, String materials) {
+        return shopcarDao.findListByParams(userId, productId, colors, sizes, materials);
     }
 }

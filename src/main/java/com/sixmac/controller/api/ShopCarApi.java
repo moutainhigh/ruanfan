@@ -1,5 +1,6 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Shopcar;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "api/shopCar")
-public class ShopCarApi {
+public class ShopCarApi extends CommonController {
 
     @Autowired
     private ShopcarService shopcarService;
@@ -94,6 +96,7 @@ public class ShopCarApi {
      * @apiParam {String} materials 材质       <必传 />
      * @apiParam {String} price 价格       <必传 />
      * @apiParam {Integer} count 数量       <必传 />
+     * @apiSuccess {Integer} shopCarNum   购物车数量
      */
     @RequestMapping("addShopCar")
     public void addShopCar(HttpServletResponse response,
@@ -111,21 +114,32 @@ public class ShopCarApi {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
-        Shopcar shopcar = new Shopcar();
-        shopcar.setUser(usersService.getById(userId));
-        shopcar.setMerchant(merchantsService.getById(merchantId));
-        shopcar.setProduct(productsService.getById(productId));
-        shopcar.setCover(cover);
-        shopcar.setName(name);
-        shopcar.setColors(colors);
-        shopcar.setSizes(sizes);
-        shopcar.setMaterials(materials);
-        shopcar.setPrice(price);
-        shopcar.setCount(count);
 
-        shopcarService.create(shopcar);
+        // 加入购物车之前，判断当前购物车内是否已包含该商品，如果包含，则直接新增数量，否则新增
+        List<Shopcar> list = shopcarService.findListByParams(userId, productId, colors, sizes, materials);
 
-        WebUtil.printApi(response, new Result(true));
+        if (null == list || list.size() == 0) {
+            Shopcar shopcar = new Shopcar();
+            shopcar.setUser(usersService.getById(userId));
+            shopcar.setMerchant(merchantsService.getById(merchantId));
+            shopcar.setProduct(productsService.getById(productId));
+            shopcar.setCover(cover);
+            shopcar.setName(name);
+            shopcar.setColors(colors);
+            shopcar.setSizes(sizes);
+            shopcar.setMaterials(materials);
+            shopcar.setPrice(price);
+            shopcar.setCount(count);
+
+            shopcarService.create(shopcar);
+        } else {
+            Shopcar shopcar = list.get(0);
+            shopcar.setCount(shopcar.getCount() + count);
+
+            shopcarService.update(shopcar);
+        }
+
+        WebUtil.printApi(response, new Result(true).data(createMap("shopCarNum", shopcarService.findListByUserId(userId).size())));
     }
 
     /**
@@ -171,5 +185,25 @@ public class ShopCarApi {
         shopcarService.iCleanAllByUserId(userId);
 
         WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/shopCar/getShopCarNum 根据用户id查看购物车数量
+     * @apiName shopCar.getShopCarNum
+     * @apiGroup shopCar
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiSuccess {Integer} shopCarNum   购物车数量
+     */
+    @RequestMapping("getShopCarNum")
+    public void getShopCarNum(HttpServletResponse response,
+                              Integer userId) {
+        if (null == userId) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        List<Shopcar> list = shopcarService.findListByUserId(userId);
+
+        WebUtil.printApi(response, new Result(true).data(createMap("shopCarNum", list.size())));
     }
 }

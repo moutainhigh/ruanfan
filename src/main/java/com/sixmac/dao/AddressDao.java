@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface AddressDao extends JpaRepository<Address, Integer> {
 
-    @Query("select a from Address a where a.user.id = ?1")
+    @Query("select a from Address a where a.user.id = ?1 order by a.isDefault desc")
     public List<Address> findListByUserId(Integer userId);
 
     @Query("select a from Address a where a.user.id = ?1 and a.isDefault = 1")
