@@ -14,4 +14,7 @@ public interface ShopcarDao extends JpaRepository<Shopcar, Integer>, JpaSpecific
 
     @Query("select a from Shopcar a where a.user.id = ?1")
     public List<Shopcar> findListByUserId(Integer userId);
+
+    @Query("select a from Shopcar a where a.user.id = ?1 and a.product.id = ?2 and a.colors = ?3 and a.sizes = ?4 and a.materials = ?5")
+    public List<Shopcar> findListByParams(Integer userId, Integer productId, String colors, String sizes, String materials);
 }
