@@ -167,7 +167,7 @@ public class DesignersApi extends CommonController {
 
             work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
 
-            work.setGamNum(gamsService.iFindList(work.getDesigner().getId(), Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+            work.setGamNum(gamsService.iFindList(work.getId(), Constant.GAM_WORKS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
 
             work.setCommentNum(commentService.iFindList(work.getId(), Constant.COMMENT_WORKS).size());
 
@@ -256,7 +256,7 @@ public class DesignersApi extends CommonController {
 
         work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
 
-        List<Gams> gamsList = gamsService.iFindList(work.getDesigner().getId(), Constant.GAM_DESIGNERS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC);
+        List<Gams> gamsList = gamsService.iFindList(work.getId(), Constant.GAM_WORKS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC);
 
         work.setGamNum(gamsList.size());
 
