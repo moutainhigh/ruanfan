@@ -3,16 +3,12 @@ package com.sixmac.controller.api;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Orders;
-import com.sixmac.entity.Ordersinfo;
-import com.sixmac.entity.Products;
-import com.sixmac.entity.Users;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -46,6 +42,9 @@ public class OrdersApi {
 
     @Autowired
     private ProductsService productsService;
+
+    @Autowired
+    private SpikesService spikesService;
 
     /**
      * @api {post} /api/orders/list 订单列表
@@ -165,6 +164,7 @@ public class OrdersApi {
         Map<String, Object> mapInfo = null;
         Ordersinfo ordersinfo = null;
         Products products = null;
+        Spikes spikes = null;
         for (Object orderMap : orderinfos) {
             // 获取单个订单详情
             mapInfo = JsonUtil.jsontoMap(orderMap);
@@ -172,11 +172,17 @@ public class OrdersApi {
             ordersinfo.setOrder(orders);
             if (null != mapInfo.get("type") && !mapInfo.get("type").equals("") && mapInfo.get("type").toString().equals("1")) {
                 // 当type为1时，表示传入的是商品，此时应该记录该商品所属商家信息
-                // 当type为0时，表示传入的是秒杀，此时不记录商家信息
+                // 当type为2时，表示传入的是秒杀，此时不记录商家信息
                 ordersinfo.setMerchant(merchantsService.getById(Integer.parseInt(mapInfo.get("merchantId").toString())));
             }
             ordersinfo.setType(Integer.parseInt(mapInfo.get("type").toString()));
-            products = productsService.getById(Integer.parseInt(mapInfo.get("id").toString()));
+
+            if (null != mapInfo.get("type") && !mapInfo.get("type").equals("") && mapInfo.get("type").toString().equals("1")) {
+                products = productsService.getById(Integer.parseInt(mapInfo.get("id").toString()));
+            } else {
+                spikes = spikesService.getById(Integer.parseInt(mapInfo.get("id").toString()));
+            }
+
             ordersinfo.setProduct(products);
             ordersinfo.setProductName(mapInfo.get("name").toString());
             ordersinfo.setProductPath(mapInfo.get("path").toString());
@@ -189,9 +195,15 @@ public class OrdersApi {
             // 增加订单详情
             ordersinfoService.create(ordersinfo);
 
-            // 修改商品交易数量
-            products.setCount(products.getCount() + ordersinfo.getCount());
-            productsService.update(products);
+            if (null != mapInfo.get("type") && !mapInfo.get("type").equals("") && mapInfo.get("type").toString().equals("1")) {
+                // 修改商品交易数量
+                products.setCount(products.getCount() + ordersinfo.getCount());
+                productsService.update(products);
+            } else {
+                // 修改秒杀交易数量
+                spikes.setCount(spikes.getCount() + ordersinfo.getCount());
+                spikesService.update(spikes);
+            }
 
             // 判断是否传入了购物车id，如果传入，则表示该订单详情是从购物车中添加的，此时应该删除该购物车信息
             if (null != mapInfo.get("shopCarId") && !mapInfo.get("shopCarId").equals("")) {

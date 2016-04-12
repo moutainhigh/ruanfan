@@ -123,8 +123,9 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Integer} afflatusInfo.type 类型：1单图   2套图
      * @apiSuccess {Integer} afflatusInfo.showNum 浏览量
      * @apiSuccess {Integer} afflatusInfo.shareNum 分享数
-     * @apiSuccess {Integer} afflatusInfo.isComment 是否评论
-     * @apiSuccess {Integer} afflatusInfo.isGam 是否点赞
+     * @apiSuccess {Integer} afflatusInfo.isComment 是否评论  0=是，1=否
+     * @apiSuccess {Integer} afflatusInfo.isGam 是否点赞  0=是，1=否
+     * @apiSuccess {Integer} afflatusInfo.isCollect 是否收藏  0=是，1=否
      * @apiSuccess {String} afflatusInfo.labels 标签
      * @apiSuccess {Integer} afflatusInfo.status 状态，0=待审核，1=审核通过，2=审核不通过
      * @apiSuccess {String} afflatusInfo.createTime 创建时间
@@ -206,6 +207,9 @@ public class AfflatusApi extends CommonController {
 
             Gams gams = gamsService.iFindOne(userId, afflatusId, Constant.GAM_AFFLATUS, Constant.GAM_LOVE);
             afflatus.setIsGam(null == gams ? Constant.GAM_LOVE_NO : Constant.GAM_LOVE_YES);
+
+            Collect collect = collectService.iFindOne(userId, afflatusId, Constant.COLLECT_AFFLATUS);
+            afflatus.setIsCollect(null == collect ? Constant.GAM_LOVE_NO : Constant.GAM_LOVE_YES);
         }
 
         // 查看详情的同时，增加浏览量
