@@ -111,6 +111,43 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
+    public Page<Ordersinfo> page(Integer merchantId, String mobile, String nickName, int pagenum, int pagesize) {
+        PageRequest pageRequest = new PageRequest(pagenum - 1, pagesize, Sort.Direction.ASC, "id");
+
+        Page<Ordersinfo> page = ordersinfoDao.findAll(new Specification<Ordersinfo>() {
+            @Override
+            public Predicate toPredicate(Root<Ordersinfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                if (merchantId != null) {
+                    Predicate pre = cb.equal(root.get("merchant").get("id").as(Integer.class), merchantId);
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(mobile)) {
+                    Predicate pre = cb.like(root.get("order").get("user").get("mobile").as(String.class), "%" + mobile + "%");
+                    predicateList.add(pre);
+                }
+                if (StringUtils.isNotBlank(nickName)) {
+                    Predicate pre = cb.like(root.get("merchant").get("nickName").as(String.class), "%" + nickName + "%");
+                    predicateList.add(pre);
+                }
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
+
+    @Override
     public List<Ordersinfo> findListByOrderId(Integer orderId) {
         return ordersinfoDao.findListByOrderId(orderId);
     }

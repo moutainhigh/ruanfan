@@ -14,6 +14,8 @@ public interface OrdersinfoService extends ICommonService<Ordersinfo> {
     // 评价列表（分页）
     public Page<Ordersinfo> page(String mobile, String productName, String orderNum, int pagenum, int pagesize);
 
+    public Page<Ordersinfo> page(Integer merchantId,String mobile, String nickName, int pagenum, int pagesize);
+
     // 根据订单id查询订单详情列表
     public List<Ordersinfo> findListByOrderId(Integer orderId);
 
