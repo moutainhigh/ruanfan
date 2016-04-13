@@ -2,14 +2,13 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CustompackagesDao;
-import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.PackageproductsDao;
 import com.sixmac.entity.Custompackages;
 import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Products;
 import com.sixmac.entity.vo.PackageVo;
 import com.sixmac.service.CustompackagesService;
-import com.sixmac.service.ProductsService;
+import com.sixmac.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +32,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
     private PackageproductsDao packageProductsDao;
 
     @Autowired
-    private ProductsService productService;
+    private ImageService imageService;
 
     @Override
     public List<Custompackages> findAll() {
@@ -100,6 +99,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
 
             // 将套餐商品里面的商品循环读取，放入到缓存商品集合中
             for (Packageproducts packageProduct : packageproductsList) {
+                packageProduct.getProduct().setCover(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
                 productList.add(packageProduct.getProduct());
             }
 

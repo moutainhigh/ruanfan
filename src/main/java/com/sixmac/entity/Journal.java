@@ -3,6 +3,7 @@ package com.sixmac.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +19,13 @@ public class Journal {
     private Integer forwardNum;
     private Integer shareNum;
     private Date createTime;
-    private List<Image> imageList;
+    private List<Image> imageList = new ArrayList<Image>();
     private Integer gamsNum;
+    private Integer isGam;
+    private Integer isForward;
     private Integer commentNum;
+    private List<Comment> commentList = new ArrayList<Comment>();
+    private List<Gams> gamsList = new ArrayList<Gams>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -85,8 +90,6 @@ public class Journal {
         this.imageList = imageList;
     }
 
-
-
     @Transient
     public Integer getGamsNum() {
         return gamsNum;
@@ -97,11 +100,47 @@ public class Journal {
     }
 
     @Transient
+    public Integer getIsGam() {
+        return isGam;
+    }
+
+    public void setIsGam(Integer isGam) {
+        this.isGam = isGam;
+    }
+
+    @Transient
+    public Integer getIsForward() {
+        return isForward;
+    }
+
+    public void setIsForward(Integer isForward) {
+        this.isForward = isForward;
+    }
+
+    @Transient
     public Integer getCommentNum() {
         return commentNum;
     }
 
     public void setCommentNum(Integer commentNum) {
         this.commentNum = commentNum;
+    }
+
+    @Transient
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    @Transient
+    public List<Gams> getGamsList() {
+        return gamsList;
+    }
+
+    public void setGamsList(List<Gams> gamsList) {
+        this.gamsList = gamsList;
     }
 }

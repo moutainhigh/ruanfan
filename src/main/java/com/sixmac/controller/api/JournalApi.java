@@ -58,6 +58,8 @@ public class JournalApi extends CommonController {
      * @apiSuccess {Integer} list.forwardNum 转发数
      * @apiSuccess {Integer} list.shareNum 分享数
      * @apiSuccess {String} list.createTime 发布时间
+     * @apiSuccess {Integer} list.gamsNum 点赞数
+     * @apiSuccess {Integer} list.commentNum 评论数
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -74,6 +76,8 @@ public class JournalApi extends CommonController {
         // 获取杂志的详情图片列表
         for (Journal journal : page.getContent()) {
             journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
+            journal.setGamsNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
+            journal.setCommentNum(commentService.iFindList(journal.getId(), Constant.COMMENT_JOURNAL).size());
         }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);
@@ -88,6 +92,7 @@ public class JournalApi extends CommonController {
      * @apiName journal.info
      * @apiGroup journal
      * @apiParam {Integer} journalId 日志id       <必传 />
+     * @apiParam {Integer} userId 用户id
      * @apiSuccess {Object} journalInfo 日志详情
      * @apiSuccess {Integer} journalInfo.id 日志id
      * @apiSuccess {String} journalInfo.content 内容
@@ -100,11 +105,13 @@ public class JournalApi extends CommonController {
      * @apiSuccess {String} journalInfo.imageList.description 图片描述
      * @apiSuccess {String} journalInfo.imageList.demo 图片备注
      * @apiSuccess {String} journalInfo.imageList.createTime 创建时间
-     * @apiSuccess {Integer} journalInfo.gamsNum 点赞数数
+     * @apiSuccess {Integer} journalInfo.gamsNum 点赞数
      * @apiSuccess {Integer} journalInfo.commentNum 评论数
+     * @apiSuccess {Integer} journalInfo.isGam 是否点赞 0=是，1=否
+     * @apiSuccess {Integer} journalInfo.isForward 是否转发 0=是，1=否
      */
     @RequestMapping(value = "/info")
-    public void info(HttpServletResponse response, Integer journalId) {
+    public void info(HttpServletResponse response, Integer journalId, Integer userId) {
         if (null == journalId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -121,6 +128,16 @@ public class JournalApi extends CommonController {
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
         journal.setGamsNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
         journal.setCommentNum(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL).size());
+        journal.setCommentList(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL));
+        journal.setGamsList(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
+
+        if (null != userId) {
+            Gams gams = gamsService.iFindOne(userId, journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE);
+            journal.setIsGam(null != gams ? Constant.GAM_LOVE_YES : Constant.GAM_LOVE_NO);
+
+            Gams gams1 = gamsService.iFindOne(userId, journalId, Constant.GAM_JOURNAL, Constant.GAM_FORWARD);
+            journal.setIsForward(null != gams1 ? Constant.GAM_LOVE_YES : Constant.GAM_LOVE_NO);
+        }
 
         Result obj = new Result(true).data(createMap("journalInfo", journal));
         String result = JsonUtil.obj2ApiJson(obj, "user", "labelList");
