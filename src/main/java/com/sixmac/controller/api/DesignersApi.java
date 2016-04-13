@@ -77,12 +77,13 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} list.status 状态
      * @apiSuccess {String} list.createTime 注册时间
      * @apiSuccess {Integer} list.cityId 所在城市id
-     * @apiSuccess {Object} list.imageList 最新的设计作品列表（倒序，三张）
-     * @apiSuccess {Integer} list.imageList.id 设计作品id
-     * @apiSuccess {String} list.imageList.path 封面图
-     * @apiSuccess {String} list.imageList.description 描述
-     * @apiSuccess {String} list.imageList.demo 备注
-     * @apiSuccess {String} list.imageList.createTime 创建时间
+     * @apiSuccess {Object} list.worksList 最新的设计作品列表（倒序，三张）
+     * @apiSuccess {Integer} list.worksList.id 设计作品id
+     * @apiSuccess {String} list.worksList.name 设计作品名称
+     * @apiSuccess {String} list.worksList.labels 标签
+     * @apiSuccess {String} list.worksList.description 描述
+     * @apiSuccess {String} list.worksList.createTime 创建时间
+     * @apiSuccess {String} list.worksList.cover 封面图
      * @apiSuccess {Integer} list.fansNum 粉丝数
      * @apiSuccess {Integer} list.reserveNum 预约数
      */
@@ -108,9 +109,9 @@ public class DesignersApi extends CommonController {
 
             // 获取每个独立设计师的最新三张作品图片
             if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
-                designer.setImageList(worksService.iFindThreeNewWorksByDesignerId(designer.getId()));
+                designer.setWorksList(worksService.iFindThreeNewWorksByDesignerId(designer.getId()));
             } else {
-                designer.setImageList(new ArrayList<Image>());
+                designer.setWorksList(new ArrayList<Works>());
             }
 
             // 获取粉丝数
@@ -123,7 +124,7 @@ public class DesignersApi extends CommonController {
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "isCheck", "gamsList", "commentList", "objectId", "objectType", "isGam", "gamNum", "commentNum", "labelList", "thuPath", "width", "height", "isAttention", "isCut");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "area", "designer", "isCheck", "gamsList", "commentList", "objectId", "objectType", "isGam", "gamNum", "commentNum", "labelList", "thuPath", "width", "height", "isAttention", "isCut");
         WebUtil.printApi(response, result);
     }
 
@@ -319,12 +320,13 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} designerInfo.commentList.replysList.userName 评论回复人名称
      * @apiSuccess {String} designerInfo.commentList.replysList.userHead 评论回复人头像
      * @apiSuccess {Integer} designerInfo.cityId 所在城市id
-     * @apiSuccess {Object} designerInfo.imageList 最新的设计作品列表（倒序，三张）
-     * @apiSuccess {Integer} designerInfo.imageList.id 设计作品id
-     * @apiSuccess {String} designerInfo.imageList.path 封面图
-     * @apiSuccess {String} designerInfo.imageList.description 描述
-     * @apiSuccess {String} designerInfo.imageList.demo 备注
-     * @apiSuccess {String} designerInfo.imageList.createTime 创建时间
+     * @apiSuccess {Object} designerInfo.worksList 最新的设计作品列表（倒序，三张）
+     * @apiSuccess {Integer} designerInfo.worksList.id 设计作品id
+     * @apiSuccess {String} designerInfo.worksList.name 设计作品名称
+     * @apiSuccess {String} designerInfo.worksList.labels 标签
+     * @apiSuccess {String} designerInfo.worksList.description 描述
+     * @apiSuccess {String} designerInfo.worksList.createTime 创建时间
+     * @apiSuccess {String} designerInfo.worksList.cover 封面图
      * @apiSuccess {Integer} designerInfo.fansNum 粉丝数
      * @apiSuccess {Integer} designerInfo.reserveNum 预约数
      * @apiSuccess {Integer} designerInfo.gamNum 点赞数
@@ -388,13 +390,13 @@ public class DesignersApi extends CommonController {
 
         // 获取每个独立设计师的最新三张作品图片
         if (designers.getType() == Constant.DESIGNER_TYPE_ONE) {
-            designers.setImageList(worksService.iFindThreeNewWorksByDesignerId(designerId));
+            designers.setWorksList(worksService.iFindThreeNewWorksByDesignerId(designerId));
         } else {
-            designers.setImageList(new ArrayList<Image>());
+            designers.setWorksList(new ArrayList<Works>());
         }
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
-        String result = JsonUtil.obj2ApiJson(obj, "city", "comment", "password", "isCheck", "objectId", "objectType", "gamsList", "thuPath", "width", "height", "user", "labelList", "isCut");
+        String result = JsonUtil.obj2ApiJson(obj, "city", "comment", "password", "designer", "isCheck", "objectId", "objectType", "gamsList", "thuPath", "width", "height", "user", "labelList", "isCut");
         WebUtil.printApi(response, result);
     }
 

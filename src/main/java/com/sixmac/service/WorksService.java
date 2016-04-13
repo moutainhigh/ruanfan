@@ -12,5 +12,5 @@ import java.util.List;
 public interface WorksService extends ICommonService<Works> {
 
     // 根据设计师id查询最新的三张设计作品图片（倒序）
-    public List<Image> iFindThreeNewWorksByDesignerId(Integer designerId);
+    public List<Works> iFindThreeNewWorksByDesignerId(Integer designerId);
 }
