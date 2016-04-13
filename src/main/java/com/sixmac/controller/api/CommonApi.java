@@ -321,7 +321,7 @@ public class CommonApi extends CommonController {
      * @api {post} /api/common/provinceList 省份城市列表
      * @apiName common.provinceList
      * @apiGroup common
-     * @apiSuccess {Object} provinceList 收藏列表
+     * @apiSuccess {Object} provinceList 省份列表
      * @apiSuccess {Integer} provinceList.id 省份id
      * @apiSuccess {String} provinceList.name 省份名称
      * @apiSuccess {Object} provinceList.cityList 城市list
@@ -337,6 +337,23 @@ public class CommonApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("provinceList", list));
+        String result = JsonUtil.obj2ApiJson(obj, "province");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
+     * @api {post} /api/common/cityList 城市列表
+     * @apiName common.cityList
+     * @apiGroup common
+     * @apiSuccess {Object} cityList 城市list
+     * @apiSuccess {Integer} cityList.id 城市id
+     * @apiSuccess {String} cityList.name 城市名称
+     */
+    @RequestMapping(value = "/cityList")
+    public void cityList(HttpServletResponse response) {
+        List<City> list = cityService.findAll();
+
+        Result obj = new Result(true).data(createMap("list", list));
         String result = JsonUtil.obj2ApiJson(obj, "province");
         WebUtil.printApi(response, result);
     }
