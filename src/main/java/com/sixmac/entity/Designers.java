@@ -30,7 +30,7 @@ public class Designers {
     private List<Gams> gamsList;
     private List<Comment> commentList;
     private Integer cityId;
-    private List<Image> imageList;
+    private List<Works> worksList;
     private Integer fansNum;
     private Integer reserveNum;
     private Integer gamNum;
@@ -209,12 +209,12 @@ public class Designers {
     }
 
     @Transient
-    public List<Image> getImageList() {
-        return imageList;
+    public List<Works> getWorksList() {
+        return worksList;
     }
 
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+    public void setWorksList(List<Works> worksList) {
+        this.worksList = worksList;
     }
 
     @Transient
