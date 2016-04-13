@@ -162,7 +162,7 @@ public class MerchantController extends CommonController {
      * @param type
      * @param nickName
      * @param cityId
-     * @param content
+     * @param description
      * @param multipartRequest
      * @return
      */
@@ -175,7 +175,7 @@ public class MerchantController extends CommonController {
                         Integer type,
                         String nickName,
                         Integer cityId,
-                        String discription,
+                        String description,
                         MultipartRequest multipartRequest) {
         try {
             Merchants merchants = null;
@@ -191,7 +191,8 @@ public class MerchantController extends CommonController {
             merchants.setType(type);
             merchants.setNickName(nickName);
             merchants.setCity(cityService.getById(cityId));
-            merchants.setDescription(discription);
+            merchants.setDescription(description);
+            merchants.setIsCut(0);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
