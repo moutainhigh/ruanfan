@@ -77,7 +77,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {Object} list 首页banner图列表
      * @apiSuccess {Integer} list.id banner图id
      * @apiSuccess {String} list.cover 图片路径
-     * @apiSuccess {Integer} list.type 类型，1=商品，2=套餐商品，3=特价商品
+     * @apiSuccess {Integer} list.type 类型，1=单品，2=艺术品，3=设计师品牌
      * @apiSuccess {Integer} list.sourceId 关联目标id
      * @apiSuccess {String} list.updateTime 更新时间
      */

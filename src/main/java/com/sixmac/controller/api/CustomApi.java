@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,6 +97,37 @@ public class CustomApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("list", list));
+        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
+     * @api {post} /api/custom/findList 根据楼盘名称查询户型列表
+     * @apiName custom.findList
+     * @apiGroup custom
+     * @apiParam {String} name 楼盘名称
+     * @apiSuccess {Object} list 户型列表
+     * @apiSuccess {Integer} list.id 户型id
+     * @apiSuccess {String} list.name 户型名称
+     * @apiSuccess {String} list.path 户型封面图
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {Object} list.packageList 创建时间
+     */
+    @RequestMapping(value = "/findList")
+    public void findList(HttpServletResponse response,
+                         String name) {
+        List<Custom> list = customService.findListByParams(name);
+        List<Custominfo> custominfoList = new ArrayList<Custominfo>();
+
+        for (Custom custom : list) {
+            custominfoList = custominfoService.findListByCustomId(custom.getId());
+
+            for (Custominfo customInfo : custominfoList) {
+                customInfo.setPackageList(customPackageService.findListByCustominfoId(customInfo.getId()));
+            }
+        }
+
+        Result obj = new Result(true).data(createMap("list", custominfoList));
         String result = JsonUtil.obj2ApiJson(obj, "custom");
         WebUtil.printApi(response, result);
     }

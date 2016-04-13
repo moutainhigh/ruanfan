@@ -72,6 +72,7 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} list.proof 资质证明（图片路径）
      * @apiSuccess {Integer} list.star 星级
      * @apiSuccess {String} list.price 价格
+     * @apiSuccess {String} list.content 描述
      * @apiSuccess {Text} list.desc 软装介绍（富文本）
      * @apiSuccess {Text} list.descs 个性定制介绍（富文本）
      * @apiSuccess {Integer} list.status 状态
@@ -301,6 +302,7 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} designerInfo.proof 资质证明（图片路径）
      * @apiSuccess {Integer} designerInfo.star 星级
      * @apiSuccess {String} designerInfo.price 价格
+     * @apiSuccess {String} designerInfo.content 描述
      * @apiSuccess {Text} designerInfo.desc 软装介绍（富文本）
      * @apiSuccess {Text} designerInfo.descs 个性定制介绍（富文本）
      * @apiSuccess {Integer} designerInfo.status 状态
