@@ -4,6 +4,7 @@ import com.sixmac.entity.Orders;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,10 @@ public interface OrdersService extends ICommonService<Orders> {
     public Orders iFindOneByOrderNum(String orderNum);
 
     public Page<Orders> page(String orderNum, String mobile, String nickName, Integer status, Integer type, int pageNum, int pageSize);
+
+    public Page<Orders> page(Integer merchantId, String orderNum, String mobile, String productName, Integer status, Integer type, int pageNum, int pageSize);
+
+    public Page<Orders> page(Integer merchantId, String orderNum, String mobile, String productName, Integer status, Date startTime, Date endTime, int pageNum, int pageSize);
 
     // 根据订单状态查询不同状态的订单数量
     public List<Orders> findListByStatus(Integer status);

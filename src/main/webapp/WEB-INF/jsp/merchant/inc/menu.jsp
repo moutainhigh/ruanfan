@@ -14,10 +14,10 @@
                         <a href="merchant/product/index"><i class="fa fa-cart-plus fa-fw"></i>商品列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>评价列表</a>
+                        <a href="merchant/ordersinfo/index"><i class="fa fa-map-marker fa-fw"></i>评价列表</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cubes fa-fw"></i>订单列表</a>
+                        <a href="merchant/orders/index"><i class="fa fa-cubes fa-fw"></i>订单列表</a>
                     </li>
                 </ul>
             </li>
