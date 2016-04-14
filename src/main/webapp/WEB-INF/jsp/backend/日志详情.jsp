@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>预约详情</title>
+    <title>日志详情</title>
     <%@ include file="inc/css.jsp" %>
     <style type="text/css">
         /*模块拖拽*/

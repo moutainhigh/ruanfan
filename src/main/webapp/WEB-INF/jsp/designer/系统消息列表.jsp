@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>权限列表</title>
+    <title>系统消息列表</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 
@@ -18,8 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">管理管理人员</h1>
-                <h4 style="margin-left: 10px;">——权限列表</h4>
+                <h1 class="page-header">系统消息</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -27,15 +26,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <form id="productForm" method="post" action="backend/roles/save"
-                          class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
-                        <input type="hidden" id="roleId" name="id" value="${roles.id}"/>
-
-                        <div class="panel-heading">
-                            <a href="backend/roles/add" class="btn btn-outline btn-primary btn-lg" role="button">新增权限</a>
-                            <a href="backend/sysUser/index" class="btn btn-outline btn-primary btn-lg" role="button">返回</a>
-                        </div>
-                    </form>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
@@ -43,16 +33,15 @@
 
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
-                                    <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
+                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th>名称</th>
-                                    <th>人员数量</th>
-                                    <th>更新时间</th>
+                                    <th>消息名称</th>
+                                    <th>发布时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -73,26 +62,29 @@
     </div>
     <!-- /#page-wrapper -->
 
-    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">删除提示</h4>
+                    <h4 class="modal-title">提示</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="id"/>
-                    确定删除该权限？
+                    <input type="hidden" id="hiddenProductId"/>
+                    确定删除该消息？
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" onclick="roles.fn.subDelInfo()" class="btn btn-primary">确定</button>
+                    <button type="button" onclick="noticeList.fn.subDelInfo()" class="btn btn-primary">确定</button>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <!-- Modal end -->
 
 </div>
 <!-- /#wrapper -->
@@ -101,60 +93,73 @@
 </body>
 
 <script type="text/javascript">
-    var roles = {
+
+    var noticeList = {
         v: {
-            id: "roles",
+            id: "noticeList",
             list: [],
             dTable: null
         },
         fn: {
             init: function () {
-
-                roles.fn.dataTableInit();
+                noticeList.fn.dataTableInit();
 
                 // 查询
                 $("#c_search").click(function () {
-                    roles.v.dTable.ajax.reload();
+                    noticeList.v.dTable.ajax.reload();
                 });
             },
             dataTableInit: function () {
-                roles.v.dTable = $sixmac.dataTable($('#dataTables'), {
+                noticeList.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching": false,
                     "ordering": false,
                     "ajax": {
-                        "url": "backend/roles/list",
+                        "url": "designer/notice/list",
                         "type": "POST"
                     },
                     "columns": [
-                        {"data": "name"},
-                        {"data": "count"},
-                        {"data": "updateTime"},
+                        {"data": "objectName"},
+                        {"data": "createTime"},
                         {"data": ""}
                     ],
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='编辑' class='btn btn-primary btn-circle edit'>" +
-                            "<i class='fa fa-edit'></i>" +
+                            "defaultContent": "<a title='查看' class='btn btn-primary btn-circle eye'>" +
+                            "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='删除' class='btn btn-success btn-circle delete'>" +
+                            "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
                             "</button>",
                             "targets": -1
                         }
                     ],
                     "createdRow": function (row, data, index) {
-                        roles.v.list.push(data);
+                        noticeList.v.list.push(data);
+
+                        if (data.isCheck == 0) {
+                            $('td', row).eq(3).html("待审核");
+                        } else if (data.isCheck == 1) {
+                            $('td', row).eq(3).html("审核通过");
+                        } else {
+                            $('td', row).eq(3).html("审核不通过");
+                        }
                     },
                     rowCallback: function (row, data) {
-                        $('td', row).last().find(".edit").attr("href", 'backend/roles/add?id=' + data.id);
+
+                        $('td', row).last().find(".eye").click(function () {
+                            window.location.href = 'designer/afflatus/add?id=' + data.objectId;
+                        });
 
                         $('td', row).last().find(".delete").click(function () {
-                            roles.fn.delInfo(data.id);
+                            // 删除
+                            noticeList.fn.delInfo(data.id);
                         });
+                    },
+                    "fnServerParams": function (aoData) {
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
@@ -162,29 +167,28 @@
                 });
             },
             delInfo: function (id) {
-                $('#id').val(id);
+                $('#hiddenProductId').val(id);
+
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
-                var id = $('#id').val();
-
-                $sixmac.ajax("backend/roles/delete", {
-                    "id": id
+                $sixmac.ajax("designer/notice/delete", {
+                    "id": $('#hiddenProductId').val()
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
                         $("#delModal").modal("hide");
-                        roles.v.dTable.ajax.reload(null, false);
+                        noticeList.v.dTable.ajax.reload(null, false);
                     } else {
                         $sixmac.notify("操作失败", "error");
                     }
                 });
-            },
+            }
         }
     }
 
     $(document).ready(function () {
-        roles.fn.init();
+        noticeList.fn.init();
     });
 
 </script>

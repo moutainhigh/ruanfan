@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>站长工具</title>
+    <title>编辑户型</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 <body>
@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">在线设计定制</h1>
+                <h1 class="page-header">管理在线设计定制</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增户型</h4>
             </div>
         </div>

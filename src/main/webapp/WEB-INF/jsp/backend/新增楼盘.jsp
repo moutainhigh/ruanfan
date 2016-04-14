@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">地产类型</h1>
+                <h1 class="page-header">管理地产</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增楼盘</h4>
             </div>
         </div>

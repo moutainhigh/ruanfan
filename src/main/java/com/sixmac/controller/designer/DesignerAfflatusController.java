@@ -8,6 +8,7 @@ import com.sixmac.entity.Designers;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Label;
 import com.sixmac.service.*;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -246,5 +247,21 @@ public class DesignerAfflatusController extends CommonController {
             e.printStackTrace();
         }
         return "designer/图片锚点";
+    }
+
+
+    @RequestMapping("/batchDel")
+    @ResponseBody
+    public Integer batchDel(String ids) {
+        try {
+            // 将界面上的id数组格式的字符串解析成int类型的数组
+            int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
+            afflatusService.deleteAll(arrayId);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">会员列表</h1>
+                <h1 class="page-header">管理会员</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增会员</h4>
             </div>
         </div>

@@ -29,6 +29,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="designer/afflatus/add" class="btn btn-outline btn-primary btn-lg" role="button">新增灵感图片</a>
+                        <a href="javascript:void(0)" onclick="afflatusList.fn.batchDel()"
+                           class="btn btn-outline btn-danger btn-lg" role="button">批量删除</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -61,6 +63,7 @@
 
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
+                                    <col class="gradeA even" style="width: 6%"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
@@ -70,6 +73,7 @@
                                 </colgroup>
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
                                     <th>名称</th>
                                     <th>类型</th>
                                     <th>状态</th>
@@ -154,6 +158,7 @@
                         "type": "POST"
                     },
                     "columns": [
+                        {"data": null},
                         {"data": "name"},
                         {"data": "type"},
                         {"data": "status"},
@@ -181,18 +186,20 @@
                     "createdRow": function (row, data, index) {
                         afflatusList.v.list.push(data);
 
+                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
+
                         if (data.type == 1) {
-                            $('td', row).eq(1).html("单图");
+                            $('td', row).eq(2).html("单图");
                         } else {
-                            $('td', row).eq(1).html("套图");
+                            $('td', row).eq(2).html("套图");
                         }
 
                         if (data.status == 0) {
-                            $('td', row).eq(2).html("待审核");
+                            $('td', row).eq(3).html("待审核");
                         } else if (data.status == 1) {
-                            $('td', row).eq(2).html("审核成功");
+                            $('td', row).eq(3).html("审核成功");
                         } else {
-                            $('td', row).eq(2).html("审核失败");
+                            $('td', row).eq(3).html("审核失败");
                         }
                     },
                     rowCallback: function (row, data) {
@@ -280,6 +287,25 @@
                         $sixmac.notify("获取风格信息失败", "error");
                     }
                 });
+            },
+            batchDel: function () {
+                var checkBox = $("#dataTables tbody tr").find('input[type=checkbox]:checked');
+                var ids = checkBox.getInputId();
+                afflatusList.fn.deleteRow(checkBox, ids)
+            },
+            deleteRow: function (checkBox, ids) {
+                if (ids.length > 0) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("designer/afflatus/batchDel", {ids: JSON.stringify(ids)}, function (result) {
+                            if (result > 0) {
+                                $sixmac.notify("操作成功", "success");
+                                afflatusList.v.dTable.ajax.reload();
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        })
+                    }, '确定删除选中的所有消息？', '确定');
+                }
             }
         }
     }

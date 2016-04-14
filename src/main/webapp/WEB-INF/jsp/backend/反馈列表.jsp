@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>书籍列表</title>
+    <title>反馈列表</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 

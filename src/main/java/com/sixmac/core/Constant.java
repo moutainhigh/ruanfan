@@ -171,4 +171,8 @@ public interface Constant {
     // 套餐类型
     Integer PACKAGE_TYPE_PRODUCT = 1;  // 商品
     Integer PACKAGE_TYPE_CUSTOM = 2;   // 设计定制
+
+    // 系统通知类型
+    Integer NOTICES_TYPE_MERCHANT = 1;  // 商户
+    Integer NOTICES_TYPE_DESIGNER = 2;  // 设计师
 }

@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>站长工具</title>
+    <title>单页编辑</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 <body>
@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">单页列表</h1>
+                <h1 class="page-header">管理单页</h1>
             </div>
         </div>
 

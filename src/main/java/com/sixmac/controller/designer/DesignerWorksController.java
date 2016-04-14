@@ -6,6 +6,7 @@ import com.sixmac.controller.merchant.MerchantIndexController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.*;
 import com.sixmac.service.*;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,6 +197,21 @@ public class DesignerWorksController extends CommonController {
                     imageService.deleteById(Integer.parseInt(imageId));
                 }
             }
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @RequestMapping("/batchDel")
+    @ResponseBody
+    public Integer batchDel(String ids) {
+        try {
+            // 将界面上的id数组格式的字符串解析成int类型的数组
+            int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
+            worksService.deleteAll(arrayId);
 
             return 1;
         } catch (Exception e) {

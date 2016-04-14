@@ -1,6 +1,8 @@
 package com.sixmac.dao;
 
 import com.sixmac.entity.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,7 @@ public interface CommentDao extends JpaRepository<Comment, Integer>, JpaSpecific
 
     @Query("select a from Comment a where a.createTime > ?1")
     public List<Comment> findListNew(Date oldDate);
+
+    @Query("select a from Comment a where a.objectId = ?1 and a.objectType = ?2")
+    public Page<Comment> pageByObjectIdIdAndObjectType(Integer objectId, Integer objectType, Pageable pageable);
 }

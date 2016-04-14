@@ -153,6 +153,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Page<Comment> page(Integer objectId, Integer objectType, int pageNum, int pageSize) {
+
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<Comment> page = commentDao.pageByObjectIdIdAndObjectType(objectId,objectType,pageRequest);
+
+        return page;
+    }
+
+    @Override
     public List<Comment> findListNew() {
         return commentDao.findListNew(CommonController.getOldDate());
     }
