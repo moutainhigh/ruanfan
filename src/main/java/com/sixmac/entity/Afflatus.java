@@ -31,6 +31,7 @@ public class Afflatus {
     private Integer collectNum;
     private Integer gamNum;
     private Integer reserveNum;
+    private Integer designerId;
     private String designerHead;
     private String designerName;
     private List<Image> imageList;
@@ -205,6 +206,15 @@ public class Afflatus {
 
     public void setReserveNum(Integer reserveNum) {
         this.reserveNum = reserveNum;
+    }
+
+    @Transient
+    public Integer getDesignerId() {
+        return designerId;
+    }
+
+    public void setDesignerId(Integer designerId) {
+        this.designerId = designerId;
     }
 
     @Transient
