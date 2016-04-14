@@ -144,6 +144,7 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Integer} afflatusInfo.collectNum 收藏数
      * @apiSuccess {Integer} afflatusInfo.gamNum 点赞数
      * @apiSuccess {Integer} afflatusInfo.reserveNum 预约数
+     * @apiSuccess {String} afflatusInfo.designerId 设计师id
      * @apiSuccess {String} afflatusInfo.designerHead 设计师头像
      * @apiSuccess {String} afflatusInfo.designerName 设计师名称
      * @apiSuccess {Object} afflatusInfo.imageList 详情图片列表
@@ -217,6 +218,7 @@ public class AfflatusApi extends CommonController {
         afflatusService.update(afflatus);
 
         afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+        afflatus.setDesignerId(afflatus.getDesigner().getId());
         afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
         afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
