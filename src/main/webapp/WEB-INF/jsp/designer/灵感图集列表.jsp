@@ -241,6 +241,8 @@
                 $("#delModal").modal("show");
             },
             subCheckInfo: function () {
+                var id = $('#hiddenAfflatusId').val();
+
                 $sixmac.ajax("designer/afflatus/delete", {
                     "afflatusId": id
                 }, function (result) {
