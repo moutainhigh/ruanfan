@@ -35,13 +35,7 @@ public class DesignerWorksController extends CommonController {
     private ImageService imageService;
 
     @Autowired
-    private AreasService areasService;
-
-    @Autowired
-    private StylesService stylesService;
-
-    @Autowired
-    private AfflatusService afflatusService;
+    private CommentService commentService;
 
     @Autowired
     private DesignersService designersService;
@@ -74,19 +68,40 @@ public class DesignerWorksController extends CommonController {
         }
         int pageNum = getPageNum(start, length);
         Page<Works> page = worksService.page(designers.getId(),name,status,areas,stytle,pageNum, length);
+
+        for (Works works : page.getContent()) {
+            works.setCommentNum(commentService.iFindList(works.getId(), Constant.COMMENT_WORKS).size());
+        }
+
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
 
     @RequestMapping(value = "/detail")
     public String detail(ModelMap model, Integer id) {
-        List<Works> list = new ArrayList<Works>();
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        Map<String, Object> map = null;
 
         // 如果id不为空，则代表编辑
-        if (null != id) {
+        if(id != null) {
             Works works = worksService.getById(id);
             model.addAttribute("works", works);
+
+            // 如果作品不为空，则查询对应的图片集合
+            if (null != works) {
+                List<Image> imageList = imageService.iFindList(works.getId(), Constant.IMAGE_WORKS);
+                for (Image image : imageList) {
+                    map = new HashMap<String, Object>();
+                    map.put("id", image.getId());
+                    map.put("path", image.getPath());
+
+                    list.add(map);
+                }
+            }
+
         }
+
+        model.addAttribute("imageList", JSONArray.fromObject(list));
 
         return "designer/作品详情";
     }
@@ -126,7 +141,7 @@ public class DesignerWorksController extends CommonController {
                 }
             }
         }
-
+        model.addAttribute("imageList", JSONArray.fromObject(list));
         return "designer/新增作品";
     }
 
@@ -138,6 +153,7 @@ public class DesignerWorksController extends CommonController {
                         String name,
                         String labels,
                         String description,
+                        Integer settingCover,
                         String tempAddImageIds,
                         String tempDelImageIds) {
         try {
@@ -155,7 +171,12 @@ public class DesignerWorksController extends CommonController {
 
             works.setName(name);
             works.setLabels(labels);
+            works.setDesigner(designers);
             works.setDescription(description);
+            works.setCoverId(settingCover);
+            works.setCreateTime(new Date());
+
+            worksService.update(works);
 
             // 保存商品图片集合
             Image image = null;
@@ -163,7 +184,7 @@ public class DesignerWorksController extends CommonController {
                 if (null != imageId && !imageId.equals("")) {
                     image = imageService.getById(Integer.parseInt(imageId));
                     image.setObjectId(works.getId());
-                    image.setObjectType(Constant.IMAGE_PRODUCTS);
+                    image.setObjectType(Constant.IMAGE_WORKS);
 
                     imageService.update(image);
                 }
