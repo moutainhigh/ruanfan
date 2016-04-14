@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "",
   "title": "软范接口测试界面",
-  "url": "http://4.16.3.175:8080/ruanfan",
-  "sampleUrl": "http://4.16.3.175:8080/ruanfan",
+  "url": "http://4.16.3.22:8080/ruanfan",
+  "sampleUrl": "http://4.16.3.22:8080/ruanfan",
   "header": {
     "title": "start",
     "filename": "header.md"
