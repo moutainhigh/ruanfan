@@ -42,24 +42,24 @@ public class ReserveController extends CommonController {
                      Integer status,
                      Integer draw,
                      Integer start,
-                     Integer length) {
-        if (null == start || start == 0) {
-            start = 1;
-        }
-        int pageNum = getPageNum(start, length);
-        Page<Reserve> page = reserveServicee.page(name, mobile, email, nickName, status, pageNum, length);
+        Integer length) {
+            if (null == start || start == 0) {
+                start = 1;
+            }
+            int pageNum = getPageNum(start, length);
+            Page<Reserve> page = reserveServicee.page(name, mobile, email, nickName, status, pageNum, length);
 
-        Map<String, Object> result = DataTableFactory.fitting(draw, page);
-        WebUtil.printJson(response, result);
-    }
-
-    @RequestMapping(value = "/detail")
-    public String detail(ModelMap model, Integer id) {
-        // 如果id不为空，则代表编辑
-        if (null != id) {
-            Reserve reserve = reserveServicee.getById(id);
-            model.addAttribute("reserve", reserve);
+            Map<String, Object> result = DataTableFactory.fitting(draw, page);
+            WebUtil.printJson(response, result);
         }
+
+        @RequestMapping(value = "/detail")
+        public String detail(ModelMap model, Integer id) {
+            // 如果id不为空，则代表编辑
+            if (null != id) {
+                Reserve reserve = reserveServicee.getById(id);
+                model.addAttribute("reserve", reserve);
+            }
 
         return "backend/预约详情";
     }

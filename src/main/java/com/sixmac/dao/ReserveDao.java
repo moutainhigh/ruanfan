@@ -1,6 +1,8 @@
 package com.sixmac.dao;
 
 import com.sixmac.entity.Reserve;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +20,8 @@ public interface ReserveDao extends JpaRepository<Reserve, Integer>, JpaSpecific
 
     @Query("select a from Reserve a where a.reseTime > ?1")
     public List<Reserve> findListNew(Date oldDate);
+
+    @Query("select a from Reserve a where a.objectId = ?1 ")
+    public Page<Reserve> iFindPageByDesignerId(Integer objectId, Pageable pageable);
 }
+

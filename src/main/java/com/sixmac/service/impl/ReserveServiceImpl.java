@@ -2,10 +2,13 @@ package com.sixmac.service.impl;
 
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
+import com.sixmac.dao.CustompackagesDao;
+import com.sixmac.dao.DesignersDao;
 import com.sixmac.dao.ReserveDao;
 import com.sixmac.entity.Reserve;
 import com.sixmac.service.ReserveService;
 import com.sixmac.utils.DateUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +35,12 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Autowired
     private ReserveDao reserveDao;
+
+    @Autowired
+    private DesignersDao designersDao;
+
+    @Autowired
+    private CustompackagesDao custompackagesDao;
 
     @Override
     public List<Reserve> findAll() {
@@ -106,6 +115,15 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
+    public Page<Reserve> iFindPageByDesignerId(Integer objectId, int pagenum, int pagesize) {
+        PageRequest pageRequest = new PageRequest(pagenum - 1, pagesize, Sort.Direction.ASC, "id");
+
+        Page<Reserve> page = reserveDao.iFindPageByDesignerId(objectId, pageRequest);
+
+        return page;
+    }
+
+    @Override
     public Page<Reserve> page(String name, String mobile, String email, String nickName, Integer status, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
@@ -115,23 +133,23 @@ public class ReserveServiceImpl implements ReserveService {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
 
-                if (name != null) {
+                if (StringUtils.isNotBlank(name)) {
                     Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
                     predicateList.add(pre);
                 }
 
-                if (null != mobile) {
+                if (StringUtils.isNotBlank(mobile)) {
                     Predicate pre = cb.like(root.get("mobile").as(String.class), "%" + mobile + "%");
                     predicateList.add(pre);
                 }
 
-                if (email != null) {
+                if (StringUtils.isNotBlank(email)) {
                     Predicate pre = cb.like(root.get("email").as(String.class), "%" + email + "%");
                     predicateList.add(pre);
                 }
 
-                if (nickName != null) {
-                    Predicate pre = cb.like(root.get("designer").get("nickName").as(String.class), "%" + nickName + "%");
+                if (StringUtils.isNotBlank(nickName)) {
+                    Predicate pre = cb.like(root.get("objectName").as(String.class), "%" + nickName + "%");
                     predicateList.add(pre);
                 }
 
@@ -154,5 +172,6 @@ public class ReserveServiceImpl implements ReserveService {
 
         return page;
     }
+
 
 }

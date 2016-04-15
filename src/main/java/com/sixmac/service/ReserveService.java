@@ -15,7 +15,12 @@ public interface ReserveService extends ICommonService<Reserve> {
     // 根据设计师id查询预约信息集合
     public List<Reserve> iFindListByDesignerId(Integer designerId);
 
+    // 根据设计师id查询预约信息集合
+    public Page<Reserve> iFindPageByDesignerId(Integer objectId,int pagenum, int pagesize);
+
+    //通过姓名，用户账号，邮箱，昵称，状态查询列表
     public Page<Reserve> page(String name, String mobile, String email, String nickName, Integer status, int pageNum, int pageSize);
+
 
     // 批量确认联系
     public void batchConfirm(int[] ids, String reserveTime, String reserveAddress);

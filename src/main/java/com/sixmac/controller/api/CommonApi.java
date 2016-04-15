@@ -305,7 +305,7 @@ public class CommonApi extends CommonController {
                 e.printStackTrace();
             }
         }
-        reserve.setStyle(stylesService.getById(styleId));
+        reserve.setStyles(stylesService.getById(styleId));
         reserve.setAddress(address);
         reserve.setRemark(remark);
         reserve.setReseAddress(address);

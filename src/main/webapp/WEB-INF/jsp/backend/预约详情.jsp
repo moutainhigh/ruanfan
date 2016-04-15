@@ -43,8 +43,6 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <form method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
-                            <input type="hidden" id="tempCoverId" value="${afflatus.coverId}">
-                            <input type="hidden" id="afflatusType" value="${afflatus.type}">
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">姓名:</label>
@@ -56,7 +54,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">预约对象:</label>
                                 <div class="col-sm-3" style="padding-top: 6.5px;">
-                                    ${reserve.designer.nickName}
+                                    ${reserve.objectName}
                                 </div>
                             </div>
 
@@ -84,7 +82,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">喜爱风格:</label>
                                 <div class="col-sm-3" style="padding-top: 6.5px;">
-                                    ${reserve.style.name}
+                                    ${reserve.styles.name}
                                 </div>
                             </div>
 

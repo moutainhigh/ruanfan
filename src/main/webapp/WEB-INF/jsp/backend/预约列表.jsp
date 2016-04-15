@@ -72,6 +72,7 @@
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
+                                    <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
@@ -81,6 +82,7 @@
                                     <th>电话</th>
                                     <th>邮箱</th>
                                     <th>预约对象</th>
+                                    <th>预约类型</th>
                                     <th>状态</th>
                                     <th>操作</th>
                                 </tr>
@@ -190,7 +192,8 @@
                         {"data": "reseTime"},
                         {"data": "mobile"},
                         {"data": "email"},
-                        {"data": "designer.nickName"},
+                        {"data": "objectName"},
+                        {"data": "type"},
                         {"data": "status"},
                         {"data": ""}
                     ],
@@ -210,16 +213,18 @@
                     "createdRow": function (row, data, index) {
                         reserveList.v.list.push(data);
 
-                        if (data.status == 0) {
-                            $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
-                        } else {
-                            $('td', row).eq(0).html("");
-                        }
+                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
                         if (data.status == 0) {
-                            $('td', row).eq(6).html("未操作");
+                            $('td', row).eq(7).html("未操作");
                         } else {
-                            $('td', row).eq(6).html("已操作");
+                            $('td', row).eq(7).html("已操作");
+                        }
+
+                        if (data.type == 1) {
+                            $('td', row).eq(6).html("设计师");
+                        } else {
+                            $('td', row).eq(6).html("设计定制套餐");
                         }
 
                     },

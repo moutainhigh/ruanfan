@@ -36,7 +36,6 @@
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
-                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>

@@ -16,8 +16,9 @@ public class Reserve {
     private String email;
     private Users user;
     private Integer objectId;
+    private String objectName;
     private Date reseTime;
-    private Styles style;
+    private Styles styles;
     private String address;
     private String remark;
     private String reseAddress;
@@ -96,12 +97,12 @@ public class Reserve {
 
     @ManyToOne
     @JoinColumn(name = "styleId")
-    public Styles getStyle() {
-        return style;
+    public Styles getStyles() {
+        return styles;
     }
 
-    public void setStyle(Styles style) {
-        this.style = style;
+    public void setStyles(Styles styles) {
+        this.styles = styles;
     }
 
     public String getAddress() {
@@ -144,5 +145,13 @@ public class Reserve {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getObjectName() {
+        return objectName;
+    }
+
+    public void setObjectName(String objectName) {
+        this.objectName = objectName;
     }
 }

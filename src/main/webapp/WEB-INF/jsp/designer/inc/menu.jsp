@@ -41,7 +41,7 @@
                         <a href="designer/comment/index"><i class="fa fa-map-marker fa-fw"></i>用户评论</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>预约列表</a>
+                        <a href="designer/reserve/index"><i class="fa fa-map-marker fa-fw"></i>预约列表</a>
                     </li>
                 </ul>
             </li>
