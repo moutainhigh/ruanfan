@@ -36,6 +36,8 @@ public class Products {
     private String cover;
     private Integer merchantId;
     private String merchantName;
+    private String merchantHead;
+    private String merchantDescription;
     private Integer brandId;
     private String brandName;
     private Integer sortId;
@@ -238,6 +240,24 @@ public class Products {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
+    }
+
+    @Transient
+    public String getMerchantHead() {
+        return merchantHead;
+    }
+
+    public void setMerchantHead(String merchantHead) {
+        this.merchantHead = merchantHead;
+    }
+
+    @Transient
+    public String getMerchantDescription() {
+        return merchantDescription;
+    }
+
+    public void setMerchantDescription(String merchantDescription) {
+        this.merchantDescription = merchantDescription;
     }
 
     @Transient

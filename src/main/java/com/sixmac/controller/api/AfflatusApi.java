@@ -1,6 +1,5 @@
 package com.sixmac.controller.api;
 
-import com.sixmac.common.exception.GeneralException;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
@@ -16,9 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +51,8 @@ public class AfflatusApi extends CommonController {
      * @api {post} /api/afflatus/list 灵感集列表
      * @apiName afflatus.list
      * @apiGroup afflatus
+     * @apiParam {String} key 名称
+     * @apiParam {String} labels 标签
      * @apiParam {Integer} type 类型：1单图 2套图      <必传 />
      * @apiParam {Integer} styleId 风格id
      * @apiParam {Integer} areaId 区域id
@@ -61,19 +60,20 @@ public class AfflatusApi extends CommonController {
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
      * @apiSuccess {Object} list 灵感集列表
      * @apiSuccess {Integer} list.id 灵感集id
-     * @apiSuccess {Integer} list.name 灵感集名称
+     * @apiSuccess {String} list.name 灵感集名称
      * @apiSuccess {Integer} list.type 类型：1单图   2套图
      * @apiSuccess {Integer} list.showNum 浏览量
      * @apiSuccess {Integer} list.shareNum 分享数
-     * @apiSuccess {Integer} list.labels 标签
+     * @apiSuccess {String} list.labels 标签
      * @apiSuccess {Integer} list.status 状态，0=待审核，1=审核通过，2=审核不通过
-     * @apiSuccess {Integer} list.createTime 创建时间
-     * @apiSuccess {Integer} list.cover 封面图
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {String} list.cover 封面图
      * @apiSuccess {Integer} list.collectNum 收藏数
      * @apiSuccess {Integer} list.gamNum 点赞数
      * @apiSuccess {Integer} list.reserveNum 预约数
-     * @apiSuccess {Integer} list.designerHead 设计师头像
-     * @apiSuccess {Integer} list.designerName 设计师名称
+     * @apiSuccess {Integer} list.designerId 设计师id
+     * @apiSuccess {String} list.designerHead 设计师头像
+     * @apiSuccess {String} list.designerName 设计师名称
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -93,6 +93,7 @@ public class AfflatusApi extends CommonController {
 
         for (Afflatus afflatus : page.getContent()) {
             afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+            afflatus.setDesignerId(afflatus.getDesigner().getId());
             afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
             afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 

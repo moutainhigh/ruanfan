@@ -280,10 +280,13 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.colors 颜色
      * @apiSuccess {String} productInfo.sizes 尺寸
      * @apiSuccess {String} productInfo.materials 材质
+     * @apiSuccess {String} productInfo.count 交易数量（人气？）
      * @apiSuccess {String} productInfo.description 描述
      * @apiSuccess {String} productInfo.cover 封面图
      * @apiSuccess {Integer} productInfo.merchantId 商户id
      * @apiSuccess {String} productInfo.merchantName 商户名称
+     * @apiSuccess {String} productInfo.merchantHead 商户头像
+     * @apiSuccess {String} productInfo.merchantDescription 商户介绍
      * @apiSuccess {Integer} productInfo.brandId 品牌id
      * @apiSuccess {String} productInfo.brandName 品牌名称
      * @apiSuccess {Integer} productInfo.sortId 分类id
@@ -331,6 +334,8 @@ public class MallApi extends CommonController {
         products.setCover(PathUtils.getRemotePath() + imageService.getById(products.getCoverId()).getPath());
         products.setMerchantId(products.getMerchant().getId());
         products.setMerchantName(products.getMerchant().getNickName());
+        products.setMerchantHead(PathUtils.getRemotePath() + products.getMerchant().getHead());
+        products.setMerchantDescription(products.getMerchant().getDescription());
         products.setBrandId(products.getBrand().getId());
         products.setBrandName(products.getBrand().getName());
         products.setSortId(products.getSort().getId());
@@ -438,7 +443,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} packageInfo.oldPrice 原价
      * @apiSuccess {String} packageInfo.labels 标签
      * @apiSuccess {String} packageInfo.description 描述
-     * @apiSuccess {Integer} packageInfo.count 交易数量
+     * @apiSuccess {Integer} packageInfo.count 交易数量（人气？）
      * @apiSuccess {String} packageInfo.createTime 创建时间
      * @apiSuccess {Object} packageInfo.productsList 商品列表
      * @apiSuccess {Integer} packageInfo.productsList.id 商品id
@@ -455,6 +460,8 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} packageInfo.productsList.cover 封面图
      * @apiSuccess {Integer} packageInfo.productsList.merchantId 商户id
      * @apiSuccess {String} packageInfo.productsList.merchantName 商户名称
+     * @apiSuccess {String} packageInfo.productsList.merchantHead 商户头像
+     * @apiSuccess {String} packageInfo.productsList.merchantDescription 商户介绍
      * @apiSuccess {Integer} packageInfo.productsList.brandId 品牌id
      * @apiSuccess {String} packageInfo.productsList.brandName 品牌名称
      * @apiSuccess {Integer} packageInfo.productsList.sortId 分类id
@@ -553,6 +560,8 @@ public class MallApi extends CommonController {
             product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
             product.setMerchantId(product.getMerchant().getId());
             product.setMerchantName(product.getMerchant().getNickName());
+            product.setMerchantHead(PathUtils.getRemotePath() + product.getMerchant().getHead());
+            product.setMerchantDescription(product.getMerchant().getDescription());
             product.setBrandId(product.getBrand().getId());
             product.setBrandName(product.getBrand().getName());
             product.setSortId(product.getSort().getId());
