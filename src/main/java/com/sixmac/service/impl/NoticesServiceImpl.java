@@ -3,14 +3,22 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.NoticesDao;
 import com.sixmac.entity.Notices;
+import com.sixmac.entity.Ordersinfo;
 import com.sixmac.service.NoticesService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,5 +73,14 @@ public class NoticesServiceImpl implements NoticesService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public Page<Notices> page(Integer sourceId, Integer sourceType, int pagenum, int pagesize) {
+        PageRequest pageRequest = new PageRequest(pagenum - 1, pagesize, Sort.Direction.ASC, "id");
+
+        Page<Notices> page = noticesDao.pageBySourceIdAndSourceType(sourceId, sourceType, pageRequest);
+
+        return page;
     }
 }

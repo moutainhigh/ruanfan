@@ -35,7 +35,7 @@
                 <a href="#"><i class="fa  fa-beer fa-fw"></i>消息管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-cart-plus fa-fw"></i>系统消息</a>
+                        <a href="merchant/notice/index"><i class="fa fa-cart-plus fa-fw"></i>系统消息</a>
                     </li>
                 </ul>
             </li>

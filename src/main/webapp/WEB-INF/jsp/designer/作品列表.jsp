@@ -29,6 +29,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="designer/works/add" class="btn btn-outline btn-primary btn-lg" role="button">新增作品</a>
+                        <a href="javascript:void(0)" onclick="worksList.fn.batchDel()"
+                           class="btn btn-outline btn-danger btn-lg" role="button">批量删除</a>
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
@@ -44,6 +46,7 @@
 
                             <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <colgroup>
+                                    <col class="gradeA even" style="width: 6%"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
@@ -53,6 +56,7 @@
                                 </colgroup>
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
                                     <th>名称</th>
                                     <th>发布时间</th>
                                     <th>评论数量</th>
@@ -133,6 +137,7 @@
                         "type": "POST"
                     },
                     "columns": [
+                        {"data": null},
                         {"data": "name"},
                         {"data": "createTime"},
                         {"data": "commentNum"},
@@ -157,6 +162,8 @@
                     ],
                     "createdRow": function (row, data, index) {
                         worksList.v.list.push(data);
+
+                        $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".edit").attr("href", 'designer/works/add?id=' + data.id);
@@ -211,6 +218,25 @@
                         $sixmac.notify("操作失败", "error");
                     }
                 });
+            },
+            batchDel: function () {
+                var checkBox = $("#dataTables tbody tr").find('input[type=checkbox]:checked');
+                var ids = checkBox.getInputId();
+                worksList.fn.deleteRow(checkBox, ids)
+            },
+            deleteRow: function (checkBox, ids) {
+                if (ids.length > 0) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("designer/works/batchDel", {ids: JSON.stringify(ids)}, function (result) {
+                            if (result > 0) {
+                                $sixmac.notify("操作成功", "success");
+                                worksList.v.dTable.ajax.reload();
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        })
+                    }, '确定删除选中的所有消息？', '确定');
+                }
             }
         }
     }

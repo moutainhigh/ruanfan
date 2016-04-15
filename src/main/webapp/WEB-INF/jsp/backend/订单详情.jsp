@@ -32,7 +32,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">订单列表</h1>
+                <h1 class="page-header">管理订单</h1>
                 <h4 style="margin-left: 10px;">——查看订单详情</h4>
             </div>
         </div>

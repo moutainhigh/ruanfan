@@ -6,7 +6,7 @@
     <%@ include file="inc/meta.jsp" %>
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>日志管理</title>
+    <title>评论列表</title>
     <%@ include file="inc/css.jsp" %>
 </head>
 
@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">评论列表</h1>
+                <h1 class="page-header">管理评论</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
