@@ -53,18 +53,31 @@ public class OrdersApi {
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     * @apiSuccess {Object} list 收藏列表
-     * @apiSuccess {Integer} list.id 收藏id
-     * @apiSuccess {Integer} list.orderNum 收藏目标id
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
-     * @apiSuccess {Integer} list.payType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Object} list 订单列表
+     * @apiSuccess {Integer} list.id 订单id
+     * @apiSuccess {String} list.orderNum 订单流水号
+     * @apiSuccess {Integer} list.type 订单类型，1=商品订单，2=套餐订单，3=秒杀订单
+     * @apiSuccess {Integer} list.payType 支付方式，1=支付宝，2=微信
+     * @apiSuccess {String} list.payTime 支付时间
+     * @apiSuccess {String} list.consignee 收货人
+     * @apiSuccess {String} list.mobile 收货人电话
+     * @apiSuccess {String} list.address 收货地址
+     * @apiSuccess {String} list.price 订单金额
+     * @apiSuccess {String} list.realPrice 实付金额
+     * @apiSuccess {String} list.demo 备注
+     * @apiSuccess {Integer} list.status 状态，0=待付款，1=待发货，2=待确认，3=待评价，4=已完成
+     * @apiSuccess {String} list.createTime 下单时间
+     * @apiSuccess {Object} list.orderInfoList 订单详情列表
+     * @apiSuccess {Integer} list.orderInfoList.id 订单详情id
+     * @apiSuccess {Integer} list.orderInfoList.type 类型，1=商品，2=秒杀，3=套餐
+     * @apiSuccess {Integer} list.orderInfoList.productId 商品id or 秒杀id
+     * @apiSuccess {String} list.orderInfoList.productName 名称
+     * @apiSuccess {String} list.orderInfoList.productPath 图片
+     * @apiSuccess {String} list.orderInfoList.colors 颜色
+     * @apiSuccess {String} list.orderInfoList.sizes 尺寸
+     * @apiSuccess {String} list.orderInfoList.materials 材质
+     * @apiSuccess {String} list.orderInfoList.price 单价
+     * @apiSuccess {Integer} list.orderInfoList.count 数量
      */
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
@@ -80,7 +93,7 @@ public class OrdersApi {
 
         for (Orders order : page.getContent()) {
             // 根据订单id查询订单详情list
-            order.setList(ordersinfoService.findListByOrderId(order.getId()));
+            order.setOrderInfoList(ordersinfoService.findListByOrderId(order.getId()));
         }
 
         Map<String, Object> dataMap = APIFactory.fitting(page);

@@ -25,7 +25,7 @@ public class Orders {
     private String demo;
     private Integer status;
     private Date createTime;
-    private List<Ordersinfo> list;
+    private List<Ordersinfo> orderInfoList;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -158,11 +158,11 @@ public class Orders {
     }
 
     @Transient
-    public List<Ordersinfo> getList() {
-        return list;
+    public List<Ordersinfo> getOrderInfoList() {
+        return orderInfoList;
     }
 
-    public void setList(List<Ordersinfo> list) {
-        this.list = list;
+    public void setOrderInfoList(List<Ordersinfo> orderInfoList) {
+        this.orderInfoList = orderInfoList;
     }
 }

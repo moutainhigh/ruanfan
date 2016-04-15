@@ -1,10 +1,10 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
-import com.sixmac.dao.*;
+import com.sixmac.dao.AfflatusDao;
+import com.sixmac.dao.ImageDao;
+import com.sixmac.dao.MessageplusDao;
 import com.sixmac.entity.Afflatus;
-import com.sixmac.entity.Image;
-import com.sixmac.entity.Message;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.AfflatusService;
@@ -188,11 +188,11 @@ public class AfflatusServiceImpl implements AfflatusService {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
                 if (StringUtils.isNotBlank(key)) {
-                    Predicate pre = cb.equal(root.get("type").as(Integer.class), "%" + key + "%");
+                    Predicate pre = cb.like(root.get("name").as(String.class), "%" + key + "%");
                     predicateList.add(pre);
                 }
                 if (StringUtils.isNotBlank(labels)) {
-                    Predicate pre = cb.equal(root.get("type").as(Integer.class), "%" + labels + "%");
+                    Predicate pre = cb.like(root.get("labels").as(String.class), "%" + labels + "%");
                     predicateList.add(pre);
                 }
                 if (null != type) {

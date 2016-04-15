@@ -115,7 +115,8 @@ public interface Constant {
     Integer ORDERS_STATUS_004 = 4;   // 已完成
 
     // 标签所属目标类型
-    Integer LABEL_AFFLATUS = 1;   // 灵感集
+    Integer LABEL_AFFLATUS = 1;      // 灵感集
+    Integer LABEL_CUSTOMPACKAGE = 2; // 设计定制套餐
 
     // 审核状态
     Integer CHECK_STATUS_DEFAULT = 0;  // 待审核

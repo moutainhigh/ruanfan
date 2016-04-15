@@ -14,6 +14,7 @@ import java.util.List;
 public class Custompackages {
     private int id;
     private String name;
+    private Integer coverId;
     private Custominfo custominfo;
     private Areas area;
     private List<PackageVo> packageList = new ArrayList<PackageVo>();
@@ -34,6 +35,14 @@ public class Custompackages {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getCoverId() {
+        return coverId;
+    }
+
+    public void setCoverId(Integer coverId) {
+        this.coverId = coverId;
     }
 
     @ManyToOne

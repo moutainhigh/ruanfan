@@ -1,5 +1,6 @@
 package com.sixmac.entity.vo;
 
+import com.sixmac.entity.Image;
 import com.sixmac.entity.Products;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ public class PackageVo {
     private Integer id;
 
     private String name;
+
+    private Image cover;
 
     private List<Products> productsList = new ArrayList<Products>();
 
@@ -30,6 +33,14 @@ public class PackageVo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Image getCover() {
+        return cover;
+    }
+
+    public void setCover(Image cover) {
+        this.cover = cover;
     }
 
     public List<Products> getProductsList() {
