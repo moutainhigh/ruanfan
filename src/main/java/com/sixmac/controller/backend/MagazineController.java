@@ -8,6 +8,7 @@ import com.sixmac.entity.Magazine;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.MagazineService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,8 +131,8 @@ public class MagazineController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                magazine.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                magazine.setCover(url);
             }
 
             if (null != id) {

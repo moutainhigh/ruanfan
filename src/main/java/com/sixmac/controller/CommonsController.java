@@ -3,6 +3,7 @@ package com.sixmac.controller;
 import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -266,11 +267,10 @@ public class CommonsController {
                 return image;
             }
 
-            Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
+            // Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
+            String url = QiNiuUploadImgUtil.upload(multipartFile);
 
-            image.setPath(map.get("imgURL").toString());
-            image.setWidth(map.get("imgWidth").toString());
-            image.setHeight(map.get("imgHeight").toString());
+            image.setPath(url);
             image.setCreateTime(new Date());
 
             imageService.create(image);

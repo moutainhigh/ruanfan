@@ -50,13 +50,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> iFindList(Integer objectId, Integer objectType) {
-        List<Image> list = imageDao.iFindList(objectId, objectType);
-
-        for (Image image : list) {
-            image.setPath(PathUtils.getRemotePath() + image.getPath());
-        }
-
-        return list;
+        return imageDao.iFindList(objectId, objectType);
     }
 
     @Override

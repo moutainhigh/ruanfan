@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Producttype;
 import com.sixmac.service.ProducttypeService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -99,8 +100,8 @@ public class ProductTypeController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                producttype.setUrl(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                producttype.setUrl(url);
             }
 
             if (null != id) {

@@ -8,6 +8,7 @@ import com.sixmac.service.CustomService;
 import com.sixmac.service.CustominfoService;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.PathUtils;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +85,8 @@ public class CustomController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                custom.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                custom.setCover(url);
             }
 
             if (null != id) {

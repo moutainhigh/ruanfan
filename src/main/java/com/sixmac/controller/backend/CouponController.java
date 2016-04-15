@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Coupon;
 import com.sixmac.service.CouponService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -126,8 +127,8 @@ public class CouponController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                coupon.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                coupon.setCover(url);
             }
 
             if (null == id) {

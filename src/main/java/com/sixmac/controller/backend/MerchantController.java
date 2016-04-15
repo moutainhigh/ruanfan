@@ -6,10 +6,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Merchants;
 import com.sixmac.service.CityService;
 import com.sixmac.service.MerchantsService;
-import com.sixmac.utils.ImageUtil;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.Md5Util;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -196,8 +193,8 @@ public class MerchantController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                merchants.setLicense(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                merchants.setLicense(url);
             }
 
             if (null == id) {

@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Brand;
 import com.sixmac.service.BrandService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -99,8 +100,8 @@ public class BrandController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                brand.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                brand.setCover(url);
             }
 
             if (null != id) {

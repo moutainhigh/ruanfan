@@ -9,6 +9,7 @@ import com.sixmac.service.PropertyinfoService;
 import com.sixmac.service.PropertysService;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.PathUtils;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,8 +127,8 @@ public class PropertysController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                propertys.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                propertys.setCover(url);
             }
 
             if (null != id) {
@@ -219,8 +220,8 @@ public class PropertysController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                propertys.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                propertys.setCover(url);
             }
 
             if (null != id) {

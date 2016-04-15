@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Banner;
 import com.sixmac.service.BannerService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -111,8 +112,8 @@ public class BannerController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                banner.setCover(map.get("imgURL").toString());
+                String coverUrl = QiNiuUploadImgUtil.upload(multipartFile);
+                banner.setCover(coverUrl);
             }
 
             if (null == id) {

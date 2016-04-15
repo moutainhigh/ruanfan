@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Vrcustom;
 import com.sixmac.service.VrcustomService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -94,8 +95,8 @@ public class VrcustomController extends CommonController{
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                vrcustom.setCover(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                vrcustom.setCover(url);
             }
 
             if (null == id) {

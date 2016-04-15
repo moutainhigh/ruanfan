@@ -8,10 +8,7 @@ import com.sixmac.entity.Users;
 import com.sixmac.service.AttentionsService;
 import com.sixmac.service.CityService;
 import com.sixmac.service.UsersService;
-import com.sixmac.utils.ImageUtil;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.Md5Util;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -193,8 +190,8 @@ public class UsersController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                users.setHeadPath(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                users.setHeadPath(url);
             }
 
             if (null == id) {

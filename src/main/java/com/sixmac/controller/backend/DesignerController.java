@@ -6,10 +6,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Designers;
 import com.sixmac.service.CityService;
 import com.sixmac.service.DesignersService;
-import com.sixmac.utils.ImageUtil;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.Md5Util;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -195,8 +192,8 @@ public class DesignerController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                designers.setProof(map.get("imgURL").toString());
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                designers.setProof(url);
             }
 
             if (null == id) {
