@@ -3,6 +3,7 @@ package com.sixmac.entity;
 import com.sixmac.entity.vo.BeanVo;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,16 +26,16 @@ public class Afflatus {
     private Integer status;
     private Date createTime;
     private String cover;
-    private List<Gams> gamsList;
-    private List<BeanVo> loveList;
-    private List<Comment> commentList;
+    private List<Gams> gamsList = new ArrayList<Gams>();
+    private List<BeanVo> loveList = new ArrayList<BeanVo>();
+    private List<Comment> commentList = new ArrayList<Comment>();
     private Integer collectNum;
     private Integer gamNum;
     private Integer reserveNum;
     private Integer designerId;
     private String designerHead;
     private String designerName;
-    private List<Image> imageList;
+    private List<Image> imageList = new ArrayList<Image>();
     private Integer isComment;
     private Integer isGam;
     private Integer isCollect;

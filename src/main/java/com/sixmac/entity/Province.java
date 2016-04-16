@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
 public class Province {
     private Integer id;
     private String name;
-    private List<City> cityList;
+    private List<City> cityList = new ArrayList<City>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

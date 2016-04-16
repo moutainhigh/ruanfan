@@ -3,6 +3,7 @@ package com.sixmac.entity;
 import com.sixmac.entity.vo.PackageVo;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Custominfo {
     private String name;
     private String path;
     private Date createTime;
-    private List<PackageVo> packageList;
+    private List<PackageVo> packageList = new ArrayList<PackageVo>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

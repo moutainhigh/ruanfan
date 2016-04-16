@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,10 +28,10 @@ public class Designers {
     private Integer isCut;
     private Integer status;
     private Date createTime;
-    private List<Gams> gamsList;
-    private List<Comment> commentList;
+    private List<Gams> gamsList = new ArrayList<Gams>();
+    private List<Comment> commentList = new ArrayList<Comment>();
     private Integer cityId;
-    private List<Works> worksList;
+    private List<Works> worksList = new ArrayList<Works>();
     private Integer fansNum;
     private Integer reserveNum;
     private Integer gamNum;

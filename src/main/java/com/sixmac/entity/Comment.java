@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Comment {
     private Integer userId;
     private String userName;
     private String userHead;
-    private List<Replys> replysList;
+    private List<Replys> replysList = new ArrayList<Replys>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class Magazine {
     private String cover;
     private Integer month;
     private Date createTime;
-    private List<Image> imageList;
+    private List<Image> imageList = new ArrayList<Image>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Propertys {
     private String labels;
     private Integer parentId;
     private Date createTime;
-    private List<Propertys> childList;
+    private List<Propertys> childList = new ArrayList<Propertys>();
     private Integer childNum;
 
     @Id

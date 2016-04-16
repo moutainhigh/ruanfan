@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Image {
     private String demo;
     private Date createTime;
     private String name;
-    private List<Label> labelList;
+    private List<Label> labelList = new ArrayList<Label>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

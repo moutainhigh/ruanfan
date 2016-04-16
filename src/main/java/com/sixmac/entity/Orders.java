@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Orders {
     private String demo;
     private Integer status;
     private Date createTime;
-    private List<Ordersinfo> orderInfoList;
+    private List<Ordersinfo> orderInfoList = new ArrayList<Ordersinfo>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

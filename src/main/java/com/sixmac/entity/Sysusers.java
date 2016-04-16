@@ -1,6 +1,7 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Sysusers {
     private Roles role;
     private Date createTime;
     private Date loginTime;
-    private List<Rolemodules> rolemodulesList;
+    private List<Rolemodules> rolemodulesList = new ArrayList<Rolemodules>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
