@@ -1,7 +1,9 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -17,6 +19,9 @@ public class Virtuals {
     private String cover;
     private String url;
     private Date createTime;
+    private Integer isGam;
+    private Integer isCollect;
+    private List<Gams> gamsList = new ArrayList<Gams>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -88,5 +93,32 @@ public class Virtuals {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public Integer getIsGam() {
+        return isGam;
+    }
+
+    public void setIsGam(Integer isGam) {
+        this.isGam = isGam;
+    }
+
+    @Transient
+    public Integer getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(Integer isCollect) {
+        this.isCollect = isCollect;
+    }
+
+    @Transient
+    public List<Gams> getGamsList() {
+        return gamsList;
+    }
+
+    public void setGamsList(List<Gams> gamsList) {
+        this.gamsList = gamsList;
     }
 }

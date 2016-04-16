@@ -21,6 +21,9 @@ public interface CollectService extends ICommonService<Collect> {
     // 根据用户id获取收藏列表
     public Page<Collect> iPage(Integer userId, Integer pageNum, Integer pageSize);
 
+    // 根据用户id和收藏类型获取收藏列表
+    public Page<Collect> iPage(Integer type, Integer userId, Integer pageNum, Integer pageSize);
+
     // 根据收藏目标id和收藏类型获取收藏列表
     public List<Collect> iFindList(Integer objectId, Integer objectType);
 }

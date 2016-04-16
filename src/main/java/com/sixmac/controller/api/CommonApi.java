@@ -7,10 +7,7 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
 import com.sixmac.service.*;
-import com.sixmac.utils.APIFactory;
-import com.sixmac.utils.DateUtils;
-import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.WebUtil;
+import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +35,12 @@ public class CommonApi extends CommonController {
 
     @Autowired
     private AfflatusService afflatusService;
+
+    @Autowired
+    private WorksService worksService;
+
+    @Autowired
+    private VirtualsService virtualsService;
 
     @Autowired
     private JournalService journalService;
@@ -59,34 +63,149 @@ public class CommonApi extends CommonController {
     @Autowired
     private ReserveService reserveService;
 
+    @Autowired
+    private ImageService imageService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
      * @apiGroup common
      * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} type 类型，1=灵感集，2=设计作品，3=VR虚拟      <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
-     * @apiSuccess {Object} list 收藏列表
-     * @apiSuccess {Integer} list.id 收藏id
-     * @apiSuccess {Integer} list.objectId 收藏目标id
-     * @apiSuccess {Integer} list.objectType 收藏目标类型，1=灵感集，2=设计作品
+     * @apiSuccess {Object} list 收藏列表  返回类型有三种，灵感集，设计作品，VR虚拟
+     * following
+     * @apiSuccess {Object} list 灵感集列表
+     * @apiSuccess {Integer} list.id 灵感集id
+     * @apiSuccess {String} list.name 灵感集名称
+     * @apiSuccess {Integer} list.type 类型：1单图   2套图
+     * @apiSuccess {Integer} list.showNum 浏览量
+     * @apiSuccess {Integer} list.shareNum 分享数
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {Integer} list.status 状态，0=待审核，1=审核通过，2=审核不通过
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {String} list.cover 封面图
+     * @apiSuccess {Integer} list.collectNum 收藏数
+     * @apiSuccess {Integer} list.gamNum 点赞数
+     * @apiSuccess {Integer} list.reserveNum 预约数
+     * @apiSuccess {Integer} list.designerId 设计师id
+     * @apiSuccess {String} list.designerHead 设计师头像
+     * @apiSuccess {String} list.designerName 设计师名称
+     * or
+     * @apiSuccess {Object} list 设计作品列表
+     * @apiSuccess {Integer} list.id 设计作品id
+     * @apiSuccess {String} list.name 设计作品名称
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {String} list.cover 封面图
+     * @apiSuccess {String} list.designerHead 设计师头像
+     * @apiSuccess {Integer} list.reserveNum 预约数
+     * @apiSuccess {Integer} list.gamNum 点赞数
+     * @apiSuccess {Integer} list.commentNum 评论数
+     * @apiSuccess {Integer} list.collectNum 收藏数
+     * or
+     * @apiSuccess {Object} list VR虚拟列表
+     * @apiSuccess {Integer} list.id VR虚拟id
+     * @apiSuccess {String} list.name VR虚拟名称
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.cover 封面图
+     * @apiSuccess {String} list.url 链接地址
+     * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {String} list.isGam 是否点赞  0=是，1=否
+     * @apiSuccess {String} list.isCollect 是否收藏  0=是，1=否
+     * @apiSuccess {Object} list.gamsList 点赞列表
+     * @apiSuccess {Integer} list.gamsList.id 点赞id
+     * @apiSuccess {String} list.gamsList.description 描述
+     * @apiSuccess {Integer} list.gamsList.gamUserId 点赞人id
+     * @apiSuccess {String} list.gamsList.gamHead 点赞人头像
      */
     @RequestMapping(value = "/collectList")
     public void collectList(HttpServletResponse response,
                             Integer userId,
+                            Integer type,
                             Integer pageNum,
                             Integer pageSize) {
-        if (null == pageNum || null == pageSize) {
+        if (null == type || null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
-        Page<Collect> page = collectService.iPage(userId, pageNum, pageSize);
+        List<Afflatus> afflatusList = new ArrayList<Afflatus>();
+        List<Works> worksList = new ArrayList<Works>();
+        List<Virtuals> virtualsList = new ArrayList<Virtuals>();
 
-        Map<String, Object> dataMap = APIFactory.fitting(page);
+        Page<Collect> page = collectService.iPage(type, userId, pageNum, pageSize);
+
+        for (Collect collect : page.getContent()) {
+            switch (type) {
+                case 1:
+                    // 灵感集
+                    Afflatus afflatus = afflatusService.getById(collect.getObjectId());
+                    afflatusList.add(afflatus);
+                    break;
+                case 2:
+                    // 设计作品
+                    Works works = worksService.getById(collect.getObjectId());
+                    worksList.add(works);
+                    break;
+                case 3:
+                    // VR虚拟
+                    Virtuals virtuals = virtualsService.getById(collect.getObjectId());
+                    virtualsList.add(virtuals);
+                    break;
+            }
+        }
+        Map<String, Object> dataMap = null;
+
+        switch (type) {
+            case 1:
+                for (Afflatus afflatus : afflatusList) {
+                    afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+                    afflatus.setDesignerId(afflatus.getDesigner().getId());
+                    afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
+                    afflatus.setDesignerName(afflatus.getDesigner().getNickName());
+
+                    // 分享、收藏、点赞、预约数
+                    afflatus.setCollectNum(collectService.iFindList(afflatus.getId(), Constant.COLLECT_AFFLATUS).size());
+
+                    afflatus.setGamNum(gamsService.iFindList(afflatus.getId(), Constant.GAM_AFFLATUS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+
+                    afflatus.setReserveNum(reserveService.iFindListByDesignerId(afflatus.getDesigner().getId()).size());
+                }
+
+                dataMap = APIFactory.fittingPlus(page, afflatusList);
+                break;
+            case 2:
+                for (Works work : worksList) {
+                    work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
+
+                    // 设计师头像、预约数、点赞数、评论数、收藏数
+                    work.setDesignerHead(PathUtils.getRemotePath() + work.getDesigner().getHead());
+
+                    work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
+
+                    work.setGamNum(gamsService.iFindList(work.getId(), Constant.GAM_WORKS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+
+                    work.setCommentNum(commentService.iFindList(work.getId(), Constant.COMMENT_WORKS).size());
+
+                    work.setCollectNum(collectService.iFindList(work.getId(), Constant.COLLECT_WORKS).size());
+                }
+
+                dataMap = APIFactory.fittingPlus(page, worksList);
+                break;
+            case 3:
+                for (Virtuals virtuals : virtualsList) {
+                    virtuals.setGamsList(gamsService.iFindList(virtuals.getId(), Constant.GAM_VIRTUALS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
+                }
+
+                dataMap = APIFactory.fittingPlus(page, virtualsList);
+                break;
+        }
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "user");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "designer", "coverId", "isCut", "style", "type", "area");
         WebUtil.printApi(response, result);
     }
 

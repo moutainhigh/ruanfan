@@ -102,6 +102,41 @@ public class CollectServiceImpl implements CollectService {
                     Predicate pre = cb.equal(root.get("user").get("id").as(Integer.class), userId);
                     predicateList.add(pre);
                 }
+                Predicate pre1 = cb.notEqual(root.get("user").get("id").as(Integer.class), 0);
+                predicateList.add(pre1);
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
+
+    @Override
+    public Page<Collect> iPage(Integer type, Integer userId, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+
+        Page<Collect> page = collectDao.findAll(new Specification<Collect>() {
+            @Override
+            public Predicate toPredicate(Root<Collect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+                if (type != null) {
+                    Predicate pre = cb.equal(root.get("objectType").as(Integer.class), type);
+                    predicateList.add(pre);
+                }
+                if (userId != null) {
+                    Predicate pre = cb.equal(root.get("user").get("id").as(Integer.class), userId);
+                    predicateList.add(pre);
+                }
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }

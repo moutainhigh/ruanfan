@@ -72,10 +72,12 @@ public interface Constant {
     Integer GAM_AFFLATUS = 2;   // 灵感集
     Integer GAM_DESIGNERS = 3;  // 设计师
     Integer GAM_WORKS = 4;      // 设计作品
+    Integer GAM_VIRTUALS = 5;   // VR虚拟
 
     // 收藏目标类型
     Integer COLLECT_AFFLATUS = 1;  // 灵感集
     Integer COLLECT_WORKS = 2;     // 设计作品
+    Integer COLLECT_VIRTUALS = 3;  // VR虚拟
 
     // 评论目标类型
     Integer COMMENT_DESIGNERS = 1;  // 设计师

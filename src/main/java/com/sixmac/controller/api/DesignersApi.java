@@ -390,12 +390,7 @@ public class DesignersApi extends CommonController {
             }
         }
 
-        // 获取每个独立设计师的最新三张作品图片
-        if (designers.getType() == Constant.DESIGNER_TYPE_ONE) {
-            designers.setWorksList(worksService.iFindThreeNewWorksByDesignerId(designerId));
-        } else {
-            designers.setWorksList(new ArrayList<Works>());
-        }
+        designers.setWorksList(worksService.iFindThreeNewWorksByDesignerId(designerId));
 
         Result obj = new Result(true).data(createMap("designerInfo", designers));
         String result = JsonUtil.obj2ApiJson(obj, "city", "comment", "password", "designer", "isCheck", "objectId", "objectType", "gamsList", "thuPath", "width", "height", "user", "labelList", "isCut");

@@ -81,29 +81,18 @@ public class WorksServiceImpl implements WorksService {
 
     @Override
     public List<Works> iFindThreeNewWorksByDesignerId(Integer designerId) {
-        List<Works> tempList = new ArrayList<Works>();
         Image image = null;
 
         List<Works> worksList = worksDao.iFindThreeNewWorksByDesignerId(designerId);
 
         if (null != worksList) {
-            if (worksList.size() > 3) {
-                tempList.add(worksList.get(0));
-                tempList.add(worksList.get(1));
-                tempList.add(worksList.get(2));
-            } else {
-                for (Works works : worksList) {
-                    tempList.add(works);
-                }
-            }
-
             // 读取作品信息，并根据作品信息获取对应的图片信息
-            for (Works work : tempList) {
+            for (Works work : worksList) {
                 image = imageDao.findOne(work.getCoverId());
                 work.setCover(PathUtils.getRemotePath() + image.getPath());
             }
         }
-        return tempList;
+        return worksList;
     }
 
     @Override

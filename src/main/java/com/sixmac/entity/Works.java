@@ -24,7 +24,7 @@ public class Works {
     private Integer gamNum;
     private Integer commentNum;
     private Integer collectNum;
-    private List<Image> imageList;
+    private List<Image> imageList = new ArrayList<Image>();
     private List<Comment> commentList = new ArrayList<Comment>();
     private List<Gams> gamsList = new ArrayList<Gams>();
     private Integer isGam;
