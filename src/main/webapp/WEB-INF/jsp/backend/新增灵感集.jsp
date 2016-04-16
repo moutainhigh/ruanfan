@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group" id="labelsDiv" style="display: none">
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">标签:</label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="labels" name="labels" maxlength="500" value="${afflatus.labels}" placeholder="使用空格隔开多个标签"/>
@@ -172,7 +172,6 @@
 
                         // 单图时，隐藏名称和标签
                         $('#nameDiv').css('display', 'none');
-                        $('#labelsDiv').css('display', 'none');
 
                         if (afflatus.v.imageSize == 0) {
                             $("#lastImageDiv").css('display', '');
@@ -185,7 +184,6 @@
 
                         // 套图时，显示名称和标签
                         $('#nameDiv').css('display', '');
-                        $('#labelsDiv').css('display', '');
 
                         $("#lastImageDiv").css('display', '');
                     }
@@ -200,7 +198,6 @@
                     if (type == 2) {
                         // 套图时，显示名称和标签
                         $('#nameDiv').css('display', '');
-                        $('#labelsDiv').css('display', '');
 
                         $('#name').val($('#tempName').val());
                         $('#labels').val($('#tempLabels').val());
