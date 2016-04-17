@@ -23,5 +23,8 @@ public interface ReserveDao extends JpaRepository<Reserve, Integer>, JpaSpecific
 
     @Query("select a from Reserve a where a.objectId = ?1 ")
     public Page<Reserve> iFindPageByDesignerId(Integer objectId, Pageable pageable);
+
+    @Query("select a from Reserve a where a.user.id = ?1 and a.objectId = ?2 and a.type = ?3")
+    public Reserve iFindOneByParams(Integer userId, Integer objectId, Integer type);
 }
 

@@ -162,9 +162,11 @@ public class CommonApi extends CommonController {
         switch (type) {
             case 1:
                 for (Afflatus afflatus : afflatusList) {
-                    afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+                    if (null == afflatus) continue;
+
+                    afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
                     afflatus.setDesignerId(afflatus.getDesigner().getId());
-                    afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
+                    afflatus.setDesignerHead(afflatus.getDesigner().getHead());
                     afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
                     // 分享、收藏、点赞、预约数
@@ -179,10 +181,12 @@ public class CommonApi extends CommonController {
                 break;
             case 2:
                 for (Works work : worksList) {
-                    work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
+                    if (null == work) continue;
+
+                    work.setCover(imageService.getById(work.getCoverId()).getPath());
 
                     // 设计师头像、预约数、点赞数、评论数、收藏数
-                    work.setDesignerHead(PathUtils.getRemotePath() + work.getDesigner().getHead());
+                    work.setDesignerHead(work.getDesigner().getHead());
 
                     work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
 
@@ -197,6 +201,8 @@ public class CommonApi extends CommonController {
                 break;
             case 3:
                 for (Virtuals virtuals : virtualsList) {
+                    if (null == virtuals) continue;
+
                     virtuals.setGamsList(gamsService.iFindList(virtuals.getId(), Constant.GAM_VIRTUALS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
                 }
 
@@ -406,6 +412,13 @@ public class CommonApi extends CommonController {
                         String remark) {
         if (null == userId || null == type || null == objectId || null == name || null == mobile || null == email || null == styleId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        // 已经预约过的，不允许再次预约
+        Reserve tempReserve = reserveService.iFindOneByParams(userId, objectId, type);
+        if (null != tempReserve) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0025));
             return;
         }
 

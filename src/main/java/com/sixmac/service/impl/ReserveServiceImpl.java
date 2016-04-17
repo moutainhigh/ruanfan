@@ -110,6 +110,11 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
+    public Reserve iFindOneByParams(Integer userId, Integer objectId, Integer type) {
+        return reserveDao.iFindOneByParams(userId, objectId, type);
+    }
+
+    @Override
     public List<Reserve> iFindListByDesignerId(Integer designerId) {
         return reserveDao.iFindListByDesignerId(designerId, Constant.RESERVE_TYPE_DESIGNER);
     }
