@@ -166,4 +166,46 @@ public class MerchantsServiceImpl implements MerchantsService {
 
         messageplusDao.save(message);
     }
+
+    @Override
+    public Page<Merchants> page(Integer styleId, Integer pageNum, Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+
+        Page<Merchants> page = merchantsDao.findAll(new Specification<Merchants>() {
+            @Override
+            public Predicate toPredicate(Root<Merchants> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate result = null;
+                List<Predicate> predicateList = new ArrayList<Predicate>();
+
+                if (null != styleId) {
+                    Predicate pre = cb.equal(root.get("style").get("id").as(Integer.class), styleId);
+                    predicateList.add(pre);
+                }
+
+                // 审核通过的商户才可以被查询
+                Predicate pre1 = cb.equal(root.get("isCheck").as(Integer.class), Constant.CHECK_STATUS_SUCCESS);
+                predicateList.add(pre1);
+
+                // 没有封禁的商户才可以被查询
+                Predicate pre2 = cb.equal(root.get("status").as(Integer.class), Constant.BANNED_STATUS_YES);
+                predicateList.add(pre2);
+
+                // 没有被逻辑删除的商户才可以被查询
+                Predicate pre3 = cb.equal(root.get("isCut").as(Integer.class), Constant.IS_CUT_NO);
+                predicateList.add(pre3);
+
+                if (predicateList.size() > 0) {
+                    result = cb.and(predicateList.toArray(new Predicate[]{}));
+                }
+
+                if (result != null) {
+                    query.where(result);
+                }
+                return query.getGroupRestriction();
+            }
+
+        }, pageRequest);
+
+        return page;
+    }
 }

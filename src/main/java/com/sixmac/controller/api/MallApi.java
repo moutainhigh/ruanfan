@@ -205,6 +205,7 @@ public class MallApi extends CommonController {
      * @apiGroup mall
      * @apiParam {Integer} type 分类，1=单品，2=艺术品，3=设计师品牌
      * @apiParam {String} name 名称
+     * @apiParam {Integer} merchantId 商户id
      * @apiParam {Integer} brandId 品牌id
      * @apiParam {Integer} sortId 产品种类id
      * @apiParam {Integer} isHot 是否首页推荐，0=否，1=是
@@ -234,6 +235,7 @@ public class MallApi extends CommonController {
     public void list(HttpServletResponse response,
                      Integer type,
                      String name,
+                     Integer merchantId,
                      Integer brandId,
                      Integer sortId,
                      Integer isHot,
@@ -244,7 +246,7 @@ public class MallApi extends CommonController {
             return;
         }
 
-        Page<Products> page = productsService.iPage(type, name, brandId, sortId, isHot, pageNum, pageSize);
+        Page<Products> page = productsService.iPage(type, name, merchantId, brandId, sortId, isHot, pageNum, pageSize);
 
         for (Products products : page.getContent()) {
             products.setCover(PathUtils.getRemotePath() + imageService.getById(products.getCoverId()).getPath());

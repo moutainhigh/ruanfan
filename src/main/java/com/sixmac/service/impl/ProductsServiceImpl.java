@@ -9,6 +9,7 @@ import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Products;
 import com.sixmac.service.ProductsService;
 import com.sixmac.utils.PathUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -88,7 +89,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Products> iPage(Integer type, String name, Integer brandId, Integer sortId, Integer isHot, Integer pageNum, Integer pageSize) {
+    public Page<Products> iPage(Integer type, String name, Integer merchantId, Integer brandId, Integer sortId, Integer isHot, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Products> page = productsDao.findAll(new Specification<Products>() {
@@ -100,8 +101,12 @@ public class ProductsServiceImpl implements ProductsService {
                     Predicate pre = cb.equal(root.get("type").as(Integer.class), type);
                     predicateList.add(pre);
                 }
-                if (name != null) {
+                if (StringUtils.isNotBlank(name)) {
                     Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
+                    predicateList.add(pre);
+                }
+                if (merchantId != null) {
+                    Predicate pre = cb.equal(root.get("merchant").get("id").as(Integer.class), merchantId);
                     predicateList.add(pre);
                 }
                 if (brandId != null) {

@@ -22,4 +22,6 @@ public interface MerchantsService extends ICommonService<Merchants> {
 
     // 审核商户
     public void changeCheck(Integer merchantId, Integer isCheck, String reason);
+
+    public Page<Merchants> page(Integer styleId, Integer pageNum, Integer pageSize);
 }
