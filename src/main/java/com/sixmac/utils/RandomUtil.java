@@ -22,9 +22,9 @@ public class RandomUtil {
 
     public static String getCode() {
         StringBuffer sb = new StringBuffer("");
-        // 产生4位随机数
+        // 产生6位随机数
         Random rand = new Random();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             int m = rand.nextInt(9);
             sb.append(m);
         }
