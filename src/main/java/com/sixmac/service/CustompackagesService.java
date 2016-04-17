@@ -12,5 +12,5 @@ import java.util.List;
 public interface CustompackagesService extends ICommonService<Custompackages> {
 
     // 根据户型id查询对应的套餐列表
-    public List<PackageVo> findListByCustominfoId(Integer custominfoId);
+    public List<PackageVo> findListByCustominfoId(Integer custominfoId, Integer areaId);
 }

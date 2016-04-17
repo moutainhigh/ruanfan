@@ -13,4 +13,7 @@ public interface CustompackagesDao extends JpaRepository<Custompackages, Integer
 
     @Query("select a from Custompackages a where a.custominfo.id = ?1")
     public List<Custompackages> findListByCustominfoId(Integer custominfoId);
+
+    @Query("select a from Custompackages a where a.custominfo.id = ?1 and a.area.id = ?2")
+    public List<Custompackages> findListByCustominfoId(Integer custominfoId, Integer areaId);
 }

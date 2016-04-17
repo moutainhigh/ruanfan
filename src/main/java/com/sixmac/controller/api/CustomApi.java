@@ -75,7 +75,8 @@ public class CustomApi extends CommonController {
      * @api {post} /api/custom/customList 根据楼盘id查询户型列表
      * @apiName custom.customList
      * @apiGroup custom
-     * @apiParam {Integer} customId 楼盘id
+     * @apiParam {Integer} customId 楼盘id    </必传>
+     * @apiParam {Integer} areaId 区域id
      * @apiSuccess {Object} list 户型列表
      * @apiSuccess {Integer} list.id 户型id
      * @apiSuccess {String} list.name 户型名称
@@ -84,7 +85,7 @@ public class CustomApi extends CommonController {
      * @apiSuccess {Object} list.packageList 创建时间
      */
     @RequestMapping(value = "/customList")
-    public void customList(HttpServletResponse response, Integer customId) {
+    public void customList(HttpServletResponse response, Integer customId, Integer areaId) {
         if (null == customId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -93,7 +94,7 @@ public class CustomApi extends CommonController {
         List<Custominfo> list = custominfoService.findListByCustomId(customId);
 
         for (Custominfo customInfo : list) {
-            customInfo.setPackageList(customPackageService.findListByCustominfoId(customInfo.getId()));
+            customInfo.setPackageList(customPackageService.findListByCustominfoId(customInfo.getId(), areaId));
         }
 
         Result obj = new Result(true).data(createMap("list", list));
@@ -105,7 +106,8 @@ public class CustomApi extends CommonController {
      * @api {post} /api/custom/findList 根据楼盘名称查询户型列表
      * @apiName custom.findList
      * @apiGroup custom
-     * @apiParam {String} name 楼盘名称
+     * @apiParam {String} name 楼盘名称      </必传>
+     * @apiParam {Integer} areaId 区域id
      * @apiSuccess {Object} list 户型列表
      * @apiSuccess {Integer} list.id 户型id
      * @apiSuccess {String} list.name 户型名称
@@ -115,7 +117,8 @@ public class CustomApi extends CommonController {
      */
     @RequestMapping(value = "/findList")
     public void findList(HttpServletResponse response,
-                         String name) {
+                         String name,
+                         Integer areaId) {
         List<Custom> list = customService.findListByParams(name);
         List<Custominfo> custominfoList = new ArrayList<Custominfo>();
 
@@ -123,7 +126,7 @@ public class CustomApi extends CommonController {
             custominfoList = custominfoService.findListByCustomId(custom.getId());
 
             for (Custominfo customInfo : custominfoList) {
-                customInfo.setPackageList(customPackageService.findListByCustominfoId(customInfo.getId()));
+                customInfo.setPackageList(customPackageService.findListByCustominfoId(customInfo.getId(), areaId));
             }
         }
 

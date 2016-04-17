@@ -86,7 +86,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
     }
 
     @Override
-    public List<PackageVo> findListByCustominfoId(Integer custominfoId) {
+    public List<PackageVo> findListByCustominfoId(Integer custominfoId, Integer areaId) {
         List<Packageproducts> packageproductsList = null;
         PackageVo packageVo = null;
         List<PackageVo> packageVoList = new ArrayList<PackageVo>();
@@ -94,7 +94,13 @@ public class CustompackagesServiceImpl implements CustompackagesService {
         Image image = null;
 
         // 根据户型id查询户型套餐列表
-        List<Custompackages> list = custompackagesDao.findListByCustominfoId(custominfoId);
+        List<Custompackages> list = null;
+
+        if (null == areaId) {
+            list = custompackagesDao.findListByCustominfoId(custominfoId);
+        } else {
+            list = custompackagesDao.findListByCustominfoId(custominfoId, areaId);
+        }
 
         for (Custompackages customPackage : list) {
             packageVo = new PackageVo();
