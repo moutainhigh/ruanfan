@@ -98,7 +98,6 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="button" class="btn btn-primary" onclick="afflatus.fn.goBack()">返回</button>
                                     <a href="backend/afflatus/index" type="button" class="btn btn-primary">返回</a>
                                 </div>
                             </div>
@@ -208,9 +207,6 @@
                         }
                     });
                 });
-            },
-            goBack: function () {
-                window.location.href = "backend/afflatus/index";
             }
         }
     }
