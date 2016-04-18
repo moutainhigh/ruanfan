@@ -79,7 +79,7 @@ public class JournalApi extends CommonController {
         // 获取杂志的详情图片列表
         for (Journal journal : page.getContent()) {
             journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
-            journal.setGamsNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
+            journal.setGamNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
             journal.setCommentNum(commentService.iFindList(journal.getId(), Constant.COMMENT_JOURNAL).size());
         }
 
@@ -131,7 +131,7 @@ public class JournalApi extends CommonController {
         journalService.update(journal);
 
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
-        journal.setGamsNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
+        journal.setGamNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
         journal.setCommentNum(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL).size());
         journal.setCommentList(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL));
         journal.setGamsList(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));

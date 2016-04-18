@@ -21,7 +21,7 @@ public class Journal {
     private Integer shareNum;
     private Date createTime;
     private List<Image> imageList = new ArrayList<Image>();
-    private Integer gamsNum;
+    private Integer gamNum;
     private Integer isGam;
     private Integer isForward;
     private Integer commentNum;
@@ -100,12 +100,12 @@ public class Journal {
     }
 
     @Transient
-    public Integer getGamsNum() {
-        return gamsNum;
+    public Integer getGamNum() {
+        return gamNum;
     }
 
-    public void setGamsNum(Integer gamsNum) {
-        this.gamsNum = gamsNum;
+    public void setGamNum(Integer gamNum) {
+        this.gamNum = gamNum;
     }
 
     @Transient

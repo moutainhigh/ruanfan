@@ -69,7 +69,7 @@ public class JournalController extends CommonController {
         Page<Journal> page = journalService.iPage(userId, pageNum, length);
 
         for (Journal journal : page.getContent()) {
-            journal.setGamsNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+            journal.setGamNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
             journal.setCommentNum(commentService.iFindList(journal.getId(), Constant.COMMENT_JOURNAL).size());
         }
 
@@ -87,7 +87,7 @@ public class JournalController extends CommonController {
             Journal journal = journalService.getById(id);
             model.addAttribute("journal", journal);
             if (null != journal) {
-                journal.setGamsNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
+                journal.setGamNum(gamsService.iFindList(journal.getId(), Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
                 journal.setCommentNum(commentService.iFindList(journal.getId(), Constant.COMMENT_JOURNAL).size());
                 list = imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL);
 
