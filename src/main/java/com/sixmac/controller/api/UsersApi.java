@@ -49,6 +49,9 @@ public class UsersApi extends CommonController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private AttentionsService attentionsService;
+
     /**
      * @api {post} /api/users/sendCode 发送验证码
      * @apiName users.sendCode
@@ -301,6 +304,7 @@ public class UsersApi extends CommonController {
      * @apiName users.info
      * @apiGroup users
      * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} loginUserId 登录用户id
      * @apiSuccess {Object} userInfo 用户信息
      * @apiSuccess {Integer} userInfo.id 用户id
      * @apiSuccess {String} userInfo.mobile 手机号
@@ -313,9 +317,10 @@ public class UsersApi extends CommonController {
      * @apiSuccess {Integer} userInfo.cityId 所在城市id
      * @apiSuccess {Integer} userInfo.fansNum 粉丝数
      * @apiSuccess {Integer} userInfo.attentionNUm 关注数
+     * @apiSuccess {Integer} userInfo.isAttention 是否关注，0=是，1=否
      */
     @RequestMapping(value = "/info")
-    public void info(HttpServletResponse response, Integer userId) {
+    public void info(HttpServletResponse response, Integer userId, Integer loginUserId) {
         if (null == userId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
@@ -326,6 +331,11 @@ public class UsersApi extends CommonController {
         if (null == users) {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
             return;
+        }
+
+        if (null != loginUserId) {
+            Attentions attentions = attentionsService.iFindOne(loginUserId, userId, Constant.ATTENTION_USERS);
+            users.setIsAttention(null == attentions ? Constant.GAM_LOVE_NO : Constant.GAM_LOVE_YES);
         }
 
         users.setCityId(users.getCity().getId());

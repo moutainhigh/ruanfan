@@ -24,6 +24,7 @@ public class Users {
     private Integer cityId;
     private Integer fansNum;
     private Integer attentionNum;
+    private Integer isAttention;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -152,5 +153,14 @@ public class Users {
 
     public void setAttentionNum(Integer attentionNum) {
         this.attentionNum = attentionNum;
+    }
+
+    @Transient
+    public Integer getIsAttention() {
+        return isAttention;
+    }
+
+    public void setIsAttention(Integer isAttention) {
+        this.isAttention = isAttention;
     }
 }
