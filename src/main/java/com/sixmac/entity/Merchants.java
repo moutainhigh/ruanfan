@@ -21,6 +21,8 @@ public class Merchants {
     private Styles style;
     private City city;
     private String description;
+    private Integer showNum;
+    private Integer count;
     private Integer isCheck;
     private Integer isCut;
     private Integer status;
@@ -126,6 +128,22 @@ public class Merchants {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public Integer getIsCheck() {

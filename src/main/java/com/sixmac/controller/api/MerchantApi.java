@@ -42,6 +42,8 @@ public class MerchantApi extends CommonController {
      * @apiSuccess {String} list.labels 标签
      * @apiSuccess {String} list.type 类型
      * @apiSuccess {String} list.description 描述
+     * @apiSuccess {Integer} list.showNum 人气
+     * @apiSuccess {Integer} list.count 销量
      * @apiSuccess {String} list.createTime 创建时间
      */
     @RequestMapping(value = "/list")
