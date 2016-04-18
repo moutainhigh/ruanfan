@@ -173,8 +173,8 @@ public class OrdersApi {
 
             // 获取优惠券总金额
             Double allCouponPrice = 0.0;
-            couponIds = couponIds + ",";
             if (StringUtils.isNotBlank(couponIds)) {
+                couponIds += ",";
                 String[] couIds = couponIds.split(",");
                 for (String couponId : couIds) {
                     usersService.usedCoupon(userId, Integer.parseInt(couponId));
@@ -318,6 +318,7 @@ public class OrdersApi {
             // 获取减免金额
             Double reducePrice = 0.0;
             if (StringUtils.isNotBlank(couponIds)) {
+                couponIds += ",";
                 int[] couIds = JsonUtil.json2Obj(couponIds, int[].class);
                 for (int couponId : couIds) {
                     usersService.usedCoupon(userId, couponId);
