@@ -359,7 +359,7 @@ public class CommonApi extends CommonController {
      * @apiGroup common
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} objectId 评论对象id        <必传 />
-     * @apiParam {Integer} objectType 评论对象类型，1=设计师，2=设计作品，3=灵感集     <必传 />
+     * @apiParam {Integer} objectType 评论对象类型，1=设计师，2=设计作品，3=灵感集，4=日志     <必传 />
      * @apiParam {String} content 评论内容        <必传 />
      */
     @RequestMapping("/comment")
