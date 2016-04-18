@@ -78,7 +78,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<Orders> iPage(Integer userId, Integer pageNum, Integer pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Orders> page = ordersDao.findAll(new Specification<Orders>() {
             @Override
