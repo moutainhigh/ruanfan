@@ -124,6 +124,9 @@ public class JournalApi extends CommonController {
             return;
         }
 
+        journal.setShowNum(journal.getShowNum() + 1);
+        journalService.update(journal);
+
         journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
         journal.setGamsNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());

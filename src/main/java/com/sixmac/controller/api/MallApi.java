@@ -282,7 +282,8 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.colors 颜色
      * @apiSuccess {String} productInfo.sizes 尺寸
      * @apiSuccess {String} productInfo.materials 材质
-     * @apiSuccess {String} productInfo.count 交易数量（人气？）
+     * @apiSuccess {String} productInfo.showNum 人气
+     * @apiSuccess {String} productInfo.count 交易数量
      * @apiSuccess {String} productInfo.description 描述
      * @apiSuccess {String} productInfo.cover 封面图
      * @apiSuccess {Integer} productInfo.merchantId 商户id
@@ -333,10 +334,13 @@ public class MallApi extends CommonController {
             return;
         }
 
-        products.setCover(PathUtils.getRemotePath() + imageService.getById(products.getCoverId()).getPath());
+        products.setShowNum(products.getShowNum() + 1);
+        productsService.update(products);
+
+        products.setCover(imageService.getById(products.getCoverId()).getPath());
         products.setMerchantId(products.getMerchant().getId());
         products.setMerchantName(products.getMerchant().getNickName());
-        products.setMerchantHead(PathUtils.getRemotePath() + products.getMerchant().getHead());
+        products.setMerchantHead(products.getMerchant().getHead());
         products.setMerchantDescription(products.getMerchant().getDescription());
         products.setBrandId(products.getBrand().getId());
         products.setBrandName(products.getBrand().getName());
@@ -445,7 +449,8 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} packageInfo.oldPrice 原价
      * @apiSuccess {String} packageInfo.labels 标签
      * @apiSuccess {String} packageInfo.description 描述
-     * @apiSuccess {Integer} packageInfo.count 交易数量（人气？）
+     * @apiSuccess {Integer} packageInfo.showNum 人气
+     * @apiSuccess {Integer} packageInfo.count 交易数量
      * @apiSuccess {String} packageInfo.createTime 创建时间
      * @apiSuccess {Object} packageInfo.productsList 商品列表
      * @apiSuccess {Integer} packageInfo.productsList.id 商品id
@@ -503,6 +508,9 @@ public class MallApi extends CommonController {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
+
+        packages.setShowNum(packages.getShowNum() + 1);
+        packagesService.update(packages);
 
         // 设置封面图路径和品牌信息
         packages.setCover(PathUtils.getRemotePath() + imageService.getById(packages.getCoverId()).getPath());

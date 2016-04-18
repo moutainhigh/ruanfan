@@ -22,6 +22,7 @@ public class Packages {
     private String labels;
     private Integer coverId;
     private String description;
+    private Integer showNum;
     private Integer count;
     private Date createTime;
     private List<Products> productsList = new ArrayList<Products>();
@@ -107,6 +108,14 @@ public class Packages {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
     }
 
     public Integer getCount() {

@@ -206,6 +206,11 @@ public class MerchantsServiceImpl implements MerchantsService {
 
         }, pageRequest);
 
+        for (Merchants merchant : page.getContent()) {
+            merchant.setShowNum(merchant.getShowNum() + 1);
+            merchantsDao.save(merchant);
+        }
+
         return page;
     }
 }

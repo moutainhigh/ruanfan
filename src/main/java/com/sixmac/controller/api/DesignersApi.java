@@ -352,6 +352,9 @@ public class DesignersApi extends CommonController {
             return;
         }
 
+        designers.setShowNum(designers.getShowNum() + 1);
+        designersService.update(designers);
+
         designers.setCityId(designers.getCity().getId());
         designers.setHead(PathUtils.getRemotePath() + designers.getHead());
 

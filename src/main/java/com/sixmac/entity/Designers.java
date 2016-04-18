@@ -19,6 +19,7 @@ public class Designers {
     private Integer type;
     private String proof;
     private City city;
+    private Integer showNum;
     private Integer star;
     private String price;
     private String content;
@@ -106,6 +107,14 @@ public class Designers {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
     }
 
     public Integer getStar() {

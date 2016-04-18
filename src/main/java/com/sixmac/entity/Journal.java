@@ -16,6 +16,7 @@ public class Journal {
     private Integer id;
     private Users user;
     private String content;
+    private Integer showNum;
     private Integer forwardNum;
     private Integer shareNum;
     private Date createTime;
@@ -53,6 +54,14 @@ public class Journal {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
     }
 
     public Integer getForwardNum() {
