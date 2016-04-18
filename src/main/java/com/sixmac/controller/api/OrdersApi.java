@@ -9,6 +9,7 @@ import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -159,6 +160,8 @@ public class OrdersApi {
         // 当订单类型为商品订单时，根据商家id拆分为不用的商品订单
         if (type == 1) {
             List<String> mapList = new ArrayList<String>();
+            Ordersinfo ordersinfo = null;
+            Products product = null;
             JSONArray orderinfos = JSONArray.fromObject(orderInfoList);
             Map<String, Object> mapInfo = null;
             for (Object orderMap : orderinfos) {
@@ -167,6 +170,22 @@ public class OrdersApi {
 
                 mapList.add(mapInfo.get("merchantId").toString());
             }
+
+            // 获取优惠券总金额
+            Double allCouponPrice = 0.0;
+            if (StringUtils.isNotBlank(couponIds)) {
+                int[] couIds = JsonUtil.json2Obj(couponIds, int[].class);
+                for (int couponId : couIds) {
+                    usersService.usedCoupon(userId, couponId);
+                    allCouponPrice += Double.parseDouble(couponService.getById(couponId).getMoney());
+                }
+            }
+
+            // 获取积分兑换的总金额
+            Double allScoreMoney = Double.parseDouble((score / Constant.scoreMoney) + "");
+
+            // 订单总额
+            Double allPrice = 0.0;
 
             // 循环读取商户id集合，依此根据商户id生成对应的商家订单
             for (String merchantIdStr : mapList) {
@@ -189,16 +208,42 @@ public class OrdersApi {
                 for (Object orderMap : orderinfos) {
                     // 获取单个订单详情
                     mapInfo = JsonUtil.jsontoMap(orderMap);
+                    if (mapInfo.get("merchantId").equals(merchantIdStr)) {
+                        ordersinfo = new Ordersinfo();
+                        ordersinfo.setOrder(orders);
+                        ordersinfo.setType(Integer.parseInt(mapInfo.get("type").toString()));
+                        product = productsService.getById(Integer.parseInt(mapInfo.get("id").toString()));
+                        ordersinfo.setProductId(product.getId());
+                        ordersinfo.setProductName(mapInfo.get("name").toString());
+                        ordersinfo.setProductPath(mapInfo.get("path").toString());
+                        ordersinfo.setColors(mapInfo.get("colors").toString());
+                        ordersinfo.setSizes(mapInfo.get("sizes").toString());
+                        ordersinfo.setMaterials(mapInfo.get("materials").toString());
+                        ordersinfo.setPrice(mapInfo.get("price").toString());
+                        ordersinfo.setCount(Integer.parseInt(mapInfo.get("count").toString()));
+
+                        // 增加订单详情
+                        ordersinfoService.create(ordersinfo);
+
+                        // 修改商品交易数量
+                        product.setCount(product.getCount() + ordersinfo.getCount());
+                        productsService.update(product);
+
+                        // 判断是否传入了购物车id，如果传入，则表示该订单详情是从购物车中添加的，此时应该删除该购物车信息
+                        if (null != mapInfo.get("shopCarId") && !mapInfo.get("shopCarId").equals("")) {
+                            shopcarService.deleteById(Integer.parseInt(mapInfo.get("shopCarId").toString()));
+                        }
+
+                        allPrice += Double.parseDouble(ordersinfo.getPrice()) * ordersinfo.getCount();
+                    }
                 }
+
+                // 回写订单金额和实付金额
+                orders.setPrice(allPrice.toString());
+                orders.setRealPrice((allPrice - allCouponPrice / mapList.size() - allScoreMoney / mapList.size()) + "");
+                ordersService.update(orders);
             }
         } else {
-            // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数
-            if (null != score && score > 0) {
-                Users users = usersService.getById(userId);
-                users.setScore(users.getScore() - score);
-                usersService.update(users);
-            }
-
             // 当订单类型为秒杀订单或套餐订单时，直接生成同一张订单
             Orders orders = new Orders();
             orders.setOrderNum(System.currentTimeMillis() + "");
@@ -271,15 +316,24 @@ public class OrdersApi {
             orders.setPrice(price.toString());
             // 获取减免金额
             Double reducePrice = 0.0;
-            int[] couIds = JsonUtil.json2Obj(couponIds, int[].class);
-            for (int couponId : couIds) {
-                usersService.usedCoupon(userId, couponId);
-                reducePrice += Double.parseDouble(couponService.getById(couponId).getMoney());
+            if (StringUtils.isNotBlank(couponIds)) {
+                int[] couIds = JsonUtil.json2Obj(couponIds, int[].class);
+                for (int couponId : couIds) {
+                    usersService.usedCoupon(userId, couponId);
+                    reducePrice += Double.parseDouble(couponService.getById(couponId).getMoney());
+                }
             }
             orders.setRealPrice((price - reducePrice) + "");
 
             // 回写订单总金额和实付金额
             ordersService.update(orders);
+        }
+
+        // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数
+        if (null != score && score > 0) {
+            Users users = usersService.getById(userId);
+            users.setScore(users.getScore() - score);
+            usersService.update(users);
         }
 
         WebUtil.printApi(response, new Result(true));

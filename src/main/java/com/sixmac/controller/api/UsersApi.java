@@ -151,8 +151,7 @@ public class UsersApi extends CommonController {
             users.setHeadPath(Constant.DEFAULT_HEAD_PATH);
 
             try {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                users.setHeadPath(map.get("imgURL").toString());
+                users.setHeadPath(QiNiuUploadImgUtil.upload(multipartFile));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -366,8 +365,7 @@ public class UsersApi extends CommonController {
         try {
             MultipartFile multipartFile = multipartRequest.getFile("head");
             if (null != multipartFile) {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                users.setHeadPath(map.get("imgURL").toString());
+                users.setHeadPath(QiNiuUploadImgUtil.upload(multipartFile));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -574,8 +572,7 @@ public class UsersApi extends CommonController {
         feedback.setDescription(content);
         if (null != multipartFile) {
             try {
-                Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
-                feedback.setPath(map.get("imgURL").toString());
+                feedback.setPath(QiNiuUploadImgUtil.upload(multipartFile));
             } catch (Exception e) {
                 e.printStackTrace();
             }

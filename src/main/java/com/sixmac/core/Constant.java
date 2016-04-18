@@ -8,6 +8,9 @@ public interface Constant {
     // 首页查询天数
     Integer days = 7;
 
+    // 积分换算比例
+    Integer scoreMoney = 1000;
+
     // 管理员id
     Integer ADMIN_ID = 1;
 

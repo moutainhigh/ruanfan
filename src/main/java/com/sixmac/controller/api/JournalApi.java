@@ -171,7 +171,6 @@ public class JournalApi extends CommonController {
 
         try {
             // 保存日志图片集合
-            Map<String, Object> map = null;
             Image image = null;
 
             // 获取图片集合
@@ -180,11 +179,8 @@ public class JournalApi extends CommonController {
                 String fileName = fileList.next();
                 MultipartFile file = multipartRequest.getFile(fileName);
                 if (null != file) {
-                    map = ImageUtil.saveImage(request, file, false);
                     image = new Image();
-                    image.setPath(map.get("imgURL").toString());
-                    image.setWidth(map.get("imgWidth").toString());
-                    image.setHeight(map.get("imgHeight").toString());
+                    image.setPath(QiNiuUploadImgUtil.upload(file));
                     image.setObjectId(journal.getId());
                     image.setObjectType(Constant.IMAGE_JOURNAL);
                     image.setCreateTime(new Date());
