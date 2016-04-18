@@ -25,10 +25,8 @@ public class CouponApi extends CommonController {
 
     /**
      * @api {post} /api/coupon/add 添加优惠券
-     *
      * @apiName coupon.add
      * @apiGroup coupon
-     *
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {String} couponNum 优惠券号        <必传 />
      */

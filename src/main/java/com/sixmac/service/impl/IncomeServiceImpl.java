@@ -77,7 +77,7 @@ public class IncomeServiceImpl implements IncomService {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
                 if (StringUtils.isNotBlank(orderNum)) {
-                    Predicate pre = cb.like(root.get("orderNum").as(String.class),"%" + orderNum + "%");
+                    Predicate pre = cb.like(root.get("orderNum").as(String.class), "%" + orderNum + "%");
                     predicateList.add(pre);
                 }
                 if (StringUtils.isNotBlank(mobile)) {

@@ -4,13 +4,11 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Image;
 import com.sixmac.entity.Magazine;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.MagazineService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -36,14 +33,11 @@ public class MagazineApi extends CommonController {
 
     /**
      * @api {post} /api/magazine/list 杂志列表
-     *
      * @apiName magazine.list
      * @apiGroup magazine
-     *
      * @apiParam {Integer} month 月份
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     *
      * @apiSuccess {Object} list 杂志列表
      * @apiSuccess {Integer} list.id 杂志id
      * @apiSuccess {String} list.name 杂志名称
@@ -83,12 +77,9 @@ public class MagazineApi extends CommonController {
 
     /**
      * @api {post} /api/magazine/info 杂志详情
-     *
      * @apiName magazine.info
      * @apiGroup magazine
-     *
      * @apiParam {Integer} magazineId 杂志id       <必传 />
-     *
      * @apiSuccess {Object} magazineInfo 杂志列表
      * @apiSuccess {Integer} magazineInfo.id 杂志id
      * @apiSuccess {String} magazineInfo.name 杂志名称
@@ -115,8 +106,6 @@ public class MagazineApi extends CommonController {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
-
-        magazine.setCover(PathUtils.getRemotePath() + magazine.getCover());
 
         // 查询杂志对应的图片集合
         magazine.setImageList(imageService.iFindList(magazineId, Constant.IMAGE_MAGAZINE));

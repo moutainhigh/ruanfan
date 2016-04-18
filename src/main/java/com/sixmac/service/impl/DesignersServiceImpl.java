@@ -2,13 +2,11 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.DesignersDao;
-import com.sixmac.dao.MessageDao;
 import com.sixmac.dao.MessageplusDao;
 import com.sixmac.dao.WorksDao;
-import com.sixmac.entity.*;
-import com.sixmac.service.AfflatusService;
-import com.sixmac.service.AttentionsService;
-import com.sixmac.service.CommentService;
+import com.sixmac.entity.Designers;
+import com.sixmac.entity.Messageplus;
+import com.sixmac.entity.Works;
 import com.sixmac.service.DesignersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

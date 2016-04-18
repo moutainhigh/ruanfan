@@ -8,7 +8,6 @@ import com.sixmac.dao.ProductsDao;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Products;
 import com.sixmac.service.ProductsService;
-import com.sixmac.utils.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -283,10 +282,6 @@ public class ProductsServiceImpl implements ProductsService {
             list.add(threeList.get(0));
         }
 
-        for (Products product : list) {
-            product.setCover(PathUtils.getRemotePath() + imageDao.findOne(product.getCoverId()).getPath());
-        }
-
         return list;
     }
 
@@ -295,7 +290,7 @@ public class ProductsServiceImpl implements ProductsService {
         List<Products> list = productsDao.iFindList(type, sortId, productId);
 
         for (Products product : list) {
-            product.setCover(PathUtils.getRemotePath() + imageDao.findOne(product.getCoverId()).getPath());
+            product.setCover(imageDao.findOne(product.getCoverId()).getPath());
         }
 
         return list;

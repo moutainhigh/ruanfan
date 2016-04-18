@@ -7,7 +7,6 @@ import com.sixmac.dao.ReplysDao;
 import com.sixmac.entity.Comment;
 import com.sixmac.entity.Replys;
 import com.sixmac.service.CommentService;
-import com.sixmac.utils.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -87,7 +86,6 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> list = commentDao.iFindList(objectId, objectType);
 
         for (Comment comment : list) {
-            comment.getUser().setHeadPath(PathUtils.getRemotePath() + comment.getUser().getHeadPath());
             comment.setUserId(comment.getUser().getId());
             comment.setUserName(comment.getUser().getNickName());
             comment.setUserHead(comment.getUser().getHeadPath());
@@ -110,7 +108,6 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> list = commentDao.iFindList(userId, objectId, objectType);
 
         for (Comment comment : list) {
-            comment.getUser().setHeadPath(PathUtils.getRemotePath() + comment.getUser().getHeadPath());
             comment.setUserId(comment.getUser().getId());
             comment.setUserName(comment.getUser().getNickName());
             comment.setUserHead(comment.getUser().getHeadPath());
@@ -156,7 +153,7 @@ public class CommentServiceImpl implements CommentService {
     public Page<Comment> page(Integer objectId, Integer objectType, int pageNum, int pageSize) {
 
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<Comment> page = commentDao.pageByObjectIdIdAndObjectType(objectId,objectType,pageRequest);
+        Page<Comment> page = commentDao.pageByObjectIdIdAndObjectType(objectId, objectType, pageRequest);
 
         return page;
     }

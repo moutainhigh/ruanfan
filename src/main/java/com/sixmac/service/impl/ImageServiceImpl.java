@@ -4,7 +4,6 @@ package com.sixmac.service.impl;
 import com.sixmac.dao.ImageDao;
 import com.sixmac.entity.Image;
 import com.sixmac.service.ImageService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

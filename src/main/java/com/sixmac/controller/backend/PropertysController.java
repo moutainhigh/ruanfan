@@ -7,8 +7,6 @@ import com.sixmac.entity.Propertyinfo;
 import com.sixmac.entity.Propertys;
 import com.sixmac.service.PropertyinfoService;
 import com.sixmac.service.PropertysService;
-import com.sixmac.utils.ImageUtil;
-import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
@@ -245,8 +243,8 @@ public class PropertysController extends CommonController {
             for (int i = 0; i < hxStrings.length; i++) {
                 if (!hxStrings[i].equals("") && !kfStrings[i].equals("") && !urlStrings[i].equals("") && !qqStrings[i].equals("")) {
                     propertyInfo = new Propertyinfo();
-                    propertyInfo.setPath(hxStrings[i].replace(PathUtils.getRemotePath(), ""));
-                    propertyInfo.setServerPath(kfStrings[i].replace(PathUtils.getRemotePath(), ""));
+                    propertyInfo.setPath(hxStrings[i]);
+                    propertyInfo.setServerPath(kfStrings[i]);
                     propertyInfo.setUrl(urlStrings[i]);
                     propertyInfo.setQq(qqStrings[i]);
                     propertyInfo.setProperty(propertys);

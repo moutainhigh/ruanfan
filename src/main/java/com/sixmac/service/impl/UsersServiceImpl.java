@@ -5,7 +5,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.*;
 import com.sixmac.entity.*;
 import com.sixmac.service.UsersService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +20,6 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -167,20 +165,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users iLogin(String mobile, String password) {
-        Users users = usersDao.iLogin(mobile, password);
-        if (null != users) {
-            users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
-        }
-        return users;
+        return usersDao.iLogin(mobile, password);
     }
 
     @Override
     public Users iLogin(String mobile) {
-        Users users = usersDao.iLogin(mobile);
-        if (null != users) {
-            users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
-        }
-        return users;
+        return usersDao.iLogin(mobile);
     }
 
     @Override
@@ -213,8 +203,6 @@ public class UsersServiceImpl implements UsersService {
         } else {
             users = usersother.getUser();
         }
-
-        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
 
         return users;
     }

@@ -5,7 +5,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.JournalDao;
 import com.sixmac.entity.Journal;
 import com.sixmac.service.JournalService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -99,10 +98,6 @@ public class JournalServiceImpl implements JournalService {
             }
 
         }, pageRequest);
-
-        for (Journal journal : page.getContent()) {
-            journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
-        }
 
         return page;
     }

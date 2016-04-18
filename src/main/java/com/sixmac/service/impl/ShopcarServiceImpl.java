@@ -110,10 +110,6 @@ public class ShopcarServiceImpl implements ShopcarService {
 
         }, pageRequest);
 
-        /*for (Shopcar shopCar : page.getContent()) {
-            shopCar.setCover(PathUtils.getRemotePath() + shopCar.getCover());
-        }*/
-
         return page;
     }
 

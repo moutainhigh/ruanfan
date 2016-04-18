@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface CustomDao extends JpaRepository<Custom, Integer> {
 
-    @Query("select a from Custom a where a.name like ?1")
-    public List<Custom> findListByParams(String name);
+    @Query("select a from Custom a where a.name = ?1")
+    public Custom findOneByParams(String name);
 }

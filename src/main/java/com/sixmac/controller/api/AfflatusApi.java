@@ -8,7 +8,6 @@ import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -92,9 +91,9 @@ public class AfflatusApi extends CommonController {
         Page<Afflatus> page = afflatusService.iPage(key, labels, type, styleId, areaId, pageNum, pageSize);
 
         for (Afflatus afflatus : page.getContent()) {
-            afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+            afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
             afflatus.setDesignerId(afflatus.getDesigner().getId());
-            afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
+            afflatus.setDesignerHead(afflatus.getDesigner().getHead());
             afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
             // 分享、收藏、点赞、预约数
@@ -218,9 +217,9 @@ public class AfflatusApi extends CommonController {
         afflatus.setShowNum(afflatus.getShowNum() + 1);
         afflatusService.update(afflatus);
 
-        afflatus.setCover(PathUtils.getRemotePath() + imageService.getById(afflatus.getCoverId()).getPath());
+        afflatus.setCover(imageService.getById(afflatus.getCoverId()).getPath());
         afflatus.setDesignerId(afflatus.getDesigner().getId());
-        afflatus.setDesignerHead(PathUtils.getRemotePath() + afflatus.getDesigner().getHead());
+        afflatus.setDesignerHead(afflatus.getDesigner().getHead());
         afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));

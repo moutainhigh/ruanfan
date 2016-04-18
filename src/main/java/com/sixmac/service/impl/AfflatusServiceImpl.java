@@ -8,7 +8,6 @@ import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.AfflatusService;
-import com.sixmac.utils.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -232,7 +231,7 @@ public class AfflatusServiceImpl implements AfflatusService {
             beanVo = new BeanVo();
             beanVo.setId(afflatus.getId());
             beanVo.setName(afflatus.getName());
-            beanVo.setPath(PathUtils.getRemotePath() + imageDao.findOne(afflatus.getCoverId()).getPath());
+            beanVo.setPath(imageDao.findOne(afflatus.getCoverId()).getPath());
 
             beanVoList.add(beanVo);
         }

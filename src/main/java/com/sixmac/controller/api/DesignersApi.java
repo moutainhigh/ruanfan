@@ -7,16 +7,16 @@ import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.*;
 import com.sixmac.service.*;
-import com.sixmac.utils.*;
+import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -105,8 +105,6 @@ public class DesignersApi extends CommonController {
         for (Designers designer : page.getContent()) {
             // 设置设计师所属城市id
             designer.setCityId(designer.getCity().getId());
-            designer.setHead(PathUtils.getRemotePath() + designer.getHead());
-            designer.setProof(PathUtils.getRemotePath() + designer.getProof());
 
             // 获取每个独立设计师的最新三张作品图片
             if (designer.getType() == Constant.DESIGNER_TYPE_ONE) {
@@ -162,10 +160,10 @@ public class DesignersApi extends CommonController {
         Page<Works> page = designersService.iPageWorks(designerId, pageNum, pageSize);
 
         for (Works work : page.getContent()) {
-            work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
+            work.setCover(imageService.getById(work.getCoverId()).getPath());
 
             // 设计师头像、预约数、点赞数、评论数、收藏数
-            work.setDesignerHead(PathUtils.getRemotePath() + work.getDesigner().getHead());
+            work.setDesignerHead(work.getDesigner().getHead());
 
             work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
 
@@ -201,6 +199,7 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} workInfo.gamNum 点赞数
      * @apiSuccess {Integer} workInfo.isGam 是否点赞，0=是，1=否
      * @apiSuccess {Integer} workInfo.isCollect 是否收藏，0=是，1=否
+     * @apiSuccess {Integer} workInfo.showNum 人气
      * @apiSuccess {Integer} workInfo.commentNum 评论数
      * @apiSuccess {Integer} workInfo.collectNum 收藏数
      * @apiSuccess {Object} workInfo.imageList 设计作品图片列表
@@ -251,10 +250,13 @@ public class DesignersApi extends CommonController {
             return;
         }
 
-        work.setCover(PathUtils.getRemotePath() + imageService.getById(work.getCoverId()).getPath());
+        work.setShowNum(work.getShowNum() + 1);
+        worksService.update(work);
+
+        work.setCover(imageService.getById(work.getCoverId()).getPath());
 
         // 设计师头像、预约数、点赞数、评论数、收藏数
-        work.setDesignerHead(PathUtils.getRemotePath() + work.getDesigner().getHead());
+        work.setDesignerHead(work.getDesigner().getHead());
 
         work.setReserveNum(reserveService.iFindListByDesignerId(work.getDesigner().getId()).size());
 
@@ -356,7 +358,6 @@ public class DesignersApi extends CommonController {
         designersService.update(designers);
 
         designers.setCityId(designers.getCity().getId());
-        designers.setHead(PathUtils.getRemotePath() + designers.getHead());
 
         // 获取粉丝数
         designers.setFansNum(attentionsService.iFindList(designerId, Constant.ATTENTION_DESIGNERS).size());

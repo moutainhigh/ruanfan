@@ -8,7 +8,10 @@ import com.sixmac.entity.Gams;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Journal;
 import com.sixmac.service.*;
-import com.sixmac.utils.*;
+import com.sixmac.utils.APIFactory;
+import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
+import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -127,7 +130,6 @@ public class JournalApi extends CommonController {
         journal.setShowNum(journal.getShowNum() + 1);
         journalService.update(journal);
 
-        journal.getUser().setHeadPath(PathUtils.getRemotePath() + journal.getUser().getHeadPath());
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
         journal.setGamsNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
         journal.setCommentNum(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL).size());

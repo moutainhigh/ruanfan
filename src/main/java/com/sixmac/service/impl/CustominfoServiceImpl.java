@@ -4,7 +4,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.CustominfoDao;
 import com.sixmac.entity.Custominfo;
 import com.sixmac.service.CustominfoService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,12 +69,6 @@ public class CustominfoServiceImpl implements CustominfoService {
 
     @Override
     public List<Custominfo> findListByCustomId(Integer customId) {
-        List<Custominfo> list = custominfoDao.findListByCustomId(customId);
-
-        for (Custominfo custominfo : list) {
-            custominfo.setPath(PathUtils.getRemotePath() + custominfo.getPath());
-        }
-
-        return list;
+        return custominfoDao.findListByCustomId(customId);
     }
 }

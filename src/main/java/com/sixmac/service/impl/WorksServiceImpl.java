@@ -3,10 +3,8 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.WorksDao;
-import com.sixmac.entity.Image;
 import com.sixmac.entity.Works;
 import com.sixmac.service.WorksService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,22 +79,19 @@ public class WorksServiceImpl implements WorksService {
 
     @Override
     public List<Works> iFindThreeNewWorksByDesignerId(Integer designerId) {
-        Image image = null;
-
         List<Works> worksList = worksDao.iFindThreeNewWorksByDesignerId(designerId);
 
         if (null != worksList) {
             // 读取作品信息，并根据作品信息获取对应的图片信息
             for (Works work : worksList) {
-                image = imageDao.findOne(work.getCoverId());
-                work.setCover(PathUtils.getRemotePath() + image.getPath());
+                work.setCover(imageDao.findOne(work.getCoverId()).getPath());
             }
         }
         return worksList;
     }
 
     @Override
-    public Page<Works> page(Integer designerId,String name, Integer status, Integer areas, Integer stytle, Integer pageNum, Integer pageSize) {
+    public Page<Works> page(Integer designerId, String name, Integer status, Integer areas, Integer stytle, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Works> page = worksDao.findAll(new Specification<Works>() {

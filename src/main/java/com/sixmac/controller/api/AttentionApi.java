@@ -1,14 +1,16 @@
 package com.sixmac.controller.api;
 
-import com.sixmac.common.exception.GeneralException;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
-import com.sixmac.entity.*;
+import com.sixmac.entity.Attentions;
+import com.sixmac.entity.Designers;
+import com.sixmac.entity.Users;
 import com.sixmac.entity.vo.AttentionVo;
-import com.sixmac.service.*;
+import com.sixmac.service.AttentionsService;
+import com.sixmac.service.DesignersService;
+import com.sixmac.service.UsersService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -66,7 +68,7 @@ public class AttentionApi {
             attentionVo = new AttentionVo();
             attentionVo.setId(attentions.getUser().getId());
             attentionVo.setName(attentions.getUser().getNickName());
-            attentionVo.setPath(PathUtils.getRemotePath() + attentions.getUser().getHeadPath());
+            attentionVo.setPath(attentions.getUser().getHeadPath());
 
             list.add(attentionVo);
         }
@@ -117,7 +119,7 @@ public class AttentionApi {
                 users = usersService.getById(attentions.getObjectId());
                 attentionVo.setId(users.getId());
                 attentionVo.setName(users.getNickName());
-                attentionVo.setPath(PathUtils.getRemotePath() + users.getHeadPath());
+                attentionVo.setPath(users.getHeadPath());
                 attentionVo.setDescription("");
                 attentionVo.setType(type);
             } else {
@@ -125,7 +127,7 @@ public class AttentionApi {
                 designers = designersService.getById(attentions.getObjectId());
                 attentionVo.setId(designers.getId());
                 attentionVo.setName(designers.getNickName());
-                attentionVo.setPath(PathUtils.getRemotePath() + designers.getHead());
+                attentionVo.setPath(designers.getHead());
                 attentionVo.setDescription(designers.getDescription());
                 attentionVo.setType(type);
             }

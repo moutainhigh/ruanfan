@@ -2,8 +2,6 @@ package com.sixmac.service.impl;
 
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.dao.CustompackagesDao;
-import com.sixmac.dao.DesignersDao;
 import com.sixmac.dao.ReserveDao;
 import com.sixmac.entity.Reserve;
 import com.sixmac.service.ReserveService;
@@ -35,12 +33,6 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Autowired
     private ReserveDao reserveDao;
-
-    @Autowired
-    private DesignersDao designersDao;
-
-    @Autowired
-    private CustompackagesDao custompackagesDao;
 
     @Override
     public List<Reserve> findAll() {

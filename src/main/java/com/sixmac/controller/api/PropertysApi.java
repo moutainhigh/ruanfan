@@ -9,7 +9,6 @@ import com.sixmac.service.PropertyinfoService;
 import com.sixmac.service.PropertysService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -102,11 +101,6 @@ public class PropertysApi extends CommonController {
         }
 
         List<Propertyinfo> list = propertyinfoService.findListByPropertyId(propertyId);
-
-        for (Propertyinfo propertyInfo : list) {
-            propertyInfo.setPath(PathUtils.getRemotePath() + propertyInfo.getPath());
-            propertyInfo.setServerPath(PathUtils.getRemotePath() + propertyInfo.getServerPath());
-        }
 
         Result obj = new Result(true).data(createMap("list", list));
         String result = JsonUtil.obj2ApiJson(obj, "property");

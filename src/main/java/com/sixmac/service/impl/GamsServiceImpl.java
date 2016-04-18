@@ -4,7 +4,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.GamsDao;
 import com.sixmac.entity.Gams;
 import com.sixmac.service.GamsService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,7 +77,6 @@ public class GamsServiceImpl implements GamsService {
         }
 
         for (Gams gams : list) {
-            gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
             gams.setGamUserId(gams.getUser().getId());
             gams.setGamHead(gams.getUser().getHeadPath());
         }
@@ -88,10 +86,6 @@ public class GamsServiceImpl implements GamsService {
 
     @Override
     public Gams iFindOne(Integer userId, Integer objectId, Integer objectType, Integer type) {
-        Gams gams = gamsDao.iFindOne(userId, objectId, objectType, type);
-        if (null != gams && null != gams.getUser()) {
-            gams.getUser().setHeadPath(PathUtils.getRemotePath() + gams.getUser().getHeadPath());
-        }
-        return gams;
+        return gamsDao.iFindOne(userId, objectId, objectType, type);
     }
 }

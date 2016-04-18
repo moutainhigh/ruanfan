@@ -4,7 +4,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.VirtualsDao;
 import com.sixmac.entity.Virtuals;
 import com.sixmac.service.VirtualsService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -106,10 +105,6 @@ public class VirtualsServiceImpl implements VirtualsService {
             }
 
         }, pageRequest);
-
-        for (Virtuals virtuals : page.getContent()) {
-            virtuals.setCover(PathUtils.getRemotePath() + virtuals.getCover());
-        }
 
         return page;
     }

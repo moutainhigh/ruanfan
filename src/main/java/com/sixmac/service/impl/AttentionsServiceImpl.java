@@ -5,7 +5,6 @@ import com.sixmac.dao.AttentionsDao;
 import com.sixmac.entity.Attentions;
 import com.sixmac.entity.Users;
 import com.sixmac.service.AttentionsService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,22 +80,12 @@ public class AttentionsServiceImpl implements AttentionsService {
 
     @Override
     public Attentions iFindOne(Integer userId, Integer objectId, Integer objectType) {
-        Attentions attentions = attentionsDao.iFindOne(userId, objectId, objectType);
-        if (null != attentions && null != attentions.getUser()) {
-            attentions.getUser().setHeadPath(PathUtils.getRemotePath() + attentions.getUser().getHeadPath());
-        }
-        return attentions;
+        return attentionsDao.iFindOne(userId, objectId, objectType);
     }
 
     @Override
     public List<Attentions> iFindList(Integer objectId, Integer objectType) {
-        List<Attentions> list = attentionsDao.iFindList(objectId, objectType);
-
-        for (Attentions attentions : list) {
-            attentions.getUser().setHeadPath(PathUtils.getRemotePath() + attentions.getUser().getHeadPath());
-        }
-
-        return list;
+        return attentionsDao.iFindList(objectId, objectType);
     }
 
     @Override

@@ -161,8 +161,6 @@ public class UsersApi extends CommonController {
 
             users.setCityId(1);
 
-            users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
-
             Result obj = new Result(true).data(createMap("userInfo", users));
             String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
             WebUtil.printApi(response, result);
@@ -331,7 +329,6 @@ public class UsersApi extends CommonController {
         }
 
         users.setCityId(users.getCity().getId());
-        users.setHeadPath(PathUtils.getRemotePath() + users.getHeadPath());
 
         Result obj = new Result(true).data(createMap("userInfo", users));
         String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
@@ -515,7 +512,6 @@ public class UsersApi extends CommonController {
         for (Usercoupon userCoupon : page.getContent()) {
             coupon = userCoupon.getCoupon();
             coupon.setStatus(userCoupon.getStatus());
-            coupon.setCover(PathUtils.getRemotePath() + coupon.getCover());
             list.add(coupon);
         }
 

@@ -171,7 +171,7 @@ public class CustomController extends CommonController {
             for (int i = 0; i < hxStrings.length; i++) {
                 if (!hxStrings[i].equals("")) {
                     custominfo = new Custominfo();
-                    custominfo.setPath(hxStrings[i].replace(PathUtils.getRemotePath(), ""));
+                    custominfo.setPath(hxStrings[i]);
                     custominfo.setCustom(custom);
 
                     custominfoService.create(custominfo);

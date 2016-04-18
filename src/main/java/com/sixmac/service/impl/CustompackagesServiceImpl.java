@@ -11,7 +11,6 @@ import com.sixmac.entity.vo.PackageVo;
 import com.sixmac.service.CustompackagesService;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.LabelService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -107,7 +106,6 @@ public class CustompackagesServiceImpl implements CustompackagesService {
             packageVo.setId(customPackage.getId());
             packageVo.setName(customPackage.getName());
             image = imageService.getById(customPackage.getCoverId());
-            image.setPath(PathUtils.getRemotePath() + image.getPath());
             image.setLabelList(labelService.findListByParams(customPackage.getId(), Constant.LABEL_CUSTOMPACKAGE));
             packageVo.setCover(image);
 
@@ -116,7 +114,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
 
             // 将套餐商品里面的商品循环读取，放入到缓存商品集合中
             for (Packageproducts packageProduct : packageproductsList) {
-                packageProduct.getProduct().setCover(PathUtils.getRemotePath() + imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
+                packageProduct.getProduct().setCover(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
                 productList.add(packageProduct.getProduct());
             }
 

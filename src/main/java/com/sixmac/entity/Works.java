@@ -20,6 +20,7 @@ public class Works {
     private Date createTime;
     private String cover;
     private String designerHead;
+    private Integer showNum;
     private Integer reserveNum;
     private Integer gamNum;
     private Integer commentNum;
@@ -108,6 +109,14 @@ public class Works {
 
     public void setDesignerHead(String designerHead) {
         this.designerHead = designerHead;
+    }
+
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
     }
 
     @Transient

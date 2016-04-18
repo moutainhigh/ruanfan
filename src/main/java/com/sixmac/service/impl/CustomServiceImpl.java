@@ -68,7 +68,7 @@ public class CustomServiceImpl implements CustomService {
     }
 
     @Override
-    public List<Custom> findListByParams(String name) {
-        return customDao.findListByParams(name);
+    public Custom findOneByParams(String name) {
+        return customDao.findOneByParams(name);
     }
 }

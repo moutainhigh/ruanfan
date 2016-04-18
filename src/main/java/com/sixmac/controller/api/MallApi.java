@@ -9,7 +9,6 @@ import com.sixmac.entity.vo.AppraisalVo;
 import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
-import com.sixmac.utils.PathUtils;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,10 +59,6 @@ public class MallApi extends CommonController {
     @RequestMapping(value = "/bannerList")
     public void bannerList(HttpServletResponse response) {
         List<Banner> list = bannerService.findAll();
-
-        for (Banner banner : list) {
-            banner.setCover(PathUtils.getRemotePath() + banner.getCover());
-        }
 
         Result obj = new Result(true).data(createMap("list", list));
         String result = JsonUtil.obj2ApiJson(obj);
@@ -122,10 +117,6 @@ public class MallApi extends CommonController {
         }
 
         Page<Spikes> page = spikesService.find(pageNum, pageSize);
-
-        for (Spikes spikes : page.getContent()) {
-            spikes.setCover(PathUtils.getRemotePath() + imageService.getById(spikes.getCoverId()).getPath());
-        }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
@@ -192,7 +183,7 @@ public class MallApi extends CommonController {
         }
         spikes.setAppraisalVoList(appraisalVoList);
 
-        spikes.setCover(PathUtils.getRemotePath() + imageService.getById(spikes.getCoverId()).getPath());
+        spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
 
         Result obj = new Result(true).data(createMap("spikeInfo", spikes));
         String result = JsonUtil.obj2ApiJson(obj, "coverId");
@@ -249,7 +240,7 @@ public class MallApi extends CommonController {
         Page<Products> page = productsService.iPage(type, name, merchantId, brandId, sortId, isHot, pageNum, pageSize);
 
         for (Products products : page.getContent()) {
-            products.setCover(PathUtils.getRemotePath() + imageService.getById(products.getCoverId()).getPath());
+            products.setCover(imageService.getById(products.getCoverId()).getPath());
             products.setMerchantId(products.getMerchant().getId());
             products.setMerchantName(products.getMerchant().getNickName());
             products.setBrandId(products.getBrand().getId());
@@ -413,7 +404,7 @@ public class MallApi extends CommonController {
 
         for (Packages packages : page.getContent()) {
             // 设置封面图路径和品牌信息
-            packages.setCover(PathUtils.getRemotePath() + imageService.getById(packages.getCoverId()).getPath());
+            packages.setCover(imageService.getById(packages.getCoverId()).getPath());
             packages.setBrandId(packages.getBrand().getId());
             packages.setBrandName(packages.getBrand().getName());
 
@@ -513,7 +504,7 @@ public class MallApi extends CommonController {
         packagesService.update(packages);
 
         // 设置封面图路径和品牌信息
-        packages.setCover(PathUtils.getRemotePath() + imageService.getById(packages.getCoverId()).getPath());
+        packages.setCover(imageService.getById(packages.getCoverId()).getPath());
         packages.setBrandId(packages.getBrand().getId());
         packages.setBrandName(packages.getBrand().getName());
 
@@ -550,7 +541,7 @@ public class MallApi extends CommonController {
             appra = new AppraisalVo();
             appra.setUserId(ordersInfo.getOrder().getUser().getId());
             appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
-            appra.setUserHead(PathUtils.getRemotePath() + ordersInfo.getOrder().getUser().getHeadPath());
+            appra.setUserHead(ordersInfo.getOrder().getUser().getHeadPath());
             appra.setColors(ordersInfo.getColors());
             appra.setSizes(ordersInfo.getSizes());
             appra.setMaterials(ordersInfo.getMaterials());
@@ -567,10 +558,10 @@ public class MallApi extends CommonController {
 
     private void changeList(List<Products> list) {
         for (Products product : list) {
-            product.setCover(PathUtils.getRemotePath() + imageService.getById(product.getCoverId()).getPath());
+            product.setCover(imageService.getById(product.getCoverId()).getPath());
             product.setMerchantId(product.getMerchant().getId());
             product.setMerchantName(product.getMerchant().getNickName());
-            product.setMerchantHead(PathUtils.getRemotePath() + product.getMerchant().getHead());
+            product.setMerchantHead(product.getMerchant().getHead());
             product.setMerchantDescription(product.getMerchant().getDescription());
             product.setBrandId(product.getBrand().getId());
             product.setBrandName(product.getBrand().getName());

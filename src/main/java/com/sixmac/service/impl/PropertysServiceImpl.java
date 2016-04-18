@@ -4,7 +4,6 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.PropertysDao;
 import com.sixmac.entity.Propertys;
 import com.sixmac.service.PropertysService;
-import com.sixmac.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -109,22 +108,12 @@ public class PropertysServiceImpl implements PropertysService {
 
         }, pageRequest);
 
-        for (Propertys propertys : page.getContent()) {
-            propertys.setCover(PathUtils.getRemotePath() + propertys.getCover());
-        }
-
         return page;
     }
 
     @Override
     public List<Propertys> iPageByParentId(Integer parentId) {
-        List<Propertys> list = propertysDao.iPageByParentId(parentId);
-
-        for (Propertys propertys : list) {
-            propertys.setCover(PathUtils.getRemotePath() + propertys.getCover());
-        }
-
-        return list;
+        return propertysDao.iPageByParentId(parentId);
     }
 
     @Override

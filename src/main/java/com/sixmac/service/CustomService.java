@@ -11,5 +11,5 @@ import java.util.List;
 public interface CustomService extends ICommonService<Custom> {
 
     // 根据楼盘名称模糊查询楼盘列表
-    public List<Custom> findListByParams(String name);
+    public Custom findOneByParams(String name);
 }
