@@ -221,7 +221,7 @@ public class CommonApi extends CommonController {
      * @apiGroup common
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} objectId 目标id        <必传 />
-     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品     <必传 />
+     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品，3=VR虚拟     <必传 />
      * @apiParam {Integer} action 类型，0=收藏，1=取消收藏        <必传 />
      */
     @RequestMapping("/collect")

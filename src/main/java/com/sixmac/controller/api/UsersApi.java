@@ -38,6 +38,9 @@ public class UsersApi extends CommonController {
     private FeedbackService feedbackService;
 
     @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
     private OrdersinfoService ordersinfoService;
 
     @Autowired
@@ -461,6 +464,13 @@ public class UsersApi extends CommonController {
                 ordersinfo.setComment(mapInfo.get("content").toString());
 
                 ordersinfoService.update(ordersinfo);
+            }
+
+            // 评价完成之后修改订单状态
+            Orders orders = ordersinfo.getOrder();
+            if (null != orders) {
+                orders.setStatus(Constant.ORDERS_STATUS_004);
+                ordersService.update(orders);
             }
 
             WebUtil.printApi(response, new Result(true));

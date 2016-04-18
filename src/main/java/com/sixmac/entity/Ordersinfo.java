@@ -12,7 +12,6 @@ public class Ordersinfo {
     private Orders order;
     private Merchants merchant;
     private Integer type;
-    private Products product;
     private Integer productId;
     private String productName;
     private String productPath;
@@ -62,17 +61,6 @@ public class Ordersinfo {
         this.type = type;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "productId")
-    public Products getProduct() {
-        return product;
-    }
-
-    public void setProduct(Products product) {
-        this.product = product;
-    }
-
-    @Transient
     public Integer getProductId() {
         return productId;
     }
