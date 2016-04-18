@@ -183,7 +183,11 @@ public class OrdersApi {
             }
 
             // 获取积分兑换的总金额
-            Double allScoreMoney = Double.parseDouble((score / Constant.scoreMoney) + "");
+            Double allScoreMoney = 0.0;
+
+            if (null != score) {
+                allScoreMoney = Double.parseDouble((score / Constant.scoreMoney) + "");
+            }
 
             // 订单总额
             Double allPrice = 0.0;
@@ -315,6 +319,12 @@ public class OrdersApi {
             }
 
             orders.setPrice(price.toString());
+            // 获取积分兑换的总金额
+            Double allScoreMoney = 0.0;
+
+            if (null != score) {
+                allScoreMoney = Double.parseDouble((score / Constant.scoreMoney) + "");
+            }
             // 获取减免金额
             Double reducePrice = 0.0;
             if (StringUtils.isNotBlank(couponIds)) {
@@ -325,7 +335,7 @@ public class OrdersApi {
                     reducePrice += Double.parseDouble(couponService.getById(couponId).getMoney());
                 }
             }
-            orders.setRealPrice((price - reducePrice) + "");
+            orders.setRealPrice((price - reducePrice - allScoreMoney) + "");
 
             // 回写订单总金额和实付金额
             ordersService.update(orders);
