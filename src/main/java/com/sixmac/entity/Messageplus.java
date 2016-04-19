@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by Administrator on 2016/3/18 0018.
  */
 @Entity
+@Table(name = "messageplus")
 public class Messageplus {
     private int id;
     private Integer sourceId;

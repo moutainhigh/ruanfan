@@ -15,6 +15,9 @@ public class Letterreply {
     private Users users;
     private String content;
     private Date createTime;
+    private Integer sendUserId;
+    private String sendUserName;
+    private String sendUserHead;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +27,68 @@ public class Letterreply {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "letterId")
+    public Privateletter getPrivateletter() {
+        return privateletter;
+    }
+
+    public void setPrivateletter(Privateletter privateletter) {
+        this.privateletter = privateletter;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Transient
+    public Integer getSendUserId() {
+        return sendUserId;
+    }
+
+    public void setSendUserId(Integer sendUserId) {
+        this.sendUserId = sendUserId;
+    }
+
+    @Transient
+    public String getSendUserName() {
+        return sendUserName;
+    }
+
+    public void setSendUserName(String sendUserName) {
+        this.sendUserName = sendUserName;
+    }
+
+    @Transient
+    public String getSendUserHead() {
+        return sendUserHead;
+    }
+
+    public void setSendUserHead(String sendUserHead) {
+        this.sendUserHead = sendUserHead;
     }
 }

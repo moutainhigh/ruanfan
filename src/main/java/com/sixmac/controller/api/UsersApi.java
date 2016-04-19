@@ -55,6 +55,9 @@ public class UsersApi extends CommonController {
     @Autowired
     private PrivateletterService privateletterService;
 
+    @Autowired
+    private LetterreplyService letterreplyService;
+
     /**
      * @api {post} /api/users/sendCode 发送验证码
      * @apiName users.sendCode
@@ -637,11 +640,11 @@ public class UsersApi extends CommonController {
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     * @apiSuccess {Object} list 私信列表
-     * @apiSuccess {Integer} list.id 消息id
-     * @apiSuccess {Integer} list.fromUserId 发送人id
-     * @apiSuccess {String} list.fromUserName 发送人昵称
-     * @apiSuccess {String} list.fromUserHead 发送人头像
+     * @apiSuccess {Object} list 私信回复列表
+     * @apiSuccess {Integer} list.id 回复id
+     * @apiSuccess {Integer} list.sendUserId 回复人id
+     * @apiSuccess {String} list.sendUserName 回复人昵称
+     * @apiSuccess {String} list.sendUserHead 回复人头像
      * @apiSuccess {String} list.content 内容
      * @apiSuccess {String} list.createTime 创建时间
      */
@@ -652,18 +655,18 @@ public class UsersApi extends CommonController {
             return;
         }
 
-        Page<Privateletter> page = privateletterService.find(pageNum, pageSize);
+        Page<Letterreply> page = letterreplyService.pageByUserId(userId, pageNum, pageSize);
 
-        for (Privateletter letter : page.getContent()) {
-            letter.setFromUserId(letter.getSendUser().getId());
-            letter.setFromUserName(letter.getSendUser().getNickName());
-            letter.setFromUserHead(letter.getSendUser().getHeadPath());
+        for (Letterreply letterreply : page.getContent()) {
+            letterreply.setSendUserId(letterreply.getUsers().getId());
+            letterreply.setSendUserName(letterreply.getUsers().getNickName());
+            letterreply.setSendUserHead(letterreply.getUsers().getHeadPath());
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "sendUser", "receiveUser");
+        String result = JsonUtil.obj2ApiJson(obj, "users", "privateletter");
         WebUtil.printApi(response, result);
     }
 
