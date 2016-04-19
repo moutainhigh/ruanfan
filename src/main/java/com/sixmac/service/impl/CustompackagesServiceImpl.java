@@ -101,6 +101,8 @@ public class CustompackagesServiceImpl implements CustompackagesService {
             list = custompackagesDao.findListByCustominfoId(custominfoId, areaId);
         }
 
+        Double price = 0.0;
+
         for (Custompackages customPackage : list) {
             packageVo = new PackageVo();
             packageVo.setId(customPackage.getId());
@@ -116,11 +118,15 @@ public class CustompackagesServiceImpl implements CustompackagesService {
             for (Packageproducts packageProduct : packageproductsList) {
                 packageProduct.getProduct().setCover(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
                 productList.add(packageProduct.getProduct());
+                price += Double.parseDouble(packageProduct.getProduct().getPrice());
             }
 
             packageVo.setProductsList(productList);
+            packageVo.setPrice(price);
 
             packageVoList.add(packageVo);
+
+            price = 0.0;
         }
 
         return packageVoList;

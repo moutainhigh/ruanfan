@@ -17,6 +17,8 @@ public class PackageVo {
 
     private Image cover;
 
+    private Double price;
+
     private List<Products> productsList = new ArrayList<Products>();
 
     public Integer getId() {
@@ -41,6 +43,14 @@ public class PackageVo {
 
     public void setCover(Image cover) {
         this.cover = cover;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public List<Products> getProductsList() {
