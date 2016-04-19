@@ -318,7 +318,7 @@ public class CommonApi extends CommonController {
      * @apiName common.share
      * @apiGroup common
      * @apiParam {Integer} objectId 分享目标id      <必传 />
-     * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志       <必传 />
+     * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志，3=VR虚拟       <必传 />
      */
     @RequestMapping("/share")
     public void share(HttpServletResponse response, Integer objectId, Integer objectType) {
@@ -355,6 +355,18 @@ public class CommonApi extends CommonController {
                 journal.setShareNum(journal.getShareNum() + 1);
 
                 journalService.update(journal);
+                break;
+            case 3:
+                // 增加VR虚拟的分享数
+                Virtuals virtuals = virtualsService.getById(objectId);
+
+                if (null == virtuals) {
+                    WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+                    return;
+                }
+
+                virtuals.setShareNum(virtuals.getShareNum() + 1);
+                virtualsService.update(virtuals);
                 break;
         }
 

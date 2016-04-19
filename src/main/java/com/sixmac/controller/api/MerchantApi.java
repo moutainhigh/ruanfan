@@ -6,6 +6,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Styles;
 import com.sixmac.service.MerchantsService;
+import com.sixmac.service.ProductsService;
 import com.sixmac.service.StylesService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
@@ -97,7 +98,7 @@ public class MerchantApi extends CommonController {
         }
 
         Result obj = new Result(true).data(createMap("list", list));
-        String result = JsonUtil.obj2ApiJson(obj, "isCut", "isCheck", "style", "city", "password", "license");
+        String result = JsonUtil.obj2ApiJson(obj, "isCut", "isCheck", "style", "city", "password", "license", "productNum");
         WebUtil.printApi(response, result);
     }
 }

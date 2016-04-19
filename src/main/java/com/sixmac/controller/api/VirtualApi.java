@@ -55,6 +55,8 @@ public class VirtualApi {
      * @apiSuccess {String} list.createTime 创建时间
      * @apiSuccess {String} list.isGam 是否点赞  0=是，1=否
      * @apiSuccess {String} list.isCollect 是否收藏  0=是，1=否
+     * @apiSuccess {Integer} list.shareNum 分享数
+     * @apiSuccess {Integer} list.collectNum 收藏数
      * @apiSuccess {Object} list.gamsList 点赞列表
      * @apiSuccess {Integer} list.gamsList.id 点赞id
      * @apiSuccess {String} list.gamsList.description 描述
@@ -77,6 +79,8 @@ public class VirtualApi {
         Page<Virtuals> page = virtualsService.iPage(name, styleId, typeId, pageNum, pageSize);
 
         for (Virtuals virtuals : page.getContent()) {
+            virtuals.setCollectNum(collectService.iFindList(virtuals.getId(), Constant.COLLECT_VIRTUALS).size());
+
             virtuals.setGamsList(gamsService.iFindList(virtuals.getId(), Constant.GAM_VIRTUALS, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
 
             // 如果userId不为空的话，查询是否评论过、点赞过

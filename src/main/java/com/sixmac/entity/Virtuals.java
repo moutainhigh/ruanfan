@@ -22,6 +22,8 @@ public class Virtuals {
     private Integer isGam;
     private Integer isCollect;
     private List<Gams> gamsList = new ArrayList<Gams>();
+    private Integer shareNum;
+    private Integer collectNum;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -120,5 +122,22 @@ public class Virtuals {
 
     public void setGamsList(List<Gams> gamsList) {
         this.gamsList = gamsList;
+    }
+
+    public Integer getShareNum() {
+        return shareNum;
+    }
+
+    public void setShareNum(Integer shareNum) {
+        this.shareNum = shareNum;
+    }
+
+    @Transient
+    public Integer getCollectNum() {
+        return collectNum;
+    }
+
+    public void setCollectNum(Integer collectNum) {
+        this.collectNum = collectNum;
     }
 }
