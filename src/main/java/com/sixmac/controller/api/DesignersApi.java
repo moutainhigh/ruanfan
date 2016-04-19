@@ -31,9 +31,6 @@ public class DesignersApi extends CommonController {
     private DesignersService designersService;
 
     @Autowired
-    private UsersService usersService;
-
-    @Autowired
     private ReserveService reserveService;
 
     @Autowired
@@ -399,47 +396,5 @@ public class DesignersApi extends CommonController {
         Result obj = new Result(true).data(createMap("designerInfo", designers));
         String result = JsonUtil.obj2ApiJson(obj, "city", "comment", "password", "designer", "isCheck", "objectId", "objectType", "gamsList", "thuPath", "width", "height", "user", "labelList", "isCut");
         WebUtil.printApi(response, result);
-    }
-
-    /**
-     * @api {post} /api/designers/attention 关注 or 取消关注
-     * @apiName designers.attention
-     * @apiGroup designers
-     * @apiParam {Integer} userId 用户id      <必传 />
-     * @apiParam {Integer} designerId 设计师id     <必传 />
-     * @apiParam {Integer} action 类型，0=关注，1=取消关注        <必传 />
-     */
-    @RequestMapping("/attention")
-    public void share(HttpServletResponse response, Integer userId, Integer designerId, Integer action) {
-        if (null == userId || null == designerId || null == action) {
-            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
-            return;
-        }
-
-        Attentions attentions = attentionsService.iFindOne(userId, designerId, Constant.ATTENTION_DESIGNERS);
-
-        // action（关注状态字段）,0表示关注，1表示取消关注
-        if (action == 0) {
-            try {
-                if (null != attentions) {
-                    WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0007));
-                    return;
-                }
-
-                attentionsService.iCreate(usersService.getById(userId), designerId, Constant.ATTENTION_DESIGNERS);
-            } catch (GeneralException e) {
-                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
-                return;
-            }
-        } else {
-            if (null == attentions) {
-                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0008));
-                return;
-            }
-
-            attentionsService.deleteById(attentions.getId());
-        }
-
-        WebUtil.printApi(response, new Result(true));
     }
 }

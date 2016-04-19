@@ -69,6 +69,9 @@ public class CommonApi extends CommonController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private AttentionsService attentionsService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
@@ -262,6 +265,49 @@ public class CommonApi extends CommonController {
             }
 
             collectService.deleteById(collect.getId());
+        }
+
+        WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/designers/attention 关注 or 取消关注
+     * @apiName designers.attention
+     * @apiGroup designers
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} objectId 目标id     <必传 />
+     * @apiParam {Integer} objectType 目标类型，1=用户，2=设计师     <必传 />
+     * @apiParam {Integer} action 类型，0=关注，1=取消关注        <必传 />
+     */
+    @RequestMapping("/attention")
+    public void share(HttpServletResponse response, Integer userId, Integer objectId, Integer objectType, Integer action) {
+        if (null == userId || null == objectId || null == objectType || null == action) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Attentions attentions = attentionsService.iFindOne(userId, objectId, objectType);
+
+        // action（关注状态字段）,0表示关注，1表示取消关注
+        if (action == 0) {
+            try {
+                if (null != attentions) {
+                    WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0007));
+                    return;
+                }
+
+                attentionsService.iCreate(usersService.getById(userId), objectId, objectType);
+            } catch (GeneralException e) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+                return;
+            }
+        } else {
+            if (null == attentions) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0008));
+                return;
+            }
+
+            attentionsService.deleteById(attentions.getId());
         }
 
         WebUtil.printApi(response, new Result(true));
