@@ -57,7 +57,8 @@ public class DesignersServiceImpl implements DesignersService {
     @Override
     public Designers getById(int id) {
         Designers designers = designersDao.findOne(id);
-        designers.setWorkNum(worksDao.iFindThreeNewWorksByDesignerId(id).size());
+        List<Works> list = worksDao.iFindThreeNewWorksByDesignerId(id);
+        designers.setWorkNum(null == list || list.size() == 0 ? 0 : list.size());
         return designers;
     }
 
