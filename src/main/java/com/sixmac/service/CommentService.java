@@ -21,8 +21,11 @@ public interface CommentService extends ICommonService<Comment> {
     public Page<Comment> page(String mobile, Integer objectType, int pageNum, int pageSize);
 
     // 根据评论对象、评论对象类型查询列表
-    public Page<Comment> page(Integer objectId,Integer objectType, int pageNum, int pageSize);
+    public Page<Comment> page(Integer objectId, Integer objectType, int pageNum, int pageSize);
 
     //查询新增评论
-    public  List<Comment> findListNew();
+    public List<Comment> findListNew();
+
+    // 根据用户id查询列表
+    public Page<Comment> page(Integer userId, int pageNum, int pageSize);
 }

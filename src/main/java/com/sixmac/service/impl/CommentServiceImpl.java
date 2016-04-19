@@ -162,4 +162,27 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> findListNew() {
         return commentDao.findListNew(CommonController.getOldDate());
     }
+
+    @Override
+    public Page<Comment> page(Integer userId, int pageNum, int pageSize) {
+        List<Replys> replysList = null;
+        Page<Comment> page = commentDao.page(userId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+
+        for (Comment comment : page.getContent()) {
+            comment.setUserId(comment.getUser().getId());
+            comment.setUserName(comment.getUser().getNickName());
+            comment.setUserHead(comment.getUser().getHeadPath());
+
+            replysList = replysDao.findListByCommentId(comment.getId());
+            for (Replys replys : replysList) {
+                replys.setUserId(replys.getUser().getId());
+                replys.setUserName(replys.getUser().getNickName());
+                replys.setUserHead(replys.getUser().getHeadPath());
+            }
+
+            comment.setReplysList(replysList);
+        }
+
+        return page;
+    }
 }
