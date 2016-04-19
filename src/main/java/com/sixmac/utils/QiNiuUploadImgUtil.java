@@ -20,8 +20,8 @@ public class QiNiuUploadImgUtil {
     public static String ACCESS_KEY = "9XfG90z67R7-ynpjOfamAQRss7mR72StTrLWFy2v";
     public static String SECRET_KEY = "0n21SLv9rb5AtPiUrXRrq412iCGsl2wXuaQW5eG0";
     //要上传的空间
-    public static String bucketName = "ruanfan";
-    public static String url = "http://7xsyp2.com2.z0.glb.qiniucdn.com/";
+    public static String bucketName = "ruanfanimg";
+    public static String url = "http://7xt4xe.com2.z0.glb.qiniucdn.com/";
 
     //密钥配置
     public static Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
