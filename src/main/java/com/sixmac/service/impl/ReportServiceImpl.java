@@ -28,7 +28,7 @@ public class ReportServiceImpl implements ReportService {
     private ReportDao reportDao;
 
     @Override
-    public Page<Report> page(Integer userId, Integer sourceId, Integer type, int pageNum, int pageSize) {
+    public Page<Report> page(final Integer userId, final Integer sourceId, final Integer type, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Report> page = reportDao.findAll(new Specification<Report>() {

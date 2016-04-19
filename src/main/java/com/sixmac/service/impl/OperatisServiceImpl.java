@@ -74,7 +74,7 @@ public class OperatisServiceImpl implements OperatisService {
     }
 
     @Override
-    public Page<Operatis> page(String name, String roleName, int pageNum, int pageSize) {
+    public Page<Operatis> page(final String name, final String roleName, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Operatis> page = operatisDao.findAll(new Specification<Operatis>() {

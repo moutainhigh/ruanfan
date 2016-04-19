@@ -95,7 +95,7 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
-    public Page<Merchants> page(String email, String nickName, Integer status, Integer isCheck, Integer type, Integer pageNum, Integer pageSize) {
+    public Page<Merchants> page(final String email, final String nickName, final Integer status, final Integer isCheck, final Integer type, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Merchants> page = merchantsDao.findAll(new Specification<Merchants>() {
@@ -168,7 +168,7 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
-    public Page<Merchants> page(Integer styleId, Integer pageNum, Integer pageSize) {
+    public Page<Merchants> page(final Integer styleId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Merchants> page = merchantsDao.findAll(new Specification<Merchants>() {

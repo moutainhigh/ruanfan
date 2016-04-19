@@ -68,7 +68,7 @@ public class IncomeServiceImpl implements IncomService {
     }
 
     @Override
-    public Page<Orders> page(String orderNum, String mobile, int pageNum, int pageSize) {
+    public Page<Orders> page(final String orderNum, final String mobile, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
         Page<Orders> page = ordersDao.findAll(new Specification<Orders>() {
 

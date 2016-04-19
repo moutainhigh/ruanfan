@@ -74,7 +74,7 @@ public class VirtualsServiceImpl implements VirtualsService {
     }
 
     @Override
-    public Page<Virtuals> iPage(String name, Integer styleId, Integer typeId, Integer pageNum, Integer pageSize) {
+    public Page<Virtuals> iPage(final String name, final Integer styleId, final Integer typeId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Virtuals> page = virtualsDao.findAll(new Specification<Virtuals>() {

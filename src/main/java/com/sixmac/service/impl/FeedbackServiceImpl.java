@@ -76,7 +76,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Page<Feedback> page(String nickName, String mobile, String mail, int pageNum, int pageSize) {
+    public Page<Feedback> page(final String nickName, final String mobile, final String mail, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Feedback> page = feedbackDao.findAll(new Specification<Feedback>() {

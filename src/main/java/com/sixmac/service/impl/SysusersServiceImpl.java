@@ -74,7 +74,7 @@ public class SysusersServiceImpl implements SysusersService {
     }
 
     @Override
-    public Page<Sysusers> page(final String account, Integer roleId, Integer pageNum, Integer pageSize) {
+    public Page<Sysusers> page(final String account, final Integer roleId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Sysusers> page = sysusersDao.findAll(new Specification<Sysusers>() {

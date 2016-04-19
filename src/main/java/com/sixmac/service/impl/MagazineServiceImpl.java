@@ -88,7 +88,7 @@ public class MagazineServiceImpl implements MagazineService {
     }
 
     @Override
-    public Page<Magazine> iPage(Integer month, Integer pageNum, Integer pageSize) {
+    public Page<Magazine> iPage(final Integer month, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Magazine> page = magazineDao.findAll(new Specification<Magazine>() {
@@ -117,7 +117,7 @@ public class MagazineServiceImpl implements MagazineService {
     }
 
     @Override
-    public Page<Magazine> page(String name, Integer month, Integer pageNum, Integer pageSize) {
+    public Page<Magazine> page(final String name, final Integer month, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Magazine> page = magazineDao.findAll(new Specification<Magazine>() {

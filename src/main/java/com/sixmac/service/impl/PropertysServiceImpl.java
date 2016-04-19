@@ -74,7 +74,7 @@ public class PropertysServiceImpl implements PropertysService {
     }
 
     @Override
-    public Page<Propertys> iPage(String name, String address, Integer pageNum, Integer pageSize) {
+    public Page<Propertys> iPage(final String name, final String address, final Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
@@ -153,7 +153,7 @@ public class PropertysServiceImpl implements PropertysService {
     }
 
     @Override
-    public Page<Propertys> pageChild(Integer parentId, Integer pageNum, Integer pageSize) {
+    public Page<Propertys> pageChild(final Integer parentId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {

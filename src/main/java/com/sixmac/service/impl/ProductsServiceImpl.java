@@ -88,7 +88,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Products> iPage(Integer type, String name, Integer merchantId, Integer brandId, Integer sortId, Integer isHot, Integer pageNum, Integer pageSize) {
+    public Page<Products> iPage(final Integer type, final String name, final Integer merchantId, final Integer brandId, final Integer sortId, final Integer isHot, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Products> page = productsDao.findAll(new Specification<Products>() {
@@ -149,7 +149,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Products> page(String name, String merchantName, Integer isCheck, Integer type, Integer pageNum, Integer pageSize) {
+    public Page<Products> page(final String name, final String merchantName, final Integer isCheck, final Integer type, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Products> page = productsDao.findAll(new Specification<Products>() {
@@ -217,7 +217,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Products> page(Integer merchantId, String name, Integer isCheck, Integer type, Integer pageNum, Integer pageSize) {
+    public Page<Products> page(final Integer merchantId, final String name, final Integer isCheck, final Integer type, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Products> page = productsDao.findAll(new Specification<Products>() {

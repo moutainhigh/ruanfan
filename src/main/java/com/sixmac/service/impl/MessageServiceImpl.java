@@ -80,7 +80,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Page<Message> page(String title, String type, String description, int pageNum, int pageSize) {
+    public Page<Message> page(final String title, final String type, final String description, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Message> page = messageDao.findAll(new Specification<Message>() {

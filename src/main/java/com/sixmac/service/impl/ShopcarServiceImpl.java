@@ -86,7 +86,7 @@ public class ShopcarServiceImpl implements ShopcarService {
     }
 
     @Override
-    public Page<Shopcar> iPage(Integer userId, Integer pageNum, Integer pageSize) {
+    public Page<Shopcar> iPage(final Integer userId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Shopcar> page = shopcarDao.findAll(new Specification<Shopcar>() {

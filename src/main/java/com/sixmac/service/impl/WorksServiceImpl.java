@@ -91,7 +91,7 @@ public class WorksServiceImpl implements WorksService {
     }
 
     @Override
-    public Page<Works> page(Integer designerId, String name, Integer status, Integer areas, Integer stytle, Integer pageNum, Integer pageSize) {
+    public Page<Works> page(final Integer designerId, final String name, final Integer status, final Integer areas, final Integer stytle, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Works> page = worksDao.findAll(new Specification<Works>() {

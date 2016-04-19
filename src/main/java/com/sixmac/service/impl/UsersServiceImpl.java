@@ -213,7 +213,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Page<Usercoupon> iPageByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+    public Page<Usercoupon> iPageByUserId(final Integer userId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Usercoupon> page = usercouponDao.findAll(new Specification<Usercoupon>() {
@@ -247,7 +247,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Page<Users> page(String mobile, String nickName, Integer status, Integer type, Integer pageNum, Integer pageSize) {
+    public Page<Users> page(final String mobile, final String nickName, final Integer status, final Integer type, Integer pageNum, Integer pageSize) {
         Page<Users> page = usersDao.findAll(new Specification<Users>() {
             @Override
             public Predicate toPredicate(Root<Users> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

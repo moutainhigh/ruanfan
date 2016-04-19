@@ -91,7 +91,7 @@ public class DesignersServiceImpl implements DesignersService {
     }
 
     @Override
-    public Page<Designers> iPage(Integer type, String nickname, Integer cityId, Integer pageNum, Integer pageSize) {
+    public Page<Designers> iPage(final Integer type, final String nickname, final Integer cityId, final Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Designers> page = designersDao.findAll(new Specification<Designers>() {
@@ -140,7 +140,7 @@ public class DesignersServiceImpl implements DesignersService {
     }
 
     @Override
-    public Page<Works> iPageWorks(Integer designerId, Integer pageNum, Integer pageSize) {
+    public Page<Works> iPageWorks(final Integer designerId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Works> page = worksDao.findAll(new Specification<Works>() {
@@ -172,7 +172,7 @@ public class DesignersServiceImpl implements DesignersService {
     }
 
     @Override
-    public Page<Designers> page(String mobile, String nickName, Integer status, Integer isCheck, Integer type, Integer pageNum, Integer pageSize) {
+    public Page<Designers> page(final String mobile, final String nickName, final Integer status, final Integer isCheck, final Integer type, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Designers> page = designersDao.findAll(new Specification<Designers>() {

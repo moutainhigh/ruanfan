@@ -86,7 +86,7 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
-    public Page<Afflatus> page(String afflatusName, String designerName, Integer status, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
+    public Page<Afflatus> page(final String afflatusName, final String designerName, final Integer status, final Integer styleId, final Integer areaId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Afflatus> page = afflatusDao.findAll(new Specification<Afflatus>() {
@@ -130,7 +130,7 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
-    public Page<Afflatus> page(Integer designerId, String afflatusName, Integer status, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
+    public Page<Afflatus> page(final Integer designerId, final String afflatusName, final Integer status, final Integer styleId, final Integer areaId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Afflatus> page = afflatusDao.findAll(new Specification<Afflatus>() {
@@ -178,7 +178,7 @@ public class AfflatusServiceImpl implements AfflatusService {
     }
 
     @Override
-    public Page<Afflatus> iPage(String key, String labels, Integer type, Integer styleId, Integer areaId, Integer pageNum, Integer pageSize) {
+    public Page<Afflatus> iPage(final String key, final String labels, final Integer type, final Integer styleId, final Integer areaId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Afflatus> page = afflatusDao.findAll(new Specification<Afflatus>() {

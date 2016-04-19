@@ -90,7 +90,7 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public Page<Collect> iPage(Integer userId, Integer pageNum, Integer pageSize) {
+    public Page<Collect> iPage(final Integer userId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Collect> page = collectDao.findAll(new Specification<Collect>() {
@@ -121,7 +121,7 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public Page<Collect> iPage(Integer type, Integer userId, Integer pageNum, Integer pageSize) {
+    public Page<Collect> iPage(final Integer type, final Integer userId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Collect> page = collectDao.findAll(new Specification<Collect>() {

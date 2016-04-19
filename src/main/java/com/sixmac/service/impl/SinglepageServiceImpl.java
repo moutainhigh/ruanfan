@@ -68,7 +68,7 @@ public class SinglepageServiceImpl implements SinglepageService {
     }
 
     @Override
-    public Page<Singlepage> page(String title, String content, int pageNum, int pageSize) {
+    public Page<Singlepage> page(final String title, final String content, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Singlepage> page = dao.findAll(new Specification<Singlepage>() {

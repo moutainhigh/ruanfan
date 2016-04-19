@@ -121,7 +121,7 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public Page<Reserve> page(String name, String mobile, String email, String nickName, Integer status, int pageNum, int pageSize) {
+    public Page<Reserve> page(final String name, final String mobile, final String email, final String nickName, final Integer status, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Reserve> page = reserveDao.findAll(new Specification<Reserve>() {

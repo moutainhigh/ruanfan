@@ -75,7 +75,7 @@ public class JournalServiceImpl implements JournalService {
     }
 
     @Override
-    public Page<Journal> iPage(Integer userId, Integer pageNum, Integer pageSize) {
+    public Page<Journal> iPage(final Integer userId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Journal> page = journalDao.findAll(new Specification<Journal>() {

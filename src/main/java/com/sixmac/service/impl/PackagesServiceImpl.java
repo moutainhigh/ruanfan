@@ -88,7 +88,7 @@ public class PackagesServiceImpl implements PackagesService {
     }
 
     @Override
-    public Page<Packages> iPage(Integer brandId, String name, Integer pageNum, Integer pageSize) {
+    public Page<Packages> iPage(final Integer brandId, final String name, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Packages> page = packagesDao.findAll(new Specification<Packages>() {
@@ -127,7 +127,7 @@ public class PackagesServiceImpl implements PackagesService {
     }
 
     @Override
-    public Page<Packages> page(String name, Integer brandId, Integer pageNum, Integer pageSize) {
+    public Page<Packages> page(final String name, final Integer brandId, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Packages> page = packagesDao.findAll(new Specification<Packages>() {

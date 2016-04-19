@@ -117,7 +117,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<Comment> page(String mobile, Integer objectType, int pageNum, int pageSize) {
+    public Page<Comment> page(final String mobile, final Integer objectType, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Comment> page = commentDao.findAll(new Specification<Comment>() {

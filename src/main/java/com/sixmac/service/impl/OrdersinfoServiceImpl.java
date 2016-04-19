@@ -75,7 +75,7 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
-    public Page<Ordersinfo> page(String mobile, String productName, String orderNum, int pageNum, int pageSize) {
+    public Page<Ordersinfo> page(final String mobile, final String productName, final String orderNum, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Ordersinfo> page = ordersinfoDao.findAll(new Specification<Ordersinfo>() {
@@ -111,7 +111,7 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
-    public Page<Ordersinfo> page(Integer merchantId, String mobile, String nickName, int pagenum, int pagesize) {
+    public Page<Ordersinfo> page(final Integer merchantId, final String mobile, final String nickName, int pagenum, int pagesize) {
         PageRequest pageRequest = new PageRequest(pagenum - 1, pagesize, Sort.Direction.ASC, "id");
 
         Page<Ordersinfo> page = ordersinfoDao.findAll(new Specification<Ordersinfo>() {
