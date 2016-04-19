@@ -8,6 +8,7 @@ import java.util.List;
  * Created by Administrator on 2016/3/4 0004.
  */
 @Entity
+@Table(name = "province")
 public class Province {
     private Integer id;
     private String name;
