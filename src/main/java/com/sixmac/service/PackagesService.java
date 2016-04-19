@@ -13,7 +13,7 @@ import java.util.List;
 public interface PackagesService extends ICommonService<Packages> {
 
     // 套餐列表
-    public Page<Packages> iPage(Integer brandId, Integer pageNum, Integer pageSize);
+    public Page<Packages> iPage(Integer brandId, String name, Integer pageNum, Integer pageSize);
 
     // 根据套餐id查询对应的商品列表
     public List<Packageproducts> findListByPackageId(Integer packageId);

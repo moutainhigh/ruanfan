@@ -352,6 +352,7 @@ public class MallApi extends CommonController {
      * @apiName mall.packageList
      * @apiGroup mall
      * @apiParam {Integer} brandId 品牌id
+     * @apiParam {String} name 套餐名称
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 套餐列表
@@ -389,6 +390,7 @@ public class MallApi extends CommonController {
     @RequestMapping(value = "/packageList")
     public void packageList(HttpServletResponse response,
                             Integer brandId,
+                            String name,
                             Integer pageNum,
                             Integer pageSize) {
         if (null == pageNum || null == pageSize) {
@@ -396,7 +398,7 @@ public class MallApi extends CommonController {
             return;
         }
 
-        Page<Packages> page = packagesService.iPage(brandId, pageNum, pageSize);
+        Page<Packages> page = packagesService.iPage(brandId, name, pageNum, pageSize);
 
         // 获取该套餐对应的所有商品
         List<Packageproducts> list = null;

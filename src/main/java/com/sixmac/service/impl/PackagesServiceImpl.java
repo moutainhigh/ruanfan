@@ -6,6 +6,7 @@ import com.sixmac.dao.PackagesDao;
 import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Packages;
 import com.sixmac.service.PackagesService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -87,7 +88,7 @@ public class PackagesServiceImpl implements PackagesService {
     }
 
     @Override
-    public Page<Packages> iPage(Integer brandId, Integer pageNum, Integer pageSize) {
+    public Page<Packages> iPage(Integer brandId, String name, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Packages> page = packagesDao.findAll(new Specification<Packages>() {
@@ -100,8 +101,10 @@ public class PackagesServiceImpl implements PackagesService {
                     predicateList.add(pre);
                 }
 
-                Predicate pre1 = cb.notEqual(root.get("id").as(Integer.class), 0);
-                predicateList.add(pre1);
+                if (StringUtils.isNotBlank(name)) {
+                    Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
+                    predicateList.add(pre);
+                }
 
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
