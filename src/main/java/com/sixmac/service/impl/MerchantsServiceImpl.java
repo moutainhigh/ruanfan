@@ -213,4 +213,9 @@ public class MerchantsServiceImpl implements MerchantsService {
 
         return page;
     }
+
+    @Override
+    public List<Merchants> findListByStyleId(Integer styleId) {
+        return merchantsDao.iFindListByStyleId(styleId);
+    }
 }

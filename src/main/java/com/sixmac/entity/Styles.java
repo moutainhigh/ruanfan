@@ -1,7 +1,9 @@
 package com.sixmac.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/4 0004.
@@ -12,10 +14,11 @@ public class Styles {
     private Integer id;
     private String name;
     private Date updateTime;
+    private List<Merchants> merchantsList = new ArrayList<Merchants>();
     private Integer productNum;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -40,6 +43,15 @@ public class Styles {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Transient
+    public List<Merchants> getMerchantsList() {
+        return merchantsList;
+    }
+
+    public void setMerchantsList(List<Merchants> merchantsList) {
+        this.merchantsList = merchantsList;
     }
 
     @Transient

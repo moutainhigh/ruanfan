@@ -24,4 +24,6 @@ public interface MerchantsService extends ICommonService<Merchants> {
     public void changeCheck(Integer merchantId, Integer isCheck, String reason);
 
     public Page<Merchants> page(Integer styleId, Integer pageNum, Integer pageSize);
+
+    public List<Merchants> findListByStyleId(Integer styleId);
 }

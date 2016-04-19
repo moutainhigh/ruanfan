@@ -4,7 +4,9 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Merchants;
+import com.sixmac.entity.Styles;
 import com.sixmac.service.MerchantsService;
+import com.sixmac.service.StylesService;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +28,9 @@ public class MerchantApi extends CommonController {
 
     @Autowired
     private MerchantsService merchantsService;
+
+    @Autowired
+    private StylesService stylesService;
 
     /**
      * @api {post} /api/merchant/list 商户列表
@@ -65,5 +71,33 @@ public class MerchantApi extends CommonController {
         WebUtil.printApi(response, result);
     }
 
+    /**
+     * @api {post} /api/merchant/listPlus 商户列表
+     * @apiName merchant.listPlus
+     * @apiGroup merchant
+     * @apiSuccess {Object} list 商户列表
+     * @apiSuccess {Integer} list.id 商户id
+     * @apiSuccess {String} list.nickName 商户昵称
+     * @apiSuccess {String} list.email 商户邮箱
+     * @apiSuccess {String} list.url 商户链接url
+     * @apiSuccess {String} list.head 商户头像
+     * @apiSuccess {String} list.labels 标签
+     * @apiSuccess {String} list.type 类型
+     * @apiSuccess {String} list.description 描述
+     * @apiSuccess {Integer} list.showNum 人气
+     * @apiSuccess {Integer} list.count 销量
+     * @apiSuccess {String} list.createTime 创建时间
+     */
+    @RequestMapping(value = "/listPlus")
+    public void listPlus(HttpServletResponse response) {
+        List<Styles> list = stylesService.findAll();
 
+        for (Styles styles : list) {
+            styles.setMerchantsList(merchantsService.findListByStyleId(styles.getId()));
+        }
+
+        Result obj = new Result(true).data(createMap("list", list));
+        String result = JsonUtil.obj2ApiJson(obj, "isCut", "isCheck", "style", "city", "password", "license");
+        WebUtil.printApi(response, result);
+    }
 }

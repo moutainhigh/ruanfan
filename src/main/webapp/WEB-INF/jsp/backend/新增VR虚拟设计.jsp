@@ -45,16 +45,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">设计描述:</label>
+                                <label class="col-sm-2 control-label">链接地址:</label>
 
                                 <div class="col-sm-8">
-                                    <!-- 百度富文本编辑框 -->
-                                    <script id="container" name="content" type="text/plain"
-                                            style="width:100%; height:150px; line-height: 0px;"></script>
+                                    <input type="text" class="form-control" id="url" name="url" maxlength="200" data-rule="required" value="${vrcustom.url}" placeholder="请输入链接地址"/>
                                 </div>
                             </div>
-
-                            <span style="display: none;" id="spqq">${vrcustom.content}</span>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
@@ -82,18 +78,6 @@
 <%@ include file="inc/footer.jsp" %>
 
 </body>
-
-<!-- 实例化编辑器 -->
-<script type="text/javascript">
-    var id = $("#id").val();
-    var editor1 = new baidu.editor.ui.Editor();
-    editor1.render('container');
-    if (null != id && id != '') {
-        editor1.ready(function () {
-            this.setContent($("#spqq").html());
-        });
-    }
-</script>
 
 <script type="text/javascript">
     var vrcustomList = {
@@ -140,7 +124,7 @@
             },
             subInfo: function () {
                 var flag = true;
-                var content = editor1.getContent();
+                var urls = $('#url').val();
 
                 if (vrcustomList.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传VR虚拟设计图", "error");
@@ -148,8 +132,8 @@
                     return;
                 }
 
-                if (null == content || content == '') {
-                    $sixmac.notify("请输入商品描述", "error");
+                if (null == urls || urls == '') {
+                    $sixmac.notify("请输入链接地址", "error");
                     flag = false;
                     return;
                 }
@@ -160,7 +144,7 @@
                         url: _basePath + "backend/vrcustom/save",
                         dataType: "json",
                         data: {
-                            content: editor1.getContent()
+                            urls: urls
                         },
                         success: function (result) {
                             if (result > 0) {

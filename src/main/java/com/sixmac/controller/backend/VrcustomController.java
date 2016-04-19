@@ -79,7 +79,7 @@ public class VrcustomController extends CommonController{
     public Integer save(HttpServletRequest request,
                         HttpServletResponse response,
                         Integer id,
-                        String url,
+                        String urls,
                         MultipartRequest multipartRequest) {
         Vrcustom vrcustom = null;
 
@@ -90,13 +90,13 @@ public class VrcustomController extends CommonController{
                 vrcustom = new Vrcustom();
             }
 
-            vrcustom.setUrl(url);
+            vrcustom.setUrl(urls);
             vrcustom.setUpdateTime(new Date());
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                String urls = QiNiuUploadImgUtil.upload(multipartFile);
-                vrcustom.setCover(urls);
+                String url = QiNiuUploadImgUtil.upload(multipartFile);
+                vrcustom.setCover(url);
             }
 
             if (null == id) {
