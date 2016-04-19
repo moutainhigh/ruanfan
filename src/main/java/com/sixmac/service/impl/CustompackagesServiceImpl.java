@@ -117,6 +117,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
             // 将套餐商品里面的商品循环读取，放入到缓存商品集合中
             for (Packageproducts packageProduct : packageproductsList) {
                 packageProduct.getProduct().setCover(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
+                packageProduct.getProduct().setPath(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
                 productList.add(packageProduct.getProduct());
                 price += Double.parseDouble(packageProduct.getProduct().getPrice());
             }

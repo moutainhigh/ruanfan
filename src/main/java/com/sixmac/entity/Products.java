@@ -35,6 +35,7 @@ public class Products {
     private Integer isAdd;
     private String description;
     private String cover;
+    private String path;
     private Integer merchantId;
     private String merchantName;
     private String merchantHead;
@@ -231,6 +232,15 @@ public class Products {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    @Transient
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     @Transient
