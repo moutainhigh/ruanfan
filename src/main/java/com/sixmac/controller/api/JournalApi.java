@@ -170,6 +170,7 @@ public class JournalApi extends CommonController {
         journal.setCreateTime(new Date());
         journal.setForwardNum(0);
         journal.setShareNum(0);
+        journal.setShowNum(0);
 
         // 保存日志信息
         journalService.create(journal);
