@@ -69,7 +69,13 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public List<Label> findListByParams(Integer objectId, Integer objectType) {
-        return labelDao.findListByParams(objectId, objectType);
+        List<Label> list = labelDao.findListByParams(objectId, objectType);
+
+        for (Label label : list) {
+            label.setProductId(label.getProduct().getId());
+        }
+
+        return list;
     }
 
     @Override

@@ -155,6 +155,7 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {String} afflatusInfo.imageList.createTime 创建时间
      * @apiSuccess {Object} afflatusInfo.imageList.labelList 图片标签列表
      * @apiSuccess {Integer} afflatusInfo.imageList.labelList.id 标签id
+     * @apiSuccess {Integer} afflatusInfo.imageList.labelList.productId 商品id
      * @apiSuccess {String} afflatusInfo.imageList.labelList.name 标签名称
      * @apiSuccess {String} afflatusInfo.imageList.labelList.description 标签描述
      * @apiSuccess {String} afflatusInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
