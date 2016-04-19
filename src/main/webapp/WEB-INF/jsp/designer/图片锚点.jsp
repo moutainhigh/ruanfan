@@ -39,8 +39,8 @@
         </div>
 
         <!-- 隐藏信息 -->
-        <div id="oldWidth" style="display: none;">${imageInfo.width }</div>
-        <div id="oldHeight" style="display: none;">${imageInfo.height }</div>
+        <%--<div id="oldWidth" style="display: none;">${imageInfo.width }</div>
+        <div id="oldHeight" style="display: none;">${imageInfo.height }</div>--%>
         <div id="resource_id" style="display: none;">${imageInfo.id }</div>
         <div id="labelId" style="display: none;"></div>
         <div id="height" style="display: none;"></div>
@@ -53,7 +53,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-success">
-                    <div class="panel-heading">图片</div>
+                    <div class="panel-heading">图片
+                        <select id="productList" style="float: right; width: 150px;margin-top: -7px;" class="form-control"></select>
+                        <button type="button" style="float: right;margin-top: -7px;margin-right: 5px;" onclick="Label.fn.addLabel()" class="btn btn-primary btn-sl">添加标签</button>
+                    </div>
                     <div id="panelBody" class="panel-body">
                         <table>
                             <tr>
@@ -65,8 +68,7 @@
                                 <td>
                                     <!--模块拖拽-->
                                     <div>
-                                        <select id="productList" style="position: absolute;left: 800px;top:60px;width: 200px;" class="form-control"></select>
-                                        <button type="button" onclick="Label.fn.addLabel()" style="position: absolute;left: 800px;top:120px;" class="btn btn-primary">添加标签</button>
+
                                     </div>
                                     <div id="tempLabels" style="border: 1px;"></div>
                                 </td>
