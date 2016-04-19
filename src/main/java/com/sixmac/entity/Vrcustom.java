@@ -11,7 +11,7 @@ import java.util.Date;
 public class Vrcustom {
     private int id;
     private String cover;
-    private String content;
+    private String url;
     private Date updateTime;
 
     @Id
@@ -32,12 +32,12 @@ public class Vrcustom {
         this.cover = cover;
     }
 
-    public String getContent() {
-        return content;
+    public String getUrl() {
+        return url;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

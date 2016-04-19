@@ -52,6 +52,9 @@ public class UsersApi extends CommonController {
     @Autowired
     private AttentionsService attentionsService;
 
+    @Autowired
+    private PrivateletterService privateletterService;
+
     /**
      * @api {post} /api/users/sendCode 发送验证码
      * @apiName users.sendCode
@@ -594,18 +597,36 @@ public class UsersApi extends CommonController {
      * @api {post} /api/users/letterList 私信列表
      * @apiName users.letterList
      * @apiGroup users
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 私信列表
      * @apiSuccess {Integer} list.id 消息id
-     * @apiSuccess {Object} list.fromUser 发送人信息
+     * @apiSuccess {Integer} list.fromUserId 发送人id
+     * @apiSuccess {String} list.fromUserName 发送人昵称
+     * @apiSuccess {String} list.fromUserHead 发送人头像
      * @apiSuccess {String} list.content 内容
      * @apiSuccess {String} list.createTime 创建时间
      */
     @RequestMapping(value = "/letterList")
-    public void letterList(HttpServletResponse response) {
-        List<Message> list = messageService.findListByType(Constant.MESSAGE_STATUS_USER);
+    public void letterList(HttpServletResponse response, Integer userId, Integer pageNum, Integer pageSize) {
+        if (null == userId || null == pageNum || null == pageSize) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
 
-        Result obj = new Result(true).data(list);
-        String result = JsonUtil.obj2ApiJson(obj, "type");
+        Page<Privateletter> page = privateletterService.pageByReceiveUser(userId, pageNum, pageSize);
+
+        for (Privateletter letter : page.getContent()) {
+            letter.setFromUserId(letter.getSendUser().getId());
+            letter.setFromUserName(letter.getSendUser().getNickName());
+            letter.setFromUserHead(letter.getSendUser().getHeadPath());
+        }
+
+        Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "sendUser", "receiveUser");
         WebUtil.printApi(response, result);
     }
 
