@@ -108,7 +108,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
             packageVo.setId(customPackage.getId());
             packageVo.setName(customPackage.getName());
             image = imageService.getById(customPackage.getCoverId());
-            image.setLabelList(labelService.findListByParams(customPackage.getId(), Constant.LABEL_CUSTOMPACKAGE));
+            image.setLabelList(labelService.findListByParams(image.getId(), Constant.LABEL_CUSTOMPACKAGE));
             packageVo.setCover(image);
 
             // 根据套餐id和套餐类型查询套餐商品集合

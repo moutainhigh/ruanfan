@@ -591,6 +591,25 @@ public class UsersApi extends CommonController {
     }
 
     /**
+     * @api {post} /api/users/letterList 私信列表
+     * @apiName users.letterList
+     * @apiGroup users
+     * @apiSuccess {Object} list 私信列表
+     * @apiSuccess {Integer} list.id 消息id
+     * @apiSuccess {Object} list.fromUser 发送人信息
+     * @apiSuccess {String} list.content 内容
+     * @apiSuccess {String} list.createTime 创建时间
+     */
+    @RequestMapping(value = "/letterList")
+    public void letterList(HttpServletResponse response) {
+        List<Message> list = messageService.findListByType(Constant.MESSAGE_STATUS_USER);
+
+        Result obj = new Result(true).data(list);
+        String result = JsonUtil.obj2ApiJson(obj, "type");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
      * @api {post} /api/users/messageList 系统消息列表
      * @apiName users.messageList
      * @apiGroup users

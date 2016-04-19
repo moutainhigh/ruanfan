@@ -90,7 +90,7 @@ public class CustomApi extends CommonController {
         custominfo.setPackageList(customPackageService.findListByCustominfoId(customInfoId, areaId));
 
         Result obj = new Result(true).data(createMap("customInfo", custominfo));
-        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort", "objectId", "objectType", "isHot", "isCheck", "isAdd", "thuPath", "width", "height", "similarList", "appraisalVoList");
+        String result = JsonUtil.obj2ApiJson(obj, "product", "labelId", "custom", "merchant", "brand", "sort", "objectId", "objectType", "isHot", "isCheck", "isAdd", "thuPath", "width", "height", "similarList", "appraisalVoList");
         WebUtil.printApi(response, result);
     }
 }
