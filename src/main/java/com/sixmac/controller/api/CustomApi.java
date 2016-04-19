@@ -42,7 +42,6 @@ public class CustomApi extends CommonController {
      * @apiSuccess {String} list.name 户型名称
      * @apiSuccess {String} list.path 户型封面图
      * @apiSuccess {String} list.createTime 创建时间
-     * @apiSuccess {Object} list.packageList 创建时间
      */
     @RequestMapping(value = "/findList")
     public void findList(HttpServletResponse response,
@@ -51,7 +50,7 @@ public class CustomApi extends CommonController {
         List<Custominfo> custominfoList = custominfoService.findListByCustomId(custom.getId());
 
         Result obj = new Result(true).data(createMap("list", custominfoList));
-        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort");
+        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort", "packageList");
         WebUtil.printApi(response, result);
     }
 
@@ -66,7 +65,22 @@ public class CustomApi extends CommonController {
      * @apiSuccess {String} customInfo.name 户型名称
      * @apiSuccess {String} customInfo.path 户型封面图
      * @apiSuccess {String} customInfo.createTime 创建时间
-     * @apiSuccess {Object} customInfo.packageList 创建时间
+     * @apiSuccess {Object} customInfo.packageList 套餐列表
+     * @apiSuccess {Integer} customInfo.packageList.id 套餐id
+     * @apiSuccess {String} customInfo.packageList.name 套餐名称
+     * @apiSuccess {String} customInfo.packageList.cover 套餐图片
+     * @apiSuccess {Integer} customInfo.packageList.cover.id 图片id
+     * @apiSuccess {String} customInfo.packageList.cover.path 图片路径
+     * @apiSuccess {Object} customInfo.packageList.cover.labelList 图片标签列表
+     * @apiSuccess {Integer} customInfo.packageList.cover.labelList.id 标签id
+     * @apiSuccess {String} customInfo.packageList.cover.labelList.name 标签名称
+     * @apiSuccess {String} customInfo.packageList.cover.labelList.description 标签描述
+     * @apiSuccess {String} customInfo.packageList.cover.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
+     * @apiSuccess {String} customInfo.packageList.cover.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
+     * @apiSuccess {Object} customInfo.packageList.productsList 套餐包含商品列表
+     * @apiSuccess {Integer} customInfo.packageList.productsList.id 商品id
+     * @apiSuccess {String} customInfo.packageList.productsList.name 商品名称
+     * @apiSuccess {String} customInfo.packageList.productsList.cover 商品封面
      */
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response,
@@ -76,7 +90,7 @@ public class CustomApi extends CommonController {
         custominfo.setPackageList(customPackageService.findListByCustominfoId(customInfoId, areaId));
 
         Result obj = new Result(true).data(createMap("customInfo", custominfo));
-        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort");
+        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort", "objectId", "objectType", "isHot", "isCheck", "isAdd", "thuPath", "width", "height", "similarList", "appraisalVoList");
         WebUtil.printApi(response, result);
     }
 }
