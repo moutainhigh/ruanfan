@@ -161,6 +161,8 @@ public class PackagesController extends CommonController {
             packages.setDescription(content);
 
             if (null == id) {
+                packages.setShowNum(0);
+                packages.setType(Constant.PACKAGE_TYPE_PRODUCT);
                 packages.setCount(0);
                 packages.setCreateTime(new Date());
                 packagesService.create(packages);
