@@ -49,12 +49,6 @@ public class EvaluateController extends CommonController {
         int pageNum = getPageNum(start, length);
 
         Page<Ordersinfo> page = ordersinfoService.page(mobile, productName, orderNum, pageNum, length);
-        List<Ordersinfo> list = page.getContent();
-        if(list != null && !list.isEmpty()) {
-            for (Ordersinfo info : list) {
-                info.setProductPath(ConfigUtil.getString("upload.url") + info.getProductPath());
-            }
-        }
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
