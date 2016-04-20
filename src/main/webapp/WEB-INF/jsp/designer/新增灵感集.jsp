@@ -79,6 +79,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">描述:</label>
+                                <div class="col-sm-3">
+                                    <textarea cols="40" rows="8" class="form-control" id="description" name="description" maxlength="2000" placeholder="灵感集描述，最多2000字">${afflatus.description}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">图片:</label>
                                 <div class="col-sm-10">
                                     <div style="float: left;margin-bottom: 30px;display: none;" id="lastImageDiv">
@@ -350,6 +357,7 @@
                 var styleId = $('#styleList option:selected').val();
                 var areaId = $('#areaList option:selected').val();
                 var name = $('#name').val();
+                var description = $('#description').val();
 
                 // 当灵感集的类型为套图时，检查名称是否为空
                 if (type == 2) {
@@ -387,6 +395,12 @@
                 var val = $('input:radio[name="settingCover"]:checked').val();
                 if (null == val) {
                     $sixmac.notify("请选择一张封面图", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (description == '') {
+                    $sixmac.notify("请输入描述", "error");
                     flag = false;
                     return;
                 }

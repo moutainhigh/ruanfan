@@ -14,8 +14,11 @@ public class Propertys {
     private Integer id;
     private String name;
     private String cover;
+    private String serverHead;
+    private String serverQQ;
     private String address;
     private String labels;
+    private String description;
     private Integer parentId;
     private Date createTime;
     private List<Propertys> childList = new ArrayList<Propertys>();
@@ -47,6 +50,22 @@ public class Propertys {
         this.cover = cover;
     }
 
+    public String getServerHead() {
+        return serverHead;
+    }
+
+    public void setServerHead(String serverHead) {
+        this.serverHead = serverHead;
+    }
+
+    public String getServerQQ() {
+        return serverQQ;
+    }
+
+    public void setServerQQ(String serverQQ) {
+        this.serverQQ = serverQQ;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -61,6 +80,14 @@ public class Propertys {
 
     public void setLabels(String labels) {
         this.labels = labels;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getParentId() {

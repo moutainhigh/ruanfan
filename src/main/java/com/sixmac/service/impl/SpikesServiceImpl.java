@@ -89,4 +89,9 @@ public class SpikesServiceImpl implements SpikesService {
         return null;
     }
 
+    @Override
+    public Page<Spikes> page(Integer pageNum, Integer pageSize) {
+        return spikesDao.findAllWorking("%%", new Date(), new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
 }

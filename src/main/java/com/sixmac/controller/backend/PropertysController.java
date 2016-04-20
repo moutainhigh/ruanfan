@@ -129,6 +129,12 @@ public class PropertysController extends CommonController {
                 propertys.setCover(url);
             }
 
+            MultipartFile multipartFile2 = multipartRequest.getFile("mainImage2");
+            if (null != multipartFile2) {
+                String serverHead = QiNiuUploadImgUtil.upload(multipartFile2);
+                propertys.setServerHead(serverHead);
+            }
+
             if (null != id) {
                 propertysService.update(propertys);
             } else {

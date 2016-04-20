@@ -26,6 +26,7 @@ public class Afflatus {
     private Integer status;
     private Date createTime;
     private String cover;
+    private String description;
     private List<Gams> gamsList = new ArrayList<Gams>();
     private List<BeanVo> loveList = new ArrayList<BeanVo>();
     private List<Comment> commentList = new ArrayList<Comment>();
@@ -153,6 +154,14 @@ public class Afflatus {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Transient

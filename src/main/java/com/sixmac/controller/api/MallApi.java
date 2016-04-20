@@ -141,7 +141,11 @@ public class MallApi extends CommonController {
             return;
         }
 
-        Page<Spikes> page = spikesService.find(pageNum, pageSize);
+        Page<Spikes> page = spikesService.page(pageNum, pageSize);
+
+        for (Spikes spikes : page.getContent()) {
+            spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
+        }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 

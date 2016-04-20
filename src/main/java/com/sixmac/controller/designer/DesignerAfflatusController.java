@@ -129,6 +129,7 @@ public class DesignerAfflatusController extends CommonController {
                         Integer styleId,
                         Integer areaId,
                         Integer settingCover,
+                        String description,
                         String labels,
                         String tempAddImageIds,
                         String tempDelImageIds) {
@@ -147,6 +148,7 @@ public class DesignerAfflatusController extends CommonController {
             afflatus.setArea(areasService.getById(areaId));
             afflatus.setLabels(labels);
             afflatus.setCoverId(settingCover);
+            afflatus.setDescription(description);
 
             // 保存灵感集信息
             if (null != id) {

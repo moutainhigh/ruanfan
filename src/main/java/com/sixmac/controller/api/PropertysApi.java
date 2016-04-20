@@ -51,6 +51,9 @@ public class PropertysApi extends CommonController {
      * @apiSuccess {Integer} list.childList.id 楼盘id
      * @apiSuccess {String} list.childList.name 楼盘名称
      * @apiSuccess {String} list.childList.cover 楼盘封面图
+     * @apiSuccess {String} list.childList.description 楼盘简介
+     * @apiSuccess {String} list.childList.serverHead 楼盘客服头像
+     * @apiSuccess {String} list.childList.serverQQ 楼盘客服QQ
      * @apiSuccess {String} list.childList.address 楼盘地址
      * @apiSuccess {String} list.childList.labels 楼盘标签
      * @apiSuccess {String} list.childList.createTime 楼盘创建时间

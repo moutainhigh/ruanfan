@@ -90,6 +90,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">描述:</label>
+                                <div class="col-sm-3" style="padding-top: 6.5px;">
+                                    ${afflatus.description}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">图片:</label>
                                 <div class="col-sm-10" style="padding-top: 8px;">
                                     <div style="float: left;display: none;" id="lastImageDiv"></div>

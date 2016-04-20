@@ -416,6 +416,9 @@
                 var type = $('#typeList option:selected').val();
                 var sort = $('#sortList option:selected').val();
                 var place = $('#place').val();
+                var colors = $('#colors').val();
+                var sizes = $('#sizes').val();
+                var materials = $('#materials').val();
                 var content = editor1.getContent();
 
                 if (null == name || name == '') {
@@ -463,6 +466,24 @@
 
                 if (null == place || place == '') {
                     $sixmac.notify("请输入商品产地", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == colors || colors == '') {
+                    $sixmac.notify("请输入商品颜色", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == sizes || sizes == '') {
+                    $sixmac.notify("请输入商品尺寸", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == materials || materials == '') {
+                    $sixmac.notify("请输入商品材质", "error");
                     flag = false;
                     return;
                 }

@@ -86,7 +86,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label style="color: red;margin-left: 18%;">提示:图片尺寸待定</label>
+                                <label style="color: red;margin-left: 18%;">提示:图片比例须为16:9</label>
                             </div>
 
                             <div class="form-group">

@@ -14,4 +14,6 @@ public interface SpikesService extends ICommonService<Spikes> {
     // 秒杀列表
     public Page<Spikes> page(String name, Integer status, Integer pageNum, Integer pageSize);
 
+    // 查询正在进行中的秒杀列表
+    public Page<Spikes> page(Integer pageNum, Integer pageSize);
 }

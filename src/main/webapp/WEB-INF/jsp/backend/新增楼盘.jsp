@@ -53,6 +53,23 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">楼盘客服头像:</label>
+                                <div class="col-sm-3">
+                                    <input type="file" name="mainImage5" id="mainImage5" style="display:none;" onchange="propertyInfo.fn.changeStatus5()"/>
+                                    <a href="javascript:void(0);" onclick="propertyInfo.fn.AddImg5()">
+                                        <img id="mainPicture5" src="${propertyInfo.serverHead}" style="height: 160px; width: 160px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">楼盘客服QQ:</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="serverQQ" name="serverQQ" maxlength="20" data-rule="required" value="${propertyInfo.serverQQ}" placeholder="请输入楼盘客服QQ"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">楼盘地址:</label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="address" name="address" maxlength="200" data-rule="required" value="${propertyInfo.address}" placeholder="请输入楼盘地址"/>
@@ -63,6 +80,13 @@
                                 <label class="col-sm-2 control-label">楼盘标签:</label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="labels" name="labels" maxlength="500" value="${propertyInfo.labels}" placeholder="使用空格隔开多个标签"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">楼盘简介:</label>
+                                <div class="col-sm-3">
+                                    <textarea cols="40" rows="8" class="form-control" id="description" name="description" maxlength="2000" placeholder="楼盘简介，最多2000字">${propertyInfo.description}</textarea>
                                 </div>
                             </div>
 
@@ -130,6 +154,7 @@
             list: [],
             dTable: null,
             mainImageStatus: 0,
+            mainImageStatus5: 0,
             imageSize: 0,
             hxImages: '',
             kfImages: '',
@@ -153,6 +178,12 @@
                     Height: 170
                 });
 
+                $("#mainImage5").uploadPreview({
+                    Img: "mainPicture5",
+                    Width: 200,
+                    Height: 170
+                });
+
                 // 加载数据
                 propertyInfo.fn.loadData();
             },
@@ -164,11 +195,21 @@
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
 
+                var mainImagePath5 = $('#mainPicture5').attr('src');
+                if (null != mainImagePath5 && mainImagePath5 != '') {
+                    propertyInfo.v.mainImageStatus5 = 1;
+                } else {
+                    $('#mainPicture5').attr('src', 'static/images/add.jpg');
+                }
+
                 // 加载灵感图集图片数组
                 propertyInfo.fn.getSerImages();
             },
             changeStatus: function () {
                 propertyInfo.v.mainImageStatus = 1;
+            },
+            changeStatus5: function () {
+                propertyInfo.v.mainImageStatus5 = 1;
             },
             clearDiv: function (self) {
                 $(self).parent().parent().remove();
@@ -254,10 +295,16 @@
                 // a标签绑定onclick事件
                 $('#mainImage').click();
             },
+            AddImg5: function () {
+                // a标签绑定onclick事件
+                $('#mainImage5').click();
+            },
             checkData: function () {
                 var flag = true;
                 var name = $('#name').val();
                 var address = $('#address').val();
+                var serverQQ = $('#serverQQ').val();
+                var description = $('#description').val();
 
                 if (null == name || name == '') {
                     $sixmac.notify("请输入楼盘名称", "error");
@@ -271,8 +318,26 @@
                     return;
                 }
 
+                if (propertyInfo.v.mainImageStatus5 == 0) {
+                    $sixmac.notify("请上传楼盘客服头像", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == serverQQ || serverQQ == '') {
+                    $sixmac.notify("请输入楼盘客服QQ", "error");
+                    flag = false;
+                    return;
+                }
+
                 if (null == address || address == '') {
                     $sixmac.notify("请输入楼盘地址", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == description || description == '') {
+                    $sixmac.notify("请输入楼盘简介", "error");
                     flag = false;
                     return;
                 }
