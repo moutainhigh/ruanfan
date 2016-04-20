@@ -47,9 +47,9 @@ public class BrandController extends CommonController {
         int pageNum = getPageNum(start, length);
         Page<Brand> page = brandService.find(pageNum, length);
 
-        // 循环查找每个品牌的关联商品数量
+        // 循环查找每个品牌的关联套餐数量
         for (Brand brand : page.getContent()) {
-            brand.setProductNum(brandService.findProductListByBrandId(brand.getId()).size());
+            brand.setProductNum(brandService.findPackageListByBrandId(brand.getId()).size());
         }
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);

@@ -263,8 +263,6 @@ public class MallApi extends CommonController {
             products.setCover(imageService.getById(products.getCoverId()).getPath());
             products.setMerchantId(products.getMerchant().getId());
             products.setMerchantName(products.getMerchant().getNickName());
-            products.setBrandId(products.getBrand().getId());
-            products.setBrandName(products.getBrand().getName());
             products.setSortId(products.getSort().getId());
             products.setSortName(products.getSort().getName());
             products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
@@ -353,8 +351,6 @@ public class MallApi extends CommonController {
         products.setMerchantName(products.getMerchant().getNickName());
         products.setMerchantHead(products.getMerchant().getHead());
         products.setMerchantDescription(products.getMerchant().getDescription());
-        products.setBrandId(products.getBrand().getId());
-        products.setBrandName(products.getBrand().getName());
         products.setSortId(products.getSort().getId());
         products.setSortName(products.getSort().getName());
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
@@ -585,8 +581,6 @@ public class MallApi extends CommonController {
             product.setMerchantName(product.getMerchant().getNickName());
             product.setMerchantHead(product.getMerchant().getHead());
             product.setMerchantDescription(product.getMerchant().getDescription());
-            product.setBrandId(product.getBrand().getId());
-            product.setBrandName(product.getBrand().getName());
             product.setSortId(product.getSort().getId());
             product.setSortName(product.getSort().getName());
         }

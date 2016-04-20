@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.BrandDao;
 import com.sixmac.entity.Brand;
+import com.sixmac.entity.Packages;
 import com.sixmac.entity.Products;
 import com.sixmac.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Products> findProductListByBrandId(Integer brandId) {
-        return brandDao.findProductListByBrandId(brandId);
+    public List<Packages> findPackageListByBrandId(Integer brandId) {
+        return brandDao.findPackageListByBrandId(brandId);
     }
 }

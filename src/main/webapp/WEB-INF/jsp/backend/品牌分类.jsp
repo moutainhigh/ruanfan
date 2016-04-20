@@ -45,7 +45,7 @@
                                 <thead>
                                 <tr>
                                     <th>名称</th>
-                                    <th>商品数量</th>
+                                    <th>套餐数量</th>
                                     <th>图标</th>
                                     <th>更新时间</th>
                                     <th>操作</th>

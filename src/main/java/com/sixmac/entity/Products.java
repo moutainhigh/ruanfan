@@ -20,7 +20,6 @@ public class Products {
     private Merchants merchant;
     private Integer coverId;
     private Integer type;
-    private Brand brand;
     private Producttype sort;
     private String place;
     private String labels;
@@ -40,8 +39,6 @@ public class Products {
     private String merchantName;
     private String merchantHead;
     private String merchantDescription;
-    private Integer brandId;
-    private String brandName;
     private Integer sortId;
     private String sortName;
     private Date createTime;
@@ -107,16 +104,6 @@ public class Products {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "brandId")
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
     }
 
     @ManyToOne
@@ -277,24 +264,6 @@ public class Products {
 
     public void setMerchantDescription(String merchantDescription) {
         this.merchantDescription = merchantDescription;
-    }
-
-    @Transient
-    public Integer getBrandId() {
-        return brandId;
-    }
-
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
-    }
-
-    @Transient
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
     }
 
     @Transient
