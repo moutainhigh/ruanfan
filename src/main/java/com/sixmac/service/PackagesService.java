@@ -23,4 +23,7 @@ public interface PackagesService extends ICommonService<Packages> {
 
     // 根据品牌id查询类似的套餐列表
     public List<Packages> iFindListByBrand(Integer packageId, Integer brandId);
+
+    // 根据创建时间倒序排列套餐列表
+    public List<Packages> findListOrderByCreateTimeDesc();
 }

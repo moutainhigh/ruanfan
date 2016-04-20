@@ -86,6 +86,26 @@ public class MallApi extends CommonController {
     }
 
     /**
+     * @api {post} /api/mall/newPackageList 首页最新商品套餐图
+     * @apiName mall.newPackageList
+     * @apiGroup mall
+     * @apiSuccess {Object} list 首页banner图列表
+     * @apiSuccess {Integer} list.id banner图id
+     * @apiSuccess {String} list.cover 图片路径
+     * @apiSuccess {Integer} list.type 类型，1=单品，2=艺术品，3=设计师品牌
+     * @apiSuccess {Integer} list.sourceId 关联目标id
+     * @apiSuccess {String} list.updateTime 更新时间
+     */
+    @RequestMapping(value = "/newPackageList")
+    public void newPackageList(HttpServletResponse response) {
+        List<Packages> list = packagesService.findListOrderByCreateTimeDesc();
+
+        Result obj = new Result(true).data(createMap("list", list));
+        String result = JsonUtil.obj2ApiJson(obj);
+        WebUtil.printApi(response, result);
+    }
+
+    /**
      * @api {post} /api/mall/spikeList 秒杀列表
      * @apiName mall.spikeList
      * @apiGroup mall
@@ -222,7 +242,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {Integer} list.sortId 分类id
      * @apiSuccess {String} list.sortName 分类名称
      */
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "list")
     public void list(HttpServletResponse response,
                      Integer type,
                      String name,

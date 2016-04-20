@@ -18,4 +18,7 @@ public interface PackagesDao extends JpaRepository<Packages, Integer>, JpaSpecif
 
     @Query("select a from Packages a where a.id <> ?1 and a.brand.id = ?2")
     public List<Packages> iFindListByBrand(Integer packageId, Integer brandId);
+
+    @Query("select a from Packages a order by a.createTime desc")
+    public List<Packages> findListOrderByCreateTimeDesc();
 }

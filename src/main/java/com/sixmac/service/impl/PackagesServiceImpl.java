@@ -166,4 +166,9 @@ public class PackagesServiceImpl implements PackagesService {
         return packagesDao.iFindListByBrand(packageId, brandId);
     }
 
+    @Override
+    public List<Packages> findListOrderByCreateTimeDesc() {
+        return packagesDao.findListOrderByCreateTimeDesc();
+    }
+
 }

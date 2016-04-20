@@ -189,7 +189,6 @@ public class MerchantController extends CommonController {
             merchants.setNickName(nickName);
             merchants.setCity(cityService.getById(cityId));
             merchants.setDescription(description);
-            merchants.setIsCut(0);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
@@ -200,6 +199,9 @@ public class MerchantController extends CommonController {
             if (null == id) {
                 merchants.setDescription("");
                 merchants.setIsCheck(Constant.CHECK_STATUS_SUCCESS);
+                merchants.setIsCut(Constant.IS_CUT_NO);
+                merchants.setCount(0);
+                merchants.setShowNum(0);
                 merchants.setStatus(Constant.BANNED_STATUS_YES);
                 merchants.setCreateTime(new Date());
                 merchants.setHead(Constant.DEFAULT_HEAD_PATH);

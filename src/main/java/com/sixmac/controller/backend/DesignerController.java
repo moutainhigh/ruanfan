@@ -201,6 +201,8 @@ public class DesignerController extends CommonController {
                 designers.setPrice("");
                 designers.setDescription("");
                 designers.setDescs("");
+                designers.setIsCut(Constant.IS_CUT_NO);
+                designers.setShowNum(0);
                 designers.setIsCheck(Constant.CHECK_STATUS_SUCCESS);
                 designers.setStatus(Constant.BANNED_STATUS_YES);
                 designers.setCreateTime(new Date());
