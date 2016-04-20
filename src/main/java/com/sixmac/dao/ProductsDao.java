@@ -33,4 +33,7 @@ public interface ProductsDao extends JpaRepository<Products, Integer>, JpaSpecif
 
     @Query("select a from Products a where a.createTime > ?1")
     public List<Products> findListNew(Date yesterday);
+
+    @Query("select a from Products a where a.status = 0 and a.isAdd = 0 and a.isCheck = 1")
+    public List<Products> findListWithSuccess();
 }

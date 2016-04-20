@@ -257,4 +257,9 @@ public class DesignersServiceImpl implements DesignersService {
         }
         return null;
     }
+
+    @Override
+    public List<Designers> findListWithSuccess() {
+        return designersDao.findListWithSuccess();
+    }
 }

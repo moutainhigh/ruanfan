@@ -18,4 +18,7 @@ public interface DesignersDao extends JpaRepository<Designers, Integer>, JpaSpec
 
     @Query("select a from Messageplus a where a.sourceId = ?1 and a.type = 1 order by a.id desc")
     public List<Messageplus> findListByDesignerId(Integer designerId);
+
+    @Query("select a from Designers a where a.status = 0 and a.isCut = 0 and a.isCheck = 1")
+    public List<Designers> findListWithSuccess();
 }

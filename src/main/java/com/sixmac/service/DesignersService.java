@@ -30,4 +30,7 @@ public interface DesignersService extends ICommonService<Designers> {
 
     // 根据设计师id查询该设计师审核失败的原因
     public Messageplus findReasonByDesignerId(Integer designerId);
+
+    // 查询合格的设计师列表
+    public List<Designers> findListWithSuccess();
 }

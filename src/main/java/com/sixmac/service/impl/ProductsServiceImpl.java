@@ -320,4 +320,9 @@ public class ProductsServiceImpl implements ProductsService {
     public List<Products> findListNew() {
         return productsDao.findListNew(CommonController.getYesterday());
     }
+
+    @Override
+    public List<Products> findListWithSuccess() {
+        return productsDao.findListWithSuccess();
+    }
 }

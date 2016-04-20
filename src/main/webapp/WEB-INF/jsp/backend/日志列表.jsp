@@ -139,7 +139,7 @@
                         {"data": "createTime"},
                         {"data": "content"},
                         {"data": "forwardNum"},
-                        {"data": "gamsNum"},
+                        {"data": "gamNum"},
                         {"data": "commentNum"},
                         {"data": ""}
                     ],

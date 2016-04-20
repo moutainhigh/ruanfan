@@ -85,7 +85,7 @@ public class CommonsController {
     @RequestMapping("/merchantList")
     @ResponseBody
     public List<Merchants> merchantList() {
-        return merchantsService.findAll();
+        return merchantsService.findListWithSuccess();
     }
 
     /**
@@ -140,7 +140,7 @@ public class CommonsController {
     @RequestMapping("/designerList")
     @ResponseBody
     public List<Designers> designerList() {
-        return designersService.findAll();
+        return designersService.findListWithSuccess();
     }
 
     /**
@@ -184,7 +184,7 @@ public class CommonsController {
     @RequestMapping("/productList")
     @ResponseBody
     public List<Products> productList() {
-        return productsService.findAll();
+        return productsService.findListWithSuccess();
     }
 
     /**

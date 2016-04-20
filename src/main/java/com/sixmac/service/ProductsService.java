@@ -32,16 +32,18 @@ public interface ProductsService extends ICommonService<Products> {
     // 查询商品总数
     public List<Products> findList();
 
-
-    //查询待审核商品
+    // 查询待审核商品
     public List<Products> findListCheck();
 
-    //查询上架商品数量
+    // 查询上架商品数量
     public List<Products> findListAdd();
 
-    //查询下架商品数量
+    // 查询下架商品数量
     public List<Products> findListDown();
 
-    //查询昨日新增商品
+    // 查询昨日新增商品
     public List<Products> findListNew();
+
+    // 查询合格的商品列表
+    public List<Products> findListWithSuccess();
 }

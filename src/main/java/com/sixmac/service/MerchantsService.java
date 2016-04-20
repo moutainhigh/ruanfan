@@ -26,4 +26,7 @@ public interface MerchantsService extends ICommonService<Merchants> {
     public Page<Merchants> page(Integer styleId, Integer pageNum, Integer pageSize);
 
     public List<Merchants> findListByStyleId(Integer styleId);
+
+    // 查询合格的商家列表
+    public List<Merchants> findListWithSuccess();
 }
