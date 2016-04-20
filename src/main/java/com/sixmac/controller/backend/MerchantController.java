@@ -152,7 +152,6 @@ public class MerchantController extends CommonController {
     /**
      * 新增商户信息
      *
-     * @param request
      * @param id
      * @param email
      * @param password
@@ -165,8 +164,7 @@ public class MerchantController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request,
-                        Integer id,
+    public Integer save(Integer id,
                         String email,
                         String password,
                         Integer type,
@@ -192,8 +190,20 @@ public class MerchantController extends CommonController {
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                String url = QiNiuUploadImgUtil.upload(multipartFile);
-                merchants.setLicense(url);
+                String head = QiNiuUploadImgUtil.upload(multipartFile);
+                merchants.setHead(head);
+            }
+
+            MultipartFile multipartFile2 = multipartRequest.getFile("mainImage2");
+            if (null != multipartFile2) {
+                String cover = QiNiuUploadImgUtil.upload(multipartFile2);
+                merchants.setCover(cover);
+            }
+
+            MultipartFile multipartFile3 = multipartRequest.getFile("mainImage3");
+            if (null != multipartFile3) {
+                String license = QiNiuUploadImgUtil.upload(multipartFile3);
+                merchants.setLicense(license);
             }
 
             if (null == id) {

@@ -31,7 +31,6 @@
                             <input type="hidden" id="id" name="id" value="${merchant.id}">
                             <input type="hidden" id="provinceId" value="${merchant.city.province.id}">
                             <input type="hidden" id="cityId" value="${merchant.city.id}">
-                            <input type="hidden" id="tempHead" value="${merchant.head}"/>
                             <input type="hidden" id="tempTypeId" value="${merchant.type}"/>
                             <input type="hidden" id="tempStyleId" value="${merchant.style.id}"/>
 
@@ -41,6 +40,16 @@
                                     <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="merchant.fn.changeStatus()"/>
                                     <a href="javascript:void(0);" onclick="merchant.fn.AddImg()">
                                         <img id="mainPicture" src="${merchant.head}" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">封面:</label>
+                                <div class="col-sm-10" style="padding-top: 5.5px;">
+                                    <input type="file" name="mainImage3" id="mainImage3" style="display:none;" onchange="merchant.fn.changeStatus3()"/>
+                                    <a href="javascript:void(0);" onclick="merchant.fn.AddImg3()">
+                                        <img id="mainPicture3" src="${merchant.cover}" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
                                     </a>
                                 </div>
                             </div>
@@ -136,7 +145,8 @@
             id: "merchant",
             list: [],
             dTable: null,
-            mainImageStatus: 0
+            mainImageStatus: 0,
+            mainImageStatus3: 0
         },
         fn: {
             init: function () {
@@ -147,6 +157,12 @@
                 //套图主图预览
                 $("#mainImage").uploadPreview({
                     Img: "mainPicture",
+                    Width: 200,
+                    Height: 170
+                });
+
+                $("#mainImage3").uploadPreview({
+                    Img: "mainPicture3",
                     Width: 200,
                     Height: 170
                 });
@@ -171,6 +187,13 @@
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
 
+                var mainImagePath3 = $('#mainPicture3').attr('src');
+                if (null != mainImagePath3 && mainImagePath3 != '') {
+                    merchant.v.mainImageStatus3 = 1;
+                } else {
+                    $('#mainPicture3').attr('src', 'static/images/add.jpg');
+                }
+
                 // 选择商家类型
                 var type = $('#tempTypeId').val();
                 if (null != type && type != '') {
@@ -179,6 +202,9 @@
             },
             changeStatus: function () {
                 merchant.v.mainImageStatus = 1;
+            },
+            changeStatus3: function () {
+                merchant.v.mainImageStatus3 = 1;
             },
             getSelectList: function () {
                 $sixmac.ajax("common/styleList", null, function (result) {
@@ -254,6 +280,10 @@
                 // a标签绑定onclick事件
                 $('#mainImage').click();
             },
+            AddImg3: function () {
+                // a标签绑定onclick事件
+                $('#mainImage3').click();
+            },
             checkData: function () {
                 var flag = true;
                 var cityId = $('#cityList option:selected').val();
@@ -261,6 +291,12 @@
 
                 if (merchant.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传头像", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (merchant.v.mainImageStatus3 == 0) {
+                    $sixmac.notify("请上传封面", "error");
                     flag = false;
                     return;
                 }

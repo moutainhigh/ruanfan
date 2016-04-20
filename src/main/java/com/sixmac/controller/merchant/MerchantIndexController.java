@@ -8,6 +8,7 @@ import com.sixmac.service.CityService;
 import com.sixmac.service.MerchantsService;
 import com.sixmac.service.StylesService;
 import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,8 +60,7 @@ public class MerchantIndexController extends CommonController {
 
     @RequestMapping(value = "/save")
     @ResponseBody
-    public Integer save(HttpServletRequest request,
-                        Integer id,
+    public Integer save(Integer id,
                         Integer type,
                         String nickName,
                         Integer cityId,
@@ -82,15 +82,19 @@ public class MerchantIndexController extends CommonController {
             // 保存头像
             MultipartFile head = multipartRequest.getFile("mainImage");
             if (null != head) {
-                Map<String, Object> map = ImageUtil.saveImage(request, head, false);
-                merchants.setHead(map.get("imgURL").toString());
+                merchants.setHead(QiNiuUploadImgUtil.upload(head));
             }
 
             // 保存营业执照
             MultipartFile license = multipartRequest.getFile("mainImage2");
             if (null != license) {
-                Map<String, Object> map = ImageUtil.saveImage(request, license, false);
-                merchants.setLicense(map.get("imgURL").toString());
+                merchants.setLicense(QiNiuUploadImgUtil.upload(license));
+            }
+
+            // 保存封面
+            MultipartFile cover = multipartRequest.getFile("mainImage3");
+            if (null != cover) {
+                merchants.setCover(QiNiuUploadImgUtil.upload(cover));
             }
 
             merchantsService.update(merchants);
@@ -104,8 +108,7 @@ public class MerchantIndexController extends CommonController {
 
     @RequestMapping(value = "/savePlus")
     @ResponseBody
-    public Integer savePlus(HttpServletRequest request,
-                            Integer id,
+    public Integer savePlus(Integer id,
                             Integer cityId,
                             Integer styleId,
                             String content,
@@ -119,8 +122,13 @@ public class MerchantIndexController extends CommonController {
             // 保存头像
             MultipartFile head = multipartRequest.getFile("mainImage");
             if (null != head) {
-                Map<String, Object> map = ImageUtil.saveImage(request, head, false);
-                merchants.setHead(map.get("imgURL").toString());
+                merchants.setHead(QiNiuUploadImgUtil.upload(head));
+            }
+
+            // 保存封面
+            MultipartFile cover = multipartRequest.getFile("mainImage3");
+            if (null != cover) {
+                merchants.setCover(QiNiuUploadImgUtil.upload(cover));
             }
 
             merchantsService.update(merchants);

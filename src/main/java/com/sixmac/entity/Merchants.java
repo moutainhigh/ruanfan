@@ -15,6 +15,7 @@ public class Merchants {
     private String email;
     private String url;
     private String head;
+    private String cover;
     private String license;
     private String labels;
     private Integer type;
@@ -76,6 +77,14 @@ public class Merchants {
 
     public void setHead(String head) {
         this.head = head;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public String getLicense() {

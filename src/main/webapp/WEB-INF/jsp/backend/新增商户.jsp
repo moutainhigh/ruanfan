@@ -56,11 +56,31 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">营业执照:</label>
+                                <label class="col-sm-2 control-label">头像:</label>
                                 <div class="col-sm-10">
                                     <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="merchants.fn.changeStatus()"/>
                                     <a href="javascript:void(0);" onclick="merchants.fn.AddImg()">
-                                        <img id="mainPicture" src="${merchants.license}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                        <img id="mainPicture" src="${merchants.head}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">封面:</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="mainImage2" id="mainImage2" style="display:none;" onchange="merchants.fn.changeStatus2()"/>
+                                    <a href="javascript:void(0);" onclick="merchants.fn.AddImg2()">
+                                        <img id="mainPicture2" src="${merchants.cover}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">营业执照:</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="mainImage3" id="mainImage3" style="display:none;" onchange="merchants.fn.changeStatus3()"/>
+                                    <a href="javascript:void(0);" onclick="merchants.fn.AddImg3()">
+                                        <img id="mainPicture3" src="${merchants.license}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
                                     </a>
                                 </div>
                             </div>
@@ -137,7 +157,9 @@
             id: "merchants",
             list: [],
             dTable: null,
-            mainImageStatus: 0
+            mainImageStatus: 0,
+            mainImageStatus2: 0,
+            mainImageStatus3: 0
         },
         fn: {
             init: function () {
@@ -152,6 +174,18 @@
                 //套图主图预览
                 $("#mainImage").uploadPreview({
                     Img: "mainPicture",
+                    Width: 200,
+                    Height: 170
+                });
+
+                $("#mainImage2").uploadPreview({
+                    Img: "mainPicture2",
+                    Width: 200,
+                    Height: 170
+                });
+
+                $("#mainImage3").uploadPreview({
+                    Img: "mainPicture3",
                     Width: 200,
                     Height: 170
                 });
@@ -177,6 +211,20 @@
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
 
+                var mainImagePath2 = $('#mainPicture2').attr('src');
+                if (null != mainImagePath2 && mainImagePath2 != '') {
+                    merchants.v.mainImageStatus2 = 1;
+                } else {
+                    $('#mainPicture2').attr('src', 'static/images/add.jpg');
+                }
+
+                var mainImagePath3 = $('#mainPicture3').attr('src');
+                if (null != mainImagePath3 && mainImagePath3 != '') {
+                    merchants.v.mainImageStatus3 = 1;
+                } else {
+                    $('#mainPicture3').attr('src', 'static/images/add.jpg');
+                }
+
                 // 选择商户类型
                 var type = $('#tempTypeId').val();
                 if (null != type && type != '') {
@@ -191,6 +239,12 @@
             },
             changeStatus: function () {
                 merchants.v.mainImageStatus = 1;
+            },
+            changeStatus2: function () {
+                merchants.v.mainImageStatus2 = 1;
+            },
+            changeStatus3: function () {
+                merchants.v.mainImageStatus3 = 1;
             },
             getSelectList: function () {
                 var provinceId = $('#provinceId').val();
@@ -248,6 +302,14 @@
                 // a标签绑定onclick事件
                 $('#mainImage').click();
             },
+            AddImg2: function () {
+                // a标签绑定onclick事件
+                $('#mainImage2').click();
+            },
+            AddImg3: function () {
+                // a标签绑定onclick事件
+                $('#mainImage3').click();
+            },
             checkData: function () {
                 var flag = true;
                 var email = $('#email').val();
@@ -288,6 +350,18 @@
                 }
 
                 if (merchants.v.mainImageStatus == 0) {
+                    $sixmac.notify("请上传头像", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (merchants.v.mainImageStatus2 == 0) {
+                    $sixmac.notify("请上传封面", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (merchants.v.mainImageStatus3 == 0) {
                     $sixmac.notify("请上传营业执照", "error");
                     flag = false;
                     return;
