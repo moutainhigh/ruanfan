@@ -271,9 +271,9 @@ public class CommonApi extends CommonController {
     }
 
     /**
-     * @api {post} /api/designers/attention 关注 or 取消关注
-     * @apiName designers.attention
-     * @apiGroup designers
+     * @api {post} /api/common/attention 关注 or 取消关注
+     * @apiName common.attention
+     * @apiGroup common
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} objectId 目标id     <必传 />
      * @apiParam {Integer} objectType 目标类型，1=用户，2=设计师     <必传 />
