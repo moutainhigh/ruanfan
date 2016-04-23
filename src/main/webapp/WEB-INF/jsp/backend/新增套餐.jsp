@@ -226,7 +226,26 @@
                 tempDiv.insertBefore("#lastImageDiv");
             },
             removeProduct: function (self) {
+                var imageId = $(self).prev().prev().val();
                 packages.v.imageSize = packages.v.imageSize - 1;
+
+                // 删除时，将图片id从缓存span中清除
+                var idArray = $('#tempAddImageIds').html().split(',');
+                var tempArray = new Array();
+
+                for (var i = 0; i < idArray.length; i++) {
+                    if (null != idArray[i] && idArray[i] != '' && idArray[i] != imageId) {
+                        tempArray.push(idArray[i]);
+                    }
+                }
+
+                var result = '';
+                for (var m = 0; m < tempArray.length; m++) {
+                    result += tempArray[m] + ',';
+                }
+
+                $('#tempAddImageIds').html(result);
+
                 $(self).parent().remove();
             },
             getSelectList: function () {
