@@ -62,7 +62,7 @@ public class PackagesController extends CommonController {
 
         for (Packages packages : page.getContent()) {
             // 获取商品套餐所包含的商品数量
-            packages.setProductNum(packageProductsService.findListByPackageId(packages.getId(), type).size());
+            packages.setProductNum(packageProductsService.findListByPackageId(packages.getId(), packages.getType()).size());
         }
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
@@ -181,6 +181,7 @@ public class PackagesController extends CommonController {
                     packageProduct = new Packageproducts();
                     image = imageService.getById(Integer.parseInt(imageId));
 
+                    packageProduct.setType(packages.getType());
                     packageProduct.setPackages(packages);
                     packageProduct.setProduct(productService.getById(image.getObjectId()));
                     packageProduct.setPath(image.getPath());
