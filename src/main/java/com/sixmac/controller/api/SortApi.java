@@ -80,6 +80,7 @@ public class SortApi extends CommonController {
      * @apiSuccess {Object} list 风格分类列表
      * @apiSuccess {Integer} list.id 风格id
      * @apiSuccess {String} list.name 风格名称
+     * @apiSuccess {String} list.backImg 风格背景图
      * @apiSuccess {String} list.updateTime 更新时间
      */
     @RequestMapping(value = "/styleList")

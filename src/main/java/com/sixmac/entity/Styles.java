@@ -13,6 +13,7 @@ import java.util.List;
 public class Styles {
     private Integer id;
     private String name;
+    private String backImg;
     private Date updateTime;
     private List<Merchants> merchantsList = new ArrayList<Merchants>();
     private Integer productNum;
@@ -33,6 +34,14 @@ public class Styles {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBackImg() {
+        return backImg;
+    }
+
+    public void setBackImg(String backImg) {
+        this.backImg = backImg;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

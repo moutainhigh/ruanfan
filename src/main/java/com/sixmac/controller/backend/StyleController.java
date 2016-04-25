@@ -4,6 +4,7 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Styles;
 import com.sixmac.service.StylesService;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -78,7 +81,7 @@ public class StyleController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id, String name) {
+    public Integer save(Integer id, String name, MultipartRequest multipartRequest) {
         try {
             Styles style = null;
 
@@ -86,6 +89,11 @@ public class StyleController extends CommonController {
                 style = stylesService.getById(id);
             } else {
                 style = new Styles();
+            }
+
+            MultipartFile multipartFile = multipartRequest.getFile("mainImage");
+            if (null != multipartFile) {
+                style.setBackImg(QiNiuUploadImgUtil.upload(multipartFile));
             }
 
             style.setName(name);

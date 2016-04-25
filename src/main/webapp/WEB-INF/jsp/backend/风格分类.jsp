@@ -75,12 +75,21 @@
                     <h4 class="modal-title">分类信息</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="infoForm" method="post" action="backend/style/save" class="form-horizontal" role="form">
+                    <form id="infoForm" method="post" action="backend/style/save" class="form-horizontal" role="form" enctype="multipart/form-data">
                         <input type="hidden" id="hiddenstyleId" name="styleId"/>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">分类名称:</label>
                             <div class="col-sm-5">
                                 <input type="text" class="form-control" id="styleName" maxlength="20" placeholder="请输入分类名称"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">背景图:</label>
+                            <div class="col-sm-5">
+                                <input type="file" name="mainImage" id="mainImage" style="display:none;"/>
+                                <a href="javascript:void(0);" onclick="styleList.fn.AddImg()">
+                                    <img id="mainPicture" src="static/images/add.jpg" style="height: 150px; width: 300px; display: inline; margin-bottom: 5px;" border="1"/>
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -136,6 +145,13 @@
         fn: {
             init: function () {
                 styleList.fn.dataTableInit();
+
+                //套图主图预览
+                $("#mainImage").uploadPreview({
+                    Img: "mainPicture",
+                    Width: 200,
+                    Height: 170
+                });
             },
             dataTableInit: function () {
                 styleList.v.dTable = $sixmac.dataTable($('#dataTables'), {
@@ -195,6 +211,8 @@
                 });
             },
             addInfo: function () {
+                $('#mainPicture').prop('src', 'static/images/add.jpg');
+
                 $sixmac.clearForm($('#infoForm'));
 
                 $("#infoModal").modal("show");
@@ -203,7 +221,17 @@
                 $('#hiddenstyleId').val(data.id);
                 $('#styleName').val(data.name);
 
+                if (null == data.backImg || data.backImg == '') {
+                    $('#mainPicture').prop('src', 'static/images/add.jpg');
+                } else {
+                    $('#mainPicture').prop('src', data.backImg);
+                }
+
                 $("#infoModal").modal("show");
+            },
+            AddImg: function () {
+                // a标签绑定onclick事件
+                $('#mainImage').click();
             },
             delInfo: function (id) {
                 $('#styleId').val(id);
@@ -228,9 +256,16 @@
                 var flag = true;
                 var styleId = $('#hiddenstyleId').val();
                 var productName = $('#styleName').val();
+                var url = $('#mainPicture').prop('src');
 
                 if (null == productName || productName == '') {
                     $sixmac.notify("请输入分类名称", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == url || url == '' || url == _basePath + 'static/images/add.jpg') {
+                    $sixmac.notify("请上传分类图标", "error");
                     flag = false;
                     return;
                 }

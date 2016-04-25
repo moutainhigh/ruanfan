@@ -70,7 +70,7 @@ public class UsersServiceImpl implements UsersService {
         Users users = usersDao.findOne(id);
 
         // 查询粉丝数
-        users.setFansNum(attentionsDao.iFindListByUserId(id).size());
+        users.setFansNum(attentionsDao.findListByUserIdPlus(id).size());
 
         // 查询关注数
         users.setAttentionNum(attentionsDao.findListByUserId(id).size());

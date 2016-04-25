@@ -1,5 +1,6 @@
 package com.sixmac.controller.api;
 
+import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
@@ -16,17 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/3/8 0008.
  */
 @Controller
 @RequestMapping(value = "api/orders")
-public class OrdersApi {
+public class OrdersApi extends CommonController {
 
     @Autowired
     private UsersService usersService;
@@ -139,6 +137,9 @@ public class OrdersApi {
      * @apiParam {String} orderInfoList.materials 材质       <必传 />
      * @apiParam {String} orderInfoList.price 价格       <必传 />
      * @apiParam {Integer} orderInfoList.count 数量       <必传 />
+     * @apiSuccess {Object} orderInfo 订单详情
+     * @apiSuccess {Integer} orderInfo.id 订单id
+     * @apiSuccess {String} orderInfo.orderNum 订单流水号
      */
     @RequestMapping("confirmOrder")
     public void confirmOrder(HttpServletResponse response,
@@ -156,6 +157,8 @@ public class OrdersApi {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
+
+        Orders orders = null;
 
         // 当订单类型为商品订单时，根据商家id拆分为不用的商品订单
         if (type == 1) {
@@ -194,7 +197,7 @@ public class OrdersApi {
 
             // 循环读取商户id集合，依此根据商户id生成对应的商家订单
             for (String merchantIdStr : mapList) {
-                Orders orders = new Orders();
+                orders = new Orders();
                 orders.setOrderNum(System.currentTimeMillis() + "");
                 orders.setPayType(payType);
                 orders.setUser(usersService.getById(userId));
@@ -250,7 +253,7 @@ public class OrdersApi {
             }
         } else {
             // 当订单类型为秒杀订单或套餐订单时，直接生成同一张订单
-            Orders orders = new Orders();
+            orders = new Orders();
             orders.setOrderNum(System.currentTimeMillis() + "");
             orders.setPayType(payType);
             orders.setUser(usersService.getById(userId));
@@ -348,7 +351,11 @@ public class OrdersApi {
             usersService.update(users);
         }
 
-        WebUtil.printApi(response, new Result(true));
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("orderId", orders.getId());
+        map.put("orderNum", orders.getOrderNum());
+
+        WebUtil.printApi(response, new Result(true).data(createMap("orderInfo", map)));
     }
 
     /**
