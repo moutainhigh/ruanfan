@@ -216,7 +216,7 @@ public class OrdersApi extends CommonController {
                 for (Object orderMap : orderinfos) {
                     // 获取单个订单详情
                     mapInfo = JsonUtil.jsontoMap(orderMap);
-                    if (mapInfo.get("merchantId").equals(merchantIdStr)) {
+                    if (mapInfo.get("merchantId").toString().equals(merchantIdStr)) {
                         ordersinfo = new Ordersinfo();
                         ordersinfo.setOrder(orders);
                         ordersinfo.setType(Integer.parseInt(mapInfo.get("type").toString()));
