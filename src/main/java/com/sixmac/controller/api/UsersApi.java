@@ -756,9 +756,11 @@ public class UsersApi extends CommonController {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
-        Page<Message> list = messageService.pageByType(Constant.MESSAGE_STATUS_USER, pageNum, pageSize);
+        Page<Message> page = messageService.pageByType(Constant.MESSAGE_STATUS_USER, pageNum, pageSize);
 
-        Result obj = new Result(true).data(list);
+        Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
+
+        Result obj = new Result(true).data(dataMap);
         String result = JsonUtil.obj2ApiJson(obj, "types");
         WebUtil.printApi(response, result);
     }
