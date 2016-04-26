@@ -742,6 +742,8 @@ public class UsersApi extends CommonController {
      * @api {post} /api/users/messageList 系统消息列表
      * @apiName users.messageList
      * @apiGroup users
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 系统消息列表
      * @apiSuccess {Integer} list.id 消息id
      * @apiSuccess {String} list.title 标题
