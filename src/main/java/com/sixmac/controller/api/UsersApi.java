@@ -799,7 +799,7 @@ public class UsersApi extends CommonController {
      * @apiSuccess {Object} list 系统消息列表
      * @apiSuccess {Integer} list.id 消息id
      * @apiSuccess {String} list.title 标题
-     * @apiSuccess {String} list.desc 简介
+     * @apiSuccess {String} list.des 简介
      * @apiSuccess {String} list.description 描述
      * @apiSuccess {String} list.createTime 创建时间
      */
