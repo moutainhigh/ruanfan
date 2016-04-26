@@ -219,6 +219,7 @@ public class OrdersApi extends CommonController {
                     if (mapInfo.get("merchantId").toString().equals(merchantIdStr)) {
                         ordersinfo = new Ordersinfo();
                         ordersinfo.setOrder(orders);
+                        ordersinfo.setMerchant(merchantsService.getById(Integer.parseInt(merchantIdStr)));
                         ordersinfo.setType(Integer.parseInt(mapInfo.get("type").toString()));
                         product = productsService.getById(Integer.parseInt(mapInfo.get("id").toString()));
                         ordersinfo.setProductId(product.getId());
