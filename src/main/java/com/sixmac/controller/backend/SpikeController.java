@@ -170,7 +170,7 @@ public class SpikeController extends CommonController {
             spikes.setStartTime(DateUtils.stringToDateWithFormat(startTime, "yyyy-MM-dd HH:mm:ss"));
             spikes.setEndTime(DateUtils.stringToDateWithFormat(endTime, "yyyy-MM-dd HH:mm:ss"));
             spikes.setLabels(labels);
-            spikes.setColors(colors);
+            spikes.setColors(colors.substring(0, colors.length() - 1));
             spikes.setSizes(sizes);
             spikes.setMaterials(materials);
             spikes.setDescription(content);

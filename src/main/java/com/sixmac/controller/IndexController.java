@@ -79,11 +79,19 @@ public class IndexController extends CommonController {
                 merchants.setNickName(nickName);
                 merchants.setPassword(Md5Util.md5(password));
                 merchants.setEmail(email);
-                merchants.setHead(Constant.DEFAULT_HEAD_PATH);
+                merchants.setUrl("");
+                merchants.setHead("");
+                merchants.setCover("");
+                merchants.setLicense("");
+                merchants.setLabels("");
                 merchants.setType(Constant.MERCHANT_TYPE_TWO);
-                merchants.setStyle(stylesService.getById(1));
-                merchants.setCity(cityService.getById(1));
+                merchants.setStyle(stylesService.getFirstStyle());
+                merchants.setCity(cityService.getById(1)); // 默认城市为北京
+                merchants.setDescription("");
+                merchants.setShowNum(0);
+                merchants.setCount(0);
                 merchants.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
+                merchants.setIsCut(Constant.IS_CUT_NO);
                 merchants.setStatus(Constant.BANNED_STATUS_YES);
                 merchants.setCreateTime(new Date());
 
@@ -94,10 +102,16 @@ public class IndexController extends CommonController {
                 designers.setNickName(nickName);
                 designers.setMobile(mobile);
                 designers.setPassword(Md5Util.md5(password));
-                designers.setHead(Constant.DEFAULT_HEAD_PATH);
+                designers.setHead("");
                 designers.setType(Constant.DESIGNER_TYPE_ONE);
+                designers.setProof("");
                 designers.setCity(cityService.getById(1)); // 默认城市为北京
+                designers.setShowNum(0);
                 designers.setStar(0);
+                designers.setPrice("");
+                designers.setContent("");
+                designers.setDescription("");
+                designers.setDescs("");
                 designers.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
                 designers.setIsCut(Constant.IS_CUT_NO);
                 designers.setStatus(Constant.BANNED_STATUS_YES);

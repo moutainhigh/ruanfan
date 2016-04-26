@@ -108,6 +108,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">标签:</label>
+                                <div class="col-sm-4">
+                                    ${merchant.labels}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
                                     <textarea name="content" cols="40" rows="6" class="form-control" style="resize: none">${merchant.description}</textarea>

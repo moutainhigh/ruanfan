@@ -13,4 +13,7 @@ public interface StylesService extends ICommonService<Styles> {
 
     // 根据风格id查询对应的灵感集、商户和虚拟体验信息集合
     public Integer findListByStyleId(Integer styleId);
+
+    // 获取第一个风格信息
+    public Styles getFirstStyle();
 }

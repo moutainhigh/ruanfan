@@ -1,7 +1,9 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.PackageproductsDao;
+import com.sixmac.entity.Image;
 import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Packages;
 import com.sixmac.service.PackageproductsService;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +29,9 @@ public class PackageproductsServiceImpl implements PackageproductsService {
 
     @Autowired
     private PackageproductsDao packageproductsDao;
+
+    @Autowired
+    private ImageDao imageDao;
 
     @Override
     public List<Packageproducts> findAll() {
@@ -75,6 +81,20 @@ public class PackageproductsServiceImpl implements PackageproductsService {
     @Override
     public List<Packageproducts> findListByPackageId(Integer packageId, Integer type) {
         return packageproductsDao.findListByPackageId(packageId, type);
+    }
+
+    @Override
+    public List<Image> findImageListByPackageId(Integer packageId, Integer type) {
+        List<Packageproducts> list = packageproductsDao.findListByPackageId(packageId, type);
+        List<Image> imageList = new ArrayList<Image>();
+        Image image = null;
+
+        for (Packageproducts packageProduct : list) {
+            image = imageDao.findOne(packageProduct.getProduct().getCoverId());
+            imageList.add(image);
+        }
+
+        return imageList;
     }
 
     @Override

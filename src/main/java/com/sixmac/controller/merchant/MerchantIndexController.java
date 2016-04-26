@@ -67,13 +67,15 @@ public class MerchantIndexController extends CommonController {
                         String content,
                         Integer styleId,
                         String url,
+                        String labels,
                         MultipartRequest multipartRequest) {
         try {
             Merchants merchants = merchantsService.getById(id);
-            merchants.setType(type);
             merchants.setNickName(nickName);
-            merchants.setStyle(stylesService.getById(styleId));
             merchants.setUrl(url);
+            merchants.setLabels(labels);
+            merchants.setType(type);
+            merchants.setStyle(stylesService.getById(styleId));
             merchants.setCity(cityService.getById(cityId));
             merchants.setDescription(content);
             merchants.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
@@ -159,16 +161,5 @@ public class MerchantIndexController extends CommonController {
         }
 
         return merchants;
-    }
-
-    /**
-     * 获取当前登录的商家信息
-     *
-     * @param request
-     * @return
-     */
-    public static Merchants getMerchant(HttpServletRequest request, MerchantsService merchantsService) {
-        Integer merchantId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
-        return merchantsService.getById(merchantId);
     }
 }

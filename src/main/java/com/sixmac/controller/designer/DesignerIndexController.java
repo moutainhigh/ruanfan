@@ -61,14 +61,16 @@ public class DesignerIndexController extends CommonController {
                         String nickName,
                         Integer cityId,
                         String content,
+                        String price,
                         MultipartRequest multipartRequest) {
         try {
             Designers designers = designersService.getById(id);
+            designers.setNickName(nickName);
             designers.setMobile(mobile);
             designers.setType(type);
-            designers.setNickName(nickName);
             designers.setCity(cityService.getById(cityId));
-            designers.setDescription(content);
+            designers.setPrice(price);
+            designers.setContent(content);
             designers.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
 
             // 保存资质证明
@@ -100,11 +102,13 @@ public class DesignerIndexController extends CommonController {
                             Integer id,
                             Integer cityId,
                             String content,
+                            String price,
                             MultipartRequest multipartRequest) {
         try {
             Designers designers = designersService.getById(id);
             designers.setCity(cityService.getById(cityId));
-            designers.setDescription(content);
+            designers.setPrice(price);
+            designers.setContent(content);
 
             // 保存头像
             MultipartFile head = multipartRequest.getFile("mainImage");

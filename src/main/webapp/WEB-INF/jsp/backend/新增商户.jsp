@@ -86,6 +86,20 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">链接:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="url" name="url" maxlength="500" value="${merchants.url}" placeholder="请输入链接"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">标签:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="labels" name="labels" maxlength="500" value="${merchants.labels}" placeholder="请输入标签"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">商家类型:</label>
                                 <div class="col-sm-4">
                                     <select id="typeList" style="width: 200px;" class="form-control">
@@ -318,6 +332,8 @@
                 var typeId = $('#typeList option:selected').val();
                 var styleId = $('#styleList option:selected').val();
                 var cityId = $('#cityList option:selected').val();
+                var url = $('#url').val();
+                var labels = $('#labels').val();
 
                 if (null == email || email == '') {
                     $sixmac.notify("请输入邮箱", "error");
@@ -367,6 +383,18 @@
                     return;
                 }
 
+                if (null == url || url == '') {
+                    $sixmac.notify("请输入链接", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == labels || labels == '') {
+                    $sixmac.notify("请输入标签", "error");
+                    flag = false;
+                    return;
+                }
+
                 if (cityId == '') {
                     $sixmac.notify("请选择所在城市", "error");
                     flag = false;
@@ -383,7 +411,7 @@
                         dataType: "json",
                         data: {
                             "type": $('#typeList option:selected').val(),
-                            "style": $('#styleList option:selected').val(),
+                            "styleId": $('#styleList option:selected').val(),
                             "cityId": $('#cityList option:selected').val()
                         },
                         success: function (result) {

@@ -37,9 +37,11 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">头像:</label>
-                                <div class="col-sm-4">
-                                    <c:if test="${null==designers || designers.head == '' }"><img src="static/images/default.png" height="300px" width="280px"/></c:if>
-                                    <c:if test="${null!=designers && designers.head != '' }"><img src="${designers.head}" height="300px" width="280px"/></c:if>
+                                <div class="col-sm-10">
+                                    <input type="file" name="mainImage2" id="mainImage2" style="display:none;" onchange="designers.fn.changeStatus2()"/>
+                                    <a href="javascript:void(0);" onclick="designers.fn.AddImg2()">
+                                        <img id="mainPicture2" src="${designers.head}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
                                 </div>
                             </div>
 
@@ -82,6 +84,13 @@
                                     <a href="javascript:void(0);" onclick="designers.fn.AddImg()">
                                         <img id="mainPicture" src="${designers.proof}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
                                     </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">价格:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" value="${designers.price}" placeholder="请输入价格"/>
                                 </div>
                             </div>
 
@@ -134,7 +143,8 @@
             id: "designers",
             list: [],
             dTable: null,
-            mainImageStatus: 0
+            mainImageStatus: 0,
+            mainImageStatus2: 0
         },
         fn: {
             init: function () {
@@ -149,6 +159,12 @@
                 //套图主图预览
                 $("#mainImage").uploadPreview({
                     Img: "mainPicture",
+                    Width: 200,
+                    Height: 170
+                });
+
+                $("#mainImage2").uploadPreview({
+                    Img: "mainPicture2",
                     Width: 200,
                     Height: 170
                 });
@@ -174,6 +190,13 @@
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
 
+                var mainImagePath2 = $('#mainPicture2').attr('src');
+                if (null != mainImagePath2 && mainImagePath2 != '') {
+                    designers.v.mainImageStatus2 = 1;
+                } else {
+                    $('#mainPicture2').attr('src', 'static/images/add.jpg');
+                }
+
                 // 选择设计师类型
                 var type = $('#tempTypeId').val();
                 if (null != type && type != '') {
@@ -182,6 +205,9 @@
             },
             changeStatus: function () {
                 designers.v.mainImageStatus = 1;
+            },
+            changeStatus2: function () {
+                designers.v.mainImageStatus2 = 1;
             },
             getSelectList: function () {
                 var provinceId = $('#provinceId').val();
@@ -239,6 +265,10 @@
                 // a标签绑定onclick事件
                 $('#mainImage').click();
             },
+            AddImg2: function () {
+                // a标签绑定onclick事件
+                $('#mainImage2').click();
+            },
             checkData: function () {
                 var flag = true;
                 var mobile = $('#mobile').val();
@@ -246,6 +276,13 @@
                 var nickName = $('#nickName').val();
                 var typeId = $('#typeList option:selected').val();
                 var cityId = $('#cityList option:selected').val();
+                var price = $('#price').val();
+
+                if (designers.v.mainImageStatus2 == 0) {
+                    $sixmac.notify("请上传头像", "error");
+                    flag = false;
+                    return;
+                }
 
                 if (null == mobile || mobile == '') {
                     $sixmac.notify("请输入手机号", "error");
@@ -273,6 +310,12 @@
 
                 if (designers.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传资质证明", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == price || price == '') {
+                    $sixmac.notify("请输入价格", "error");
                     flag = false;
                     return;
                 }

@@ -45,6 +45,9 @@ public class MallApi extends CommonController {
     @Autowired
     private OrdersinfoService ordersinfoService;
 
+    @Autowired
+    private PackageproductsService packageproductsService;
+
     /**
      * @api {post} /api/mall/bannerList 首页banner图列表
      * @apiName mall.bannerList
@@ -150,7 +153,7 @@ public class MallApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "coverId");
+        String result = JsonUtil.obj2ApiJson(obj, "coverId", "appraisalVoList", "imageList");
         WebUtil.printApi(response, result);
     }
 
@@ -174,6 +177,12 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} spikeInfo.description 描述
      * @apiSuccess {String} spikeInfo.createTime 创建时间
      * @apiSuccess {String} spikeInfo.cover 封面图
+     * @apiSuccess {Object} spikeInfo.imageList 秒杀图片列表
+     * @apiSuccess {Integer} spikeInfo.imageList.id 图片id
+     * @apiSuccess {String} spikeInfo.imageList.path 图片路径
+     * @apiSuccess {String} spikeInfo.imageList.description 图片描述
+     * @apiSuccess {String} spikeInfo.imageList.demo 图片备注
+     * @apiSuccess {String} spikeInfo.imageList.createTime 创建时间
      * @apiSuccess {Object} spikeInfo.appraisalVoList 评价列表
      * @apiSuccess {Integer} spikeInfo.appraisalVoList.userId 评价人id
      * @apiSuccess {String} spikeInfo.appraisalVoList.userName 评价人名称
@@ -213,9 +222,10 @@ public class MallApi extends CommonController {
         spikes.setAppraisalVoList(appraisalVoList);
 
         spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
+        spikes.setImageList(imageService.iFindList(spikesId, Constant.IMAGE_SPIKES));
 
         Result obj = new Result(true).data(createMap("spikeInfo", spikes));
-        String result = JsonUtil.obj2ApiJson(obj, "coverId");
+        String result = JsonUtil.obj2ApiJson(obj, "coverId", "labelList", "objectId", "objectType", "thuPath", "width", "height");
         WebUtil.printApi(response, result);
     }
 
@@ -246,6 +256,8 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} list.cover 封面图
      * @apiSuccess {Integer} list.merchantId 商户id
      * @apiSuccess {String} list.merchantName 商户名称
+     * @apiSuccess {String} list.merchantHead 商户头像
+     * @apiSuccess {String} list.merchantDescription 商户描述
      * @apiSuccess {Integer} list.brandId 品牌id
      * @apiSuccess {String} list.brandName 品牌名称
      * @apiSuccess {Integer} list.sortId 分类id
@@ -272,6 +284,8 @@ public class MallApi extends CommonController {
             products.setCover(imageService.getById(products.getCoverId()).getPath());
             products.setMerchantId(products.getMerchant().getId());
             products.setMerchantName(products.getMerchant().getNickName());
+            products.setMerchantHead(products.getMerchant().getHead());
+            products.setMerchantDescription(products.getMerchant().getDescription());
             products.setSortId(products.getSort().getId());
             products.setSortName(products.getSort().getName());
             products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
@@ -280,7 +294,7 @@ public class MallApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "appraisalVoList");
         WebUtil.printApi(response, result);
     }
 
@@ -404,6 +418,8 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} list.productsList.cover 封面图
      * @apiSuccess {Integer} list.productsList.merchantId 商户id
      * @apiSuccess {String} list.productsList.merchantName 商户名称
+     * @apiSuccess {String} list.productsList.merchantHead 商户头像
+     * @apiSuccess {String} list.productsList.merchantDescription 商户描述
      * @apiSuccess {Integer} list.productsList.brandId 品牌id
      * @apiSuccess {String} list.productsList.brandName 品牌名称
      * @apiSuccess {Integer} list.productsList.sortId 分类id
@@ -451,7 +467,7 @@ public class MallApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "productNum");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "isAdd", "productNum", "imageList", "similarList", "appraisalVoList");
         WebUtil.printApi(response, result);
     }
 
@@ -547,7 +563,7 @@ public class MallApi extends CommonController {
 
         packages.setProductsList(productList);
 
-        packages.setImageList(imageService.iFindList(packageId, Constant.IMAGE_PACKAGES));
+        packages.setImageList(packageproductsService.findImageListByPackageId(packageId, Constant.PACKAGE_TYPE_PRODUCT));
 
         packages.setSimilarList(packagesService.iFindListByBrand(packageId, packages.getBrand().getId()));
 
@@ -555,7 +571,7 @@ public class MallApi extends CommonController {
         packages.setAppraisalVoList(findList(packageId, Constant.ORDERS_TYPE_PACKAGE));
 
         Result obj = new Result(true).data(createMap("packageInfo", packages));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType", "thuPath", "width", "height");
         WebUtil.printApi(response, result);
     }
 

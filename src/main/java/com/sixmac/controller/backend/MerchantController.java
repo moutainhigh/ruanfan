@@ -6,6 +6,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Merchants;
 import com.sixmac.service.CityService;
 import com.sixmac.service.MerchantsService;
+import com.sixmac.service.StylesService;
 import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,9 @@ public class MerchantController extends CommonController {
 
     @Autowired
     private MerchantsService merchantsService;
+
+    @Autowired
+    private StylesService stylesService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -166,10 +170,13 @@ public class MerchantController extends CommonController {
     @ResponseBody
     public Integer save(Integer id,
                         String email,
+                        String url,
                         String password,
                         Integer type,
                         String nickName,
+                        String labels,
                         Integer cityId,
+                        Integer styleId,
                         String description,
                         MultipartRequest multipartRequest) {
         try {
@@ -181,10 +188,13 @@ public class MerchantController extends CommonController {
                 merchants = merchantsService.getById(id);
             }
 
-            merchants.setEmail(email);
-            merchants.setPassword(Md5Util.md5(password));
-            merchants.setType(type);
             merchants.setNickName(nickName);
+            merchants.setPassword(Md5Util.md5(password));
+            merchants.setEmail(email);
+            merchants.setUrl(url);
+            merchants.setLabels(labels);
+            merchants.setType(type);
+            merchants.setStyle(stylesService.getById(styleId));
             merchants.setCity(cityService.getById(cityId));
             merchants.setDescription(description);
 
@@ -207,14 +217,12 @@ public class MerchantController extends CommonController {
             }
 
             if (null == id) {
-                merchants.setDescription("");
                 merchants.setIsCheck(Constant.CHECK_STATUS_SUCCESS);
                 merchants.setIsCut(Constant.IS_CUT_NO);
                 merchants.setCount(0);
                 merchants.setShowNum(0);
                 merchants.setStatus(Constant.BANNED_STATUS_YES);
                 merchants.setCreateTime(new Date());
-                merchants.setHead(Constant.DEFAULT_HEAD_PATH);
                 merchantsService.create(merchants);
             } else {
                 merchantsService.update(merchants);

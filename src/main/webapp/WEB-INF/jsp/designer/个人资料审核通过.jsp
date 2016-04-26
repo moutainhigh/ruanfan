@@ -84,6 +84,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">价格:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" value="${designer.price}" placeholder="请输入价格"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
                                     <textarea name="content" cols="40" rows="6" class="form-control" style="resize: none">${designer.description}</textarea>
@@ -219,6 +226,7 @@
             checkData: function () {
                 var flag = true;
                 var cityId = $('#cityList option:selected').val();
+                var price = $('#price').val();
 
                 if (designer.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传头像", "error");
@@ -228,6 +236,12 @@
 
                 if (cityId == '') {
                     $sixmac.notify("请选择所在城市", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == price || price == '') {
+                    $sixmac.notify("请输入价格", "error");
                     flag = false;
                     return;
                 }

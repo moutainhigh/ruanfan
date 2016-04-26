@@ -46,6 +46,7 @@ public class MerchantApi extends CommonController {
      * @apiSuccess {String} list.email 商户邮箱
      * @apiSuccess {String} list.url 商户链接url
      * @apiSuccess {String} list.head 商户头像
+     * @apiSuccess {String} list.cover 商户封面
      * @apiSuccess {String} list.labels 标签
      * @apiSuccess {String} list.type 类型
      * @apiSuccess {String} list.description 描述

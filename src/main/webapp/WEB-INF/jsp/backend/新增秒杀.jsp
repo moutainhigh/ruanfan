@@ -120,7 +120,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">产品描述:</label>
+                                <label class="col-sm-2 control-label">秒杀描述:</label>
 
                                 <div class="col-sm-8">
                                     <!-- 百度富文本编辑框 -->
@@ -332,6 +332,10 @@
                 var content = editor1.getContent();
                 var startTime = $('#startTime').val();
                 var endTime = $('#endTime').val();
+                var labels = $('#labels').val();
+                var colors = $('#colors').val();
+                var sizes = $('#sizes').val();
+                var materials = $('#materials').val();
 
                 if (null == name || name == '') {
                     $sixmac.notify("请输入秒杀名称", "error");
@@ -366,6 +370,30 @@
                 var val = $('input:radio[name="settingCover"]:checked').val();
                 if (null == val || val == 'undefined') {
                     $sixmac.notify("请选择一张封面图", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == labels || labels == '') {
+                    $sixmac.notify("请输入标签信息", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == colors || colors == '') {
+                    $sixmac.notify("请选择颜色信息", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == sizes || sizes == '') {
+                    $sixmac.notify("请输入尺寸信息", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == materials || materials == '') {
+                    $sixmac.notify("请输入材质信息", "error");
                     flag = false;
                     return;
                 }

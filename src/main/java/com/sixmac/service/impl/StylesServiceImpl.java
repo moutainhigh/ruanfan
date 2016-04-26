@@ -100,4 +100,13 @@ public class StylesServiceImpl implements StylesService {
 
         return count;
     }
+
+    @Override
+    public Styles getFirstStyle() {
+        List<Styles> list = stylesDao.findAll();
+        if (null != list && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
 }

@@ -152,7 +152,6 @@ public class DesignerController extends CommonController {
     /**
      * 新增设计师信息
      *
-     * @param request
      * @param id
      * @param mobile
      * @param password
@@ -165,14 +164,14 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request,
-                        Integer id,
+    public Integer save(Integer id,
                         String mobile,
                         String password,
                         Integer type,
                         String nickName,
                         Integer cityId,
                         String content,
+                        String price,
                         MultipartRequest multipartRequest) {
         try {
             Designers designers = null;
@@ -183,30 +182,35 @@ public class DesignerController extends CommonController {
                 designers = designersService.getById(id);
             }
 
+            designers.setNickName(nickName);
             designers.setMobile(mobile);
             designers.setPassword(Md5Util.md5(password));
             designers.setType(type);
-            designers.setNickName(nickName);
             designers.setCity(cityService.getById(cityId));
+            designers.setPrice(price);
             designers.setContent(content);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
-                String url = QiNiuUploadImgUtil.upload(multipartFile);
-                designers.setProof(url);
+                String proof = QiNiuUploadImgUtil.upload(multipartFile);
+                designers.setProof(proof);
+            }
+
+            MultipartFile multipartFile2 = multipartRequest.getFile("mainImage2");
+            if (null != multipartFile2) {
+                String head = QiNiuUploadImgUtil.upload(multipartFile2);
+                designers.setHead(head);
             }
 
             if (null == id) {
+                designers.setShowNum(0);
                 designers.setStar(0);
-                designers.setPrice("");
                 designers.setDescription("");
                 designers.setDescs("");
-                designers.setIsCut(Constant.IS_CUT_NO);
-                designers.setShowNum(0);
                 designers.setIsCheck(Constant.CHECK_STATUS_SUCCESS);
+                designers.setIsCut(Constant.IS_CUT_NO);
                 designers.setStatus(Constant.BANNED_STATUS_YES);
                 designers.setCreateTime(new Date());
-                designers.setHead(Constant.DEFAULT_HEAD_PATH);
                 designersService.create(designers);
             } else {
                 designersService.update(designers);

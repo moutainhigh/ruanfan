@@ -29,6 +29,7 @@ public class Spikes {
     private Date createTime;
     private String cover;
     private Integer status;
+    private List<Image> imageList = new ArrayList<Image>();
     private List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
 
     @Id
@@ -167,6 +168,15 @@ public class Spikes {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 
     @Transient

@@ -113,6 +113,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">标签:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="labels" name="labels" maxlength="20" value="${merchant.labels}" placeholder="请输入标签，最多20个字"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
                                     <textarea name="content" cols="40" rows="6" class="form-control" style="resize: none">${merchant.description}</textarea>
@@ -326,6 +333,7 @@
                 var cityId = $('#cityList option:selected').val();
                 var styleId = $('#styleList option:selected').val();
                 var url = $('#url').val();
+                var labels = $('#labels').val();
 
                 if (merchant.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传头像", "error");
@@ -365,6 +373,12 @@
 
                 if (cityId == '') {
                     $sixmac.notify("请选择所在城市", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == labels || labels == '') {
+                    $sixmac.notify("请输入标签", "error");
                     flag = false;
                     return;
                 }
