@@ -646,11 +646,9 @@ public class UsersApi extends CommonController {
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 私信列表
      * @apiSuccess {Integer} list.id 消息id
-     * @apiSuccess {Integer} list.fromUserId 发送人id
-     * @apiSuccess {String} list.fromUserName 发送人昵称
-     * @apiSuccess {String} list.fromUserHead 发送人头像
      * @apiSuccess {String} list.content 内容
      * @apiSuccess {String} list.createTime 创建时间
+     * @apiSuccess {Integer} list.fromUserId 发送人id
      */
     @RequestMapping(value = "/letterDialogue")
     public void letterDialogue(HttpServletResponse response, Integer userId, Integer otherUserId, Integer pageNum, Integer pageSize) {
