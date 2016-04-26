@@ -5,12 +5,15 @@ import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import com.sixmac.core.Configue;
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2016/4/15 0015.
@@ -42,12 +45,21 @@ public class QiNiuUploadImgUtil {
      */
     public static String upload(MultipartFile myFile) {
         try {
-            CommonsMultipartFile cf = (CommonsMultipartFile) myFile; //这个myfile是MultipartFile的
-            DiskFileItem fi = (DiskFileItem) cf.getFileItem();
-            File file = fi.getStoreLocation();
+            Random rand = new Random();
+            String originalFileName = myFile.getOriginalFilename().toLowerCase();
+            String filetype = originalFileName.substring(originalFileName.indexOf("."));
+            String timeMillis = String.valueOf(System.currentTimeMillis());
+            String path = timeMillis + "_" + rand.nextInt(1000000) + filetype;
+            // 获取项目在磁盘上面的物理路径
+            File image = new File(Configue.getUploadPath() + path);
+            File dir = image.getParentFile();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            FileCopyUtils.copy(myFile.getBytes(), image);
 
             //调用put方法上传
-            Response res = uploadManager.put(file, null, getUpToken());
+            Response res = uploadManager.put(image, null, getUpToken());
             Map<String, Object> map = JsonUtil.jsontoMap(res.bodyString());
             return url + map.get("key");
         } catch (QiniuException e) {
@@ -61,7 +73,10 @@ public class QiNiuUploadImgUtil {
                 e1.printStackTrace();
             }
             return "";
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
+        return "";
     }
 
     /**
