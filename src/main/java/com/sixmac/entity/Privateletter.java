@@ -15,9 +15,9 @@ public class Privateletter {
     private Users receiveUser;
     private String content;
     private Date createTime;
-    private Integer fromUserId;
-    private String fromUserName;
-    private String fromUserHead;
+    private Integer userId;
+    private String userName;
+    private String userHead;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,29 +66,29 @@ public class Privateletter {
     }
 
     @Transient
-    public Integer getFromUserId() {
-        return fromUserId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setFromUserId(Integer fromUserId) {
-        this.fromUserId = fromUserId;
-    }
-
-    @Transient
-    public String getFromUserName() {
-        return fromUserName;
-    }
-
-    public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Transient
-    public String getFromUserHead() {
-        return fromUserHead;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setFromUserHead(String fromUserHead) {
-        this.fromUserHead = fromUserHead;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Transient
+    public String getUserHead() {
+        return userHead;
+    }
+
+    public void setUserHead(String userHead) {
+        this.userHead = userHead;
     }
 }

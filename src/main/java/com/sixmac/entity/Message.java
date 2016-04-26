@@ -12,6 +12,7 @@ public class Message {
     private Integer id;
     private String title;
     private String types;
+    private String desc;
     private String description;
     private Date createTime;
     private Date updateTime;
@@ -40,6 +41,14 @@ public class Message {
 
     public void setTypes(String types) {
         this.types = types;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getDescription() {

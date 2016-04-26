@@ -72,11 +72,18 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">消息简介:</label>
+                                <div class="col-sm-6">
+                                    <textarea cols="40" rows="8" class="form-control" name="desc" id="desc">${message.desc}</textarea>
+                                </div>
+                            </div>
+
                             <span style="display: none;" id="spqq">${message.description}</span>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">消息详情:</label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <!-- 百度富文本编辑框 -->
                                     <script id="container" name="content" type="text/plain"
                                             style="width:100%; height:150px; line-height: 0px;"></script>
@@ -194,6 +201,7 @@
                 var flag = true;
                 var result = false;
                 var title = $('#title').val();
+                var desc = $('#desc').val();
                 var content = editor1.getContent();
 
                 if (null == title || title == '') {
@@ -211,6 +219,12 @@
 
                 if (!result) {
                     $sixmac.notify('发送对象不能为空', "error");
+                    return;
+                }
+
+                if (null == desc || desc == '') {
+                    $sixmac.notify('消息简介不能为空', "error");
+                    flag = false;
                     return;
                 }
 
@@ -235,6 +249,7 @@
                                 "id": $('#messageId').val(),
                                 "title": $('#title').val(),
                                 "types": message.v.types,
+                                "desc": $('#desc').val(),
                                 "description": editor1.getContent()
                             },
                             function (data) {
