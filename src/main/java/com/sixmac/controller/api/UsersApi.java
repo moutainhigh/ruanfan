@@ -749,11 +749,15 @@ public class UsersApi extends CommonController {
      * @apiSuccess {String} list.createTime 创建时间
      */
     @RequestMapping(value = "/messageList")
-    public void messageList(HttpServletResponse response) {
-        List<Message> list = messageService.findListByType(Constant.MESSAGE_STATUS_USER);
+    public void messageList(HttpServletResponse response, Integer pageNum, Integer pageSize) {
+        if (null == pageNum || null == pageSize) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+        Page<Message> list = messageService.pageByType(Constant.MESSAGE_STATUS_USER, pageNum, pageSize);
 
         Result obj = new Result(true).data(list);
-        String result = JsonUtil.obj2ApiJson(obj, "type");
+        String result = JsonUtil.obj2ApiJson(obj, "types");
         WebUtil.printApi(response, result);
     }
 

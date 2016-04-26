@@ -80,6 +80,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public Page<Message> pageByType(String type, Integer pageNum, Integer pageSize) {
+        return messageDao.pageByType(type, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    @Override
     public Page<Message> page(final String title, final String type, final String description, int pageNum, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
