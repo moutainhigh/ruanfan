@@ -67,7 +67,7 @@ public class MessageController extends CommonController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Integer save(Integer id, String title, String types, String desc, String description) {
+    public Integer save(Integer id, String title, String types, String des, String description) {
         try {
             Message message = null;
             if (id == null) {
@@ -78,7 +78,7 @@ public class MessageController extends CommonController {
 
             message.setTitle(title);
             message.setTypes(types.substring(0, types.length() - 1));
-            message.setDesc(desc);
+            message.setDes(des);
             message.setDescription(description);
 
             if (null == id) {

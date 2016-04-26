@@ -12,7 +12,7 @@ public class Message {
     private Integer id;
     private String title;
     private String types;
-    private String desc;
+    private String des;
     private String description;
     private Date createTime;
     private Date updateTime;
@@ -43,12 +43,12 @@ public class Message {
         this.types = types;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDes() {
+        return des;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDes(String des) {
+        this.des = des;
     }
 
     public String getDescription() {

@@ -75,7 +75,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">消息简介:</label>
                                 <div class="col-sm-4">
-                                    <textarea cols="30" rows="4" class="form-control" maxlength="25" placeholder="最多25个字" name="desc" id="desc">${message.desc}</textarea>
+                                    <textarea cols="30" rows="4" class="form-control" maxlength="25" style="resize: none;" placeholder="最多25个字" name="des" id="des">${message.des}</textarea>
                                 </div>
                             </div>
 
@@ -201,7 +201,7 @@
                 var flag = true;
                 var result = false;
                 var title = $('#title').val();
-                var desc = $('#desc').val();
+                var des = $('#des').val();
                 var content = editor1.getContent();
 
                 if (null == title || title == '') {
@@ -222,7 +222,7 @@
                     return;
                 }
 
-                if (null == desc || desc == '') {
+                if (null == des || des == '') {
                     $sixmac.notify('消息简介不能为空', "error");
                     flag = false;
                     return;
@@ -249,7 +249,7 @@
                                 "id": $('#messageId').val(),
                                 "title": $('#title').val(),
                                 "types": message.v.types,
-                                "desc": $('#desc').val(),
+                                "des": $('#des').val(),
                                 "description": editor1.getContent()
                             },
                             function (data) {
