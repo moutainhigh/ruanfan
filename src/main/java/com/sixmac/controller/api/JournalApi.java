@@ -186,7 +186,7 @@ public class JournalApi extends CommonController {
                 MultipartFile file = multipartRequest.getFile(fileName);
                 if (null != file) {
                     image = new Image();
-                    image.setPath(QiNiuUploadImgUtil.upload(file));
+                    image.setPath(QiNiuUploadImgUtil.upload2(file));
                     image.setObjectId(journal.getId());
                     image.setObjectType(Constant.IMAGE_JOURNAL);
                     image.setCreateTime(new Date());

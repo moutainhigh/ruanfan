@@ -43,7 +43,7 @@ public class QiNiuUploadImgUtil {
      *
      * @param myFile
      */
-    public static String upload(MultipartFile myFile) {
+    public static String upload2(MultipartFile myFile) {
         try {
             Random rand = new Random();
             String originalFileName = myFile.getOriginalFilename().toLowerCase();
@@ -77,6 +77,35 @@ public class QiNiuUploadImgUtil {
             e1.printStackTrace();
         }
         return "";
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param myFile
+     */
+    public static String upload(MultipartFile myFile) {
+        try {
+            CommonsMultipartFile cf = (CommonsMultipartFile) myFile; //这个myfile是MultipartFile的
+            DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+            File file = fi.getStoreLocation();
+
+            //调用put方法上传
+            Response res = uploadManager.put(file, null, getUpToken());
+            Map<String, Object> map = JsonUtil.jsontoMap(res.bodyString());
+            return url + map.get("key");
+        } catch (QiniuException e) {
+            Response r = e.response;
+            // 请求失败时打印的异常的信息
+            System.out.println(r.toString());
+            try {
+                //响应的文本信息
+                System.out.println(r.bodyString());
+            } catch (QiniuException e1) {
+                e1.printStackTrace();
+            }
+            return "";
+        }
     }
 
     /**
