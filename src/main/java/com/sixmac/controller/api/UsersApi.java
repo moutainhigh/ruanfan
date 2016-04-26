@@ -671,6 +671,32 @@ public class UsersApi extends CommonController {
     }
 
     /**
+     * @api {post} /api/users/sendLetter 发送私信
+     * @apiName users.sendLetter
+     * @apiGroup users
+     * @apiParam {Integer} userId 发送用户id       <必传 />
+     * @apiParam {Integer} otherUserId 目标用户id       <必传 />
+     * @apiParam {String} content 私信内容       <必传 />
+     */
+    @RequestMapping(value = "/sendLetter")
+    public void sendLetter(HttpServletResponse response, Integer userId, Integer otherUserId, String content) {
+        if (null == userId || null == otherUserId || null == content) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Privateletter privateletter = new Privateletter();
+        privateletter.setSendUser(usersService.getById(userId));
+        privateletter.setReceiveUser(usersService.getById(otherUserId));
+        privateletter.setContent(content);
+        privateletter.setCreateTime(new Date());
+
+        privateletterService.create(privateletter);
+
+        WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
      * @api {post} /api/users/replyList 回复列表
      * @apiName users.replyList
      * @apiGroup users
@@ -705,6 +731,32 @@ public class UsersApi extends CommonController {
         Result obj = new Result(true).data(dataMap);
         String result = JsonUtil.obj2ApiJson(obj, "user", "comment");
         WebUtil.printApi(response, result);
+    }
+
+    /**
+     * @api {post} /api/users/replyComment 回复评论
+     * @apiName users.replyComment
+     * @apiGroup users
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} commentId 评论id       <必传 />
+     * @apiParam {String} content 回复内容       <必传 />
+     */
+    @RequestMapping(value = "/replyComment")
+    public void replyComment(HttpServletResponse response, Integer userId, Integer commentId, String content) {
+        if (null == userId || null == commentId || null == content) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Replys replys = new Replys();
+        replys.setComment(commentService.getById(commentId));
+        replys.setUser(usersService.getById(userId));
+        replys.setContent(content);
+        replys.setCreateTime(new Date());
+
+        replysService.create(replys);
+
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**
