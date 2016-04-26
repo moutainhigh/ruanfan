@@ -1,6 +1,7 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Custom;
 import com.sixmac.entity.Custominfo;
@@ -47,6 +48,12 @@ public class CustomApi extends CommonController {
     public void findList(HttpServletResponse response,
                          String name) {
         Custom custom = customService.findOneByParams(name);
+
+        if (null == custom) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
+        }
+
         List<Custominfo> custominfoList = custominfoService.findListByCustomId(custom.getId());
 
         Result obj = new Result(true).data(createMap("list", custominfoList));
@@ -87,6 +94,12 @@ public class CustomApi extends CommonController {
                      Integer customInfoId,
                      Integer areaId) {
         Custominfo custominfo = custominfoService.getById(customInfoId);
+
+        if (null == custominfo) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
+            return;
+        }
+
         custominfo.setPackageList(customPackageService.findListByCustominfoId(customInfoId, areaId));
 
         Result obj = new Result(true).data(createMap("customInfo", custominfo));

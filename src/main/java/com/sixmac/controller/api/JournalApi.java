@@ -260,6 +260,7 @@ public class JournalApi extends CommonController {
         newJournal.setUser(usersService.getById(userId));
         newJournal.setContent(journal.getContent());
         newJournal.setShareNum(0);
+        newJournal.setShowNum(0);
         newJournal.setForwardNum(0);
         newJournal.setCreateTime(new Date());
 
