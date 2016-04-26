@@ -74,8 +74,8 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">消息简介:</label>
-                                <div class="col-sm-6">
-                                    <textarea cols="40" rows="8" class="form-control" name="desc" id="desc">${message.desc}</textarea>
+                                <div class="col-sm-4">
+                                    <textarea cols="30" rows="4" class="form-control" maxlength="25" placeholder="最多25个字" name="desc" id="desc">${message.desc}</textarea>
                                 </div>
                             </div>
 
