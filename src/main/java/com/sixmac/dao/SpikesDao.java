@@ -27,4 +27,7 @@ public interface SpikesDao extends JpaRepository<Spikes, Integer>, JpaSpecificat
     @Query("select a from Spikes a where a.name like ?1")
     public Page<Spikes> findAllNoThing(String name, Pageable pageable);
 
+    @Query("select a from Spikes a where a.endTime >= ?1")
+    public Page<Spikes> findAllWorking(Date nowTime, Pageable pageable);
+
 }
