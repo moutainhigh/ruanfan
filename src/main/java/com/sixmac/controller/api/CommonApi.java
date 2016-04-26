@@ -72,6 +72,9 @@ public class CommonApi extends CommonController {
     @Autowired
     private AttentionsService attentionsService;
 
+    @Autowired
+    private ReplysService replysService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
@@ -442,6 +445,37 @@ public class CommonApi extends CommonController {
             comment.setCreateTime(new Date());
 
             commentService.create(comment);
+
+            WebUtil.printApi(response, new Result(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+        }
+    }
+
+    /**
+     * @api {post} /api/common/replyComment 回复评论
+     * @apiName common.replyComment
+     * @apiGroup common
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} commentId 评论对象id        <必传 />
+     * @apiParam {String} content 评论内容        <必传 />
+     */
+    @RequestMapping("/replyComment")
+    public void replyComment(HttpServletResponse response, Integer userId, Integer commentId, String content) {
+        if (null == userId || null == commentId || null == content) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        try {
+            Replys replys = new Replys();
+            replys.setComment(commentService.getById(commentId));
+            replys.setUser(usersService.getById(userId));
+            replys.setContent(content);
+            replys.setCreateTime(new Date());
+
+            replysService.create(replys);
 
             WebUtil.printApi(response, new Result(true));
         } catch (Exception e) {

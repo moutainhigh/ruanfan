@@ -29,4 +29,7 @@ public interface CommentDao extends JpaRepository<Comment, Integer>, JpaSpecific
 
     @Query("select a from Comment a where a.user.id = ?1")
     public Page<Comment> page(Integer userId, Pageable pageable);
+
+    @Query("select a from Comment a where a.objectType = 4 and (select j.user.id from Journal j where j.id = a.objectId) = ?1")
+    public Page<Comment> iPage(Integer userId, Pageable pageable);
 }

@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.PropertysDao;
 import com.sixmac.entity.Propertys;
 import com.sixmac.service.PropertysService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -83,18 +84,21 @@ public class PropertysServiceImpl implements PropertysService {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
 
-                if (name != null) {
+                if (StringUtils.isNotEmpty(name)) {
                     Predicate pre = cb.like(root.get("name").as(String.class), "%" + name + "%");
                     predicateList.add(pre);
                 }
 
-                if (address != null) {
+                if (StringUtils.isNotEmpty(address)) {
                     Predicate pre = cb.like(root.get("address").as(String.class), "%" + address + "%");
                     predicateList.add(pre);
                 }
 
                 Predicate pre1 = cb.equal(root.get("parentId").as(Integer.class), 0);
                 predicateList.add(pre1);
+
+                Predicate pre2 = cb.notEqual(root.get("id").as(Integer.class), 0);
+                predicateList.add(pre2);
 
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));

@@ -56,7 +56,7 @@ public class UsersApi extends CommonController {
     private PrivateletterService privateletterService;
 
     @Autowired
-    private LetterreplyService letterreplyService;
+    private ReplysService replysService;
 
     @Autowired
     private CommentService commentService;
@@ -637,39 +637,75 @@ public class UsersApi extends CommonController {
     }
 
     /**
-     * @api {post} /api/users/letterReplyList 私信回复列表
-     * @apiName users.letterReplyList
+     * @api {post} /api/users/letterDialogue 私信对话列表
+     * @apiName users.letterDialogue
      * @apiGroup users
      * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} otherUserId 对话用户id       <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
-     * @apiSuccess {Object} list 私信回复列表
-     * @apiSuccess {Integer} list.id 回复id
-     * @apiSuccess {Integer} list.sendUserId 回复人id
-     * @apiSuccess {String} list.sendUserName 回复人昵称
-     * @apiSuccess {String} list.sendUserHead 回复人头像
+     * @apiSuccess {Object} list 私信列表
+     * @apiSuccess {Integer} list.id 消息id
+     * @apiSuccess {Integer} list.fromUserId 发送人id
+     * @apiSuccess {String} list.fromUserName 发送人昵称
+     * @apiSuccess {String} list.fromUserHead 发送人头像
      * @apiSuccess {String} list.content 内容
      * @apiSuccess {String} list.createTime 创建时间
      */
-    @RequestMapping(value = "/letterReplyList")
-    public void letterReplyList(HttpServletResponse response, Integer userId, Integer pageNum, Integer pageSize) {
-        if (null == userId || null == pageNum || null == pageSize) {
+    @RequestMapping(value = "/letterDialogue")
+    public void letterDialogue(HttpServletResponse response, Integer userId, Integer otherUserId, Integer pageNum, Integer pageSize) {
+        if (null == userId || null == otherUserId || null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
 
-        Page<Letterreply> page = letterreplyService.pageByUserId(userId, pageNum, pageSize);
+        Page<Privateletter> page = privateletterService.pageWithDialogue(userId, otherUserId, pageNum, pageSize);
 
-        for (Letterreply letterreply : page.getContent()) {
-            letterreply.setSendUserId(letterreply.getUsers().getId());
-            letterreply.setSendUserName(letterreply.getUsers().getNickName());
-            letterreply.setSendUserHead(letterreply.getUsers().getHeadPath());
+        for (Privateletter privateletter : page.getContent()) {
+            privateletter.setFromUserId(privateletter.getSendUser().getId());
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "users", "privateletter");
+        String result = JsonUtil.obj2ApiJson(obj, "sendUser", "receiveUser", "fromUserName", "fromUserHead");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
+     * @api {post} /api/users/replyList 回复列表
+     * @apiName users.replyList
+     * @apiGroup users
+     * @apiParam {Integer} userId 用户id       <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
+     * @apiSuccess {Object} list 回复列表
+     * @apiSuccess {Integer} list.id 回复id
+     * @apiSuccess {Integer} list.userId 回复人id
+     * @apiSuccess {String} list.userName 回复人昵称
+     * @apiSuccess {String} list.userHead 回复人头像
+     * @apiSuccess {String} list.content 内容
+     * @apiSuccess {String} list.createTime 创建时间
+     */
+    @RequestMapping(value = "/replyList")
+    public void replyList(HttpServletResponse response, Integer userId, Integer pageNum, Integer pageSize) {
+        if (null == userId || null == pageNum || null == pageSize) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Page<Replys> page = replysService.iPageByUserId(userId, pageNum, pageSize);
+
+        for (Replys replys : page.getContent()) {
+            replys.setUserId(replys.getUser().getId());
+            replys.setUserName(replys.getUser().getNickName());
+            replys.setUserHead(replys.getUser().getHeadPath());
+        }
+
+        Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj, "user", "comment");
         WebUtil.printApi(response, result);
     }
 
@@ -681,10 +717,10 @@ public class UsersApi extends CommonController {
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 评论列表
-     * @apiSuccess {Integer} list.id 回复id
-     * @apiSuccess {Integer} list.sendUserId 回复人id
-     * @apiSuccess {String} list.sendUserName 回复人昵称
-     * @apiSuccess {String} list.sendUserHead 回复人头像
+     * @apiSuccess {Integer} list.id 评论id
+     * @apiSuccess {Integer} list.userId 评论人id
+     * @apiSuccess {String} list.userName 评论人昵称
+     * @apiSuccess {String} list.userHead 评论人头像
      * @apiSuccess {String} list.content 内容
      * @apiSuccess {String} list.createTime 创建时间
      */
@@ -700,7 +736,7 @@ public class UsersApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "users", "objectId", "objectType");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "replysList");
         WebUtil.printApi(response, result);
     }
 

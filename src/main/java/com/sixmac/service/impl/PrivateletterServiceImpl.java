@@ -71,4 +71,9 @@ public class PrivateletterServiceImpl implements PrivateletterService {
     public Page<Privateletter> pageByReceiveUser(Integer userId, Integer pageNum, Integer pageSize) {
         return privateletterDao.pageByReceiveUser(userId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
     }
+
+    @Override
+    public Page<Privateletter> pageWithDialogue(Integer userId, Integer otherUserId, Integer pageNum, Integer pageSize) {
+        return privateletterDao.pageWithDialogue(userId, otherUserId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id"));
+    }
 }

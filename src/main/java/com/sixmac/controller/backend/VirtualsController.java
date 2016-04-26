@@ -127,6 +127,7 @@ public class VirtualsController extends CommonController {
             if (null != id) {
                 virtualsService.update(virtuals);
             } else {
+                virtuals.setShareNum(0);
                 virtuals.setCreateTime(new Date());
                 virtualsService.create(virtuals);
             }

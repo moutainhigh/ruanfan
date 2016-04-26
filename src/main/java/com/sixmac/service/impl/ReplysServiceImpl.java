@@ -66,4 +66,9 @@ public class ReplysServiceImpl implements ReplysService {
             deleteById(id);
         }
     }
+
+    @Override
+    public Page<Replys> iPageByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+        return replysDao.pageByUserId(userId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
 }

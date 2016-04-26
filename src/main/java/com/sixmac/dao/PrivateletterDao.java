@@ -13,4 +13,7 @@ public interface PrivateletterDao extends JpaRepository<Privateletter, Integer> 
 
     @Query("select a from Privateletter a where a.receiveUser.id = ?1")
     public Page<Privateletter> pageByReceiveUser(Integer userId, Pageable pageable);
+
+    @Query("select a from Privateletter a where (a.sendUser.id = ?1 and a.receiveUser.id = ?2) or (a.receiveUser.id = ?1 and a.sendUser.id = ?2)")
+    public Page<Privateletter> pageWithDialogue(Integer userId, Integer otherUserId, Pageable pageable);
 }
