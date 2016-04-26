@@ -204,6 +204,8 @@ public class PropertysController extends CommonController {
                                 Integer parentId,
                                 String hxImages,
                                 String kfImages,
+                                String serverQQ,
+                                String description,
                                 String urls,
                                 String qqs,
                                 MultipartRequest multipartRequest) {
@@ -221,11 +223,19 @@ public class PropertysController extends CommonController {
             propertys.setAddress(address);
             propertys.setLabels(labels);
             propertys.setParentId(parentId);
+            propertys.setServerQQ(serverQQ);
+            propertys.setDescription(description);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {
                 String url = QiNiuUploadImgUtil.upload(multipartFile);
                 propertys.setCover(url);
+            }
+
+            MultipartFile multipartFile5 = multipartRequest.getFile("mainImage5");
+            if (null != multipartFile5) {
+                String serverHead = QiNiuUploadImgUtil.upload(multipartFile5);
+                propertys.setServerHead(serverHead);
             }
 
             if (null != id) {
