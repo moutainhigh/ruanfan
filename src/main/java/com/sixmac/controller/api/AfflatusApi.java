@@ -51,6 +51,29 @@ public class AfflatusApi extends CommonController {
     private HotWordsService hotWordsService;
 
     /**
+     * @api {post} /api/afflatus/hotWordList 热词列表
+     * @apiName afflatus.hotWordList
+     * @apiGroup afflatus
+     * * @apiParam {Integer} size 热词个数，如果不传，默认搜索三个热词
+     * @apiSuccess {Object} list 热词list
+     * @apiSuccess {Integer} list.id 热词id
+     * @apiSuccess {String} list.words 热词名称
+     * @apiSuccess {Integer} list.count 热词id
+     */
+    @RequestMapping(value = "/hotWordList")
+    public void hotWordList(HttpServletResponse response, Integer size) {
+        if (null == size) {
+            size = 3;
+        }
+
+        List<HotWords> list = hotWordsService.findList(size);
+
+        Result obj = new Result(true).data(createMap("list", list));
+        String result = JsonUtil.obj2ApiJson(obj);
+        WebUtil.printApi(response, result);
+    }
+
+    /**
      * @api {post} /api/afflatus/list 灵感集列表
      * @apiName afflatus.list
      * @apiGroup afflatus
