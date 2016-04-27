@@ -58,7 +58,6 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Object} list 热词list
      * @apiSuccess {Integer} list.id 热词id
      * @apiSuccess {String} list.words 热词名称
-     * @apiSuccess {Integer} list.count 热词id
      */
     @RequestMapping(value = "/hotWordList")
     public void hotWordList(HttpServletResponse response, Integer size) {
@@ -69,7 +68,7 @@ public class AfflatusApi extends CommonController {
         List<HotWords> list = hotWordsService.findList(size);
 
         Result obj = new Result(true).data(createMap("list", list));
-        String result = JsonUtil.obj2ApiJson(obj);
+        String result = JsonUtil.obj2ApiJson(obj, "count");
         WebUtil.printApi(response, result);
     }
 
