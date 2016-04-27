@@ -85,6 +85,29 @@
     <!-- /#page-wrapper -->
 
     <!-- Modal -->
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">删除提示</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="commentId"/>
+                    确定删除该评论么？删除该评论的同时，还将删除与该评论相关的回复内容和举报内容。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" onclick="reportList.fn.deleteComment()" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Modal end -->
+
+    <!-- Modal -->
     <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -113,7 +136,6 @@
 </body>
 
 <script type="text/javascript">
-
     var reportList = {
         v: {
             id: "reportList",
@@ -180,7 +202,8 @@
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".deleteComment").click(function () {
-                            reportList.fn.deleteComment(data.comment.id);
+                            $('#commentId').val(data.comment.id);
+                            $('#delModal').modal("show");
                         });
 
                         $('td', row).last().find(".edit").click(function () {
@@ -196,12 +219,13 @@
                     }
                 });
             },
-            deleteComment: function (id) {
+            deleteComment: function () {
                 $sixmac.ajax("backend/comment/delete", {
-                    "id": id
+                    "id": $('#commentId').val()
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
+                        $('#delModal').modal("hide");
                         reportList.v.dTable.ajax.reload(null, false);
                     } else {
                         $sixmac.notify("操作失败", "error");
