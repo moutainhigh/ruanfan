@@ -51,9 +51,6 @@ public class AfflatusController extends CommonController {
     @Autowired
     private VirtualsService virtualsService;
 
-    @Autowired
-    private MessageService messageService;
-
     @RequestMapping("index")
     public String index(ModelMap model) {
         return "backend/灵感图集列表";
@@ -158,6 +155,7 @@ public class AfflatusController extends CommonController {
                         Integer settingCover,
                         String description,
                         String labels,
+                        String url,
                         String tempAddImageIds,
                         String tempDelImageIds) {
         try {
@@ -174,6 +172,7 @@ public class AfflatusController extends CommonController {
             afflatus.setStyle(stylesService.getById(styleId));
             afflatus.setArea(areasService.getById(areaId));
             afflatus.setLabels(labels);
+            afflatus.setUrl(url);
             afflatus.setCoverId(settingCover);
             afflatus.setDescription(description);
 

@@ -79,6 +79,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">链接:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="url" name="url" maxlength="500" value="${afflatus.url}" placeholder="请输入链接"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">描述:</label>
                                 <div class="col-sm-3">
                                     <textarea cols="40" rows="8" class="form-control" id="description" name="description" maxlength="2000" placeholder="灵感集描述，最多2000字">${afflatus.description}</textarea>
@@ -357,6 +364,8 @@
                 var styleId = $('#styleList option:selected').val();
                 var areaId = $('#areaList option:selected').val();
                 var name = $('#name').val();
+                var labels = $('#labels').val();
+                var url = $('#url').val();
                 var description = $('#description').val();
 
                 // 当灵感集的类型为套图时，检查名称是否为空
@@ -395,6 +404,18 @@
                 var val = $('input:radio[name="settingCover"]:checked').val();
                 if (null == val) {
                     $sixmac.notify("请选择一张封面图", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (labels == '') {
+                    $sixmac.notify("请输入标签", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (url == '') {
+                    $sixmac.notify("请输入链接", "error");
                     flag = false;
                     return;
                 }

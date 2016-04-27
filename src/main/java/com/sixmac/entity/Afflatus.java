@@ -23,6 +23,7 @@ public class Afflatus {
     private Integer showNum;
     private Integer shareNum;
     private String labels;
+    private String url;
     private Integer status;
     private Date createTime;
     private String cover;
@@ -127,6 +128,14 @@ public class Afflatus {
 
     public void setLabels(String labels) {
         this.labels = labels;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getStatus() {

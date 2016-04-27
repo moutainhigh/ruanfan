@@ -128,6 +128,7 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Integer} afflatusInfo.isCollect 是否收藏  0=是，1=否
      * @apiSuccess {String} afflatusInfo.description 文字描述
      * @apiSuccess {String} afflatusInfo.labels 标签
+     * @apiSuccess {String} afflatusInfo.url 链接
      * @apiSuccess {Integer} afflatusInfo.status 状态，0=待审核，1=审核通过，2=审核不通过
      * @apiSuccess {String} afflatusInfo.createTime 创建时间
      * @apiSuccess {String} afflatusInfo.cover 封面图

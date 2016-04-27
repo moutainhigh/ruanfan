@@ -90,6 +90,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">链接:</label>
+                                <div class="col-sm-5" style="padding-top: 6.5px;">
+                                    ${afflatus.url}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">描述:</label>
                                 <div class="col-sm-3" style="padding-top: 6.5px;">
                                     ${afflatus.description}
