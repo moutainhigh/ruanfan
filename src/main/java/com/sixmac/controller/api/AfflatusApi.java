@@ -9,6 +9,7 @@ import com.sixmac.service.*;
 import com.sixmac.utils.APIFactory;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,9 @@ public class AfflatusApi extends CommonController {
 
     @Autowired
     private LabelService labelService;
+
+    @Autowired
+    private HotWordsService hotWordsService;
 
     /**
      * @api {post} /api/afflatus/list 灵感集列表
@@ -86,6 +90,10 @@ public class AfflatusApi extends CommonController {
         if (null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
+        }
+
+        if (StringUtils.isNotEmpty(key)) {
+            hotWordsService.searchWord(key);
         }
 
         Page<Afflatus> page = afflatusService.iPage(key, labels, type, styleId, areaId, pageNum, pageSize);
