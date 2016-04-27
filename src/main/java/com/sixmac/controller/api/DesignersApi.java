@@ -70,7 +70,7 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} list.star 星级
      * @apiSuccess {String} list.price 价格
      * @apiSuccess {String} list.content 描述
-     * @apiSuccess {Text} list.desc 软装介绍（富文本）
+     * @apiSuccess {Text} list.description 软装介绍（富文本）
      * @apiSuccess {Text} list.descs 个性定制介绍（富文本）
      * @apiSuccess {Integer} list.status 状态
      * @apiSuccess {String} list.createTime 注册时间
@@ -174,7 +174,7 @@ public class DesignersApi extends CommonController {
         Map<String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "coverId", "isCut", "imageList", "commentList", "gamsList", "isGam", "isCollect");
         WebUtil.printApi(response, result);
     }
 
@@ -302,7 +302,7 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {Integer} designerInfo.star 星级
      * @apiSuccess {String} designerInfo.price 价格
      * @apiSuccess {String} designerInfo.content 描述
-     * @apiSuccess {Text} designerInfo.desc 软装介绍（富文本）
+     * @apiSuccess {Text} designerInfo.description 软装介绍（富文本）
      * @apiSuccess {Text} designerInfo.descs 个性定制介绍（富文本）
      * @apiSuccess {Integer} designerInfo.status 状态
      * @apiSuccess {String} designerInfo.createTime 注册时间

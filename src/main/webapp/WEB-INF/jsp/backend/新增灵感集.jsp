@@ -94,8 +94,8 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">描述:</label>
-                                <div class="col-sm-3">
-                                    <textarea cols="40" rows="8" class="form-control" id="description" name="description" maxlength="2000" placeholder="灵感集描述，最多2000字">${afflatus.description}</textarea>
+                                <div class="col-sm-5">
+                                    <textarea cols="40" rows="8" class="form-control" id="description" style="resize: none" name="description" maxlength="2000" placeholder="灵感集描述，最多2000字">${afflatus.description}</textarea>
                                 </div>
                             </div>
 
@@ -421,6 +421,24 @@
                     return;
                 }
 
+                if (labels == '') {
+                    $sixmac.notify("请输入标签", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (url == '') {
+                    $sixmac.notify("请输入链接", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (description == '') {
+                    $sixmac.notify("请输入描述", "error");
+                    flag = false;
+                    return;
+                }
+
                 if (afflatus.v.imageSize == 0) {
                     $sixmac.notify("请至少上传一张灵感图", "error");
                     flag = false;
@@ -436,24 +454,6 @@
                 var val = $('input:radio[name="settingCover"]:checked').val();
                 if (null == val) {
                     $sixmac.notify("请选择一张封面图", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (labels == '') {
-                    $sixmac.notify("请输入标签", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (url == '') {
-                    $sixmac.notify("请输入链接", "error");
-                    flag = false;
-                    return;
-                }
-
-                if (description == '') {
-                    $sixmac.notify("请输入描述", "error");
                     flag = false;
                     return;
                 }
