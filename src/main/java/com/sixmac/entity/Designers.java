@@ -22,11 +22,13 @@ public class Designers {
     private Integer showNum;
     private Integer star;
     private String price;
+    private String sign;
     private String content;
     private String description;
     private String descs;
     private Integer isCheck;
     private Integer isCut;
+    private Integer isAuth;
     private Integer status;
     private Date createTime;
     private List<Gams> gamsList = new ArrayList<Gams>();
@@ -133,6 +135,14 @@ public class Designers {
         this.price = price;
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
     public String getContent() {
         return content;
     }
@@ -179,6 +189,14 @@ public class Designers {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getIsAuth() {
+        return isAuth;
+    }
+
+    public void setIsAuth(Integer isAuth) {
+        this.isAuth = isAuth;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

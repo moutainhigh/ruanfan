@@ -69,9 +69,11 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} list.proof 资质证明（图片路径）
      * @apiSuccess {Integer} list.star 星级
      * @apiSuccess {String} list.price 价格
+     * @apiSuccess {String} list.sign 签名
      * @apiSuccess {String} list.content 描述
      * @apiSuccess {Text} list.description 软装介绍（富文本）
      * @apiSuccess {Text} list.descs 个性定制介绍（富文本）
+     * @apiSuccess {Integer} list.isAuth 认证状态，0=未认证，1=已认证
      * @apiSuccess {Integer} list.status 状态
      * @apiSuccess {String} list.createTime 注册时间
      * @apiSuccess {Integer} list.cityId 所在城市id
@@ -301,9 +303,11 @@ public class DesignersApi extends CommonController {
      * @apiSuccess {String} designerInfo.proof 资质证明（图片路径）
      * @apiSuccess {Integer} designerInfo.star 星级
      * @apiSuccess {String} designerInfo.price 价格
+     * @apiSuccess {String} designerInfo.sign 签名
      * @apiSuccess {String} designerInfo.content 描述
      * @apiSuccess {Text} designerInfo.description 软装介绍（富文本）
      * @apiSuccess {Text} designerInfo.descs 个性定制介绍（富文本）
+     * @apiSuccess {Integer} designerInfo.isAuth 认证状态，0=未认证，1=已认证
      * @apiSuccess {Integer} designerInfo.status 状态
      * @apiSuccess {String} designerInfo.createTime 注册时间
      * @apiSuccess {Object} designerInfo.commentList 评论列表

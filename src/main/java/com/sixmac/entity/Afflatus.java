@@ -24,6 +24,7 @@ public class Afflatus {
     private Integer shareNum;
     private String labels;
     private String url;
+    private Integer isAuth;
     private Integer status;
     private Date createTime;
     private String cover;
@@ -136,6 +137,14 @@ public class Afflatus {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getIsAuth() {
+        return isAuth;
+    }
+
+    public void setIsAuth(Integer isAuth) {
+        this.isAuth = isAuth;
     }
 
     public Integer getStatus() {

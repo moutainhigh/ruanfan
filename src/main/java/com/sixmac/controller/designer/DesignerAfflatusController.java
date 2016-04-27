@@ -156,6 +156,7 @@ public class DesignerAfflatusController extends CommonController {
             if (null != id) {
                 afflatusService.update(afflatus);
             } else {
+                afflatus.setIsAuth(Constant.AUTH_STATUS_NO);
                 afflatus.setShowNum(0);
                 afflatus.setShareNum(0);
                 afflatus.setStatus(Constant.CHECK_STATUS_DEFAULT);

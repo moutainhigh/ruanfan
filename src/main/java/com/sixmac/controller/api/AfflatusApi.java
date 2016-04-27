@@ -89,6 +89,7 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Integer} list.type 类型：1单图   2套图
      * @apiSuccess {Integer} list.showNum 浏览量
      * @apiSuccess {Integer} list.shareNum 分享数
+     * @apiSuccess {Integer} list.isAuth 认证状态，0=未认证，1=已认证
      * @apiSuccess {String} list.labels 标签
      * @apiSuccess {Integer} list.status 状态，0=待审核，1=审核通过，2=审核不通过
      * @apiSuccess {String} list.createTime 创建时间
@@ -159,6 +160,7 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {String} afflatusInfo.description 文字描述
      * @apiSuccess {String} afflatusInfo.labels 标签
      * @apiSuccess {String} afflatusInfo.url 链接
+     * @apiSuccess {Integer} afflatusInfo.isAuth 认证状态，0=未认证，1=已认证
      * @apiSuccess {Integer} afflatusInfo.status 状态，0=待审核，1=审核通过，2=审核不通过
      * @apiSuccess {String} afflatusInfo.createTime 创建时间
      * @apiSuccess {String} afflatusInfo.cover 封面图

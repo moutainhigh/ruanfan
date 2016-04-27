@@ -57,15 +57,15 @@
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
-                                    <%--<col class="gradeA odd"/>--%>
+                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <%--<th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>--%>
                                     <th>名称</th>
                                     <th>提交时间</th>
                                     <th>区域</th>
                                     <th>风格</th>
+                                    <th>认证状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -151,6 +151,7 @@
                         {"data": "createTime"},
                         {"data": "type.name"},
                         {"data": "style.name"},
+                        {"data": "isAuth"},
                         {"data": ""}
                     ],
                     "columnDefs": [
@@ -162,19 +163,39 @@
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='认证' style='display: none' class='btn btn-primary btn-circle changeAuth'>" +
+                            "<i class='fa fa-check'></i>" +
                             "</button>",
                             "targets": -1
                         }
                     ],
                     "createdRow": function (row, data, index) {
                         virtualsList.v.list.push(data);
+
+                        if (data.isAuth == 0) {
+                            $('td', row).eq(4).html("未认证");
+                        } else {
+                            $('td', row).eq(4).html("已认证");
+                        }
                     },
                     rowCallback: function (row, data) {
+                        if (data.isAuth == 0) {
+                            // 已认证的VR虚拟，不显示认证按钮
+                            $('td', row).last().find(".changeAuth").css("display", '');
+                        }
+
                         $('td', row).last().find(".edit").attr("href", 'backend/virtuals/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
                             virtualsList.fn.delInfo(data.id);
+                        });
+
+                        $('td', row).last().find(".changeAuth").click(function () {
+                            // 认证VR虚拟
+                            virtualsList.fn.changeAuth(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -184,6 +205,18 @@
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
+                    }
+                });
+            },
+            changeAuth: function (id) {
+                $sixmac.ajax("backend/virtuals/changeAuth", {
+                    "virtualId": id
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        virtualsList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
                     }
                 });
             },

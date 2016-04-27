@@ -2,6 +2,7 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.entity.Virtuals;
 import com.sixmac.service.StylesService;
 import com.sixmac.service.VirtualsService;
@@ -73,6 +74,27 @@ public class VirtualsController extends CommonController {
     }
 
     /**
+     * 认证VR虚拟
+     *
+     * @param virtualId
+     * @return
+     */
+    @RequestMapping("/changeAuth")
+    @ResponseBody
+    public Integer changeAuth(Integer virtualId) {
+        try {
+            Virtuals virtuals = virtualsService.getById(virtualId);
+            virtuals.setIsAuth(Constant.AUTH_STATUS_YES);
+            virtualsService.update(virtuals);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
      * 删除VR虚拟
      *
      * @param virtualId
@@ -102,7 +124,7 @@ public class VirtualsController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, Integer styleId, Integer typeId, String name, String labels, String url, MultipartRequest multipartRequest) {
+    public Integer save(Integer id, Integer styleId, Integer typeId, String name, String labels, String url, MultipartRequest multipartRequest) {
         try {
             Virtuals virtuals = null;
 
@@ -127,6 +149,7 @@ public class VirtualsController extends CommonController {
             if (null != id) {
                 virtualsService.update(virtuals);
             } else {
+                virtuals.setIsAuth(Constant.AUTH_STATUS_NO);
                 virtuals.setShareNum(0);
                 virtuals.setCreateTime(new Date());
                 virtualsService.create(virtuals);

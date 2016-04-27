@@ -81,6 +81,7 @@
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
+                                    <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
@@ -89,6 +90,7 @@
                                     <th>昵称</th>
                                     <th>身份</th>
                                     <th>审核状态</th>
+                                    <th>认证状态</th>
                                     <th>状态</th>
                                     <th>注册时间</th>
                                     <th>操作</th>
@@ -224,6 +226,7 @@
                         {"data": "nickName"},
                         {"data": "type"},
                         {"data": "isCheck"},
+                        {"data": "isAuth"},
                         {"data": "status"},
                         {"data": "createTime"},
                         {"data": ""}
@@ -231,7 +234,11 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<button type='button' title='禁用' class='btn btn-info btn-circle editStatus'>" +
+                            "defaultContent": "<button type='button' title='认证' style='display: none' class='btn btn-primary btn-circle changeAuth'>" +
+                            "<i class='fa fa-check'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='禁用' class='btn btn-info btn-circle editStatus'>" +
                             "<i class='fa fa-recycle'></i>" +
                             "</button>" +
                             "&nbsp;&nbsp;" + "<a title='编辑' class='btn btn-primary btn-circle edit'>" +
@@ -270,6 +277,12 @@
                         } else {
                             $('td', row).eq(4).html("审核不通过");
                         }
+
+                        if (data.isAuth == 0) {
+                            $('td', row).eq(5).html("未认证");
+                        } else {
+                            $('td', row).eq(5).html("已认证");
+                        }
                     },
                     rowCallback: function (row, data) {
                         if (data.isCheck == 0) {
@@ -278,16 +291,26 @@
                             $('td', row).last().find(".checkno").css("display", '');
                         }
 
+                        if (data.isAuth == 0) {
+                            // 已认证的设计师，不显示认证按钮
+                            $('td', row).last().find(".changeAuth").css("display", '');
+                        }
+
                         //渲染样式
                         if (data.status == "0") {
-                            $('td', row).eq(5).html('启用');
+                            $('td', row).eq(6).html('启用');
                             $('td', row).last().find(".editStatus").addClass("btn-danger");
                             $('td', row).last().find(".editStatus").attr("title", "禁用");
                         } else {
-                            $('td', row).eq(5).html('禁用');
+                            $('td', row).eq(6).html('禁用');
                             $('td', row).last().find(".editStatus").addClass("btn-success");
                             $('td', row).last().find(".editStatus").attr("title", "启用");
                         }
+
+                        $('td', row).last().find(".changeAuth").click(function () {
+                            // 认证设计师
+                            designerList.fn.changeAuth(data.id);
+                        });
 
                         $('td', row).last().find(".edit").attr("href", 'backend/designers/add?id=' + data.id);
 
@@ -363,6 +386,18 @@
                 $sixmac.ajax("backend/designers/changeCheck", {
                     "designerId": id,
                     "isCheck": isCheck
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        designerList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
+                    }
+                });
+            },
+            changeAuth: function (id) {
+                $sixmac.ajax("backend/designers/changeAuth", {
+                    "designerId": id
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");

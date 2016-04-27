@@ -91,9 +91,16 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">签名:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="sign" name="sign" maxlength="10" value="${designer.sign}" placeholder="请输入签名"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
-                                    <textarea name="content" cols="40" rows="6" class="form-control" style="resize: none">${designer.description}</textarea>
+                                    <textarea id="content" name="content" cols="40" rows="6" maxlength="200" class="form-control" style="resize: none">${designer.description}</textarea>
                                 </div>
                             </div>
 
@@ -227,6 +234,8 @@
                 var flag = true;
                 var cityId = $('#cityList option:selected').val();
                 var price = $('#price').val();
+                var sign = $('#sign').val();
+                var content = $('#content').val();
 
                 if (designer.v.mainImageStatus == 0) {
                     $sixmac.notify("请上传头像", "error");
@@ -242,6 +251,18 @@
 
                 if (null == price || price == '') {
                     $sixmac.notify("请输入价格", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == sign || sign == '') {
+                    $sixmac.notify("请输入签名", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == content || content == '') {
+                    $sixmac.notify("请输入介绍", "error");
                     flag = false;
                     return;
                 }

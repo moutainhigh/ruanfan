@@ -92,6 +92,27 @@ public class DesignerController extends CommonController {
     }
 
     /**
+     * 认证设计师
+     *
+     * @param designerId
+     * @return
+     */
+    @RequestMapping("/changeAuth")
+    @ResponseBody
+    public Integer changeAuth(Integer designerId) {
+        try {
+            Designers designers = designersService.getById(designerId);
+            designers.setIsAuth(Constant.AUTH_STATUS_YES);
+
+            designersService.update(designers);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
      * 审核设计师
      *
      * @param designerId
@@ -172,6 +193,7 @@ public class DesignerController extends CommonController {
                         Integer cityId,
                         String content,
                         String price,
+                        String sign,
                         MultipartRequest multipartRequest) {
         try {
             Designers designers = null;
@@ -188,6 +210,7 @@ public class DesignerController extends CommonController {
             designers.setType(type);
             designers.setCity(cityService.getById(cityId));
             designers.setPrice(price);
+            designers.setSign(sign);
             designers.setContent(content);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
@@ -203,6 +226,7 @@ public class DesignerController extends CommonController {
             }
 
             if (null == id) {
+                designers.setIsAuth(Constant.AUTH_STATUS_NO);
                 designers.setShowNum(0);
                 designers.setStar(0);
                 designers.setDescription("");

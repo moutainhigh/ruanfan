@@ -18,6 +18,7 @@ public class Virtuals {
     private String labels;
     private String cover;
     private String url;
+    private Integer isAuth;
     private Date createTime;
     private Integer isGam;
     private Integer isCollect;
@@ -85,6 +86,14 @@ public class Virtuals {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getIsAuth() {
+        return isAuth;
+    }
+
+    public void setIsAuth(Integer isAuth) {
+        this.isAuth = isAuth;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

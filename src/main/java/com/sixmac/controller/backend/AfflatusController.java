@@ -180,6 +180,7 @@ public class AfflatusController extends CommonController {
             if (null != id) {
                 afflatusService.update(afflatus);
             } else {
+                afflatus.setIsAuth(Constant.AUTH_STATUS_NO);
                 afflatus.setShowNum(0);
                 afflatus.setShareNum(0);
                 afflatus.setStatus(Constant.CHECK_STATUS_SUCCESS);
@@ -261,6 +262,27 @@ public class AfflatusController extends CommonController {
 
             // 保存虚拟体验信息
             virtualsService.create(virtuals);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 认证灵感集
+     *
+     * @param afflatusId
+     * @return
+     */
+    @RequestMapping("/changeAuth")
+    @ResponseBody
+    public Integer changeAuth(Integer afflatusId) {
+        try {
+            Afflatus afflatus = afflatusService.getById(afflatusId);
+            afflatus.setIsAuth(Constant.AUTH_STATUS_YES);
+            afflatusService.update(afflatus);
 
             return 1;
         } catch (Exception e) {

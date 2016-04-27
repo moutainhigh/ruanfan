@@ -112,6 +112,7 @@ public class IndexController extends CommonController {
                 designers.setContent("");
                 designers.setDescription("");
                 designers.setDescs("");
+                designers.setIsAuth(Constant.AUTH_STATUS_NO);
                 designers.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
                 designers.setIsCut(Constant.IS_CUT_NO);
                 designers.setStatus(Constant.BANNED_STATUS_YES);

@@ -71,6 +71,7 @@
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
+                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
@@ -80,6 +81,7 @@
                                     <th>区域</th>
                                     <th>风格</th>
                                     <th>发布者</th>
+                                    <th>认证状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -201,12 +203,17 @@
                         {"data": "area.name"},
                         {"data": "style.name"},
                         {"data": "designer.nickName"},
+                        {"data": "isAuth"},
                         {"data": ""}
                     ],
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
+                            "defaultContent": "<button type='button' title='认证' style='display: none' class='btn btn-primary btn-circle changeAuth'>" +
+                            "<i class='fa fa-check'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
@@ -241,6 +248,12 @@
                         } else {
                             $('td', row).eq(2).html("审核失败");
                         }
+
+                        if (data.isAuth == 0) {
+                            $('td', row).eq(6).html("未认证");
+                        } else {
+                            $('td', row).eq(6).html("已认证");
+                        }
                     },
                     rowCallback: function (row, data) {
                         if (data.status == 0) {
@@ -251,6 +264,10 @@
 
                         if (data.status == 2) {
                             $('td', row).last().find(".delete").css("display", 'none');
+                        }
+
+                        if (data.isAuth == 0) {
+                            $('td', row).last().find(".changeAuth").css("display", '');
                         }
 
                         $('td', row).last().find(".edit").attr("href", 'backend/afflatus/show?id=' + data.id);
@@ -268,6 +285,11 @@
                         $('td', row).last().find(".checkno").click(function () {
                             // 审核为不通过
                             afflatusList.fn.checkNo(data.id);
+                        });
+
+                        $('td', row).last().find(".changeAuth").click(function () {
+                            // 认证灵感集
+                            afflatusList.fn.changeAuth(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -345,6 +367,18 @@
                         }
                     });
                 }
+            },
+            changeAuth: function (id) {
+                $sixmac.ajax("backend/afflatus/changeAuth", {
+                    "afflatusId": id
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        afflatusList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
+                    }
+                });
             },
             changeCheck: function (id, status) {
                 $sixmac.ajax("backend/afflatus/changeCheck", {

@@ -62,6 +62,7 @@ public class DesignerIndexController extends CommonController {
                         Integer cityId,
                         String content,
                         String price,
+                        String sign,
                         MultipartRequest multipartRequest) {
         try {
             Designers designers = designersService.getById(id);
@@ -70,6 +71,7 @@ public class DesignerIndexController extends CommonController {
             designers.setType(type);
             designers.setCity(cityService.getById(cityId));
             designers.setPrice(price);
+            designers.setSign(sign);
             designers.setContent(content);
             designers.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
 
@@ -103,11 +105,13 @@ public class DesignerIndexController extends CommonController {
                             Integer cityId,
                             String content,
                             String price,
+                            String sign,
                             MultipartRequest multipartRequest) {
         try {
             Designers designers = designersService.getById(id);
             designers.setCity(cityService.getById(cityId));
             designers.setPrice(price);
+            designers.setSign(sign);
             designers.setContent(content);
 
             // 保存头像

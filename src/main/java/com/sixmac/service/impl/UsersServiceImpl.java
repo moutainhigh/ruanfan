@@ -189,7 +189,7 @@ public class UsersServiceImpl implements UsersService {
             users.setType(1);
             users.setStatus(0);
             users.setCreateTime(new Date());
-            users.setHeadPath(Constant.DEFAULT_HEAD_PATH);
+            users.setHeadPath("");
 
             usersDao.save(users);
 

@@ -23,12 +23,6 @@ public interface Constant {
 
     int PAGE_DEF_SZIE = 20;
 
-    String MEMBER_TYPE_ADMIN = "ADMIN";
-
-    String MEMBER_TYPE_MERCHANT = "MERCHANT";
-
-    String MEMBER_TYPE_DESIGNER = "DESIGNER";
-
     // 当前登录人id
     String CURRENT_USER_ID = "session_member_id";
 
@@ -43,8 +37,9 @@ public interface Constant {
     Integer MASTER_TYPE_MERCHANT = 2;
     Integer MASTER_TYPE_DESIGNER = 3;
 
-    // 新建用户默认头像
-    String DEFAULT_HEAD_PATH = "static/images/default.png";
+    // 认证状态
+    Integer AUTH_STATUS_NO = 0;   // 未认证
+    Integer AUTH_STATUS_YES = 1;  // 已认证
 
     // 删除标记
     Integer IS_CUT_YES = 1;
