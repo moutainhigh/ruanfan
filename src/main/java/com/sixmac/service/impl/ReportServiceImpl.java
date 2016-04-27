@@ -1,15 +1,18 @@
 package com.sixmac.service.impl;
 
 
+import com.sixmac.core.Constant;
 import com.sixmac.dao.ReportDao;
 import com.sixmac.entity.Report;
 import com.sixmac.service.ReportService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,7 +31,7 @@ public class ReportServiceImpl implements ReportService {
     private ReportDao reportDao;
 
     @Override
-    public Page<Report> page(final Integer userId, final Integer sourceId, final Integer type, int pageNum, int pageSize) {
+    public Page<Report> page(final String userName, final String sourceName, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
 
         Page<Report> page = reportDao.findAll(new Specification<Report>() {
@@ -37,16 +40,12 @@ public class ReportServiceImpl implements ReportService {
             public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate result = null;
                 List<Predicate> predicateList = new ArrayList<Predicate>();
-                if (userId != null) {
-                    Predicate pre = cb.like(root.get("userId").as(String.class), "%" + userId + "%");
+                if (StringUtils.isNotEmpty(userName)) {
+                    Predicate pre = cb.like(root.get("user").get("nickName").as(String.class), "%" + userName + "%");
                     predicateList.add(pre);
                 }
-                if (sourceId != null) {
-                    Predicate pre = cb.like(root.get("sourceId").as(String.class), "%" + sourceId + "%");
-                    predicateList.add(pre);
-                }
-                if (type != null) {
-                    Predicate pre = cb.like(root.get("type").as(String.class), "%" + type + "%");
+                if (StringUtils.isNotEmpty(sourceName)) {
+                    Predicate pre = cb.like(root.get("comment").get("user").get("nickName").as(String.class), "%" + sourceName + "%");
                     predicateList.add(pre);
                 }
                 if (predicateList.size() > 0) {
@@ -66,17 +65,17 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<Report> findAll() {
-        return null;
+        return reportDao.findAll();
     }
 
     @Override
     public Page<Report> find(int pageNum, int pageSize) {
-        return null;
+        return reportDao.findAll(new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
     @Override
     public Page<Report> find(int pageNum) {
-        return null;
+        return find(pageNum, Constant.PAGE_DEF_SZIE);
     }
 
     @Override
@@ -86,12 +85,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Report deleteById(int id) {
-        return null;
+        Report report = getById(id);
+        reportDao.delete(report);
+        return report;
     }
 
     @Override
     public Report create(Report report) {
-        return null;
+        return reportDao.save(report);
     }
 
     @Override
@@ -100,8 +101,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Transactional
     public void deleteAll(int[] ids) {
-
+        for (int id : ids) {
+            deleteById(id);
+        }
     }
 
 }

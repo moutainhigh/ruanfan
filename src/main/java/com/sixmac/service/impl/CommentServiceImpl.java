@@ -4,8 +4,10 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CommentDao;
 import com.sixmac.dao.ReplysDao;
+import com.sixmac.dao.ReportDao;
 import com.sixmac.entity.Comment;
 import com.sixmac.entity.Replys;
+import com.sixmac.entity.Report;
 import com.sixmac.service.CommentService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private ReplysDao replysDao;
 
+    @Autowired
+    private ReportDao reportDao;
+
     @Override
     public List<Comment> findAll() {
         return commentDao.findAll();
@@ -56,7 +61,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public Comment deleteById(int id) {
+        // 先删除评论回复，再删除与该评论相关的举报信息，然后删除评论消息
+        List<Replys> replysList = replysDao.findListByCommentId(id);
+        for (Replys replys : replysList) {
+            replysDao.delete(replys.getId());
+        }
+
+        List<Report> reportList = reportDao.findListByCommentId(id);
+        for (Report report : reportList) {
+            reportDao.delete(report.getId());
+        }
+
         Comment comment = getById(id);
         commentDao.delete(comment);
         return comment;

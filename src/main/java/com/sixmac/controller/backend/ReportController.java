@@ -4,15 +4,14 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Report;
 import com.sixmac.service.ReportService;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -27,16 +26,14 @@ public class ReportController extends CommonController {
     private ReportService reportService;
 
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/举报列表";
     }
 
     @RequestMapping("/list")
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
-                     Integer userId,
-                     Integer sourceId,
-                     Integer type,
+    public void list(HttpServletResponse response,
+                     String userName,
+                     String sourceName,
                      Integer draw,
                      Integer start,
                      Integer length) {
@@ -44,7 +41,7 @@ public class ReportController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Report> page = reportService.page(userId, sourceId, type, pageNum, length);
+        Page<Report> page = reportService.page(userName, sourceName, pageNum, length);
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
@@ -55,12 +52,31 @@ public class ReportController extends CommonController {
     public Integer update(Integer id) {
         if (id != null) {
             Report report = reportService.getById(id);
-            report.setIsCut(1);
             report.setIsIgnore(1);
             reportService.update(report);
             return 1;
         } else {
             return -1;
         }
+    }
+
+    /**
+     * 批量删除举报信息
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/batchDel")
+    @ResponseBody
+    public Integer batchDel(String ids) {
+        try {
+            int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
+            reportService.deleteAll(arrayId);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

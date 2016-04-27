@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -33,8 +32,7 @@ public class CommentController extends CommonController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      String mobile,
                      Integer type,
                      Integer draw,
@@ -42,15 +40,14 @@ public class CommentController extends CommonController {
                      Integer length) {
         int pageNum = getPageNum(start, length);
 
-        Page<Comment> page = commentservice.page(mobile, type,pageNum, length);
+        Page<Comment> page = commentservice.page(mobile, type, pageNum, length);
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
 
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(ServletRequest request, HttpServletResponse response, Integer id) {
-
+    public Integer delete(Integer id) {
         try {
             commentservice.deleteById(id);
             return 1;

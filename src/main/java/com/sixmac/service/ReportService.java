@@ -9,5 +9,5 @@ import org.springframework.data.domain.Page;
  */
 public interface ReportService extends ICommonService<Report> {
 
-    public Page<Report> page(Integer userId, Integer sourceId, Integer type, int pageNum, int pageSize);
+    public Page<Report> page(String userName, String sourceName, Integer pageNum, Integer pageSize);
 }

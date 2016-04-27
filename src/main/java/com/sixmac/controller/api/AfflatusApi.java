@@ -87,6 +87,7 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Integer} list.id 灵感集id
      * @apiSuccess {String} list.name 灵感集名称
      * @apiSuccess {Integer} list.type 类型：1单图   2套图
+     * @apiSuccess {String} list.url 链接
      * @apiSuccess {Integer} list.showNum 浏览量
      * @apiSuccess {Integer} list.shareNum 分享数
      * @apiSuccess {Integer} list.isAuth 认证状态，0=未认证，1=已认证

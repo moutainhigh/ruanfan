@@ -75,6 +75,9 @@ public class CommonApi extends CommonController {
     @Autowired
     private ReplysService replysService;
 
+    @Autowired
+    private ReportService reportService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
@@ -418,6 +421,40 @@ public class CommonApi extends CommonController {
         }
 
         WebUtil.printApi(response, new Result(true));
+    }
+
+    /**
+     * @api {post} /api/common/report 增加举报
+     * @apiName common.report
+     * @apiGroup common
+     * @apiParam {Integer} userId 用户id      <必传 />
+     * @apiParam {Integer} commentId 评论id        <必传 />
+     * @apiParam {String} type 举报类型        <必传 />
+     * @apiParam {String} content 举报内容描述        <必传 />
+     */
+    @RequestMapping("/report")
+    public void report(HttpServletResponse response, Integer userId, Integer commentId, String type, String content) {
+        if (null == userId || null == commentId || null == content) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        try {
+            Report report = new Report();
+            report.setUser(usersService.getById(userId));
+            report.setComment(commentService.getById(commentId));
+            report.setType(type);
+            report.setContent(content);
+            report.setIsIgnore(0);
+            report.setCreateTime(new Date());
+
+            reportService.create(report);
+
+            WebUtil.printApi(response, new Result(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0001));
+        }
     }
 
     /**

@@ -1,9 +1,6 @@
 package com.sixmac.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -12,18 +9,17 @@ import java.util.Date;
 @Entity
 @Table(name = "report")
 public class Report {
-    @javax.persistence.Id
     private Integer id;
-    private Integer userId;
-    private Integer sourceId;
-    private Integer type;
-    private String mobile;
-    private Integer isCut;
+    private Users user;
+    private Comment comment;
+    private String type;
     private Integer isIgnore;
-    private String description;
-    @Temporal(TemporalType.TIMESTAMP)
+    private String content;
     private Date createTime;
+    private String sourceName;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -32,51 +28,65 @@ public class Report {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
-    public Integer getSourceId() {
-        return sourceId;
+    @ManyToOne
+    @JoinColumn(name = "commentId")
+    public Comment getComment() {
+        return comment;
     }
 
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getMobile() { return mobile;   }
+    public Integer getIsIgnore() {
+        return isIgnore;
+    }
 
-    public void setMobile(String mobile) { this.mobile = mobile; }
+    public void setIsIgnore(Integer isIgnore) {
+        this.isIgnore = isIgnore;
+    }
 
-    public Integer getIsCut() { return isCut;    }
+    public String getContent() {
+        return content;
+    }
 
-    public void setIsCut(Integer isCut) { this.isCut = isCut;    }
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-    public Integer getIsIgnore() { return isIgnore;    }
-
-    public void setIsIgnore(Integer isIgnore) { this.isIgnore = isIgnore;   }
-
-    public String getDescription() { return description;  }
-
-    public void setDescription(String description) { this.description = description;  }
-
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
     }
 }

@@ -32,13 +32,10 @@
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="userId" maxlength="20" placeholder="举报人"/>
+                                <input type="text" class="form-control" id="userName" maxlength="20" placeholder="举报人"/>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="sourceId" maxlength="20" placeholder="举报对象"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="type" maxlength="20" placeholder="预约对象"/>
+                                <input type="text" class="form-control" id="sourceName" maxlength="20" placeholder="举报对象"/>
                             </div>
                             <button type="button" id="c_search" class="btn btn-primary btn-sm">搜索</button>
                         </form>
@@ -84,9 +81,30 @@
             </div>
         </div>
 
-
     </div>
     <!-- /#page-wrapper -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">举报内容详情</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="infoSpan"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Modal end -->
+
 </div>
 <!-- /#wrapper -->
 
@@ -123,18 +141,18 @@
                     },
                     "columns": [
                         {"data": null},
-                        {"data": "userId"},
+                        {"data": "user.nickName"},
                         {"data": "createTime"},
-                        {"data": "mobile"},
+                        {"data": "user.mobile"},
                         {"data": "type"},
-                        {"data": "sourceId"},
-                        {"data": "description"},
+                        {"data": "comment.user.nickName"},
+                        {"data": "content"},
                         {"data": ""}
                     ],
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='删除评论' class='btn btn-primary btn-circle edit'>" +
+                            "defaultContent": "<a title='删除评论' class='btn btn-primary btn-circle deleteComment'>" +
                             "<i class='fa fa-edit'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
@@ -149,51 +167,44 @@
 
                         $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
-                        if (data.description.length > 10) {
-                            $('td', row).eq(6).html('<a href="javascript:void(0)" onclick="reportList.fn.printInfo(' + data.id + ')">' + data.description.substring(0, 10) + '...' + '</a>');
+                        if (data.content.length > 10) {
+                            $('td', row).eq(6).html('<a href="javascript:void(0)" onclick="reportList.fn.printInfo(' + data.id + ')">' + data.content.substring(0, 10) + '...' + '</a>');
                         } else {
-                            $('td', row).eq(6).html('<a href="javascript:void(0)" onclick="reportList.fn.printInfo(' + data.id + ')">' + data.description + '</a>');
+                            $('td', row).eq(6).html('<a href="javascript:void(0)" onclick="reportList.fn.printInfo(' + data.id + ')">' + data.content + '</a>');
                         }
 
-                        if (data.type == 0) {
-                            $('td', row).eq(4).html("有害信息");
-                        }
-                        if (data.type == 1) {
-                            $('td', row).eq(4).html("垃圾营销");
-                        }
-                        if (data.type == 2) {
-                            $('td', row).eq(4).html("违法信息");
-                        }
-                        if (data.type == 3) {
-                            $('td', row).eq(4).html("淫秽色情");
-                        }
-                        if (data.type == 4) {
-                            $('td', row).eq(4).html("人身攻击");
-                        }
-                        if (data.type == 5) {
-                            $('td', row).eq(4).html("其他");
-                        }
-
-                        if (data.isCut == 1) {
-                            $('td', row).eq(7).html("已删除评论");
-                        }
                         if (data.isIgnore == 1) {
                             $('td', row).eq(7).html("已忽略");
                         }
 
                     },
                     rowCallback: function (row, data) {
+                        $('td', row).last().find(".deleteComment").click(function () {
+                            reportList.fn.deleteComment(data.comment.id);
+                        });
+
                         $('td', row).last().find(".edit").click(function () {
                             reportList.fn.updateStatus(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
-                        aoData.userId = $('#userId').val();
-                        aoData.sourceId = $('#sourceId').val();
-                        aoData.type = $('#type').val();
+                        aoData.userName = $('#userName').val();
+                        aoData.sourceName = $('#sourceName').val();
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
+                    }
+                });
+            },
+            deleteComment: function (id) {
+                $sixmac.ajax("backend/comment/delete", {
+                    "id": id
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        reportList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
                     }
                 });
             },
@@ -212,9 +223,29 @@
             printInfo: function (id) {
                 $.each(reportList.v.list, function (i, item) {
                     if (item.id == id) {
-                        console.log(item.description);
+                        $('#infoSpan').html(item.content);
+                        $("#infoModal").modal("show");
                     }
                 });
+            },
+            batchDel: function () {
+                var checkBox = $("#dataTables tbody tr").find('input[type=checkbox]:checked');
+                var ids = checkBox.getInputId();
+                reportList.fn.deleteRow(checkBox, ids)
+            },
+            deleteRow: function (checkBox, ids) {
+                if (ids.length > 0) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("backend/report/batchDel", {ids: JSON.stringify(ids)}, function (result) {
+                            if (result > 0) {
+                                $sixmac.notify("操作成功", "success");
+                                reportList.v.dTable.ajax.reload();
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        })
+                    }, '确定删除选中的举报信息？', '确定');
+                }
             }
         }
     }
