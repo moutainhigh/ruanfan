@@ -226,7 +226,7 @@ public class CommonApi extends CommonController {
         }
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "designer", "coverId", "isCut", "style", "type", "area");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "designer", "coverId", "isCut", "style", "area");
         WebUtil.printApi(response, result);
     }
 
