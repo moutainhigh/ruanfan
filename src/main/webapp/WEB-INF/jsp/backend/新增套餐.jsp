@@ -85,8 +85,11 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label"></label>
 
-                                <div class="col-sm-4" style="margin-bottom: -8px;">
+                                <div class="col-sm-8" style="margin-bottom: -8px;">
                                     <select id="productList" style="width: 200px;" class="form-control"></select>
+                                    <select id="colorList" style="width: 150px;" class="form-control"></select>
+                                    <select id="sizeList" style="width: 150px;" class="form-control"></select>
+                                    <select id="materialList" style="width: 150px;" class="form-control"></select>
                                     <button type="button" class="btn btn-success" onclick="packages.fn.confirmProduct()">选择商品</button>
                                 </div>
                             </div>
@@ -115,6 +118,9 @@
                             <input name="imageIdTemp" type="hidden"/>
                             <input type="radio" name="settingCover"/>设为封面
                             <button type="button" class="btn btn-danger btn-sm" style="margin-top: 5px;" onclick="packages.fn.removeProduct(this)">删除</button>
+                            <input name="tempProductColor" type="hidden"/>
+                            <input name="tempProductSize" type="hidden"/>
+                            <input name="tempProductMaterial" type="hidden"/>
                         </div>
                     </div>
                     <!-- /.panel-body -->
@@ -151,7 +157,10 @@
             id: "packages",
             list: [],
             dTable: null,
-            imageSize: 0
+            imageSize: 0,
+            tempColors: "",
+            tempSizes: "",
+            tempMaterials: ""
         },
         fn: {
             init: function () {
@@ -168,6 +177,13 @@
 
                 // 加载数据
                 packages.fn.loadData();
+
+                $('#productList').change(function () {
+                    var productId = $(this).val();
+                    packages.fn.findColors(productId);
+                    packages.fn.findSizes(productId);
+                    packages.fn.findMaterials(productId);
+                });
             },
             loadData: function () {
 
@@ -203,18 +219,30 @@
                 var productId = $('#productList option:selected').val();
                 if (null == productId || productId == '') {
                     $sixmac.notify("请先选择商品", "error");
-                } else {
-                    // 根据商品id查询对应的封面图信息
-                    $sixmac.ajax("common/findCoverByProductId", {productId: productId}, function (result) {
-                        if (null != result) {
-                            packages.v.imageSize = packages.v.imageSize + 1;
-                            packages.fn.insertImage(result.path, result.id);
-                            $('#tempAddImageIds').html($('#tempAddImageIds').html() + result.id + ',');
-                        } else {
-                            $sixmac.notify("获取封面图信息失败", "error");
-                        }
-                    });
+                    return;
                 }
+                if ($('#colorList option:selected').val() == '') {
+                    $sixmac.notify("暂无颜色", "error");
+                    return;
+                }
+                if ($('#sizeList option:selected').val() == '') {
+                    $sixmac.notify("暂无尺寸", "error");
+                    return;
+                }
+                if ($('#materialList option:selected').val() == '') {
+                    $sixmac.notify("暂无材质", "error");
+                    return;
+                }
+                // 根据商品id查询对应的封面图信息
+                $sixmac.ajax("common/findCoverByProductId", {productId: productId}, function (result) {
+                    if (null != result) {
+                        packages.v.imageSize = packages.v.imageSize + 1;
+                        packages.fn.insertImage(result.path, result.id);
+                        $('#tempAddImageIds').html($('#tempAddImageIds').html() + result.id + ',');
+                    } else {
+                        $sixmac.notify("获取封面图信息失败", "error");
+                    }
+                });
             },
             insertImage: function (path, id) {
                 var tempDiv = $("#tempDiv").clone();
@@ -222,7 +250,9 @@
                 tempDiv.css("display", "block");
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
-                tempDiv.children(":first").next().next().prop("value", id);
+                tempDiv.children(":first").next().next().next().next().prop("value", $('#colorList option:selected').val());
+                tempDiv.children(":first").next().next().next().next().next().prop("value", $('#sizeList option:selected').val());
+                tempDiv.children(":first").next().next().next().next().next().next().prop("value", $('#materialList option:selected').val());
                 tempDiv.insertBefore("#lastImageDiv");
             },
             removeProduct: function (self) {
@@ -278,8 +308,64 @@
                             content += "<option value='" + item.id + "'>" + item.name + "</option>";
                         });
                         $('#productList').append(content);
+
+                        var productId = $('#productList option:selected').val();
+                        packages.fn.findColors(productId);
+                        packages.fn.findSizes(productId);
+                        packages.fn.findMaterials(productId);
                     } else {
                         $('#productList').append("<option value=''>暂无商品</option>");
+                    }
+                });
+            },
+            findColors: function (productId) {
+                $('#colorList').html('');
+
+                // 加载商品颜色列表
+                $sixmac.ajax("common/findInfoListByProductId", {productId: productId, type: 1}, function (result) {
+                    if (null != result) {
+                        // 获取返回的列表信息，并循环绑定到select中
+                        var content = "";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item + "'>" + item + "</option>";
+                        });
+                        $('#colorList').append(content);
+                    } else {
+                        $('#colorList').append("<option value=''>暂无颜色</option>");
+                    }
+                });
+            },
+            findSizes: function (productId) {
+                $('#sizeList').html('');
+
+                // 加载商品尺寸列表
+                $sixmac.ajax("common/findInfoListByProductId", {productId: productId, type: 2}, function (result) {
+                    if (null != result) {
+                        // 获取返回的列表信息，并循环绑定到select中
+                        var content = "";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item + "'>" + item + "</option>";
+                        });
+                        $('#sizeList').append(content);
+                    } else {
+                        $('#sizeList').append("<option value=''>暂无尺寸</option>");
+                    }
+                });
+            },
+            findMaterials: function (productId) {
+                $('#materialList').html('');
+
+                // 加载商品材质列表
+                $sixmac.ajax("common/findInfoListByProductId", {productId: productId, type: 3}, function (result) {
+                    if (null != result) {
+                        // 获取返回的列表信息，并循环绑定到select中
+                        var content = "";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item + "'>" + item + "</option>";
+                        });
+                        $('#materialList').append(content);
+                    } else {
+                        $('#materialList').append("<option value=''>暂无材质</option>");
                     }
                 });
             },
@@ -327,6 +413,16 @@
                     return;
                 }
 
+                $("input[name='tempProductColor']").each(function () {
+                    product.v.tempColors += $(this).val().trim() + ',';
+                });
+                $("input[name='tempProductSize']").each(function () {
+                    product.v.tempSizes += $(this).val().trim() + ',';
+                });
+                $("input[name='tempProductMaterial']").each(function () {
+                    product.v.tempMaterials += $(this).val().trim() + ',';
+                });
+
                 return flag;
             },
             subInfo: function () {
@@ -342,6 +438,9 @@
                                 "labels": $('#labels').val(),
                                 "coverId": $("input[type='radio']:checked").val(),
                                 "tempAddImageIds": $("#tempAddImageIds").html(),
+                                "tempColors": product.v.tempColors,
+                                "tempSizes": product.v.tempSizes,
+                                "tempMaterials": product.v.tempMaterials,
                                 "content": editor1.getContent()
                             },
                             function (data) {

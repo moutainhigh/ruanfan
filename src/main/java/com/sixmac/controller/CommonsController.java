@@ -1,6 +1,7 @@
 package com.sixmac.controller;
 
 import com.sixmac.entity.*;
+import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.*;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.QiNiuUploadImgUtil;
@@ -185,6 +186,41 @@ public class CommonsController {
     @ResponseBody
     public List<Products> productList() {
         return productsService.findListWithSuccess();
+    }
+
+    /**
+     * 根据商品id查询该商品的属性列表
+     *
+     * @param productId 商品id
+     * @param type      类型，1=颜色，2=尺寸，3=材质
+     * @return
+     */
+    @RequestMapping("/findInfoListByProductId")
+    @ResponseBody
+    public List<String> findColorListByProductId(Integer productId, Integer type) {
+        Products products = productsService.getById(productId);
+        List<String> list = new ArrayList<String>();
+        String[] val = null;
+
+        if (null != products) {
+            switch (type) {
+                case 1:
+                    val = products.getColors().split(",");
+                    break;
+                case 2:
+                    val = products.getSizes().split(" ");
+                    break;
+                case 3:
+                    val = products.getMaterials().split(" ");
+                    break;
+            }
+            for (String str : val) {
+                list.add(str);
+            }
+
+            return list;
+        }
+        return null;
     }
 
     /**

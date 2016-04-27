@@ -141,9 +141,15 @@ public class PackagesController extends CommonController {
                         Integer brandId,
                         String labels,
                         String content,
-                        String tempAddImageIds) {
+                        String tempAddImageIds,
+                        String tempColors,
+                        String tempSizes,
+                        String tempMaterials) {
         try {
             String[] addImageIds = tempAddImageIds.split(",");
+            String[] colors = tempColors.split(",");
+            String[] sizes = tempSizes.split(",");
+            String[] materials = tempMaterials.split(",");
             Packages packages = null;
 
             if (null == id) {
@@ -176,15 +182,18 @@ public class PackagesController extends CommonController {
             // 保存新的商品关联信息
             Image image = null;
             Packageproducts packageProduct = null;
-            for (String imageId : addImageIds) {
-                if (null != imageId && !imageId.equals("")) {
+            for (int i = 0; i < addImageIds.length; i++) {
+                if (null != addImageIds[i] && !addImageIds[i].equals("")) {
                     packageProduct = new Packageproducts();
-                    image = imageService.getById(Integer.parseInt(imageId));
+                    image = imageService.getById(Integer.parseInt(addImageIds[i]));
 
                     packageProduct.setType(packages.getType());
                     packageProduct.setPackages(packages);
                     packageProduct.setProduct(productService.getById(image.getObjectId()));
                     packageProduct.setPath(image.getPath());
+                    packageProduct.setColors(colors[i]);
+                    packageProduct.setSizes(sizes[i]);
+                    packageProduct.setMaterials(materials[i]);
 
                     packageProductsService.create(packageProduct);
                 }

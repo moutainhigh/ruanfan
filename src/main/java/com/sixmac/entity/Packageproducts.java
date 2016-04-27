@@ -13,6 +13,9 @@ public class Packageproducts {
     private Packages packages;
     private Products product;
     private String path;
+    private String colors;
+    private String sizes;
+    private String materials;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -58,5 +61,29 @@ public class Packageproducts {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getColors() {
+        return colors;
+    }
+
+    public void setColors(String colors) {
+        this.colors = colors;
+    }
+
+    public String getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(String sizes) {
+        this.sizes = sizes;
+    }
+
+    public String getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(String materials) {
+        this.materials = materials;
     }
 }
