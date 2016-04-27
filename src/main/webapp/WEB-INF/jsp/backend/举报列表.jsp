@@ -174,11 +174,11 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='删除评论' class='btn btn-primary btn-circle deleteComment'>" +
-                            "<i class='fa fa-edit'></i>" +
+                            "defaultContent": "<a title='删除评论' class='btn btn-danger btn-circle deleteComment'>" +
+                            "<i class='fa fa-remove'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='忽略' class='btn btn-danger btn-circle edit'>" +
+                            "<button type='button' title='忽略' class='btn btn-warning btn-circle edit'>" +
                             "<i class='fa fa-minus'></i>" +
                             "</button>",
                             "targets": -1
