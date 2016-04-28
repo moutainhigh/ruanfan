@@ -5,6 +5,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Orders;
 import com.sixmac.service.OrdersService;
+import com.sixmac.utils.WeChatUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,17 @@ public class PayCallBackApi extends CommonController {
 
     @Autowired
     private OrdersService ordersService;
+
+    /**
+     * @api {post} /api/pay/getPayInfo 拼接微信支付参数
+     * @apiName pay.getPayInfo
+     * @apiGroup pay
+     * @apiParam {String} body 商品描述       <必传 />
+     */
+    @RequestMapping(value = "/getPayInfo")
+    public void getPayInfo(HttpServletResponse response, String body) {
+        WebUtil.printApi(response, new Result(true).data(WeChatUtil.getInfo(body)));
+    }
 
     // 支付宝回调
     @RequestMapping(value = "/aliPayCallBack")
