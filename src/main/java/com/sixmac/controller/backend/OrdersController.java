@@ -2,6 +2,7 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.entity.Orders;
 import com.sixmac.entity.Ordersinfo;
 import com.sixmac.service.OrdersService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +27,10 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "backend/orders")
-public class OdersController extends CommonController {
+public class OrdersController extends CommonController {
 
     @Autowired
-    private OrdersService Ordersservice;
+    private OrdersService orderService;
 
     @Autowired
     private OrdersinfoService ordersinfoService;
@@ -63,7 +65,7 @@ public class OdersController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Orders> page = Ordersservice.page(orderNum, mobile, nickName, status, type, pageNum, length);
+        Page<Orders> page = orderService.page(orderNum, mobile, nickName, status, type, pageNum, length);
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
@@ -74,7 +76,7 @@ public class OdersController extends CommonController {
 
         // 如果id不为空，则代表编辑
         if (null != id) {
-            Orders orders = Ordersservice.getById(id);
+            Orders orders = orderService.getById(id);
             model.addAttribute("orders", orders);
 
             if (null != orders) {
@@ -85,5 +87,21 @@ public class OdersController extends CommonController {
         }
 
         return "backend/订单详情";
+    }
+
+    @RequestMapping(value = "/changeStatus")
+    @ResponseBody
+    public Integer changeStatus(Integer id) {
+        try {
+            Orders orders = orderService.getById(id);
+            orders.setStatus(Constant.ORDERS_STATUS_002);
+
+            orderService.update(orders);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

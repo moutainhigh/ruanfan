@@ -95,6 +95,14 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
                     Predicate pre = cb.like(root.get("order").get("orderNum").as(String.class), "%" + orderNum + "%");
                     predicateList.add(pre);
                 }
+
+                // 没有评价的订单详情，不会被查出
+                Predicate pre1 = cb.isNotNull(root.get("star").as(Integer.class));
+                predicateList.add(pre1);
+
+                Predicate pre2 = cb.isNotNull(root.get("comment").as(String.class));
+                predicateList.add(pre2);
+
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }
@@ -155,6 +163,24 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     @Override
     public List<Ordersinfo> findListBySourceId(Integer productId, Integer type) {
         return ordersinfoDao.findListBySourceId(productId, type);
+    }
+
+    @Override
+    public void deleteInfo(Integer orderInfoId) {
+        Ordersinfo ordersinfo = ordersinfoDao.findOne(orderInfoId);
+
+        ordersinfo.setStar(null);
+        ordersinfo.setComment(null);
+
+        ordersinfoDao.save(ordersinfo);
+    }
+
+    @Override
+    @Transactional
+    public void batchDeleteInfo(int[] ids) {
+        for (int id : ids) {
+            deleteInfo(id);
+        }
     }
 
 }

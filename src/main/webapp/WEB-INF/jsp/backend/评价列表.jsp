@@ -169,13 +169,13 @@
 
                         $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
-                        if (data.description != null && data.description.length > 20) {
-                            $('td', row).eq(6).html(data.description.substring(0, 20) + '...');
+                        if (data.comment != null && data.comment.length > 20) {
+                            $('td', row).eq(6).html(data.comment.substring(0, 20) + '...');
                         }
 
                         ordersinfoList.v.list.push(data);
                         if (null != data.productPath && data.productPath != '') {
-                            $('td', row).eq(2).html("<img src='" + data.url + "' width='60px' height='60px' />");
+                            $('td', row).eq(2).html("<img src='" + data.productPath + "' width='60px' height='60px' />");
                         } else {
                             $('td', row).eq(2).html("暂无");
                         }
@@ -240,7 +240,7 @@
                                 $sixmac.notify("操作失败", "error");
                             }
                         })
-                    }, '确定删除选中的所有消息？', '确定');
+                    }, '确定删除选中的所有评价？', '确定');
                 }
             }
         }

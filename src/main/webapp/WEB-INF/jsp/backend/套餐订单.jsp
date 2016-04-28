@@ -94,10 +94,30 @@
                 <!-- /.panel -->
             </div>
         </div>
-
-
     </div>
     <!-- /#page-wrapper -->
+
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="orderId"/>
+                    确定将该订单状态更改为已发货（待确认）？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" onclick="ordersList.fn.changeStatus()" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 </div>
 <!-- /#wrapper -->
 
@@ -147,7 +167,7 @@
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='已发货' style='display: none' class='btn btn-success btn-circle check'>" +
+                            "<button type='button' title='已发货' style='display: none' class='btn btn-success btn-circle changeStatus'>" +
                             "<i class='fa fa-check'></i>" +
                             "</button>",
                             "targets": -1
@@ -161,7 +181,7 @@
                         }
                         if (data.status == 1) {
                             $('td', row).eq(4).html("待发货");
-                            $('td', row).last().find(".check").css('display', '');
+                            $('td', row).last().find(".changeStatus").css('display', '');
                         }
                         if (data.status == 2) {
                             $('td', row).eq(4).html("待确认");
@@ -177,9 +197,10 @@
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".edit").attr("href", 'backend/orders/detail?id=' + data.id);
 
-                        $('td', row).last().find(".check").click(function () {
-                            // var checkbox = $('td', row).first().find("input[type='checkbox']");
-                            // ordersList.fn.deleteRow(checkbox, [data.id]);
+                        $('td', row).last().find(".changeStatus").click(function () {
+                            // 发货
+                            $('#orderId').val(data.id);
+                            $('#infoModal').modal("show");
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -191,6 +212,19 @@
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
+                    }
+                });
+            },
+            changeStatus: function () {
+                $sixmac.ajax("backend/orders/changeStatus", {
+                    "id": $('#orderId').val()
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        $('#infoModal').modal("hide");
+                        ordersList.v.dTable.ajax.reload(null, false);
+                    } else {
+                        $sixmac.notify("操作失败", "error");
                     }
                 });
             }

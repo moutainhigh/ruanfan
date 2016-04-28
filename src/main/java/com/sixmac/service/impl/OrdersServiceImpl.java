@@ -111,7 +111,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<Orders> page(final String orderNum, final String mobile, final String nickName, final Integer status, final Integer type, int pageNum, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Orders> page = ordersDao.findAll(new Specification<Orders>() {
             @Override
@@ -155,7 +155,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<Orders> page(final Integer merchantId, final String orderNum, final String mobile, final String productName, final Integer status, final Integer type, int pageNum, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Orders> page = ordersDao.findAll(new Specification<Orders>() {
             @Override
