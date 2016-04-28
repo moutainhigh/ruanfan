@@ -75,7 +75,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">点赞数:</label>
                                 <div class="col-sm-3" style="padding-top: 6.5px;">
-                                    ${journal.gamsNum}
+                                    ${journal.gamNum}
                                 </div>
                             </div>
 

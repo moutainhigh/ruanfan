@@ -86,6 +86,9 @@ public class PackagesController extends CommonController {
                     map = new HashMap<String, Object>();
                     map.put("id", packageProduct.getProduct().getCoverId());
                     map.put("path", imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
+                    map.put("colors", packageProduct.getColors());
+                    map.put("sizes", packageProduct.getSizes());
+                    map.put("materials", packageProduct.getMaterials());
 
                     list.add(map);
 

@@ -186,7 +186,6 @@
                 });
             },
             loadData: function () {
-
                 // 加载套餐包含的商品图片数组
                 packages.fn.getSerImages();
             },
@@ -198,7 +197,7 @@
 
                 $.each(imgList, function (i, item) {
                     if (null != item) {
-                        packages.fn.insertImage(item.path, item.id);
+                        packages.fn.insertImage(item.path, item.id, item.colors, item.sizes, item.materials);
                     } else {
                         $('#lastImageDiv').html('暂无');
                     }
@@ -209,7 +208,7 @@
                 var coverId = $('#tempCoverId').val();
                 if (null != id && id != '') {
                     $('input:radio[name="settingCover"]').each(function () {
-                        if ($(this).val() == coverId) {
+                        if ($(this).prev().val() == coverId) {
                             $(this).prop('checked', true);
                         }
                     });
@@ -237,22 +236,22 @@
                 $sixmac.ajax("common/findCoverByProductId", {productId: productId}, function (result) {
                     if (null != result) {
                         packages.v.imageSize = packages.v.imageSize + 1;
-                        packages.fn.insertImage(result.path, result.id);
+                        packages.fn.insertImage(result.path, result.id, $('#colorList option:selected').val(), $('#sizeList option:selected').val(), $('#materialList option:selected').val());
                         $('#tempAddImageIds').html($('#tempAddImageIds').html() + result.id + ',');
                     } else {
                         $sixmac.notify("获取封面图信息失败", "error");
                     }
                 });
             },
-            insertImage: function (path, id) {
+            insertImage: function (path, id, colors, sizes, materials) {
                 var tempDiv = $("#tempDiv").clone();
                 tempDiv.prop('id', '');
                 tempDiv.css("display", "block");
                 tempDiv.children(":first").prop("src", path);
                 tempDiv.children(":first").next().prop("value", id);
-                tempDiv.children(":first").next().next().next().next().prop("value", $('#colorList option:selected').val());
-                tempDiv.children(":first").next().next().next().next().next().prop("value", $('#sizeList option:selected').val());
-                tempDiv.children(":first").next().next().next().next().next().next().prop("value", $('#materialList option:selected').val());
+                tempDiv.children(":first").next().next().next().next().prop("value", colors);
+                tempDiv.children(":first").next().next().next().next().next().prop("value", sizes);
+                tempDiv.children(":first").next().next().next().next().next().next().prop("value", materials);
                 tempDiv.insertBefore("#lastImageDiv");
             },
             removeProduct: function (self) {
@@ -413,21 +412,22 @@
                     return;
                 }
 
-                $("input[name='tempProductColor']").each(function () {
-                    product.v.tempColors += $(this).val().trim() + ',';
-                });
-                $("input[name='tempProductSize']").each(function () {
-                    product.v.tempSizes += $(this).val().trim() + ',';
-                });
-                $("input[name='tempProductMaterial']").each(function () {
-                    product.v.tempMaterials += $(this).val().trim() + ',';
-                });
-
                 return flag;
             },
             subInfo: function () {
+                console.log(0);
                 // 所有的验证通过后，执行新增操作
                 if (packages.fn.checkData()) {
+                    $("input[name='tempProductColor']").each(function () {
+                        packages.v.tempColors += $(this).val().trim() + ',';
+                    });
+                    $("input[name='tempProductSize']").each(function () {
+                        packages.v.tempSizes += $(this).val().trim() + ',';
+                    });
+                    $("input[name='tempProductMaterial']").each(function () {
+                        packages.v.tempMaterials += $(this).val().trim() + ',';
+                    });
+                    console.log(1);
                     $.post(_basePath + "backend/packages/save",
                             {
                                 "id": $('#packagesId').val(),
@@ -436,11 +436,11 @@
                                 "oldPrice": $('#oldPrice').val(),
                                 "brandId": $('#brandList option:selected').val(),
                                 "labels": $('#labels').val(),
-                                "coverId": $("input[type='radio']:checked").val(),
+                                "coverId": $("input[type='radio']:checked").prev().val(),
                                 "tempAddImageIds": $("#tempAddImageIds").html(),
-                                "tempColors": product.v.tempColors,
-                                "tempSizes": product.v.tempSizes,
-                                "tempMaterials": product.v.tempMaterials,
+                                "tempColors": packages.v.tempColors,
+                                "tempSizes": packages.v.tempSizes,
+                                "tempMaterials": packages.v.tempMaterials,
                                 "content": editor1.getContent()
                             },
                             function (data) {
