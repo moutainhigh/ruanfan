@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "backend/orders")
-public class OrdersController extends CommonController {
+public class BackOrdersController extends CommonController {
 
     @Autowired
     private OrdersService orderService;
