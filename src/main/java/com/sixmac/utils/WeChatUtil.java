@@ -14,7 +14,7 @@ public class WeChatUtil {
 
     private static String mchId = "1336888001";
 
-    private static String key = "";
+    private static String key = "DuraGyqqd8inqERSwKslb10GAIwohsucdPRpeJgXhMg";
 
     // 生成支付签名
     private static String getSign(String nonceStr, String body) {
