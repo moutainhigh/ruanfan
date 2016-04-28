@@ -123,7 +123,15 @@ public class PackagesServiceImpl implements PackagesService {
 
     @Override
     public List<Packageproducts> findListByPackageId(Integer packageId) {
-        return packagesDao.findListByPackageId(packageId);
+        List<Packageproducts> list = packagesDao.findListByPackageId(packageId);
+
+        for (Packageproducts packageProduct : list) {
+            packageProduct.getProduct().setColors(packageProduct.getColors());
+            packageProduct.getProduct().setSizes(packageProduct.getSizes());
+            packageProduct.getProduct().setMaterials(packageProduct.getMaterials());
+        }
+
+        return list;
     }
 
     @Override
