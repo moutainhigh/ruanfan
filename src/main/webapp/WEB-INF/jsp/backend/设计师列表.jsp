@@ -246,15 +246,15 @@
                             "</a>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
-                            "<i class='fa fa-minus'></i>" +
+                            "<i class='fa fa-remove'></i>" +
                             "</button>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='审核通过' style='display: none' class='btn btn-primary btn-circle checkyes'>" +
+                            "<button type='button' title='审核通过' style='display: none' class='btn btn-success btn-circle checkyes'>" +
                             "<i class='fa fa-check'></i>" +
                             "</button>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'>" +
-                            "<i class='fa fa-close'></i>" +
+                            "<i class='fa fa-minus'></i>" +
                             "</button>",
                             "targets": -1
                         }

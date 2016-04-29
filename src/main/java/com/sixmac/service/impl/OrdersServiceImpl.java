@@ -4,6 +4,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.OrdersDao;
 import com.sixmac.entity.Orders;
+import com.sixmac.pay.excute.PayRequest;
 import com.sixmac.service.OrdersService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/3/8 0008 上午 11:56.
@@ -219,5 +220,19 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public List<Orders> findListNew() {
         return ordersDao.findListNew(CommonController.getOldDate());
+    }
+
+    @Override
+    public Map<String, Object> getPayInfo(HttpServletRequest request, HttpServletResponse response, String orderNum) {
+        Orders orders = ordersDao.iFindOneByOrderNum(orderNum);
+
+        // 微信
+        String prepayid = null; //预支付款ID
+        request.setAttribute("fee", orders.getRealPrice());
+        request.setAttribute("sn", orderNum);
+        request.setAttribute("prepayid", prepayid);
+        Map<String, Object> params = PayRequest.pay(request, response);
+
+        return params;
     }
 }

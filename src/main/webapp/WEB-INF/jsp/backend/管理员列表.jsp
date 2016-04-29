@@ -185,7 +185,7 @@
                             "<i class='fa fa-edit'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='删除' class='btn btn-success btn-circle delete'>" +
+                            "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
                             "</button>",
                             "targets": -1

@@ -4,8 +4,11 @@ import com.sixmac.entity.Orders;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/3/8 0008 上午 11:55.
@@ -29,4 +32,7 @@ public interface OrdersService extends ICommonService<Orders> {
 
     // 查询新增订单列表
     public List<Orders> findListNew();
+
+    // 根据订单流水号获取微信支付信息
+    public Map<String, Object> getPayInfo(HttpServletRequest request, HttpServletResponse response, String orderNum);
 }

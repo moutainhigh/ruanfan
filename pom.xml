@@ -53,6 +53,13 @@
             <version>5.1.30</version>
         </dependency>
 
+        <!-- JDOM -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+
         <!-- Apache Commons -->
         <dependency>
             <groupId>commons-lang</groupId>

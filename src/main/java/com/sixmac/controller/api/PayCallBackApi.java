@@ -5,11 +5,12 @@ import com.sixmac.core.Constant;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Orders;
 import com.sixmac.service.OrdersService;
-import com.sixmac.utils.WeChatUtil;
+import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,11 +42,15 @@ public class PayCallBackApi extends CommonController {
      * @api {post} /api/pay/getPayInfo 拼接微信支付参数
      * @apiName pay.getPayInfo
      * @apiGroup pay
-     * @apiParam {String} body 商品描述       <必传 />
+     * @apiParam {String} orderNum 订单流水号       <必传 />
      */
     @RequestMapping(value = "/getPayInfo")
-    public void getPayInfo(HttpServletResponse response, String body) {
-        WebUtil.printApi(response, new Result(true).data(WeChatUtil.getInfo(body)));
+    public void getPayInfo(HttpServletRequest request, HttpServletResponse response, String orderNum) {
+        Map<String, Object> resultParam = ordersService.getPayInfo(request, response, orderNum);
+
+        Result obj = new Result(true).data(resultParam);
+        String result = JsonUtil.obj2ApiJson(obj, "user", "merchant", "order", "product", "star", "comment");
+        WebUtil.printApi(response, result);
     }
 
     // 支付宝回调
