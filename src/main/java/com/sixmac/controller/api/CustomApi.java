@@ -10,6 +10,7 @@ import com.sixmac.service.CustominfoService;
 import com.sixmac.service.CustompackagesService;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,13 @@ public class CustomApi extends CommonController {
     @RequestMapping(value = "/findList")
     public void findList(HttpServletResponse response,
                          String name) {
-        Custom custom = customService.findOneByParams(name);
+        Custom custom = null;
+
+        if (StringUtils.isNotEmpty(name)) {
+            custom = customService.findOneByParams(name);
+        } else {
+            custom = customService.findOneByHot();
+        }
 
         if (null == custom) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
@@ -57,7 +64,7 @@ public class CustomApi extends CommonController {
         List<Custominfo> custominfoList = custominfoService.findListByCustomId(custom.getId());
 
         Result obj = new Result(true).data(createMap("list", custominfoList));
-        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort", "packageList");
+        String result = JsonUtil.obj2ApiJson(obj, "custom", "merchant", "brand", "sort", "packageList", "isHot");
         WebUtil.printApi(response, result);
     }
 

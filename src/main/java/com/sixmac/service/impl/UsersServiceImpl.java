@@ -225,6 +225,10 @@ public class UsersServiceImpl implements UsersService {
                     Predicate pre = cb.equal(root.get("user").get("id").as(Integer.class), userId);
                     predicateList.add(pre);
                 }
+
+                Predicate pre1 = cb.equal(root.get("coupon").get("isCheck").as(Integer.class), Constant.CHECK_STATUS_SUCCESS);
+                predicateList.add(pre1);
+
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }

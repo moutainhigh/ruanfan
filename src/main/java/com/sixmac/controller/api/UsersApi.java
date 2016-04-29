@@ -505,13 +505,16 @@ public class UsersApi extends CommonController {
      * @apiSuccess {Integer} list.id 优惠券id
      * @apiSuccess {Integer} list.name 优惠券名称
      * @apiSuccess {Integer} list.cover 封面
-     * @apiSuccess {Integer} list.couponNum 优惠券编号（待定）
+     * @apiSuccess {Integer} list.couponNum 优惠券编号
      * @apiSuccess {Integer} list.money 金额
      * @apiSuccess {Integer} list.type 类型，0=无限制，1=满减
      * @apiSuccess {Integer} list.maxMoney 满减金额
      * @apiSuccess {Integer} list.startDate 开始日期
      * @apiSuccess {Integer} list.endDate 结束日期
      * @apiSuccess {Integer} list.createTime 创建时间
+     * @apiSuccess {Integer} list.status 状态
+     * @apiSuccess {Integer} list.sourceId 优惠券来源商家id，如果为0，代表是软范总后台添加的优惠券
+     * @apiSuccess {Integer} list.sourceName 优惠券来源商家名称，如果为空，代表是软范总后台添加的优惠券
      */
     @RequestMapping(value = "/couponList")
     public void couponList(HttpServletResponse response,
@@ -530,6 +533,13 @@ public class UsersApi extends CommonController {
         Coupon coupon = null;
         for (Usercoupon userCoupon : page.getContent()) {
             coupon = userCoupon.getCoupon();
+            if (null != coupon.getMerchant() && null != coupon.getMerchant().getId()) {
+                coupon.setSourceId(coupon.getMerchant().getId());
+                coupon.setSourceName(coupon.getMerchant().getNickName());
+            } else {
+                coupon.setSourceId(0);
+                coupon.setSourceName("");
+            }
             coupon.setStatus(userCoupon.getStatus());
             list.add(coupon);
         }
@@ -537,7 +547,7 @@ public class UsersApi extends CommonController {
         Map<String, Object> dataMap = APIFactory.fittingPlus(page, list);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj);
+        String result = JsonUtil.obj2ApiJson(obj, "sourceName", "merchant");
         WebUtil.printApi(response, result);
     }
 

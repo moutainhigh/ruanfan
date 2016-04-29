@@ -18,7 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">管理范票</h1>
+                <h1 class="page-header">范票列表</h1>
                 <h4 style="margin-left: 10px;" id="showH">——新增范票</h4>
             </div>
         </div>
@@ -28,8 +28,8 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form id="couponForm" method="post" enctype="multipart/form-data" action="backend/coupon/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
-                            <input type="hidden" id="id" name="id" value="${coupon.id}">
+                        <form id="couponForm" method="post" enctype="multipart/form-data" action="merchant/coupon/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
+                            <input type="hidden" id="id" name="id" value="${coupon.id}"/>
                             <input type="hidden" id="tempCover" value="${coupon.cover}"/>
                             <input type="hidden" id="tempType" value="${coupon.type}"/>
 
@@ -240,14 +240,14 @@
                 // 所有的验证通过后，执行新增操作
                 if (coupon.fn.checkData()) {
                     $("#couponForm").ajaxSubmit({
-                        url: _basePath + "backend/coupon/save",
+                        url: _basePath + "merchant/coupon/save",
                         dataType: "json",
                         data: {
                             "type": $('#typeList option:selected').val()
                         },
                         success: function (result) {
                             if (result > 0) {
-                                window.location.href = _basePath + "backend/coupon/index";
+                                window.location.href = _basePath + "merchant/coupon/index";
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }
@@ -256,7 +256,7 @@
                 }
             },
             goBack: function () {
-                window.location.href = "backend/coupon/index";
+                window.location.href = "merchant/coupon/index";
             }
         }
     }

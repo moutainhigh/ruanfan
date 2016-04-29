@@ -43,12 +43,20 @@ public class PayCallBackApi extends CommonController {
      * @apiName pay.getPayInfo
      * @apiGroup pay
      * @apiParam {String} orderNum 订单流水号       <必传 />
+     * @apiSuccess {Object} payInfo 微信支付信息
+     * @apiSuccess {String} payInfo.appid 应用APPID
+     * @apiSuccess {String} payInfo.packages 商户包信息
+     * @apiSuccess {String} payInfo.prepayid 预支付交易会话标识
+     * @apiSuccess {String} payInfo.noncestr 随机字符串
+     * @apiSuccess {String} payInfo.partnerid 商户号
+     * @apiSuccess {String} payInfo.timestamp 时间字符串
+     * @apiSuccess {String} payInfo.sign 签名
      */
     @RequestMapping(value = "/getPayInfo")
     public void getPayInfo(HttpServletRequest request, HttpServletResponse response, String orderNum) {
         Map<String, Object> resultParam = ordersService.getPayInfo(request, response, orderNum);
 
-        Result obj = new Result(true).data(resultParam);
+        Result obj = new Result(true).data(createMap("payInfo", resultParam));
         String result = JsonUtil.obj2ApiJson(obj, "user", "merchant", "order", "product", "star", "comment");
         WebUtil.printApi(response, result);
     }

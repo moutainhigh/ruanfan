@@ -18,8 +18,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">管理范票</h1>
-                <h4 style="margin-left: 10px;">——范票列表</h4>
+                <h1 class="page-header">范票列表</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -28,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="backend/coupon/add" class="btn btn-outline btn-primary btn-lg" role="button">新增范票</a>
+                        <a href="merchant/coupon/add" class="btn btn-outline btn-primary btn-lg" role="button">新增范票</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -43,7 +42,6 @@
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
-                                    <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
@@ -52,7 +50,6 @@
                                     <th>封面</th>
                                     <th>面值</th>
                                     <th>类型</th>
-                                    <th>来源</th>
                                     <th>审核状态</th>
                                     <th>添加时间</th>
                                     <th>操作</th>
@@ -105,24 +102,26 @@
 
 <script type="text/javascript">
 
-    var couponList = {
+    var merchantCouponList = {
         v: {
-            id: "couponList",
+            id: "merchantCouponList",
             list: [],
             dTable: null
         },
         fn: {
             init: function () {
-                couponList.fn.dataTableInit();
+                console.log(0);
+                merchantCouponList.fn.dataTableInit();
+                console.log(1);
             },
             dataTableInit: function () {
-                couponList.v.dTable = $sixmac.dataTable($('#dataTables'), {
+                merchantCouponList.v.dTable = $sixmac.dataTable($('#dataTables'), {
                     "processing": true,
                     "serverSide": true,
                     "searching": false,
                     "ordering": false,
                     "ajax": {
-                        "url": "backend/coupon/list",
+                        "url": "merchant/coupon/list",
                         "type": "POST"
                     },
                     "columns": [
@@ -131,7 +130,6 @@
                         {"data": null},
                         {"data": "money"},
                         {"data": "type"},
-                        {"data": "sourceName"},
                         {"data": "isCheck"},
                         {"data": "createTime"},
                         {"data": ""}
@@ -145,20 +143,12 @@
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
-                            "</button>" +
-                            "&nbsp;&nbsp;" +
-                            "<button type='button' title='审核通过' style='display: none' class='btn btn-success btn-circle checkyes'>" +
-                            "<i class='fa fa-check'></i>" +
-                            "</button>" +
-                            "&nbsp;&nbsp;" +
-                            "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'>" +
-                            "<i class='fa fa-minus'></i>" +
                             "</button>",
                             "targets": -1
                         }
                     ],
                     "createdRow": function (row, data, index) {
-                        couponList.v.list.push(data);
+                        merchantCouponList.v.list.push(data);
 
                         if (data.type == 1) {
                             $('td', row).eq(4).html("满减");
@@ -166,16 +156,12 @@
                             $('td', row).eq(4).html("无限制");
                         }
 
-                        if (data.sourceName == '') {
-                            $('td', row).eq(5).html("软范后台");
-                        }
-
                         if (data.isCheck == 0) {
-                            $('td', row).eq(6).html("待审核");
+                            $('td', row).eq(5).html("待审核");
                         } else if (data.isCheck == 1) {
-                            $('td', row).eq(6).html("审核通过");
+                            $('td', row).eq(5).html("审核通过");
                         } else {
-                            $('td', row).eq(6).html("审核不通过");
+                            $('td', row).eq(5).html("审核不通过");
                         }
 
                         if (data.cover == '') {
@@ -192,30 +178,15 @@
                         $('td', row).eq(5).css('line-height', '102px');
                         $('td', row).eq(6).css('line-height', '102px');
                         $('td', row).eq(7).css('line-height', '102px');
-                        $('td', row).eq(8).css('line-height', '102px');
                     },
                     rowCallback: function (row, data) {
-                        if (data.isCheck == 0) {
-                            // 未审核时，显示审核按钮
-                            $('td', row).last().find(".checkyes").css("display", '');
-                            $('td', row).last().find(".checkno").css("display", '');
-                        }
+                        var items = merchantCouponList.v.list;
 
-                        $('td', row).last().find(".edit").attr("href", 'backend/coupon/add?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'merchant/coupon/add?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
-                            couponList.fn.delInfo(data.id);
-                        });
-
-                        $('td', row).last().find(".checkyes").click(function () {
-                            // 审核为通过
-                            couponList.fn.changeCheck(data.id, 1);
-                        });
-
-                        $('td', row).last().find(".checkno").click(function () {
-                            // 审核为不通过
-                            couponList.fn.changeCheck(data.id, 2);
+                            merchantCouponList.fn.delInfo(data.id);
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -226,19 +197,6 @@
                     }
                 });
             },
-            changeCheck: function (id, isCheck) {
-                $sixmac.ajax("backend/coupon/changeCheck", {
-                    "couponId": id,
-                    "isCheck": isCheck
-                }, function (result) {
-                    if (result == 1) {
-                        $sixmac.notify("操作成功", "success");
-                        couponList.v.dTable.ajax.reload(null, false);
-                    } else {
-                        $sixmac.notify("操作失败", "error");
-                    }
-                });
-            },
             delInfo: function (id) {
                 $('#couponId').val(id);
                 $("#delModal").modal("show");
@@ -246,13 +204,13 @@
             subInfo: function () {
                 var couponId = $('#couponId').val();
 
-                $sixmac.ajax("backend/coupon/delete", {
+                $sixmac.ajax("merchant/coupon/delete", {
                     "couponId": couponId,
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
                         $("#delModal").modal("hide");
-                        couponList.v.dTable.ajax.reload(null, false);
+                        merchantCouponList.v.dTable.ajax.reload(null, false);
                     } else if (result == -1) {
                         $sixmac.notify("该优惠券还有用户未使用，暂时无法删除，操作失败", "error");
                         $("#delModal").modal("hide");
@@ -265,7 +223,7 @@
     }
 
     $(document).ready(function () {
-        couponList.fn.init();
+        merchantCouponList.fn.init();
     });
 
 </script>

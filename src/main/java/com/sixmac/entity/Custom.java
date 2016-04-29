@@ -13,6 +13,7 @@ public class Custom {
     private String name;
     private String cover;
     private String address;
+    private Integer isHot;
     private Date createTime;
 
     @Id
@@ -47,6 +48,14 @@ public class Custom {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Integer getIsHot() {
+        return isHot;
+    }
+
+    public void setIsHot(Integer isHot) {
+        this.isHot = isHot;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

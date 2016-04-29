@@ -13,4 +13,7 @@ public interface CustomDao extends JpaRepository<Custom, Integer> {
 
     @Query("select a from Custom a where a.name = ?1")
     public Custom findOneByParams(String name);
+
+    @Query("select a from Custom a where a.isHot = 1")
+    public Custom findOneByHot();
 }

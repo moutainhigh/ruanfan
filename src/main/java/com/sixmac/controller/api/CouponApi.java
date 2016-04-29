@@ -1,6 +1,7 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Coupon;
@@ -42,6 +43,11 @@ public class CouponApi extends CommonController {
 
             if (null == coupon) {
                 WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0016));
+                return;
+            }
+
+            if (coupon.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
+                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0026));
                 return;
             }
 

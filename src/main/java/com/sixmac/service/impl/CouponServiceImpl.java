@@ -52,7 +52,15 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    @Transactional
     public Coupon deleteById(int id) {
+        // 删除跟该优惠券关联的所有已使用的优惠券领取记录
+        List<Usercoupon> list = usercouponDao.findAllListByCouponId(id);
+
+        for (Usercoupon userCoupon : list) {
+            usercouponDao.delete(userCoupon.getId());
+        }
+
         Coupon coupon = getById(id);
         couponDao.delete(coupon);
         return coupon;
@@ -94,5 +102,15 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Usercoupon getByUserIdAndCouponId(Integer userId, Integer couponId) {
         return usercouponDao.getByUserIdAndCouponId(userId, couponId);
+    }
+
+    @Override
+    public Page<Coupon> pageByMerchantId(Integer merchantId, Integer pageNum, Integer pageSize) {
+        return couponDao.pageByMerchantId(merchantId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public List<Usercoupon> findListByCouponId(Integer couponId) {
+        return usercouponDao.findListByCouponId(couponId);
     }
 }

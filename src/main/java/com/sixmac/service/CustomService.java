@@ -10,6 +10,9 @@ import java.util.List;
  */
 public interface CustomService extends ICommonService<Custom> {
 
-    // 根据楼盘名称模糊查询楼盘列表
+    // 根据楼盘名称模糊查询楼盘信息
     public Custom findOneByParams(String name);
+
+    // 查询推荐楼盘信息
+    public Custom findOneByHot();
 }

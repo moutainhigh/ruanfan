@@ -79,4 +79,7 @@ public class ErrorCode {
 
     // 已经预约过
     public static final String ERROR_CODE_0025 = "error_0025";
+
+    // 无效的优惠券
+    public static final String ERROR_CODE_0026 = "error_0026";
 }

@@ -8,7 +8,7 @@
             </li>
 
             <li>
-                <a href="#"><i class="fa  fa-beer fa-fw"></i>商品管理<span class="fa arrow"></span></a>
+                <a href="javascript:void(0)"><i class="fa  fa-beer fa-fw"></i>商品管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="merchant/product/index"><i class="fa fa-cart-plus fa-fw"></i>商品列表</a>
@@ -19,11 +19,14 @@
                     <li>
                         <a href="merchant/orders/index"><i class="fa fa-cubes fa-fw"></i>订单列表</a>
                     </li>
+                    <li>
+                        <a href="merchant/coupon/index"><i class="fa fa-cubes fa-fw"></i>范票列表</a>
+                    </li>
                 </ul>
             </li>
 
             <li>
-                <a href="#"><i class="fa  fa-beer fa-fw"></i>账户管理<span class="fa arrow"></span></a>
+                <a href="javascript:void(0)"><i class="fa  fa-beer fa-fw"></i>账户管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="merchant/info"><i class="fa fa-cart-plus fa-fw"></i>个人资料</a>
@@ -32,7 +35,7 @@
             </li>
 
             <li>
-                <a href="#"><i class="fa  fa-beer fa-fw"></i>消息管理<span class="fa arrow"></span></a>
+                <a href="javascript:void(0)"><i class="fa  fa-beer fa-fw"></i>消息管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="merchant/notice/index"><i class="fa fa-cart-plus fa-fw"></i>系统消息</a>

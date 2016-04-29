@@ -10,6 +10,7 @@ import java.util.Date;
 @Table(name = "coupon")
 public class Coupon {
     private Integer id;
+    private Merchants merchant;
     private String name;
     private String cover;
     private String couponNum;
@@ -18,8 +19,11 @@ public class Coupon {
     private String maxMoney;
     private String startDate;
     private String endDate;
+    private Integer isCheck;
     private Date createTime;
     private Integer status;
+    private Integer sourceId;
+    private String sourceName;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -29,6 +33,16 @@ public class Coupon {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "merchantId")
+    public Merchants getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchants merchant) {
+        this.merchant = merchant;
     }
 
     public String getName() {
@@ -95,6 +109,14 @@ public class Coupon {
         this.endDate = endDate;
     }
 
+    public Integer getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(Integer isCheck) {
+        this.isCheck = isCheck;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createTime")
     public Date getCreateTime() {
@@ -112,5 +134,23 @@ public class Coupon {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    @Transient
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
     }
 }

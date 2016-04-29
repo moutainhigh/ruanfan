@@ -71,4 +71,9 @@ public class CustomServiceImpl implements CustomService {
     public Custom findOneByParams(String name) {
         return customDao.findOneByParams(name);
     }
+
+    @Override
+    public Custom findOneByHot() {
+        return customDao.findOneByHot();
+    }
 }
