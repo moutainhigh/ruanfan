@@ -81,6 +81,26 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">反馈内容详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span id="infoSpan"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- Modal end -->
 
     </div>
     <!-- /#page-wrapper -->
@@ -131,8 +151,8 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='标记为已处理' class='btn btn-primary btn-circle edit'>" +
-                            "<i class='fa fa-edit'></i>" +
+                            "defaultContent": "<a title='标记为已处理' class='btn btn-info btn-circle edit'>" +
+                            "<i class='fa fa-check'></i>" +
                             "</a>",
                             "targets": -1
                         }
@@ -197,9 +217,29 @@
             printInfo: function (id) {
                 $.each(feedbackList.v.list, function (i, item) {
                     if (item.id == id) {
-                        console.log(item.description);
+                        $('#infoSpan').html(item.description);
+                        $("#infoModal").modal("show");
                     }
                 });
+            },
+            batchDel: function () {
+                var checkBox = $("#dataTables tbody tr").find('input[type=checkbox]:checked');
+                var ids = checkBox.getInputId();
+                feedbackList.fn.deleteRow(checkBox, ids)
+            },
+            deleteRow: function (checkBox, ids) {
+                if (ids.length > 0) {
+                    $sixmac.optNotify(function () {
+                        $sixmac.ajax("backend/feedback/batchDel", {ids: JSON.stringify(ids)}, function (result) {
+                            if (result > 0) {
+                                $sixmac.notify("操作成功", "success");
+                                feedbackList.v.dTable.ajax.reload();
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        })
+                    }, '确定删除选中的反馈信息？', '确定');
+                }
             }
         }
     }

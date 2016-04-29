@@ -26,4 +26,7 @@ public interface CouponService extends ICommonService<Coupon> {
 
     // 根据优惠券id获取有关联的所有用户信息
     public List<Usercoupon> findListByCouponId(Integer couponId);
+
+    // 根据优惠券id删除有关联的所有用户信息
+    public void deleteAllListByCouponId(Integer couponId);
 }

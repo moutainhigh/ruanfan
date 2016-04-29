@@ -1,5 +1,6 @@
 package com.sixmac.service.impl;
 
+import com.sixmac.core.Constant;
 import com.sixmac.dao.OrdersDao;
 import com.sixmac.entity.Orders;
 import com.sixmac.service.IncomService;
@@ -69,7 +70,7 @@ public class IncomeServiceImpl implements IncomService {
 
     @Override
     public Page<Orders> page(final String orderNum, final String mobile, int pageNum, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
         Page<Orders> page = ordersDao.findAll(new Specification<Orders>() {
 
             @Override
@@ -84,6 +85,10 @@ public class IncomeServiceImpl implements IncomService {
                     Predicate pre = cb.like(root.get("user").get("mobile").as(String.class), "%" + mobile + "%");
                     predicateList.add(pre);
                 }
+
+                Predicate pre1 = cb.gt(root.get("status").as(Integer.class), Constant.ORDERS_STATUS_002);
+                predicateList.add(pre1);
+
                 if (predicateList.size() > 0) {
                     result = cb.and(predicateList.toArray(new Predicate[]{}));
                 }

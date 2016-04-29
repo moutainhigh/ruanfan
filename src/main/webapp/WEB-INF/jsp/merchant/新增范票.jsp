@@ -89,6 +89,13 @@
                                 </div>
                             </div>
 
+                            <c:if test="${null != coupon.id}">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <label class="col-sm-4 control-label" style="color: red;margin-left: -10px;">修改范票信息后，该范票将变更为待审核状态，用户已领取的该范票将全部清空</label>
+                                </div>
+                            </c:if>
+
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="button" class="btn btn-primary" onclick="coupon.fn.subInfo()">提交</button>

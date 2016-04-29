@@ -45,9 +45,6 @@ public class OrdersApi extends CommonController {
     private ProductsService productsService;
 
     @Autowired
-    private PackagesService packagesService;
-
-    @Autowired
     private SpikesService spikesService;
 
     @Autowired
@@ -129,7 +126,7 @@ public class OrdersApi extends CommonController {
      * @apiParam {Integer} orderInfoList.shopCarId 购物车id
      * @apiParam {Integer} orderInfoList.merchantId 商品所属商户id，type为1时传入
      * @apiParam {Integer} orderInfoList.type 类型，1=商品，2=套餐，3=秒杀       <必传 />
-     * @apiParam {Integer} orderInfoList.id 商品id or 秒杀id      <必传 />
+     * @apiParam {Integer} orderInfoList.id 商品id or 秒杀id（如果是秒杀商品，此处传入秒杀id，否则传入商品id）      <必传 />
      * @apiParam {String} orderInfoList.name 名称       <必传 />
      * @apiParam {String} orderInfoList.path 图片路径       <必传 />
      * @apiParam {String} orderInfoList.colors 颜色       <必传 />
@@ -273,7 +270,7 @@ public class OrdersApi extends CommonController {
             JSONArray orderinfos = JSONArray.fromObject(orderInfoList);
             Map<String, Object> mapInfo = null;
             Ordersinfo ordersinfo = null;
-            Packages packages = null;
+            Products products = null;
             Spikes spikes = null;
             Double price = 0.0;
             for (Object orderMap : orderinfos) {
@@ -285,8 +282,8 @@ public class OrdersApi extends CommonController {
 
                 // type=2为套餐，type=3为秒杀
                 if (mapInfo.get("type").toString().equals("2")) {
-                    packages = packagesService.getById(Integer.parseInt(mapInfo.get("id").toString()));
-                    ordersinfo.setProductId(packages.getId());
+                    products = productsService.getById(Integer.parseInt(mapInfo.get("id").toString()));
+                    ordersinfo.setProductId(products.getId());
                 } else {
                     spikes = spikesService.getById(Integer.parseInt(mapInfo.get("id").toString()));
                     ordersinfo.setProductId(spikes.getId());
@@ -304,9 +301,9 @@ public class OrdersApi extends CommonController {
                 ordersinfoService.create(ordersinfo);
 
                 if (mapInfo.get("type").toString().equals("2")) {
-                    // 修改套餐交易数量
-                    packages.setCount(packages.getCount() + ordersinfo.getCount());
-                    packagesService.update(packages);
+                    // 修改套餐中商品的交易数量
+                    products.setCount(products.getCount() + ordersinfo.getCount());
+                    productsService.update(products);
                 } else {
                     // 修改秒杀交易数量
                     spikes.setCount(spikes.getCount() + ordersinfo.getCount());

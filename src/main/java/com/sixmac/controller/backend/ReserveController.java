@@ -71,10 +71,7 @@ public class ReserveController extends CommonController {
             // 将界面上的id数组格式的字符串解析成int类型的数组
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
 
-            // 处理中文乱码
-            String address = new String(reserveAddress.getBytes("ISO-8859-1"), "UTF-8");
-
-            reserveServicee.batchConfirm(arrayId, reserveTime, address);
+            reserveServicee.batchConfirm(arrayId, reserveTime, reserveAddress);
 
             return 1;
         } catch (Exception e) {

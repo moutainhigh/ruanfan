@@ -147,6 +147,8 @@ public class MerchantCouponController extends CommonController {
             coupon.setName(name);
             coupon.setMoney(money);
             coupon.setType(type);
+            coupon.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
+
             if (type == 1) {
                 coupon.setMaxMoney(maxMoney);
             } else {
@@ -162,11 +164,13 @@ public class MerchantCouponController extends CommonController {
             }
 
             if (null == id) {
-                coupon.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
                 coupon.setCouponNum(System.currentTimeMillis() + "");
                 coupon.setCreateTime(new Date());
                 couponService.create(coupon);
             } else {
+                // 商户后台修改范票信息时，清空所有已领取该范票的用户关联
+                couponService.deleteAllListByCouponId(coupon.getId());
+
                 couponService.update(coupon);
             }
 

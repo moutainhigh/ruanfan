@@ -166,6 +166,7 @@ public class DesignerWorksController extends CommonController {
 
             if (null == id) {
                 works = new Works();
+                works.setShowNum(0);
             } else {
                 works = worksService.getById(id);
             }

@@ -25,5 +25,4 @@ public interface ICommonService<T> {
 
     public void deleteAll(int[] ids);
 
-
 }
