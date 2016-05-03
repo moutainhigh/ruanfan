@@ -82,7 +82,7 @@ public class AccessTokenRequestHandler extends RequestHandler {
         String sign = wxReqHandler.createSHA1Sign();
         wxReqHandler.setParameter("app_signature", sign);
         wxReqHandler.setParameter("sign_method", ConstantUtil.SIGN_METHOD);
-        String gateUrl = ConstantUtil.GATEURL + access_token;
+        String gateUrl = ConstantUtil.GATEURL;
         wxReqHandler.setGateUrl(gateUrl);
 
         // 锟斤拷锟斤拷锟斤拷锟斤拷

@@ -99,7 +99,7 @@ public class PrepayIdRequestHandler extends RequestHandler {
 //		params += "}";
 
         String params = CommonUtils.mapToXml(super.getAllParameters());
-        String requestUrl = ConstantUtil.GATEURL;
+        String requestUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         this.setDebugInfo(this.getDebugInfo() + "\r\n" + "requestUrl:" + requestUrl);
         TenpayHttpClient httpClient = new TenpayHttpClient();
         httpClient.setReqContent(requestUrl);
