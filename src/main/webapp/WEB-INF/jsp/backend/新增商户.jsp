@@ -33,6 +33,7 @@
                             <input type="hidden" id="provinceId" value="${merchants.city.province.id}">
                             <input type="hidden" id="cityId" value="${merchants.city.id}">
                             <input type="hidden" id="tempTypeId" value="${merchants.type}"/>
+                            <input type="hidden" id="tempStyleId" value="${merchants.style.id}"/>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">邮箱:</label>
@@ -113,12 +114,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">风格类型:</label>
                                 <div class="col-sm-4">
-                                    <select id="stileList" style="width: 200px;" class="form-control">
-                                        <option value="">请选择风格类型</option>
-                                        <option value="1">欧式</option>
-                                        <option value="2">美式</option>
-                                        <option value="3">日式</option>
-                                    </select>
+                                    <select id="styleList" style="width: 200px;" class="form-control"></select>
                                 </div>
                             </div>
 
@@ -244,12 +240,6 @@
                 if (null != type && type != '') {
                     $('#typeList').val(type);
                 }
-
-                // 选择风格类型
-                var type = $('#tempTypeId').val();
-                if (null != type && type != '') {
-                    $('#stileList').val(type);
-                }
             },
             changeStatus: function () {
                 merchants.v.mainImageStatus = 1;
@@ -277,6 +267,25 @@
 
                     if (null != provinceId && provinceId != '') {
                         $('#provinceList').val(provinceId);
+                    }
+                });
+
+                $sixmac.ajax("common/styleList", null, function (result) {
+                    var styleId = $('#tempStyleId').val();
+
+                    if (null != result) {
+                        // 获取返回的风格列表信息，并循环绑定到select中
+                        var content = "<option value=''>请选择风格</option>";
+                        jQuery.each(result, function (i, item) {
+                            if (null != styleId && styleId != '' && styleId == item.id) {
+                                content += "<option value='" + item.id + "' selected>" + item.name + "</option>";
+                            } else {
+                                content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                            }
+                        });
+                        $('#styleList').append(content);
+                    } else {
+                        $sixmac.notify("获取风格信息失败", "error");
                     }
                 });
 
