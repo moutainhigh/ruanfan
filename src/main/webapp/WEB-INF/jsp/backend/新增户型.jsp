@@ -28,66 +28,63 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form id="custominfoForm" method="post" enctype="multipart/form-data" action="backend/custom/addChildInfo" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
-                            <input type="hidden" id="id" name="id" value="${custominfo.id}">
-                            <input type="hidden" id="customId" value="${custominfo.path}"/>
-
-                            <span id="tempAddImages" style="display: none"></span>
-                            <span id="tempDelImages" style="display: none"></span>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label"></label>
-                                <div class="col-sm-10">
-                                    <button type="button" class="btn btn-success" onclick="custominfo.fn.insertBaseImage()">增加户型</button>
-                                </div>
-                            </div>
+                        <form id="customInfoForm" method="post" enctype="multipart/form-data" action="backend/custom/addChildInfo" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
+                            <input type="hidden" id="id" name="id" value="${customInfo.id}">
+                            <input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">户型名称:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="name" name="name" maxlength="20" data-rule="required" value="${custominfo.name}" placeholder="请输入户型名称"/>
+                                    <input type="text" class="form-control" id="name" name="name" maxlength="20" data-rule="required" value="${customInfo.name}" placeholder="请输入户型名称"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">户型图片:</label>
                                 <div class="col-sm-3">
-                                    <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="custominfo.fn.changeStatus()"/>
-                                    <a href="javascript:void(0);" onclick="custominfo.fn.AddImg()">
-                                        <img id="mainPicture" src="${custominfo.path}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="customInfo.fn.changeStatus()"/>
+                                    <a href="javascript:void(0);" onclick="customInfo.fn.AddImg()">
+                                        <img id="mainPicture" src="${customInfo.path}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
                                     </a>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">套餐:</label>
-                                <div class="col-sm-3">
-                                    <select id="statusList" style="width: 120px;" class="form-control">
-                                        <option value="">请选择套餐</option>
-                                        <option value="1">玄关</option>
-                                        <option value="2">厨房</option>
-                                        <option value="3">书房</option>
-                                        <option value="4">客厅</option>
-                                        <option value="5">走廊</option>
-                                    </select>
-                                    <img class="imgs" name="hxImage" src="static/images/add.jpg" style="height: 200px;width: 200px; z-index: 2;" onclick="custominfo.fn.AddImg1()"/>
-                                    <input name="imageIdTemp" type="hidden"/>
+                                <div class="col-sm-4" id="parentDiv">
+                                    <div id="lastBaseDiv" style="display: none;"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-4">
+                                    <button type="button" class="btn btn-success" onclick="customInfo.fn.insertBaseDiv()">添加套餐</button>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="button" class="btn btn-primary" onclick="custominfo.fn.subInfo()">提交</button>
-                                    <button type="button" class="btn btn-primary" onclick="custominfo.fn.goBack()">返回</button>
+                                    <button type="button" class="btn btn-primary" onclick="customInfo.fn.subInfo()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="customInfo.fn.goBack()">返回</button>
                                 </div>
                             </div>
                         </form>
-
-                        <form id="tempImageForm1" method="post" action="common/addTempImage" enctype="multipart/form-data" class="form-horizontal" role="form">
-                            <input type="file" name="tempImage" id="tempImage1" data-rule="required" style="display:none;" onchange="custominfo.fn.saveTempImage1()"/>
-                        </form>
                     </div>
                     <!-- /.panel-body -->
+
+                    <form id="tempImageForm1" method="post" action="common/addTempImage" enctype="multipart/form-data" class="form-horizontal" role="form">
+                        <input type="file" name="tempImage" id="tempImage1" data-rule="required" style="display:none;" onchange="customInfo.fn.saveTempImage1()"/>
+                    </form>
+
+                    <div id="tempDiv" style="display: none;margin-bottom: 10px;border: 1px dashed black;padding-top: 5px;padding-left: 5px;">
+                        <select class="form-control" name="areaList" style="width: 150px"></select>
+                        <button type="button" style="margin-left: 45%" class="btn btn-danger" onclick="customInfo.fn.removeDiv(this)">删除</button>
+                        <img id="imgTemp" src="static/images/add.jpg" style="height: 200px; width: 200px; display: block; margin-bottom: 5px;margin-top: 10px; cursor: hand;" border="1" onclick="customInfo.fn.AddImg1(this)"/>
+                        <input name="imageIdTemp" type="hidden"/>
+                        <a href="javascript:void(0)" target="_blank" class="btn btn-primary btn-sm" role="button" style="color: white; display: none;margin-bottom: 5px;">添加锚点</a>
+                        <input name="nameTemp" maxlength="4" class="form-control" placeholder="套餐名称，最多四个字" style="width: 220px;margin-bottom: 5px;"/>
+                    </div>
 
                 </div>
                 <!-- /.panel -->
@@ -105,14 +102,14 @@
 </body>
 
 <script type="text/javascript">
-    var custominfo = {
+    var customInfo = {
         v: {
-            id: "custominfo",
+            id: "customInfo",
             list: [],
             dTable: null,
             mainImageStatus: 0,
-            imageSize: 0,
-            hxImages: ''
+            packageSize: 0,
+            tempImageId: 0
         },
         fn: {
             init: function () {
@@ -124,7 +121,6 @@
                     $("#showH").text("——编辑户型");
                 }
 
-                //套图主图预览
                 $("#mainImage").uploadPreview({
                     Img: "mainPicture",
                     Width: 200,
@@ -132,71 +128,109 @@
                 });
 
                 // 加载数据
-                custominfo.fn.loadData();
+                customInfo.fn.loadData();
+            },
+            changeStatus: function () {
+                customInfo.v.mainImageStatus = 1;
             },
             loadData: function () {
                 var mainImagePath = $('#mainPicture').attr('src');
                 if (null != mainImagePath && mainImagePath != '') {
-                    custominfo.v.mainImageStatus = 1;
+                    customInfo.v.mainImageStatus = 1;
                 } else {
                     $('#mainPicture').attr('src', 'static/images/add.jpg');
                 }
 
-                // 加载灵感图集图片数组
-                // custominfo.fn.getSerImages();
-
-                //加载区域选择下拉框
-                areaneme = $('#statusList option:selected').val();
+                // 加载套餐数组
+                customInfo.fn.getSerImages();
             },
-            changeStatus: function () {
-                custominfo.v.mainImageStatus = 1;
+            getSelectList: function (self, id) {
+                // 加载区域列表
+                $sixmac.ajax("common/areaList", null, function (result) {
+                    if (null != result) {
+                        // 获取返回的区域列表信息，并循环绑定到select中
+                        var content = "<option value=''>请选择区域</option>";
+                        jQuery.each(result, function (i, item) {
+                            if (id != 0 && id == item.id) {
+                                content += "<option value='" + item.id + "' selected>" + item.name + "</option>";
+                            } else {
+                                content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                            }
+                        });
+                        $(self).append(content);
+                    } else {
+                        $sixmac.notify("获取区域信息失败", "error");
+                    }
+                });
             },
-            clearDiv: function (self) {
-                $(self).parent().parent().remove();
+            getSerImages: function () {
+                var packageList = ${packageList };
 
-                custominfo.v.imageSize = custominfo.v.imageSize - 1;
+                // 计算当前户型数量
+                customInfo.v.packageSize = packageList.length;
+
+                $.each(packageList, function (i, item) {
+                    if (null != item) {
+                        var tempDiv = $("#tempDiv").clone();
+                        tempDiv.prop('id', 'div' + i);
+                        tempDiv.css("display", "block");
+
+                        // 获取套餐区域下拉框信息
+                        customInfo.fn.getSelectList(tempDiv.children(":first"), item.areaId);
+
+                        tempDiv.children(":first").next().next().prop("id", 'img' + i);
+                        tempDiv.children(":first").next().next().prop("src", item.path);
+                        tempDiv.children(":first").next().next().next().val(item.id);
+                        tempDiv.children(":first").next().next().next().next().css('display', '');
+                        tempDiv.children(":first").next().next().next().next().next().val(item.name);
+
+                        tempDiv.insertBefore("#lastBaseDiv");
+                    } else {
+                        $('#laseBaseDiv').html('暂无');
+                    }
+                });
+            },
+            insertBaseDiv: function () {
+                customInfo.v.packageSize = customInfo.v.packageSize + 1;
+
+                var tempDiv = $("#tempDiv").clone();
+                tempDiv.prop('id', 'div' + customInfo.v.packageSize);
+                tempDiv.css("display", "block");
+                tempDiv.children(":first").next().next().prop("id", 'img' + customInfo.v.packageSize);
+
+                // 获取套餐区域下拉框信息
+                customInfo.fn.getSelectList(tempDiv.children(":first"), 0);
+
+                tempDiv.insertBefore("#lastBaseDiv");
+            },
+            removeDiv: function (self) {
+                $(self).parent().remove();
+
+                customInfo.v.packageSize = customInfo.v.packageSize - 1;
+            },
+            AddImg: function () {
+                // a标签绑定onclick事件
+                $('#mainImage').click();
+            },
+            AddImg1: function (self) {
+                customInfo.v.tempImageId = $(self).prop('id');
+
+                // a标签绑定onclick事件
+                $('#tempImage1').click();
             },
             saveTempImage1: function () {
                 $("#tempImageForm1").ajaxSubmit({
                     dataType: "json",
                     success: function (data) {
                         if (null != data.path && data.path != '') {
-                            var lengthInfo = $("img").length;
-                            $("img").each(function (index, item) {
-                                if (index == lengthInfo - 4) {
-                                    $(this).prop('src', data.path);
-                                }
-                            });
+                            $('#' + customInfo.v.tempImageId).prop('src', data.path);
+                            $('#' + customInfo.v.tempImageId).next().prop("value", data.id);
+                            $('#' + customInfo.v.tempImageId).next().next().css("display", '');
                         } else {
                             $sixmac.notify("图片格式不正确", "error");
                         }
                     }
                 });
-            },
-            AddImg1: function () {
-                // a标签绑定onclick事件
-                $('#tempImage1').click();
-            },
-            insertBaseImage: function () {
-                var tempDiv = $("#tempDiv").clone();
-                tempDiv.prop('id', '');
-                tempDiv.css("display", "block");
-                tempDiv.insertBefore("#lastBaseDiv");
-
-                custominfo.v.imageSize = custominfo.v.imageSize + 1;
-            },
-            insertImage: function (path, id, pathK, url, qq) {
-                var tempDiv = $("#tempDiv").clone();
-                tempDiv.prop('id', '');
-                tempDiv.css("display", "block");
-                tempDiv.children(":first").next().children(":first").prop("src", name);
-                tempDiv.children(":first").next().children(":first").next().prop("src", path);
-                tempDiv.children(":first").next().children(":first").next().next().prop("value", id);
-                tempDiv.insertBefore("#lastBaseDiv");
-            },
-            AddImg: function () {
-                // a标签绑定onclick事件
-                $('#mainImage').click();
             },
             checkData: function () {
                 var flag = true;
@@ -208,51 +242,51 @@
                     return;
                 }
 
-                if (custominfo.v.mainImageStatus == 0) {
-                    $sixmac.notify("请上传户型图片", "error");
+                if (customInfo.v.packageSize == 0) {
+                    $sixmac.notify("请增加至少一个套餐", "error");
                     flag = false;
                     return;
                 }
 
-                // 检测户型数据是否合格
-                $("img[name='hxImage']").each(function (index, item) {
-                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
-                        if ($(this).prop('src') == _basePath + 'static/images/add.jpg') {
-                            flag = false;
-                            return;
-                        }
-                    }
-                });
+                // 检测套餐数据是否合格
+                var selectVal = '';
+                var imgVal = '';
+                var nameVal = '';
+                for (var i = 0; i < customInfo.v.packageSize; i++) {
+                    selectVal = $('#div' + (Number(i) + Number(1))).children(':first').val();
+                    imgVal = $('#div' + (Number(i) + Number(1))).children(':first').next().next().attr('src');
+                    nameVal = $('#div' + (Number(i) + Number(1))).children(':first').next().next().next().next().next().val();
 
-                if (!flag) {
-                    $sixmac.notify("套餐图片不能为空", "error");
-                    return;
+                    if (selectVal == '') {
+                        $sixmac.notify("套餐区域不能为空", "error");
+                        flag = false;
+                        return;
+                    }
+
+                    if (imgVal == '' || imgVal == 'static/images/add.jpg') {
+                        $sixmac.notify("套餐图片不能为空", "error");
+                        flag = false;
+                        return;
+                    }
+
+                    if (nameVal == '') {
+                        $sixmac.notify("套餐名称不能为空", "error");
+                        flag = false;
+                        return;
+                    }
                 }
 
                 return flag;
             },
-            getData: function () {
-                $("img[name='hxImage']").each(function (index, item) {
-                    if ($(this).parent().parent().prop('id') != 'tempDiv') {
-                        custominfo.v.hxImages += $(this).prop('src') + ',';
-                    }
-                });
-
-            },
             subInfo: function () {
                 // 所有的验证通过后，执行新增操作
-                if (custominfo.fn.checkData()) {
-                    custominfo.fn.getData();
-
-                    $("#custominfoForm").ajaxSubmit({
+                if (customInfo.fn.checkData()) {
+                    $("#customInfoForm").ajaxSubmit({
                         url: _basePath + "backend/custom/addChildInfo",
                         dataType: "json",
-                        data: {
-                            "hxImages": custominfo.v.hxImages,
-                        },
                         success: function (result) {
                             if (result > 0) {
-                                window.location.href = _basePath + "backend/custom/index";
+                                customInfo.fn.goBack();
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }
@@ -261,14 +295,13 @@
                 }
             },
             goBack: function () {
-                var customId = $('#customId').val();
-                window.location.href = "backend/custom/index";
+                window.location.href = "backend/custom/childInfo?id=" + $('#parentId').val();
             }
         }
     }
 
     $(document).ready(function () {
-        custominfo.fn.init();
+        customInfo.fn.init();
     });
 
 </script>

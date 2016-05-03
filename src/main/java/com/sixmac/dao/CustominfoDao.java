@@ -1,6 +1,8 @@
 package com.sixmac.dao;
 
 import com.sixmac.entity.Custominfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +15,7 @@ public interface CustominfoDao extends JpaRepository<Custominfo, Integer> {
 
     @Query("select a from Custominfo a where a.custom.id = ?1")
     public List<Custominfo> findListByCustomId(Integer customId);
+
+    @Query("select a from Custominfo a where a.custom.id = ?1")
+    public Page<Custominfo> pageByCustomId(Integer customId, Pageable pageable);
 }

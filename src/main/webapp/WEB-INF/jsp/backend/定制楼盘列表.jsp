@@ -180,7 +180,7 @@
                             "<i class='fa fa-edit'></i>" +
                             "</button>" +
                             "&nbsp;&nbsp;" +
-                            "<a title='添加户型' class='btn btn-info btn-circle tables'>" +
+                            "<a title='户型列表' class='btn btn-info btn-circle tables'>" +
                             "<i class='fa fa-table'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
@@ -210,7 +210,7 @@
                             customList.fn.editInfo(data);
                         });
 
-                        $('td', row).last().find(".tables").attr("href", 'backend/custom/addChild?id=' + data.id);
+                        $('td', row).last().find(".tables").attr("href", 'backend/custom/childInfo?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除

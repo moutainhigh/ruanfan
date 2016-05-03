@@ -2,8 +2,10 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CustominfoDao;
+import com.sixmac.dao.CustompackagesDao;
 import com.sixmac.entity.Custominfo;
 import com.sixmac.service.CustominfoService;
+import com.sixmac.service.CustompackagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,9 @@ public class CustominfoServiceImpl implements CustominfoService {
 
     @Autowired
     private CustominfoDao custominfoDao;
+
+    @Autowired
+    private CustompackagesService custompackagesService;
 
     @Override
     public List<Custominfo> findAll() {
@@ -43,8 +48,13 @@ public class CustominfoServiceImpl implements CustominfoService {
     }
 
     @Override
+    @Transactional
     public Custominfo deleteById(int id) {
         Custominfo custominfo = getById(id);
+
+        // 删除户型详情时，删除该户型的所有套餐信息
+        custompackagesService.deleteAllInfoByCustomInfoId(id);
+
         custominfoDao.delete(custominfo);
         return custominfo;
     }
@@ -70,5 +80,10 @@ public class CustominfoServiceImpl implements CustominfoService {
     @Override
     public List<Custominfo> findListByCustomId(Integer customId) {
         return custominfoDao.findListByCustomId(customId);
+    }
+
+    @Override
+    public Page<Custominfo> pageByCustomId(Integer customId, Integer pageNum, Integer pageSize) {
+        return custominfoDao.pageByCustomId(customId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }

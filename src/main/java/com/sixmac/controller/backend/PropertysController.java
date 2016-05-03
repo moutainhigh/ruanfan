@@ -138,6 +138,8 @@ public class PropertysController extends CommonController {
             if (null != id) {
                 propertysService.update(propertys);
             } else {
+                propertys.setDescription("");
+                propertys.setServerQQ("");
                 propertys.setCreateTime(new Date());
                 propertysService.create(propertys);
             }

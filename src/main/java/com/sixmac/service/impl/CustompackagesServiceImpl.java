@@ -60,8 +60,17 @@ public class CustompackagesServiceImpl implements CustompackagesService {
     }
 
     @Override
+    @Transactional
     public Custompackages deleteById(int id) {
         Custompackages custompackages = getById(id);
+
+        // 删除户型套餐之前，先删除商品与套餐的关联信息
+        List<Packageproducts> list = packageProductsDao.findListByPackageId(id, Constant.PACKAGE_TYPE_CUSTOM);
+
+        for (Packageproducts packageProduct : list) {
+            packageProductsDao.delete(packageProduct.getId());
+        }
+
         custompackagesDao.delete(custompackages);
         return custompackages;
     }
@@ -131,5 +140,20 @@ public class CustompackagesServiceImpl implements CustompackagesService {
         }
 
         return packageVoList;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllInfoByCustomInfoId(Integer customInfoId) {
+        List<Custompackages> list = custompackagesDao.findListByCustominfoId(customInfoId);
+
+        for (Custompackages customPackage : list) {
+            deleteById(customPackage.getId());
+        }
+    }
+
+    @Override
+    public List<Custompackages> findListByCustomInfoId(Integer customInfoId) {
+        return custompackagesDao.findListByCustominfoId(customInfoId);
     }
 }
