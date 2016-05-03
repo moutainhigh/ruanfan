@@ -100,6 +100,27 @@
         <!-- /.modal-dialog -->
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">评论内容详情</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="infoSpan"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Modal end -->
+
     <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
@@ -145,7 +166,7 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent":  "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
+                            "defaultContent": "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
                             "</button>",
                             "targets": -1
@@ -156,14 +177,19 @@
 
                         if (data.objectType == 1) {
                             $('td', row).eq(2).html("设计师");
-                        }
-                        if (data.objectType == 2) {
+                        } else if (data.objectType == 2) {
                             $('td', row).eq(2).html("设计作品");
-                        }
-                        if (data.objectType == 3) {
+                        } else if (data.objectType == 3) {
                             $('td', row).eq(2).html("灵感集");
+                        } else {
+                            $('td', row).eq(2).html("日志");
                         }
 
+                        if (data.content.length > 10) {
+                            $('td', row).eq(3).html('<a href="javascript:void(0)" onclick="comment.fn.printInfo(' + data.id + ')">' + data.content.substring(0, 10) + '...' + '</a>');
+                        } else {
+                            $('td', row).eq(3).html('<a href="javascript:void(0)" onclick="comment.fn.printInfo(' + data.id + ')">' + data.content + '</a>');
+                        }
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".delete").click(function () {
@@ -199,6 +225,14 @@
                     }
                 });
             },
+            printInfo: function (id) {
+                $.each(comment.v.list, function (i, item) {
+                    if (item.id == id) {
+                        $('#infoSpan').html(item.content);
+                        $("#infoModal").modal("show");
+                    }
+                });
+            }
         }
     }
 

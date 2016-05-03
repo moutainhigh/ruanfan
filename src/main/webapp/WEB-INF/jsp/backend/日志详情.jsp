@@ -53,7 +53,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">日志内容:</label>
-                                <div class="col-sm-3" style="padding-top: 6.5px;">
+                                <div class="col-sm-10" style="padding-top: 6.5px;">
                                     ${journal.content}
                                 </div>
                             </div>
@@ -100,8 +100,8 @@
                             </div>
                         </form>
 
-                        <div id="tempDiv" style="display:none;float: left; height: 610px;width: 810px;margin-right:6px; z-index: 0;margin-bottom: 50px;">
-                            <img class="imgs" alt="" src="" style="height: 600px;width: 800px; z-index: 1;"/>
+                        <div id="tempDiv" style="display:none;float: left; height: 310px;width: 410px;margin-right:6px; z-index: 0;margin-bottom: 10px;">
+                            <img class="imgs" alt="" src="" style="height: 300px;width: 400px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
                         </div>
 

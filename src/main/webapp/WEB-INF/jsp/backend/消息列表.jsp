@@ -31,19 +31,6 @@
                         <a href="backend/message/add" class="btn btn-outline btn-primary btn-lg" role="button">新增消息</a>
                         <a href="javascript:void(0)" onclick="messageList.fn.batchDel()"
                            class="btn btn-outline btn-danger btn-lg" role="button">批量删除</a>
-
-                        <%--<form class="navbar-form navbar-right" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="title" maxlength="20" placeholder="标题"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="type" maxlength="20" placeholder="对象"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="description" maxlength="20" placeholder="描述"/>
-                            </div>
-                            <button type="button" id="c_search" class="btn btn-primary btn-sm">搜索</button>
-                        </form>--%>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -65,7 +52,7 @@
                                     <th><input type="checkbox" onclick="$sixmac.checkAll(this)" class="checkall"/></th>
                                     <th>标题</th>
                                     <th>对象</th>
-                                    <th>描述</th>
+                                    <th>简介</th>
                                     <th>创建时间</th>
                                     <th>修改时间</th>
                                     <th>操作</th>
@@ -147,7 +134,7 @@
                         {"data": null},
                         {"data": "title"},
                         {"data": "types"},
-                        {"data": "description"},
+                        {"data": "des"},
                         {"data": "createTime"},
                         {"data": "updateTime"},
                         {"data": ""}
@@ -160,7 +147,7 @@
                             "</a>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
-                            "<i class='fa fa-minus'></i>" +
+                            "<i class='fa fa-remove'></i>" +
                             "</button>",
                             "targets": -1
                         }
@@ -169,6 +156,12 @@
                         messageList.v.list.push(data);
 
                         $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
+
+                        if (data.des.length > 10) {
+                            $('td', row).eq(3).html(data.des.substring(0, 10) + '...');
+                        } else {
+                            $('td', row).eq(3).html(data.des);
+                        }
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".edit").attr("href", 'backend/message/add?id=' + data.id);

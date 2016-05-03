@@ -151,7 +151,7 @@
                             "</a>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
-                            "<i class='fa fa-minus'></i>" +
+                            "<i class='fa fa-remove'></i>" +
                             "</button>",
                             "targets": -1
                         }
@@ -159,12 +159,14 @@
                     "createdRow": function (row, data) {
                         journal.v.list.push(data);
 
+                        if (data.content.length > 20) {
+                            $('td', row).eq(2).html(data.content.substring(0, 20) + '...');
+                        } else {
+                            $('td', row).eq(2).html(data.content);
+                        }
                     },
                     rowCallback: function (row, data) {
-
                         $('td', row).last().find(".edit").attr("href", 'backend/journal/detail?id=' + data.id);
-
-                        //$('td', row).last().find(".delete").attr("href", 'backend/journal/delete?id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
 
