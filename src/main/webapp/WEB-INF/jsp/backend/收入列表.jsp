@@ -33,7 +33,7 @@
                                 <input type="text" class="form-control" id="orderNum" maxlength="20" placeholder="编号"/>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="mobile" maxlength="20" placeholder="交易用户"/>
+                                <input type="text" class="form-control" id="mobile" maxlength="20" placeholder="用户手机"/>
                             </div>
                             <button type="button" id="c_search" class="btn btn-primary btn-sm">搜索</button>
                         </form>

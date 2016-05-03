@@ -200,8 +200,8 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
-                            "<i class='fa fa-edit'></i>" +
+                            "defaultContent": "<a title='查看详情' class='btn btn-info btn-circle edit'>" +
+                            "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='确认联系' style='display: none' class='btn btn-success btn-circle check'>" +

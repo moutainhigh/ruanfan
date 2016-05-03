@@ -151,7 +151,7 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='标记为已处理' class='btn btn-info btn-circle edit'>" +
+                            "defaultContent": "<a title='标记为已处理' class='btn btn-success btn-circle edit'>" +
                             "<i class='fa fa-check'></i>" +
                             "</a>",
                             "targets": -1
