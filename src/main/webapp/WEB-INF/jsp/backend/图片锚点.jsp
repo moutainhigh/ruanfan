@@ -42,6 +42,7 @@
         <%--<div id="oldWidth" style="display: none;">${imageInfo.width }</div>
         <div id="oldHeight" style="display: none;">${imageInfo.height }</div>--%>
         <div id="resource_id" style="display: none;">${imageInfo.id }</div>
+        <input type="hidden" id="objectType" value="${objectType}"/>
         <div id="labelId" style="display: none;"></div>
         <div id="height" style="display: none;"></div>
         <div id="width" style="display: none;"></div>
@@ -278,7 +279,7 @@
                         //标签名称
                         name: $("#proName").html(),
                         //数据来源
-                        objectType: 1,
+                        objectType: $('#objectType').val(),
                         //偏移高度(相对于原图)
                         height: $("#height").html() * 2,
                         //偏移宽度(想对于原图)

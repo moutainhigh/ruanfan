@@ -247,6 +247,7 @@ public class DesignerAfflatusController extends CommonController {
             // 查询标签信息
             List<Label> labelList = labelService.findListByParams(image.getId(), Constant.LABEL_AFFLATUS);
             model.put("imageInfo", image);
+            model.put("objectType", Constant.LABEL_AFFLATUS);
             model.put("labelList", JSONArray.fromObject(labelList.size() == 0 ? null : labelList));
         } catch (Exception e) {
             e.printStackTrace();

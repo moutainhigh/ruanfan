@@ -2,9 +2,8 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
-import com.sixmac.entity.Custom;
-import com.sixmac.entity.Custominfo;
-import com.sixmac.entity.Custompackages;
+import com.sixmac.core.Constant;
+import com.sixmac.entity.*;
 import com.sixmac.service.*;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
@@ -44,6 +43,9 @@ public class CustomController extends CommonController {
     @Autowired
     private AreasService areasService;
 
+    @Autowired
+    private LabelService labelService;
+
     @RequestMapping(value = "/index")
     public String index(ModelMap model) {
         return "backend/定制楼盘列表";
@@ -78,6 +80,28 @@ public class CustomController extends CommonController {
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
+    }
+
+    /**
+     * 在线定制套餐图添加标签
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/addTempLabel")
+    public String addTempLabel(Integer id, ModelMap model) {
+        try {
+            Image image = imageService.getById(id);
+            // 查询标签信息
+            List<Label> labelList = labelService.findListByParams(image.getId(), Constant.LABEL_CUSTOMPACKAGE);
+            model.put("imageInfo", image);
+            model.put("objectType", Constant.LABEL_CUSTOMPACKAGE);
+            model.put("labelList", JSONArray.fromObject(labelList.size() == 0 ? null : labelList));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "backend/图片锚点";
     }
 
     @RequestMapping("/delete")

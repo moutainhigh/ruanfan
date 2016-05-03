@@ -182,6 +182,7 @@
                         tempDiv.children(":first").next().next().prop("src", item.path);
                         tempDiv.children(":first").next().next().next().val(item.id);
                         tempDiv.children(":first").next().next().next().next().css('display', '');
+                        tempDiv.children(":first").next().next().next().next().prop("href", "backend/custom/addTempLabel?id=" + item.id);
                         tempDiv.children(":first").next().next().next().next().next().val(item.name);
 
                         tempDiv.insertBefore("#lastBaseDiv");
@@ -226,6 +227,7 @@
                             $('#' + customInfo.v.tempImageId).prop('src', data.path);
                             $('#' + customInfo.v.tempImageId).next().prop("value", data.id);
                             $('#' + customInfo.v.tempImageId).next().next().css("display", '');
+                            $('#' + customInfo.v.tempImageId).next().next().prop("href", "backend/custom/addTempLabel?id=" + data.id);
                         } else {
                             $sixmac.notify("图片格式不正确", "error");
                         }
