@@ -237,7 +237,10 @@ public class OrdersApi extends CommonController {
 
                         // 判断是否传入了购物车id，如果传入，则表示该订单详情是从购物车中添加的，此时应该删除该购物车信息
                         if (null != mapInfo.get("shopCarId") && !mapInfo.get("shopCarId").equals("")) {
-                            shopcarService.deleteById(Integer.parseInt(mapInfo.get("shopCarId").toString()));
+                            Shopcar shopcar = shopcarService.getById(Integer.parseInt(mapInfo.get("shopCarId").toString()));
+                            if (null != shopcar) {
+                                shopcarService.deleteById(shopcar.getId());
+                            }
                         }
 
                         allPrice += Double.parseDouble(ordersinfo.getPrice()) * ordersinfo.getCount();
