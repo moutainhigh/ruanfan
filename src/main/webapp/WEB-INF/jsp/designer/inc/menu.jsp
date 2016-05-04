@@ -26,7 +26,7 @@
                         <a href="designer/info"><i class="fa fa-cart-plus fa-fw"></i>个人资料</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw"></i>介绍信息</a>
+                        <a href="designer/infoPlus"><i class="fa fa-map-marker fa-fw"></i>介绍信息</a>
                     </li>
                 </ul>
             </li>

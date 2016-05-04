@@ -52,6 +52,16 @@ public class DesignerIndexController extends CommonController {
         }
     }
 
+    @RequestMapping(value = "/infoPlus")
+    public String infoPlus(HttpServletRequest request, ModelMap model) {
+        Designers designers = getDesigner(request, model, designersService);
+        if (designers.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
+            return "designer/个人资料待审核";
+        }
+
+        return "designer/介绍信息";
+    }
+
     @RequestMapping(value = "/save")
     @ResponseBody
     public Integer save(HttpServletRequest request,
@@ -120,6 +130,25 @@ public class DesignerIndexController extends CommonController {
                 Map<String, Object> map = ImageUtil.saveImage(request, head, false);
                 designers.setHead(map.get("imgURL").toString());
             }
+
+            designersService.update(designers);
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping(value = "/saveInfo")
+    @ResponseBody
+    public Integer saveInfo(Integer id,
+                            String description,
+                            String descs) {
+        try {
+            Designers designers = designersService.getById(id);
+            designers.setDescription(description);
+            designers.setDescs(descs);
 
             designersService.update(designers);
 

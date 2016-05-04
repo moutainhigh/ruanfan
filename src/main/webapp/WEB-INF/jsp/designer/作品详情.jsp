@@ -8,20 +8,6 @@
     <meta name="author" content="">
     <title>作品列表</title>
     <%@ include file="inc/css.jsp" %>
-    <style type="text/css">
-        /*模块拖拽*/
-        .drag {
-            position: absolute;
-            width: 150px;
-            height: 30px;
-            border: 1px solid #ddd;
-            background: #FBF2BD;
-            text-align: center;
-            padding: 5px;
-            opacity: 0.7;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 <body>
 
