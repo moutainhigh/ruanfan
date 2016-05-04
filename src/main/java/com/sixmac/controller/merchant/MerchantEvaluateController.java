@@ -8,7 +8,6 @@ import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Ordersinfo;
 import com.sixmac.service.MerchantsService;
 import com.sixmac.service.OrdersinfoService;
-import com.sixmac.utils.ConfigUtil;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +35,7 @@ public class MerchantEvaluateController extends CommonController {
     @Autowired
     private MerchantsService merchantsService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping("/index")
     public String index(ModelMap model, HttpServletRequest request) {
         Merchants merchants = MerchantIndexController.getMerchant(request, model, merchantsService);
         if (merchants.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
@@ -48,7 +45,7 @@ public class MerchantEvaluateController extends CommonController {
         return "merchant/评价列表";
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @RequestMapping("/list")
     public void list(HttpServletRequest request,
                      HttpServletResponse response,
                      String mobile,
@@ -61,7 +58,7 @@ public class MerchantEvaluateController extends CommonController {
 
         int pageNum = getPageNum(start, length);
 
-        Page<Ordersinfo> page = ordersinfoService.page(merchants.getId(),mobile, productName, pageNum, length);
+        Page<Ordersinfo> page = ordersinfoService.page(merchants.getId(), mobile, productName, pageNum, length);
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);

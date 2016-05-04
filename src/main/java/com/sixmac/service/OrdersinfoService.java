@@ -22,6 +22,9 @@ public interface OrdersinfoService extends ICommonService<Ordersinfo> {
     // 根据目标id和订单类型查询订单详情列表
     public List<Ordersinfo> findListBySourceId(Integer productId, Integer type);
 
+    // 根据套餐id查询套餐订单详情列表
+    public List<Ordersinfo> findListByPackageOrderId(Integer orderId);
+
     // 根据订单详情id删除评价信息
     public void deleteInfo(Integer orderInfoId);
 

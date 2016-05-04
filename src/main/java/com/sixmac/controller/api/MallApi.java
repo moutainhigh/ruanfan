@@ -379,7 +379,7 @@ public class MallApi extends CommonController {
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
         products.setSimilarList(productsService.iFindListBySortAndStyle(productId, products.getType(), products.getSort().getId()));
         // 商品评价列表
-        products.setAppraisalVoList(findList(productId, Constant.ORDERS_TYPE_PRODUCT));
+        products.setAppraisalVoList(findList(productId, Constant.ORDERS_TYPE_PACKAGE));
 
         Result obj = new Result(true).data(createMap("productInfo", products));
         String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "objectId", "objectType");
@@ -576,7 +576,20 @@ public class MallApi extends CommonController {
     }
 
     private List<AppraisalVo> findList(Integer objectId, Integer type) {
-        List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(objectId, type);
+        List<Ordersinfo> ordersinfoList = null;
+
+        switch (type) {
+            case 2:
+                // 套餐订单
+                ordersinfoList = ordersinfoService.findListByPackageOrderId(objectId);
+                break;
+            case 1:
+            case 3:
+                // 秒杀订单
+                ordersinfoList = ordersinfoService.findListBySourceId(objectId, type);
+                break;
+        }
+
         List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
         AppraisalVo appra = null;
 
