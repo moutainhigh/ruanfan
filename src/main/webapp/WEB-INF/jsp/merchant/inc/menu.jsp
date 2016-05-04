@@ -40,6 +40,9 @@
                     <li>
                         <a href="merchant/notice/index"><i class="fa fa-cart-plus fa-fw"></i>系统消息</a>
                     </li>
+                    <li>
+                        <a href="merchant/message/index"><i class="fa fa-cart-plus fa-fw"></i>活动公告</a>
+                    </li>
                 </ul>
             </li>
         </ul>
