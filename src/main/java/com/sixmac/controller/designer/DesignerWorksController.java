@@ -41,7 +41,7 @@ public class DesignerWorksController extends CommonController {
     @Autowired
     private DesignersService designersService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping("/index")
     public String index(ModelMap model, HttpServletRequest request) {
         Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
         if (designers.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {

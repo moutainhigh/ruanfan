@@ -79,7 +79,9 @@ public class DesignerAfflatusController extends CommonController {
     }
 
     @RequestMapping("add")
-    public String add(ModelMap model, Integer id) {
+    public String add(ModelMap model, Integer id, Integer type) {
+        model.addAttribute("backType", type);
+
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = null;
 

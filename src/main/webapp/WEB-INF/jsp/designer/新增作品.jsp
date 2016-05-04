@@ -77,6 +77,7 @@
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="button" class="btn btn-primary" onclick="works.fn.subInfo()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="works.fn.goBack()">返回</button>
                                 </div>
                             </div>
                         </form>
@@ -88,7 +89,7 @@
                         <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 30px;">
                             <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
-                            <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 207px; left: 184px; display: none;" class="axx" onclick="works.fn.deleteImage(this)">
+                            <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 204px; left: 184px; display: none;" class="axx" onclick="works.fn.deleteImage(this)">
                                 <img id="pic" src="static/images/xx.png" style="height: 16px; width: 16px; display: inline;" border="1"/>
                             </a>
                             <input type="radio" name="settingCover"/>设为封面
@@ -282,6 +283,9 @@
                         }
                     });
                 }
+            },
+            goBack: function () {
+                window.location.href = "designer/works/index";
             }
         }
     }

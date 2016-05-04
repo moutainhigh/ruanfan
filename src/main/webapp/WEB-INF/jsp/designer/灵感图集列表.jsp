@@ -169,8 +169,8 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
-                            "<i class='fa fa-eye'></i>" +
+                            "defaultContent": "<a title='编辑' class='btn btn-primary btn-circle edit'>" +
+                            "<i class='fa fa-edit'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
@@ -203,7 +203,7 @@
                         }
                     },
                     rowCallback: function (row, data) {
-                        $('td', row).last().find(".edit").attr("href", 'designer/afflatus/add?id=' + data.id);
+                        $('td', row).last().find(".edit").attr("href", 'designer/afflatus/add?type=0&id=' + data.id);
 
                         if (data.isCheck == 2) {
                             $('td', row).last().find(".checkStatus").css('display', '');

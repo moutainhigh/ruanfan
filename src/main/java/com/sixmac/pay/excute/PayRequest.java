@@ -64,7 +64,7 @@ public class PayRequest {
                 clientHandler.setParameter("appid", ConstantUtil.APP_ID);
                 // clientHandler.setParameter("appkey", ConstantUtil.APP_KEY);
                 clientHandler.setParameter("noncestr", noncestr);
-                clientHandler.setParameter("packages", "Sign=WXPay");
+                clientHandler.setParameter("package", "Sign=WXPay");
                 clientHandler.setParameter("partnerid", ConstantUtil.PARTNER);
                 clientHandler.setParameter("prepayid", prepayid);
                 clientHandler.setParameter("timestamp", WXUtil.getTimeStamp());

@@ -33,6 +33,7 @@
                             <input type="hidden" id="tempCoverId" value="${afflatus.coverId}">
                             <input type="hidden" id="tempType" value="${afflatus.type}">
                             <input type="hidden" id="tempName" value="${afflatus.name}">
+                            <input type="hidden" id="backType" value="${backType}">
                             <input type="hidden" id="tempDesignerId" value="${afflatus.designer.id}">
                             <input type="hidden" id="tempStyleId" value="${afflatus.style.id}">
                             <input type="hidden" id="tempAreaId" value="${afflatus.area.id}">
@@ -111,6 +112,7 @@
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="button" class="btn btn-primary" onclick="afflatus.fn.subInfo()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="afflatus.fn.goBack()">返回</button>
                                 </div>
                             </div>
                         </form>
@@ -446,6 +448,19 @@
                         }
                     });
                 }
+            },
+            goBack: function () {
+                var backType = $('#backType').val();
+
+                if (backType == 0) {
+                    // 跳转到灵感集列表
+                    window.location.href = "designer/afflatus/index";
+                } else {
+                    // 跳转到系统消息列表
+                    window.location.href = "designer/notice/index";
+                }
+
+
             }
         }
     }

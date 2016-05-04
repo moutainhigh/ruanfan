@@ -36,6 +36,7 @@
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
+                                    <col class="gradeA odd"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
@@ -71,7 +72,7 @@
                     <h4 class="modal-title">提示</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hiddenProductId"/>
+                    <input type="hidden" id="hiddenNoticeId"/>
                     确定删除该消息？
                 </div>
                 <div class="modal-footer">
@@ -126,7 +127,7 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='查看' class='btn btn-primary btn-circle eye'>" +
+                            "defaultContent": "<a title='查看' style='display: none' class='btn btn-primary btn-circle eye'>" +
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
@@ -138,19 +139,14 @@
                     ],
                     "createdRow": function (row, data, index) {
                         noticeList.v.list.push(data);
-
-                        if (data.isCheck == 0) {
-                            $('td', row).eq(3).html("待审核");
-                        } else if (data.isCheck == 1) {
-                            $('td', row).eq(3).html("审核通过");
-                        } else {
-                            $('td', row).eq(3).html("审核不通过");
-                        }
                     },
                     rowCallback: function (row, data) {
+                        if (data.objectId != 0) {
+                            $('td', row).last().find(".eye").css('display', '');
+                        }
 
                         $('td', row).last().find(".eye").click(function () {
-                            window.location.href = 'designer/afflatus/add?id=' + data.objectId;
+                            window.location.href = 'designer/afflatus/add?type=1&id=' + data.objectId;
                         });
 
                         $('td', row).last().find(".delete").click(function () {
@@ -166,13 +162,13 @@
                 });
             },
             delInfo: function (id) {
-                $('#hiddenProductId').val(id);
+                $('#hiddenNoticeId').val(id);
 
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
                 $sixmac.ajax("designer/notice/delete", {
-                    "id": $('#hiddenProductId').val()
+                    "id": $('#hiddenNoticeId').val()
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");

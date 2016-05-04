@@ -506,9 +506,14 @@ public class CommonApi extends CommonController {
         }
 
         try {
+            Users users = usersService.getById(userId);
+
             Replys replys = new Replys();
             replys.setComment(commentService.getById(commentId));
-            replys.setUser(usersService.getById(userId));
+            replys.setReplySourceId(userId);
+            replys.setReplySourceType(Constant.ATTENTION_USERS);
+            replys.setSourceName(users.getNickName());
+            replys.setSourceHead(users.getHeadPath());
             replys.setContent(content);
             replys.setCreateTime(new Date());
 
@@ -528,6 +533,7 @@ public class CommonApi extends CommonController {
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {Integer} type 预约类型，1=设计师，2=设计定制套餐       <必传 />
      * @apiParam {Integer} objectId 目标id       <必传 />
+     * @apiParam {Integer} objectName 目标名称       <必传 />
      * @apiParam {String} name 姓名       <必传 />
      * @apiParam {String} mobile 联系方式       <必传 />
      * @apiParam {String} email 电子邮箱        <必传 />
@@ -541,6 +547,7 @@ public class CommonApi extends CommonController {
                         Integer userId,
                         Integer type,
                         Integer objectId,
+                        String objectName,
                         String name,
                         String mobile,
                         String email,
@@ -548,7 +555,7 @@ public class CommonApi extends CommonController {
                         String address,
                         String resTime,
                         String remark) {
-        if (null == userId || null == type || null == objectId || null == name || null == mobile || null == email || null == styleId) {
+        if (null == userId || null == type || null == objectId || null == objectName || null == name || null == mobile || null == email || null == styleId) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -567,6 +574,7 @@ public class CommonApi extends CommonController {
         reserve.setEmail(email);
         reserve.setUser(usersService.getById(userId));
         reserve.setObjectId(objectId);
+        reserve.setObjectName(objectName);
         if (null != resTime) {
             try {
                 Date date = DateUtils.stringToDateWithFormat(resTime, "yyyy-MM-dd HH:mm:ss");

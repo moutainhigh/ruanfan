@@ -72,7 +72,7 @@
                     <h4 class="modal-title">提示</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hiddenProductId"/>
+                    <input type="hidden" id="hiddenNoticeId"/>
                     确定删除该消息？
                 </div>
                 <div class="modal-footer">
@@ -162,13 +162,13 @@
                 });
             },
             delInfo: function (id) {
-                $('#hiddenProductId').val(id);
+                $('#hiddenNoticeId').val(id);
 
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
                 $sixmac.ajax("merchant/notice/delete", {
-                    "id": $('#hiddenProductId').val()
+                    "id": $('#hiddenNoticeId').val()
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");

@@ -38,7 +38,7 @@ public class DesignerNoticeController extends CommonController {
 
     @RequestMapping("index")
     public String index(ModelMap model, HttpServletRequest request) {
-        Designers designers = DesignerIndexController.getDesigner(request, model,designersService);
+        Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
         if (designers.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
             return "designer/个人资料待审核";
         }
@@ -53,7 +53,7 @@ public class DesignerNoticeController extends CommonController {
                      Integer start,
                      Integer length,
                      ModelMap model) {
-        Designers designers = DesignerIndexController.getDesigner(request, model,designersService);
+        Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
 
         if (null == start || start == 0) {
             start = 1;

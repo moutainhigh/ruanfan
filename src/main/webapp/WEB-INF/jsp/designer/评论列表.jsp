@@ -44,7 +44,7 @@
                                 <thead>
                                 <tr>
                                     <th>用户名</th>
-                                    <th>对象类型</th>
+                                    <th>评论对象类型</th>
                                     <th>评论时间</th>
                                     <th>评论内容</th>
                                     <th>操作</th>
@@ -74,11 +74,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">提示</h4>
+                    <h4 class="modal-title">删除提示</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hiddenProductId"/>
-                    确定删除该消息？
+                    确定删除该评论？删除该评论后，该评论下的所有回复将一同删除。
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -100,11 +99,10 @@
                 </div>
                 <div class="modal-body">
                     <form id="infoForm" method="post" action="backend/productType/save" class="form-horizontal" role="form" enctype="multipart/form-data">
-                        <input type="hidden" id="hiddenProductTypeId" name="productTypeId"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">回复内容:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" id="productTypeName" maxlength="20" placeholder="请输入分类名称"/>
+                            <label class="col-sm-2 control-label">回复内容:</label>
+                            <div class="col-sm-8">
+                                <textarea cols="20" class="form-control" style="resize: none" rows="6" id="replyInfo" maxlength="50" placeholder="请输入回复内容，最多50个字"></textarea>
                             </div>
                         </div>
                     </form>
@@ -131,7 +129,8 @@
         v: {
             id: "commentList",
             list: [],
-            dTable: null
+            dTable: null,
+            commentId: 0
         },
         fn: {
             init: function () {
@@ -175,23 +174,30 @@
                     "createdRow": function (row, data, index) {
                         commentList.v.list.push(data);
 
-                        if (data.objectType == 2) {
-                            $('td', row).eq(2).html("设计作品");
-                        } else if (data.isCheck == 3) {
-                            $('td', row).eq(2).html("灵感集");
+                        if (data.objectType == 1) {
+                            $('td', row).eq(1).html("设计师");
+                        } else if (data.objectType == 2) {
+                            $('td', row).eq(1).html("设计作品");
+                        } else if (data.objectType == 3) {
+                            $('td', row).eq(1).html("灵感集");
+                        }
+
+                        if (data.content.length > 10) {
+                            $('td', row).eq(3).html(data.content.substring(0, 10) + '...');
                         } else {
-                            $('td', row).eq(2).html("不存在该类型");
+                            $('td', row).eq(3).html(data.content);
                         }
                     },
                     rowCallback: function (row, data) {
-
                         $('td', row).last().find(".edit").click(function () {
-                            commentList.fn.addInfo(data.id);
+                            commentList.v.commentId = data.id;
+                            commentList.fn.addInfo();
                         });
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
-                            commentList.fn.delInfo(data.id);
+                            commentList.v.commentId = data.id;
+                            commentList.fn.delInfo();
                         });
                     },
                     "fnServerParams": function (aoData) {
@@ -202,19 +208,16 @@
                 });
             },
             addInfo: function () {
-
                 $sixmac.clearForm($('#infoForm'));
 
                 $("#infoModal").modal("show");
             },
-            delInfo: function (id) {
-                $('#hiddenProductId').val(id);
-
+            delInfo: function () {
                 $("#delModal").modal("show");
             },
             subDelInfo: function () {
                 $sixmac.ajax("designer/comment/delete", {
-                    "id": $('#hiddenProductId').val()
+                    "id": commentList.v.commentId
                 }, function (result) {
                     if (result == 1) {
                         $sixmac.notify("操作成功", "success");
@@ -227,10 +230,9 @@
             },
             subInfo: function () {
                 var flag = true;
-                var productTypeId = $('#hiddenProductTypeId').val();
-                var content = $('#content').val();
+                var replyInfo = $('#replyInfo').val();
 
-                if (null == content || content == '') {
+                if (null == replyInfo || replyInfo == '') {
                     $sixmac.notify("请输入回复内容", "error");
                     flag = false;
                     return;
@@ -239,11 +241,11 @@
                 // 所有的验证通过后，执行新增操作
                 if (flag) {
                     $("#infoForm").ajaxSubmit({
-                        url: _basePath + "designer/comment/save",
+                        url: _basePath + "designer/comment/addReply",
                         dataType: "json",
                         data: {
-                            "id": productTypeId,
-                            "content": content
+                            "commentId": commentList.v.commentId,
+                            "replyInfo": replyInfo
                         },
                         success: function (result) {
                             if (result > 0) {

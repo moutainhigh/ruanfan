@@ -108,11 +108,6 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserHead(comment.getUser().getHeadPath());
 
             replysList = replysDao.findListByCommentId(comment.getId());
-            for (Replys replys : replysList) {
-                replys.setUserId(replys.getUser().getId());
-                replys.setUserName(replys.getUser().getNickName());
-                replys.setUserHead(replys.getUser().getHeadPath());
-            }
 
             comment.setReplysList(replysList);
         }
@@ -191,11 +186,6 @@ public class CommentServiceImpl implements CommentService {
             comment.setUserHead(comment.getUser().getHeadPath());
 
             /*replysList = replysDao.findListByCommentId(comment.getId());
-            for (Replys replys : replysList) {
-                replys.setUserId(replys.getUser().getId());
-                replys.setUserName(replys.getUser().getNickName());
-                replys.setUserHead(replys.getUser().getHeadPath());
-            }
 
             comment.setReplysList(replysList);*/
         }

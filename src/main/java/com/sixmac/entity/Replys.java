@@ -11,15 +11,15 @@ import java.util.Date;
 public class Replys {
     private Integer id;
     private Comment comment;
-    private Users user;
+    private Integer replySourceId;
+    private Integer replySourceType;
+    private String sourceName;
+    private String sourceHead;
     private String content;
     private Date createTime;
-    private Integer userId;
-    private String userName;
-    private String userHead;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -38,14 +38,20 @@ public class Replys {
         this.comment = comment;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    public Users getUser() {
-        return user;
+    public Integer getReplySourceId() {
+        return replySourceId;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setReplySourceId(Integer replySourceId) {
+        this.replySourceId = replySourceId;
+    }
+
+    public Integer getReplySourceType() {
+        return replySourceType;
+    }
+
+    public void setReplySourceType(Integer replySourceType) {
+        this.replySourceType = replySourceType;
     }
 
     public String getContent() {
@@ -66,30 +72,19 @@ public class Replys {
         this.createTime = createTime;
     }
 
-    @Transient
-    public Integer getUserId() {
-        return userId;
+    public String getSourceName() {
+        return sourceName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
     }
 
-    @Transient
-    public String getUserName() {
-        return userName;
+    public String getSourceHead() {
+        return sourceHead;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    @Transient
-    public String getUserHead() {
-        return userHead;
-    }
-
-    public void setUserHead(String userHead) {
-        this.userHead = userHead;
+    public void setSourceHead(String sourceHead) {
+        this.sourceHead = sourceHead;
     }
 }

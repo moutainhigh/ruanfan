@@ -5,7 +5,6 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.Comment;
 import com.sixmac.entity.Designers;
-import com.sixmac.entity.Notices;
 import com.sixmac.entity.Replys;
 import com.sixmac.service.CommentService;
 import com.sixmac.service.DesignersService;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -40,7 +40,7 @@ public class DesignerCommentController extends CommonController {
 
     @RequestMapping(value = "/index")
     public String index(ModelMap model, HttpServletRequest request) {
-        Designers designers = DesignerIndexController.getDesigner(request, model,designersService);
+        Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
         if (designers.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
             return "designer/个人资料待审核";
         }
@@ -55,7 +55,7 @@ public class DesignerCommentController extends CommonController {
                      Integer start,
                      Integer length,
                      ModelMap model) {
-        Designers designers = DesignerIndexController.getDesigner(request, model,designersService);
+        Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
 
         if (null == start || start == 0) {
             start = 1;
@@ -69,7 +69,7 @@ public class DesignerCommentController extends CommonController {
         Map<String, Object> result2 = DataTableFactory.fitting(draw, page2);
 
         WebUtil.printJson(response, result1);
-        WebUtil.printJson(response, result1);
+        WebUtil.printJson(response, result2);
     }
 
     @RequestMapping(value = "/delete")
@@ -86,26 +86,28 @@ public class DesignerCommentController extends CommonController {
         return 0;
     }
 
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/addReply")
     @ResponseBody
-    public Integer save(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Integer id,
-            String content,
-            ModelMap model ){
-
+    public Integer save(HttpServletRequest request,
+                        Integer commentId,
+                        String replyInfo,
+                        ModelMap model) {
         try {
-            Replys replys = null;
-            if (id != null) {
-                replys = new Replys();
-            } else {
-                replys = replysService.getById(id);
-            }
+            Designers designers = DesignerIndexController.getDesigner(request, model, designersService);
 
-            replys.setContent(content);
+            Replys replys = new Replys();
+            replys.setComment(commentService.getById(commentId));
+            replys.setReplySourceId(designers.getId());
+            replys.setReplySourceType(Constant.ATTENTION_DESIGNERS);
+            replys.setSourceName(designers.getNickName());
+            replys.setSourceHead(designers.getHead());
+            replys.setContent(replyInfo);
+            replys.setCreateTime(new Date());
+
+            replysService.create(replys);
+
             return 1;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;

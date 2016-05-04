@@ -56,6 +56,9 @@ public class PayCallBackApi extends CommonController {
     public void getPayInfo(HttpServletRequest request, HttpServletResponse response, String orderNum) {
         Map<String, Object> resultParam = ordersService.getPayInfo(request, response, orderNum);
 
+        resultParam.put("packages", resultParam.get("package"));
+        resultParam.remove("package");
+
         Result obj = new Result(true).data(createMap("payInfo", resultParam));
         String result = JsonUtil.obj2ApiJson(obj, "user", "merchant", "order", "product", "star", "comment");
         WebUtil.printApi(response, result);
