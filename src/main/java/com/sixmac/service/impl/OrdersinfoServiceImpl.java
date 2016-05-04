@@ -119,7 +119,7 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
-    public Page<Ordersinfo> page(final Integer merchantId, final String mobile, final String nickName, int pagenum, int pagesize) {
+    public Page<Ordersinfo> page(final Integer merchantId, final String mobile, final String productName, int pagenum, int pagesize) {
         PageRequest pageRequest = new PageRequest(pagenum - 1, pagesize, Sort.Direction.ASC, "id");
 
         Page<Ordersinfo> page = ordersinfoDao.findAll(new Specification<Ordersinfo>() {
@@ -136,8 +136,8 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
                     Predicate pre = cb.like(root.get("order").get("user").get("mobile").as(String.class), "%" + mobile + "%");
                     predicateList.add(pre);
                 }
-                if (StringUtils.isNotBlank(nickName)) {
-                    Predicate pre = cb.like(root.get("merchant").get("nickName").as(String.class), "%" + nickName + "%");
+                if (StringUtils.isNotBlank(productName)) {
+                    Predicate pre = cb.like(root.get("productName").as(String.class), "%" + productName + "%");
                     predicateList.add(pre);
                 }
                 if (predicateList.size() > 0) {

@@ -33,6 +33,7 @@
                             <input type="hidden" id="tempCoverId" value="${product.coverId}">
                             <input type="hidden" id="sortId" value="${product.sort.id}">
                             <input type="hidden" id="tempTypeId" value="${product.type}"/>
+                            <input type="hidden" id="backType" value="${backType}"/>
                             <span id="tempAddImageIds" style="display: none"></span>
                             <span id="tempDelImageIds" style="display: none"></span>
 
@@ -493,7 +494,16 @@
                 }
             },
             goBack: function () {
-                window.location.href = "merchant/product/index";
+                var backType = $('#backType').val();
+
+                if (backType == 0) {
+                    // 跳转到商品列表
+                    window.location.href = "merchant/product/index";
+                } else {
+                    // 跳转到系统消息列表
+                    window.location.href = "merchant/notice/index";
+                }
+
             }
         }
     }

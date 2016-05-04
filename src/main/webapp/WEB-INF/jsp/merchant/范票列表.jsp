@@ -110,9 +110,7 @@
         },
         fn: {
             init: function () {
-                console.log(0);
                 merchantCouponList.fn.dataTableInit();
-                console.log(1);
             },
             dataTableInit: function () {
                 merchantCouponList.v.dTable = $sixmac.dataTable($('#dataTables'), {

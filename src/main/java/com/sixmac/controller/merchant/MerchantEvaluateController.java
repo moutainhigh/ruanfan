@@ -52,7 +52,7 @@ public class MerchantEvaluateController extends CommonController {
     public void list(HttpServletRequest request,
                      HttpServletResponse response,
                      String mobile,
-                     String nickName,
+                     String productName,
                      Integer draw,
                      Integer start,
                      Integer length,
@@ -61,13 +61,7 @@ public class MerchantEvaluateController extends CommonController {
 
         int pageNum = getPageNum(start, length);
 
-        Page<Ordersinfo> page = ordersinfoService.page(merchants.getId(),mobile, nickName, pageNum, length);
-        List<Ordersinfo> list = page.getContent();
-        if(list != null && !list.isEmpty()) {
-            for (Ordersinfo info : list) {
-                info.setProductPath(ConfigUtil.getString("upload.url") + info.getProductPath());
-            }
-        }
+        Page<Ordersinfo> page = ordersinfoService.page(merchants.getId(),mobile, productName, pageNum, length);
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
@@ -77,7 +71,7 @@ public class MerchantEvaluateController extends CommonController {
     @ResponseBody
     public Integer delete(ServletRequest request, HttpServletResponse response, Integer id) {
         if (id != null) {
-            ordersinfoService.deleteById(id);
+            ordersinfoService.deleteInfo(id);
             return 1;
         } else {
             WebUtil.printJson(response, new Result(false).msg("评价不存在"));
@@ -91,7 +85,7 @@ public class MerchantEvaluateController extends CommonController {
         try {
             // 将界面上的id数组格式的字符串解析成int类型的数组
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
-            ordersinfoService.deleteAll(arrayId);
+            ordersinfoService.batchDeleteInfo(arrayId);
 
             return 1;
         } catch (Exception e) {

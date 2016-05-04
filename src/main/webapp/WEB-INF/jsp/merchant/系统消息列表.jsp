@@ -127,7 +127,7 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<a title='查看' class='btn btn-primary btn-circle eye'>" +
+                            "defaultContent": "<a title='查看' style='display: none' class='btn btn-primary btn-circle eye'>" +
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
@@ -139,19 +139,14 @@
                     ],
                     "createdRow": function (row, data, index) {
                         noticeList.v.list.push(data);
-
-                        if (data.isCheck == 0) {
-                            $('td', row).eq(3).html("待审核");
-                        } else if (data.isCheck == 1) {
-                            $('td', row).eq(3).html("审核通过");
-                        } else {
-                            $('td', row).eq(3).html("审核不通过");
-                        }
                     },
                     rowCallback: function (row, data) {
+                        if (data.objectId != 0) {
+                            $('td', row).last().find(".eye").css('display', '');
+                        }
 
                         $('td', row).last().find(".eye").click(function () {
-                            window.location.href = 'merchant/product/add?id=' + data.objectId;
+                            window.location.href = 'merchant/product/add?type=1&id=' + data.objectId;
                         });
 
                         $('td', row).last().find(".delete").click(function () {

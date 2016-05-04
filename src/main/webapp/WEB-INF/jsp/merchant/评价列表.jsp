@@ -34,10 +34,10 @@
 
                         <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="mobile" maxlength="20" placeholder="账号"/>
+                                <input type="text" class="form-control" id="mobile" maxlength="20" placeholder="用户账号"/>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="nickName" maxlength="20" placeholder="昵称"/>
+                                <input type="text" class="form-control" id="productName" maxlength="20" placeholder="商品名称"/>
                             </div>
                             <button type="button" id="c_search" class="btn btn-primary btn-sm">搜索</button>
                         </form>
@@ -166,13 +166,17 @@
 
                         $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
-                        if (data.description != null && data.description.length > 20) {
-                            $('td', row).eq(6).html(data.description.substring(0, 20) + '...');
+                        if (data.productName != null && data.productName.length > 20) {
+                            $('td', row).eq(3).html(data.productName.substring(0, 20) + '...');
+                        }
+
+                        if (data.comment != null && data.comment.length > 20) {
+                            $('td', row).eq(6).html(data.comment.substring(0, 20) + '...');
                         }
 
                         ordersinfoList.v.list.push(data);
                         if (null != data.productPath && data.productPath != '') {
-                            $('td', row).eq(2).html("<img src='" + data.url + "' width='60px' height='60px' />");
+                            $('td', row).eq(2).html("<img src='" + data.productPath + "' width='60px' height='60px' />");
                         } else {
                             $('td', row).eq(2).html("暂无");
                         }
@@ -194,7 +198,7 @@
                     },
                     "fnServerParams": function (aoData) {
                         aoData.mobile = $('#mobile').val();
-                        aoData.nickName = $('#nickName').val();
+                        aoData.productName = $('#productName').val();
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();

@@ -209,7 +209,7 @@
                             $('td', row).last().find(".changeStatus").addClass("btn-warning");
                         }
 
-                        $('td', row).last().find(".edit").prop("href", 'merchant/product/add?id=' + data.id);
+                        $('td', row).last().find(".edit").prop("href", 'merchant/product/add?type=0&id=' + data.id);
 
                         $('td', row).last().find(".delete").click(function () {
                             // 删除
