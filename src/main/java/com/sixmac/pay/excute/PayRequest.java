@@ -48,7 +48,8 @@ public class PayRequest {
             prepayReqHandler.setParameter("out_trade_no", out_trade_no);
 
             prepayReqHandler.setParameter("spbill_create_ip", CommonUtils.getRealAddress(request));
-            prepayReqHandler.setParameter("total_fee",request.getAttribute("fee").toString());
+            double price = Double.parseDouble(request.getAttribute("fee").toString()) * 1000;
+            prepayReqHandler.setParameter("total_fee", ((int) price) + "");
             prepayReqHandler.setParameter("trade_type", ConstantUtil.TRADE_TYPE);
 
 
