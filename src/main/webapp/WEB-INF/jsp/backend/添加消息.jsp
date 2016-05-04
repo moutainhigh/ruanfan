@@ -49,32 +49,32 @@
                                     <p>
                                         <input type="checkbox" name="sendto"
                                                style="vertical-align: middle; margin-top: 0px;"
-                                               id="sendto_alls" value="全部"/> <label for="sendto_alls">全部</label>
+                                               id="sendto_alls" value="all"/> <label for="sendto_alls">全部</label>
                                     </p>
                                     <p>
                                         <input type="checkbox" name="sendto"
                                                style="vertical-align: middle; margin-top: 0px;"
                                                onclick="message.fn.checkChkBox(this)" id="sendto_users"
-                                               value="设计师"/> <label for="sendto_users">设计师</label>
+                                               value="designer"/> <label for="sendto_users">设计师</label>
                                     </p>
                                     <p>
                                         <input type="checkbox" name="sendto"
                                                style="vertical-align: middle; margin-top: 0px;"
                                                onclick="message.fn.checkChkBox(this)" id="sendto_company"
-                                               value="商户"/> <label for="sendto_company">商户</label>
+                                               value="merchant"/> <label for="sendto_company">商户</label>
                                     </p>
                                     <p>
                                         <input type="checkbox" name="sendto"
                                                style="vertical-align: middle; margin-top: 0px;"
                                                onclick="message.fn.checkChkBox(this)" id="sendto_mall"
-                                               value="用户"/> <label for="sendto_mall">用户</label>
+                                               value="user"/> <label for="sendto_mall">用户</label>
                                     </p>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">消息简介:</label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-8">
                                     <textarea cols="30" rows="4" class="form-control" maxlength="25" style="resize: none;" placeholder="最多25个字" name="des" id="des">${message.des}</textarea>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">消息详情:</label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-9">
                                     <!-- 百度富文本编辑框 -->
                                     <script id="container" name="content" type="text/plain"
                                             style="width:100%; height:150px; line-height: 0px;"></script>
@@ -91,11 +91,9 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-6" style="text-align: center">
-                                    <button type="button" class="btn btn-primary" onclick="message.fn.subInfo()">提交
-                                    </button>
-                                    <button type="button" class="btn btn-primary" onclick="message.fn.goBack()">返回
-                                    </button>
+                                <div class="col-sm-12" style="text-align: center">
+                                    <button type="button" class="btn btn-primary" onclick="message.fn.subInfo()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="message.fn.goBack()">返回</button>
                                 </div>
                             </div>
                         </form>

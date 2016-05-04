@@ -68,11 +68,7 @@ public class NoticesServiceImpl implements NoticesService {
     }
 
     @Override
-    public Page<Notices> page(Integer sourceId, Integer sourceType, int pagenum, int pagesize) {
-        PageRequest pageRequest = new PageRequest(pagenum - 1, pagesize, Sort.Direction.ASC, "id");
-
-        Page<Notices> page = noticesDao.pageBySourceIdAndSourceType(sourceId, sourceType, pageRequest);
-
-        return page;
+    public Page<Notices> page(Integer sourceId, Integer sourceType, Integer pageNum, Integer pageSize) {
+        return noticesDao.pageBySourceIdAndSourceType(sourceId, sourceType, new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }

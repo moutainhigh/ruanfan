@@ -4,16 +4,15 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.Merchants;
-import com.sixmac.entity.Notices;
+import com.sixmac.entity.Message;
 import com.sixmac.service.MerchantsService;
-import com.sixmac.service.NoticesService;
+import com.sixmac.service.MessageService;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,14 +22,14 @@ import java.util.Map;
  * Created by Administrator on 2016/4/14 0014.
  */
 @Controller
-@RequestMapping(value = "merchant/notice")
-public class MerchantNoticeController extends CommonController {
+@RequestMapping(value = "merchant/message")
+public class MerchantMessageController extends CommonController {
 
     @Autowired
     private MerchantsService merchantsService;
 
     @Autowired
-    private NoticesService noticesService;
+    private MessageService messageService;
 
     @RequestMapping("index")
     public String index(ModelMap model, HttpServletRequest request) {
@@ -39,39 +38,35 @@ public class MerchantNoticeController extends CommonController {
             return "merchant/个人资料待审核";
         }
 
-        return "merchant/系统消息列表";
+        return "merchant/活动公告列表";
     }
 
     @RequestMapping("/list")
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      Integer draw,
                      Integer start,
-                     Integer length,
-                     ModelMap model) {
-        Merchants merchants = MerchantIndexController.getMerchant(request, model, merchantsService);
-
+                     Integer length) {
         if (null == start || start == 0) {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
-        Page<Notices> page = noticesService.page(merchants.getId(), Constant.NOTICES_TYPE_MERCHANT, pageNum, length);
+        Page<Message> page = messageService.pageByType("%" + Constant.MESSAGE_STATUS_MERCHANT + "%", pageNum, length);
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
 
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public Integer delete(Integer id) {
-        try {
-            noticesService.deleteById(id);
-
-            return 1;
-        } catch (Exception e) {
-            e.printStackTrace();
+    @RequestMapping("detail")
+    public String detail(ModelMap model, HttpServletRequest request, Integer messageId) {
+        Merchants merchants = MerchantIndexController.getMerchant(request, model, merchantsService);
+        if (merchants.getIsCheck() != Constant.CHECK_STATUS_SUCCESS) {
+            return "merchant/个人资料待审核";
         }
 
-        return 0;
+        Message message = messageService.getById(messageId);
+
+        model.addAttribute("message", message);
+
+        return "merchant/活动公告详情";
     }
 }

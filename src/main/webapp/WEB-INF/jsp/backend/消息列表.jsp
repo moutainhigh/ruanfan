@@ -157,6 +157,14 @@
 
                         $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
 
+                        $('td', row).eq(2).html(data.types.replace('all','全部').replace('designer','设计师').replace('merchant','商户').replace('user','用户'));
+
+                        if (data.title.length > 10) {
+                            $('td', row).eq(1).html(data.title.substring(0, 10) + '...');
+                        } else {
+                            $('td', row).eq(1).html(data.title);
+                        }
+
                         if (data.des.length > 10) {
                             $('td', row).eq(3).html(data.des.substring(0, 10) + '...');
                         } else {

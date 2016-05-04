@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -38,18 +37,17 @@ public class MessageController extends CommonController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      String title,
                      String type,
                      String description,
                      Integer draw,
                      Integer start,
                      Integer length) {
-
         int pageNum = getPageNum(start, length);
 
         Page<Message> page = service.page(title, type, description, pageNum, length);
+
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }

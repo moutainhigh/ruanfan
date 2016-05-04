@@ -155,10 +155,10 @@ public interface Constant {
     Integer ADDED_STATUS_NO = 1;
 
     // 消息类型
-    String MESSAGE_STATUS_ALL = "全部";
-    String MESSAGE_STATUS_DESIGNER = "设计师";
-    String MESSAGE_STATUS_MERCHANT = "商户";
-    String MESSAGE_STATUS_USER = "用户";
+    String MESSAGE_STATUS_ALL = "all";
+    String MESSAGE_STATUS_DESIGNER = "designer";
+    String MESSAGE_STATUS_MERCHANT = "merchant";
+    String MESSAGE_STATUS_USER = "user";
 
     // 商品类型
     Integer PRODUCT_TYPE_ONE = 1;   // 单品

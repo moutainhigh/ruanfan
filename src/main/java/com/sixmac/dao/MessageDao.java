@@ -14,9 +14,9 @@ import java.util.List;
  */
 public interface MessageDao extends JpaRepository<Message, Integer>, JpaSpecificationExecutor<Message> {
 
-    @Query("select a from Message a where a.types like ?1 or a.types like '%全部%'")
+    @Query("select a from Message a where a.types like ?1 or a.types like '%all%'")
     public List<Message> findListByType(String type);
 
-    @Query("select a from Message a where a.types like ?1 or a.types like '%全部%'")
+    @Query("select a from Message a where a.types like ?1 or a.types like '%all%'")
     public Page<Message> pageByType(String type, Pageable pageable);
 }

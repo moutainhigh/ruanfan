@@ -9,5 +9,6 @@ import org.springframework.data.domain.Page;
  */
 public interface NoticesService extends ICommonService<Notices> {
 
-    public Page<Notices> page(Integer sourceId, Integer sourceType, int pagenum, int pagesize);
+    // 根据所属目标id和所属目标类型查询系统消息列表（分页）
+    public Page<Notices> page(Integer sourceId, Integer sourceType, Integer pageNum, Integer pageSize);
 }
