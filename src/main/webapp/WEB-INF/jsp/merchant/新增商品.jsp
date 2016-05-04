@@ -381,6 +381,7 @@
                 var type = $('#typeList option:selected').val();
                 var sort = $('#sortList option:selected').val();
                 var place = $('#place').val();
+                var labels = $('#labels').val();
                 var colors = $('#colors').val();
                 var sizes = $('#sizes').val();
                 var materials = $('#materials').val();
@@ -425,6 +426,12 @@
 
                 if (null == place || place == '') {
                     $sixmac.notify("请输入商品产地", "error");
+                    flag = false;
+                    return;
+                }
+
+                if (null == labels || labels == '') {
+                    $sixmac.notify("请输入商品标签", "error");
                     flag = false;
                     return;
                 }
