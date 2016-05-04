@@ -715,9 +715,10 @@ public class UsersApi extends CommonController {
      * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 回复列表
      * @apiSuccess {Integer} list.id 回复id
-     * @apiSuccess {Integer} list.userId 回复人id
-     * @apiSuccess {String} list.userName 回复人昵称
-     * @apiSuccess {String} list.userHead 回复人头像
+     * @apiSuccess {Integer} list.replySourceId 回复人id
+     * @apiSuccess {Integer} list.replySourceType 回复人类型，1=用户，2=设计师
+     * @apiSuccess {String} list.sourceName 回复人昵称
+     * @apiSuccess {String} list.sourceHead 回复人头像
      * @apiSuccess {String} list.content 内容
      * @apiSuccess {String} list.createTime 创建时间
      */
@@ -733,7 +734,7 @@ public class UsersApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "user", "comment");
+        String result = JsonUtil.obj2ApiJson(obj, "comment");
         WebUtil.printApi(response, result);
     }
 
