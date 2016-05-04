@@ -1,7 +1,9 @@
 package com.sixmac.controller;
 
+import com.sixmac.common.exception.GeneralExceptionHandler;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
+import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Designers;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Sysusers;
@@ -48,6 +50,9 @@ public class IndexController extends CommonController {
 
     @Autowired
     private StylesService stylesService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping(value = "/login")
     public String login(String error,
@@ -149,6 +154,9 @@ public class IndexController extends CommonController {
                 // 管理员
                 Sysusers sysusers = usersService.sysUserLogin(session, account, Md5Util.md5(password));
                 if (null != sysusers) {
+                    // 记录登录操作
+                    operatisService.addOperatisInfo(sysusers.getAccount(), sysusers.getRole().getName(), "登录系统");
+
                     return "redirect:/backend/dashboard";
                 }
                 break;
@@ -164,6 +172,7 @@ public class IndexController extends CommonController {
                         model.addAttribute("error", "该商家已被禁用");
                         return "redirect:/login";
                     }
+
                     return "merchant/控制面板";
                 }
                 break;
@@ -179,6 +188,7 @@ public class IndexController extends CommonController {
                         model.addAttribute("error", "该设计师已被禁用");
                         return "redirect:/login";
                     }
+
                     return "designer/控制面板";
                 }
                 break;
@@ -290,15 +300,15 @@ public class IndexController extends CommonController {
         switch (type) {
             case 1:
                 Sysusers sysusers = sysusersService.getById(id);
-                checkOldPwd(oldPwd, sysusers.getPassword(), request, response);
+                checkOldPwd(oldPwd, sysusers.getPassword(), response);
                 break;
             case 2:
                 Merchants merchants = merchantsService.getById(id);
-                checkOldPwd(oldPwd, merchants.getPassword(), request, response);
+                checkOldPwd(oldPwd, merchants.getPassword(), response);
                 break;
             case 3:
                 Designers designers = designersService.getById(id);
-                checkOldPwd(oldPwd, designers.getPassword(), request, response);
+                checkOldPwd(oldPwd, designers.getPassword(), response);
                 break;
         }
     }
@@ -308,10 +318,9 @@ public class IndexController extends CommonController {
      *
      * @param oldPwd
      * @param pwd
-     * @param request
      * @param response
      */
-    private void checkOldPwd(String oldPwd, String pwd, HttpServletRequest request, HttpServletResponse response) {
+    private void checkOldPwd(String oldPwd, String pwd, HttpServletResponse response) {
         Map<String, String> result = new HashMap<String, String>();
         if (!pwd.equals(Md5Util.md5(oldPwd))) {
             result.put("error", "旧密码不正确!");
@@ -323,29 +332,82 @@ public class IndexController extends CommonController {
     }
 
     @RequestMapping("/modifyPwd")
-    public void modifyPwd(HttpServletRequest request,
-                          HttpServletResponse response,
+    public void modifyPwd(HttpServletRequest request, HttpServletResponse response,
                           String oldPwd,
                           String newPwd) {
-        /*Member member = null;
+        Sysusers sysusers = null;
+        Merchants merchants = null;
+        Designers designers = null;
+        Boolean flag = false;
+
+        String name = "";
+        String roleName = "";
+
         try {
-            member = loginService.getMember(request,Constant.MEMBER_TYPE_GLOBLE);
-            if(null != member){
-                if(member.getPassword().equals(Md5Util.md5(oldPwd))){
-                    member.setPassword(Md5Util.md5(newPwd));
-                    memberService.update(member);
-                    loginService.logOut(request,Constant.MEMBER_TYPE_GLOBLE);
+            Integer type = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_TYPE);
+            Integer loginId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
+
+            switch (type) {
+                case 1:
+                    // 管理员
+                    sysusers = sysusersService.getById(loginId);
+                    if (null != sysusers) {
+                        if (sysusers.getPassword().equals(Md5Util.md5(oldPwd))) {
+                            sysusers.setPassword(Md5Util.md5(newPwd));
+                            sysusersService.update(sysusers);
+
+                            flag = true;
+                            name = sysusers.getAccount();
+                            roleName = sysusers.getRole().getName();
+                        }
+                    }
+                    break;
+                case 2:
+                    // 商户
+                    merchants = merchantsService.getById(loginId);
+                    if (null != merchants) {
+                        if (merchants.getPassword().equals(Md5Util.md5(oldPwd))) {
+                            merchants.setPassword(Md5Util.md5(newPwd));
+                            merchantsService.update(merchants);
+
+                            flag = true;
+                        }
+                    }
+                    break;
+                case 3:
+                    // 设计师
+                    designers = designersService.getById(loginId);
+                    if (null != designers) {
+                        if (designers.getPassword().equals(Md5Util.md5(oldPwd))) {
+                            designers.setId(designers.getId());
+                            designers.setPassword(Md5Util.md5(newPwd));
+                            designersService.update(designers);
+
+                            flag = true;
+                        }
+                    }
+                    break;
+            }
+
+            if (null != sysusers || null != merchants || null != designers) {
+                if (flag) {
+                    // 记录操作
+                    if (null != sysusers) {
+                        operatisService.addOperatisInfo(name, roleName, "修改密码");
+                    }
+
+                    usersService.logOut(request);
                     WebUtil.print(response, new Result(true).msg("修改密码成功！请重新登录！"));
-                }else{
+                } else {
                     WebUtil.print(response, new Result(false).msg("旧密码错误，修改密码失败！"));
                 }
-            }else{
+            } else {
                 WebUtil.print(response, new Result(false).msg("当前用户未登录！"));
             }
         } catch (Exception e) {
             GeneralExceptionHandler.log("修改密码失败", e);
             WebUtil.print(response, new Result(false).msg("修改密码失败！"));
-        }*/
+        }
     }
 
 }

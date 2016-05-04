@@ -9,5 +9,9 @@ import org.springframework.data.domain.Page;
  */
 public interface OperatisService extends ICommonService<Operatis> {
 
+    // 查询操作日志列表（分页）
     public Page<Operatis> page(String name, String roleName, int pageNum, int pageSize);
+
+    // 记录操作
+    public void addOperatisInfo(String name, String roleName, String description);
 }

@@ -9,7 +9,7 @@
                 <h4 class="modal-title" id="pwdModalLabel">修改密码</h4>
             </div>
             <div class="modal-body">
-                <form id="pwdForm" method="post" action="admin/modifyPwd" class="form-horizontal" role="form">
+                <form id="pwdForm" method="post" action="modifyPwd" class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="oldPwd" class="col-sm-3 control-label">旧密码:</label>
                         <div class="col-sm-5">

@@ -92,7 +92,7 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="bookId"/>
-                确定删除该日志？
+                确定删除该操作日志？
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -146,7 +146,7 @@
                         {
                             "data": null,
                             "defaultContent": "<a title='删除' class='btn btn-danger btn-circle delete'>" +
-                            "<i class='fa fa-minus'></i>" +
+                            "<i class='fa fa-remove'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;",
                             "targets": -1
@@ -156,12 +156,9 @@
                         operatisList.v.list.push(data);
 
                         $('td', row).eq(0).html("<input type='checkbox' value=" + data.id + ">");
-
-
                     },
                     rowCallback: function (row, data) {
                         $('td', row).last().find(".delete").click(function () {
-
                             operatisList.fn.delInfo(data.id);
                         });
                     },

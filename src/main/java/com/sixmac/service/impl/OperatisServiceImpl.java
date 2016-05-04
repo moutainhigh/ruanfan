@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,7 +76,7 @@ public class OperatisServiceImpl implements OperatisService {
 
     @Override
     public Page<Operatis> page(final String name, final String roleName, int pageNum, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Operatis> page = operatisDao.findAll(new Specification<Operatis>() {
             @Override
@@ -103,5 +104,16 @@ public class OperatisServiceImpl implements OperatisService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public void addOperatisInfo(String name, String roleName, String description) {
+        Operatis operatis = new Operatis();
+        operatis.setName(name);
+        operatis.setRoleName(roleName);
+        operatis.setDescription(description);
+        operatis.setCreateTime(new Date());
+
+        operatisDao.save(operatis);
     }
 }
