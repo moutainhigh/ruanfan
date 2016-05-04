@@ -19,7 +19,13 @@
                     <div class="form-group">
                         <label for="newPwd" class="col-sm-3 control-label">新密码:</label>
                         <div class="col-sm-5">
-                            <input type="password" class="form-control" id="newPwd" name="newPwd"  data-rule="required;length[6~]" placeholder="请输入新密码">
+                            <input type="password" class="form-control" id="newPwd" name="newPwd" data-rule="新密码: required;length[6~]" placeholder="请输入新密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPwd" class="col-sm-3 control-label">确认密码:</label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" data-rule="required;match(newPwd);" placeholder="请输入确认密码">
                         </div>
                     </div>
                 </form>
