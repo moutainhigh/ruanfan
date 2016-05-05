@@ -244,6 +244,12 @@
                     return;
                 }
 
+                if (customInfo.v.mainImageStatus == 0) {
+                    $sixmac.notify("请上传户型图", "error");
+                    flag = false;
+                    return;
+                }
+
                 if (customInfo.v.packageSize == 0) {
                     $sixmac.notify("请增加至少一个套餐", "error");
                     flag = false;
