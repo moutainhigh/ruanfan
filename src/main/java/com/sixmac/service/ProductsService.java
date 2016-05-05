@@ -4,6 +4,7 @@ import com.sixmac.entity.Products;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public interface ProductsService extends ICommonService<Products> {
     public Page<Products> page(String name, String merchantName, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
 
     // 审核商品
-    public void changeCheck(Integer productId, Integer isCheck, String reason);
+    public void changeCheck(HttpServletRequest request, Integer productId, Integer isCheck, String reason);
 
     // 商品列表
     public Page<Products> page(Integer merchantId, String name, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);

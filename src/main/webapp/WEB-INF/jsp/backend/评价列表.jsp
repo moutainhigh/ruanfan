@@ -179,7 +179,7 @@
                         {
                             "data": null,
                             "defaultContent": "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
-                            "<i class='fa fa-minus'></i>" +
+                            "<i class='fa fa-remove'></i>" +
                             "</button>",
                             "targets": -1
                         }

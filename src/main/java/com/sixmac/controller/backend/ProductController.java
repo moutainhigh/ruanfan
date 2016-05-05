@@ -5,10 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Products;
-import com.sixmac.service.ImageService;
-import com.sixmac.service.MerchantsService;
-import com.sixmac.service.ProductsService;
-import com.sixmac.service.ProducttypeService;
+import com.sixmac.service.*;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -39,6 +37,9 @@ public class ProductController extends CommonController {
 
     @Autowired
     private MerchantsService merchantsService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -100,12 +101,15 @@ public class ProductController extends CommonController {
      */
     @RequestMapping("/changeStatus")
     @ResponseBody
-    public Integer changeStatus(Integer productId, Integer status) {
+    public Integer changeStatus(HttpServletRequest request, Integer productId, Integer status) {
         try {
             Products product = productService.getById(productId);
             product.setStatus(status);
 
             productService.update(product);
+
+            operatisService.addOperatisInfo(request, 1 == status ? "启用" : "禁用" + "商品 " + product.getName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,12 +126,15 @@ public class ProductController extends CommonController {
      */
     @RequestMapping("/changeHot")
     @ResponseBody
-    public Integer changeHot(Integer productId, Integer isHot) {
+    public Integer changeHot(HttpServletRequest request, Integer productId, Integer isHot) {
         try {
             Products product = productService.getById(productId);
             product.setIsHot(isHot);
 
             productService.update(product);
+
+            operatisService.addOperatisInfo(request, 1 == isHot ? "推荐" : "取消推荐" + "商品 " + product.getName() + " 到MALL");
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,9 +152,9 @@ public class ProductController extends CommonController {
      */
     @RequestMapping("/changeCheck")
     @ResponseBody
-    public Integer changeCheck(Integer productId, Integer isCheck, String reason) {
+    public Integer changeCheck(HttpServletRequest request, Integer productId, Integer isCheck, String reason) {
         try {
-            productService.changeCheck(productId, isCheck, reason);
+            productService.changeCheck(request, productId, isCheck, reason);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,9 +170,12 @@ public class ProductController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer productId) {
+    public Integer delete(HttpServletRequest request, Integer productId) {
         try {
             productService.deleteById(productId);
+
+            operatisService.addOperatisInfo(request, "删除商品 " + productService.getById(productId).getName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,7 +206,8 @@ public class ProductController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id,
+    public Integer save(HttpServletRequest request,
+                        Integer id,
                         String name,
                         String price,
                         String oldPrice,
@@ -267,6 +278,8 @@ public class ProductController extends CommonController {
                     imageService.deleteById(Integer.parseInt(imageId));
                 }
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "商品 " + product.getName());
 
             return 1;
         } catch (Exception e) {

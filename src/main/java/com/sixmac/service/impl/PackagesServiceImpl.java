@@ -5,6 +5,7 @@ import com.sixmac.dao.PackageproductsDao;
 import com.sixmac.dao.PackagesDao;
 import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Packages;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.PackagesService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class PackagesServiceImpl implements PackagesService {
 
     @Autowired
     private PackageproductsDao packageproductsDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Packages> findAll() {
@@ -177,6 +182,14 @@ public class PackagesServiceImpl implements PackagesService {
     @Override
     public List<Packages> findListOrderByCreateTimeDesc() {
         return packagesDao.findListOrderByCreateTimeDesc();
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        operatisService.addOperatisInfo(request, "删除商品套餐 " + packagesDao.findOne(id).getName());
+
+        deleteById(id);
     }
 
 }

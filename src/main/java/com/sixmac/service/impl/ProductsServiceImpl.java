@@ -7,6 +7,7 @@ import com.sixmac.dao.MessageplusDao;
 import com.sixmac.dao.ProductsDao;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Products;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.ProductsService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,9 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Autowired
     private ImageDao imageDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Products> findAll() {
@@ -198,12 +203,14 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     @Transactional
-    public void changeCheck(Integer productId, Integer isCheck, String reason) {
+    public void changeCheck(HttpServletRequest request, Integer productId, Integer isCheck, String reason) {
         Products products = productsDao.findOne(productId);
         products.setIsCheck(isCheck);
 
         // 修改审核状态
         productsDao.save(products);
+
+        operatisService.addOperatisInfo(request, "商品 " + products.getName() + (isCheck == 1 ? " 审核通过" : " 审核不通过"));
 
         // 添加系统消息
         Messageplus message = new Messageplus();

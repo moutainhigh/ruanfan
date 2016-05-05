@@ -8,6 +8,7 @@ import com.sixmac.entity.Designers;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.Works;
 import com.sixmac.service.DesignersService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +40,9 @@ public class DesignersServiceImpl implements DesignersService {
 
     @Autowired
     private MessageplusDao messageplusDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Designers> findAll() {
@@ -226,12 +231,14 @@ public class DesignersServiceImpl implements DesignersService {
 
     @Override
     @Transactional
-    public void changeCheck(Integer designerId, Integer isCheck, String reason) {
+    public void changeCheck(HttpServletRequest request, Integer designerId, Integer isCheck, String reason) {
         Designers designers = designersDao.findOne(designerId);
         designers.setIsCheck(isCheck);
 
         // 修改审核状态
         designersDao.save(designers);
+
+        operatisService.addOperatisInfo(request, "设计师 " + designers.getNickName() + (isCheck == 1 ? " 审核通过" : " 审核不通过"));
 
         // 添加系统消息
         Messageplus message = new Messageplus();
@@ -261,5 +268,20 @@ public class DesignersServiceImpl implements DesignersService {
     @Override
     public List<Designers> findListWithSuccess() {
         return designersDao.findListWithSuccess();
+    }
+
+    @Override
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        // 拼接设计师昵称
+        StringBuffer sb = new StringBuffer("");
+        for (int id : ids) {
+            sb.append(designersDao.findOne(id).getNickName() + "、");
+        }
+
+        operatisService.addOperatisInfo(request, "批量删除设计师 " + sb.toString().substring(0, sb.toString().length() - 1));
+
+        for (int id : ids) {
+            deleteById(id);
+        }
     }
 }

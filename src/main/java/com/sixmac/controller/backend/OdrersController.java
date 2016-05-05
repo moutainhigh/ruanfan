@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.Orders;
 import com.sixmac.entity.Ordersinfo;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.OrdersService;
 import com.sixmac.service.OrdersinfoService;
 import com.sixmac.utils.WebUtil;
@@ -34,6 +35,9 @@ public class OdrersController extends CommonController {
 
     @Autowired
     private OrdersinfoService ordersinfoService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping(value = "/index1", method = RequestMethod.GET)
     public String index1(ModelMap model) {
@@ -91,12 +95,14 @@ public class OdrersController extends CommonController {
 
     @RequestMapping(value = "/changeStatus")
     @ResponseBody
-    public Integer changeStatus(Integer id) {
+    public Integer changeStatus(HttpServletRequest request, Integer id) {
         try {
             Orders orders = orderService.getById(id);
             orders.setStatus(Constant.ORDERS_STATUS_002);
 
             orderService.update(orders);
+
+            operatisService.addOperatisInfo(request, "订单 " + orders.getOrderNum() + " 状态更改为已发货（待确认）");
 
             return 1;
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import com.sixmac.entity.Messageplus;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public interface MerchantsService extends ICommonService<Merchants> {
     public Page<Merchants> page(String email, String nickName, Integer status, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
 
     // 审核商户
-    public void changeCheck(Integer merchantId, Integer isCheck, String reason);
+    public void changeCheck(HttpServletRequest request, Integer merchantId, Integer isCheck, String reason);
 
     public Page<Merchants> page(Integer styleId, Integer pageNum, Integer pageSize);
 

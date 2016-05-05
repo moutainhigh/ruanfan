@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.RolesDao;
 import com.sixmac.entity.Roles;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public class RolesServiceImpl implements RolesService {
 
     @Autowired
     private RolesDao rolesDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Roles> findAll() {
@@ -44,9 +49,18 @@ public class RolesServiceImpl implements RolesService {
 
     @Override
     public Roles deleteById(int id) {
+        rolesDao.delete(id);
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
         Roles roles = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除权限 " + roles.getName());
+
         rolesDao.delete(roles);
-        return roles;
     }
 
     @Override

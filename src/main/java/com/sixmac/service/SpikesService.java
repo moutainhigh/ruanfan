@@ -4,6 +4,7 @@ import com.sixmac.entity.Spikes;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,4 +17,6 @@ public interface SpikesService extends ICommonService<Spikes> {
 
     // 查询未开始和正在进行中的秒杀列表
     public Page<Spikes> page(Integer pageNum, Integer pageSize);
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

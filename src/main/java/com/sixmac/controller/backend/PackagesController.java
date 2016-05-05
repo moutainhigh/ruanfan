@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -41,8 +42,11 @@ public class PackagesController extends CommonController {
     @Autowired
     private ProductsService productService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/套餐列表";
     }
 
@@ -111,9 +115,9 @@ public class PackagesController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer packagesId) {
+    public Integer delete(HttpServletRequest request, Integer packagesId) {
         try {
-            packagesService.deleteById(packagesId);
+            packagesService.deleteById(request, packagesId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +140,8 @@ public class PackagesController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id,
+    public Integer save(HttpServletRequest request,
+                        Integer id,
                         String name,
                         String price,
                         String oldPrice,
@@ -201,6 +206,8 @@ public class PackagesController extends CommonController {
                     packageProductsService.create(packageProduct);
                 }
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "商品套餐 " + packages.getName());
 
             return 1;
         } catch (Exception e) {

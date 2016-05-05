@@ -6,6 +6,7 @@ import com.sixmac.dao.MessageplusDao;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.service.MerchantsService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,9 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Autowired
     private MessageplusDao messageplusDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Merchants> findAll() {
@@ -149,12 +154,14 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Override
     @Transactional
-    public void changeCheck(Integer merchantId, Integer isCheck, String reason) {
+    public void changeCheck(HttpServletRequest request, Integer merchantId, Integer isCheck, String reason) {
         Merchants merchants = merchantsDao.findOne(merchantId);
         merchants.setIsCheck(isCheck);
 
         // 修改审核状态
         merchantsDao.save(merchants);
+
+        operatisService.addOperatisInfo(request, "商户 " + merchants.getNickName() + (isCheck == 1 ? " 审核通过" : " 审核不通过"));
 
         // 添加系统消息
         Messageplus message = new Messageplus();

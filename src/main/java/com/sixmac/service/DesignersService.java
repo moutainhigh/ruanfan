@@ -6,6 +6,7 @@ import com.sixmac.entity.Works;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public interface DesignersService extends ICommonService<Designers> {
     public Page<Designers> page(String mobile, String nickName, Integer status, Integer isCheck, Integer type, Integer pageNum, Integer pageSize);
 
     // 审核设计师
-    public void changeCheck(Integer designerId, Integer isCheck, String reason);
+    public void changeCheck(HttpServletRequest request, Integer designerId, Integer isCheck, String reason);
 
     // 查询是否有相同手机号信息的设计师集合
     public List<Designers> findListByMobile(String mobile);
@@ -33,4 +34,6 @@ public interface DesignersService extends ICommonService<Designers> {
 
     // 查询合格的设计师列表
     public List<Designers> findListWithSuccess();
+
+    public void deleteAll(HttpServletRequest request, int[] ids);
 }

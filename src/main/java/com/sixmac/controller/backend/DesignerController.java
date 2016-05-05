@@ -6,6 +6,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Designers;
 import com.sixmac.service.CityService;
 import com.sixmac.service.DesignersService;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -34,8 +36,11 @@ public class DesignerController extends CommonController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/设计师列表";
     }
 
@@ -78,12 +83,15 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/changeStatus")
     @ResponseBody
-    public Integer changeStatus(Integer designerId, Integer status) {
+    public Integer changeStatus(HttpServletRequest request, Integer designerId, Integer status) {
         try {
             Designers designers = designersService.getById(designerId);
             designers.setStatus(status);
 
             designersService.update(designers);
+
+            operatisService.addOperatisInfo(request, status == 0 ? "启用" : "禁用" + "设计师 " + designers.getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,12 +107,15 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/changeAuth")
     @ResponseBody
-    public Integer changeAuth(Integer designerId) {
+    public Integer changeAuth(HttpServletRequest request, Integer designerId) {
         try {
             Designers designers = designersService.getById(designerId);
             designers.setIsAuth(Constant.AUTH_STATUS_YES);
 
             designersService.update(designers);
+
+            operatisService.addOperatisInfo(request, "认证设计师 " + designers.getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,9 +133,10 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/changeCheck")
     @ResponseBody
-    public Integer changeCheck(Integer designerId, Integer isCheck, String reason) {
+    public Integer changeCheck(HttpServletRequest request, Integer designerId, Integer isCheck, String reason) {
         try {
-            designersService.changeCheck(designerId, isCheck, reason);
+            designersService.changeCheck(request, designerId, isCheck, reason);
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,9 +152,12 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer designerId) {
+    public Integer delete(HttpServletRequest request, Integer designerId) {
         try {
             designersService.deleteById(designerId);
+
+            operatisService.addOperatisInfo(request, "删除设计师 " + designersService.getById(designerId).getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,10 +173,10 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/batchDel")
     @ResponseBody
-    public Integer batchDel(String ids) {
+    public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
-            designersService.deleteAll(arrayId);
+            designersService.deleteAll(request, arrayId);
 
             return 1;
         } catch (Exception e) {
@@ -185,7 +200,8 @@ public class DesignerController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id,
+    public Integer save(HttpServletRequest request,
+                        Integer id,
                         String mobile,
                         String password,
                         Integer type,
@@ -239,6 +255,8 @@ public class DesignerController extends CommonController {
             } else {
                 designersService.update(designers);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "设计师 " + designers.getNickName());
 
             return 1;
         } catch (Exception e) {

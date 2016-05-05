@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Sysusers;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.RoleModulesService;
 import com.sixmac.service.RolesService;
 import com.sixmac.service.SysusersService;
@@ -18,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -38,8 +40,11 @@ public class SysuserController extends CommonController {
     @Autowired
     private RoleModulesService roleModulesService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/管理员列表";
     }
 
@@ -76,7 +81,11 @@ public class SysuserController extends CommonController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id, Integer roleId, String account, String password) {
+    public Integer save(HttpServletRequest request,
+                        Integer id,
+                        Integer roleId,
+                        String account,
+                        String password) {
         try {
             if (roleId == Constant.ADMIN_ID) {
                 return -1;
@@ -101,6 +110,8 @@ public class SysuserController extends CommonController {
                 sysusersService.update(sysusers);
             }
 
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "管理员 " + sysusers.getAccount());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,9 +121,9 @@ public class SysuserController extends CommonController {
 
     @RequestMapping("delete")
     @ResponseBody
-    public Integer delete(HttpServletResponse response, Integer id) {
+    public Integer delete(HttpServletRequest request, HttpServletResponse response, Integer id) {
         if (id != null) {
-            sysusersService.deleteById(id);
+            sysusersService.deleteById(request, id);
             return 1;
         } else {
             WebUtil.printJson(response, new Result(false).msg("管理人员不存在"));
@@ -122,10 +133,10 @@ public class SysuserController extends CommonController {
 
     @RequestMapping("/batchDel")
     @ResponseBody
-    public Integer batchDel(String ids) {
+    public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
-            sysusersService.deleteAll(arrayId);
+            sysusersService.deleteAll(request, arrayId);
 
             return 1;
         } catch (Exception e) {

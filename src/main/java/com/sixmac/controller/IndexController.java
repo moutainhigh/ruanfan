@@ -155,7 +155,7 @@ public class IndexController extends CommonController {
                 Sysusers sysusers = usersService.sysUserLogin(session, account, Md5Util.md5(password));
                 if (null != sysusers) {
                     // 记录登录操作
-                    operatisService.addOperatisInfo(sysusers.getAccount(), sysusers.getRole().getName(), "登录系统");
+                    operatisService.addOperatisInfo(request, "登录系统");
 
                     return "redirect:/backend/dashboard";
                 }
@@ -393,7 +393,7 @@ public class IndexController extends CommonController {
                 if (flag) {
                     // 记录操作
                     if (null != sysusers) {
-                        operatisService.addOperatisInfo(name, roleName, "修改密码");
+                        operatisService.addOperatisInfo(request, "修改密码");
                     }
 
                     usersService.logOut(request);

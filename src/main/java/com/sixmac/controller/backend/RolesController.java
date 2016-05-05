@@ -6,10 +6,7 @@ import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Modules;
 import com.sixmac.entity.Rolemodules;
 import com.sixmac.entity.Roles;
-import com.sixmac.service.ModulesService;
-import com.sixmac.service.RoleModulesService;
-import com.sixmac.service.RolesService;
-import com.sixmac.service.SysusersService;
+import com.sixmac.service.*;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +41,11 @@ public class RolesController extends CommonController {
     @Autowired
     private SysusersService sysusersService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("/index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/权限列表";
     }
 
@@ -105,7 +106,10 @@ public class RolesController extends CommonController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id, String name, String types) {
+    public Integer save(HttpServletRequest request,
+                        Integer id,
+                        String name,
+                        String types) {
         try {
             // 解析权限id
             int[] moduleIds = JsonUtil.json2Obj(types, int[].class);
@@ -137,6 +141,8 @@ public class RolesController extends CommonController {
                 roleModulesService.create(rolemodules);
             }
 
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "权限 " + name);
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,9 +153,9 @@ public class RolesController extends CommonController {
 
     @RequestMapping("delete")
     @ResponseBody
-    public Integer delete(HttpServletResponse response, Integer id) {
+    public Integer delete(HttpServletRequest request, HttpServletResponse response, Integer id) {
         if (id != null) {
-            rolesService.deleteById(id);
+            rolesService.deleteById(request, id);
             return 1;
         } else {
             WebUtil.printJson(response, new Result(false).msg("权限不存在"));

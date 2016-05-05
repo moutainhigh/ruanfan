@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.OrdersinfoDao;
 import com.sixmac.entity.Ordersinfo;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.OrdersinfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
 
     @Autowired
     private OrdersinfoDao ordersinfoDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Ordersinfo> findAll() {
@@ -179,21 +184,31 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
-    public void deleteInfo(Integer orderInfoId) {
+    public void deleteInfo(HttpServletRequest request, Integer orderInfoId) {
         Ordersinfo ordersinfo = ordersinfoDao.findOne(orderInfoId);
 
         ordersinfo.setStar(null);
         ordersinfo.setComment(null);
 
         ordersinfoDao.save(ordersinfo);
+
+        operatisService.addOperatisInfo(request, "删除订单 " + ordersinfo.getOrder().getOrderNum() + " 中" + (ordersinfo.getType() == 3 ? "秒杀商品 " : "商品 ") + ordersinfo.getProductName() + " 的评价");
     }
 
     @Override
     @Transactional
-    public void batchDeleteInfo(int[] ids) {
+    public void batchDeleteInfo(HttpServletRequest request, int[] ids) {
         for (int id : ids) {
-            deleteInfo(id);
+            deleteInfo(request, id);
         }
+
+        // 拼接设计师昵称
+        StringBuffer sb = new StringBuffer("");
+        for (int id : ids) {
+            sb.append(ordersinfoDao.findOne(id).getProductName() + "、");
+        }
+
+        operatisService.addOperatisInfo(request, "批量删除商品 " + sb.toString().substring(0, sb.toString().length() - 1) + " 的评价");
     }
 
 }

@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.SysusersDao;
 import com.sixmac.entity.Sysusers;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.SysusersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class SysusersServiceImpl implements SysusersService {
 
     @Autowired
     private SysusersDao sysusersDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Sysusers> findAll() {
@@ -50,9 +55,32 @@ public class SysusersServiceImpl implements SysusersService {
 
     @Override
     public Sysusers deleteById(int id) {
+        sysusersDao.delete(id);
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
         Sysusers sysusers = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除管理员 " + sysusers.getAccount());
+
         sysusersDao.delete(sysusers);
-        return sysusers;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        // 拼接管理员账号
+        StringBuffer sb = new StringBuffer("");
+        for (int id : ids) {
+            sb.append(sysusersDao.findOne(id).getAccount() + "、");
+        }
+
+        operatisService.addOperatisInfo(request, "批量删除管理员 " + sb.toString().substring(0, sb.toString().length() - 1));
+
+        deleteAll(ids);
     }
 
     @Override

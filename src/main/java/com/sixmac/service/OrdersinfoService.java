@@ -4,6 +4,7 @@ import com.sixmac.entity.Ordersinfo;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,8 +27,8 @@ public interface OrdersinfoService extends ICommonService<Ordersinfo> {
     public List<Ordersinfo> findListByPackageOrderId(Integer orderId);
 
     // 根据订单详情id删除评价信息
-    public void deleteInfo(Integer orderInfoId);
+    public void deleteInfo(HttpServletRequest request, Integer orderInfoId);
 
     // 批量根据订单详情id删除评价信息
-    public void batchDeleteInfo(int[] ids);
+    public void batchDeleteInfo(HttpServletRequest request, int[] ids);
 }

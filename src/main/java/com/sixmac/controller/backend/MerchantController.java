@@ -6,6 +6,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Merchants;
 import com.sixmac.service.CityService;
 import com.sixmac.service.MerchantsService;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.StylesService;
 import com.sixmac.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -38,8 +40,11 @@ public class MerchantController extends CommonController {
     @Autowired
     private StylesService stylesService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/商户列表";
     }
 
@@ -82,12 +87,15 @@ public class MerchantController extends CommonController {
      */
     @RequestMapping("/changeStatus")
     @ResponseBody
-    public Integer changeStatus(Integer merchantId, Integer status) {
+    public Integer changeStatus(HttpServletRequest request, Integer merchantId, Integer status) {
         try {
             Merchants merchants = merchantsService.getById(merchantId);
             merchants.setStatus(status);
 
             merchantsService.update(merchants);
+
+            operatisService.addOperatisInfo(request, status == 0 ? "启用" : "禁用" + "商户 " + merchants.getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,9 +113,9 @@ public class MerchantController extends CommonController {
      */
     @RequestMapping("/changeCheck")
     @ResponseBody
-    public Integer changeCheck(Integer merchantId, Integer isCheck, String reason) {
+    public Integer changeCheck(HttpServletRequest request, Integer merchantId, Integer isCheck, String reason) {
         try {
-            merchantsService.changeCheck(merchantId, isCheck, reason);
+            merchantsService.changeCheck(request, merchantId, isCheck, reason);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,9 +131,12 @@ public class MerchantController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer merchantId) {
+    public Integer delete(HttpServletRequest request, Integer merchantId) {
         try {
             merchantsService.deleteById(merchantId);
+
+            operatisService.addOperatisInfo(request, "删除商户 " + merchantsService.getById(merchantId).getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,10 +152,18 @@ public class MerchantController extends CommonController {
      */
     @RequestMapping("/batchDel")
     @ResponseBody
-    public Integer batchDel(String ids) {
+    public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
             merchantsService.deleteAll(arrayId);
+
+            // 拼接商户昵称
+            StringBuffer sb = new StringBuffer("");
+            for (int id : arrayId) {
+                sb.append(merchantsService.getById(id).getNickName() + "、");
+            }
+
+            operatisService.addOperatisInfo(request, "批量删除商户 " + sb.toString().substring(0, sb.toString().length() - 1));
 
             return 1;
         } catch (Exception e) {
@@ -168,7 +187,8 @@ public class MerchantController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id,
+    public Integer save(HttpServletRequest request,
+                        Integer id,
                         String email,
                         String url,
                         String password,
@@ -227,6 +247,8 @@ public class MerchantController extends CommonController {
             } else {
                 merchantsService.update(merchants);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "商户 " + merchants.getNickName());
 
             return 1;
         } catch (Exception e) {

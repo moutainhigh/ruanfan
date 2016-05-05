@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.SpikesDao;
 import com.sixmac.entity.Spikes;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.SpikesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class SpikesServiceImpl implements SpikesService {
 
     @Autowired
     private SpikesDao spikesDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Spikes> findAll() {
@@ -92,6 +97,14 @@ public class SpikesServiceImpl implements SpikesService {
     @Override
     public Page<Spikes> page(Integer pageNum, Integer pageSize) {
         return spikesDao.findAllWorking(new Date(), new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        operatisService.addOperatisInfo(request, "删除秒杀商品 " + spikesDao.findOne(id).getName());
+
+        deleteById(id);
     }
 
 }

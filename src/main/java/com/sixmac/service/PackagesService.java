@@ -5,6 +5,7 @@ import com.sixmac.entity.Packages;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public interface PackagesService extends ICommonService<Packages> {
 
     // 根据创建时间倒序排列套餐列表
     public List<Packages> findListOrderByCreateTimeDesc();
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

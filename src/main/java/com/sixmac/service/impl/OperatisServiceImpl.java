@@ -2,7 +2,9 @@ package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
 import com.sixmac.dao.OperatisDao;
+import com.sixmac.dao.SysusersDao;
 import com.sixmac.entity.Operatis;
+import com.sixmac.entity.Sysusers;
 import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +31,9 @@ public class OperatisServiceImpl implements OperatisService {
 
     @Autowired
     private OperatisDao operatisDao;
+
+    @Autowired
+    private SysusersDao sysusersDao;
 
     @Override
     public List<Operatis> findAll() {
@@ -107,10 +113,14 @@ public class OperatisServiceImpl implements OperatisService {
     }
 
     @Override
-    public void addOperatisInfo(String name, String roleName, String description) {
+    public void addOperatisInfo(HttpServletRequest request, String description) {
+        Integer loginId = (Integer) request.getSession().getAttribute(Constant.CURRENT_USER_ID);
+
+        Sysusers sysusers = sysusersDao.findOne(loginId);
+
         Operatis operatis = new Operatis();
-        operatis.setName(name);
-        operatis.setRoleName(roleName);
+        operatis.setName(sysusers.getAccount());
+        operatis.setRoleName(sysusers.getRole().getName());
         operatis.setDescription(description);
         operatis.setCreateTime(new Date());
 

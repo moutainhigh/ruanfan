@@ -4,6 +4,7 @@ import com.sixmac.entity.Sysusers;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,4 +17,10 @@ public interface SysusersService extends ICommonService<Sysusers> {
 
     // 根据管理员的角色id查询对应角色的人员数量
     public List<Sysusers> findListByRoleId(Integer roleId);
+
+    // 根据id删除管理员信息
+    public void deleteById(HttpServletRequest request, Integer id);
+
+    // 根据id批量删除管理员信息
+    public void deleteAll(HttpServletRequest request,int[] ids);
 }

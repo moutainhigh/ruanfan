@@ -7,8 +7,12 @@ import com.sixmac.entity.Attentions;
 import com.sixmac.entity.Users;
 import com.sixmac.service.AttentionsService;
 import com.sixmac.service.CityService;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.UsersService;
-import com.sixmac.utils.*;
+import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.Md5Util;
+import com.sixmac.utils.QiNiuUploadImgUtil;
+import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +44,11 @@ public class UsersController extends CommonController {
     @Autowired
     private AttentionsService attentionsService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/会员列表";
     }
 
@@ -93,12 +100,15 @@ public class UsersController extends CommonController {
      */
     @RequestMapping("/changeStatus")
     @ResponseBody
-    public Integer changeStatus(Integer userId, Integer status) {
+    public Integer changeStatus(HttpServletRequest request, Integer userId, Integer status) {
         try {
             Users users = usersService.getById(userId);
             users.setStatus(status);
 
             usersService.update(users);
+
+            operatisService.addOperatisInfo(request, status == 0 ? "启用" : "禁用" + "用户 " + users.getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,9 +124,12 @@ public class UsersController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer userId) {
+    public Integer delete(HttpServletRequest request, Integer userId) {
         try {
             usersService.deleteById(userId);
+
+            operatisService.addOperatisInfo(request, "删除用户 " + usersService.getById(userId).getNickName());
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,10 +145,18 @@ public class UsersController extends CommonController {
      */
     @RequestMapping("/batchDel")
     @ResponseBody
-    public Integer batchDel(String ids) {
+    public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
             usersService.deleteAll(arrayId);
+
+            // 拼接用户昵称
+            StringBuffer sb = new StringBuffer("");
+            for (int id : arrayId) {
+                sb.append(usersService.getById(id).getNickName() + "、");
+            }
+
+            operatisService.addOperatisInfo(request, "批量删除用户 " + sb.toString().substring(0, sb.toString().length() - 1));
 
             return 1;
         } catch (Exception e) {
@@ -161,7 +182,7 @@ public class UsersController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request,
+    public Integer save(HttpServletRequest request,
                         Integer id,
                         String mobile,
                         String password,
@@ -202,6 +223,8 @@ public class UsersController extends CommonController {
             } else {
                 usersService.update(users);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "用户 " + users.getNickName());
 
             return 1;
         } catch (Exception e) {
