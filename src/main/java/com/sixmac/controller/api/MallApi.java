@@ -48,6 +48,9 @@ public class MallApi extends CommonController {
     @Autowired
     private PackageproductsService packageproductsService;
 
+    @Autowired
+    private MallPicService mallPicService;
+
     /**
      * @api {post} /api/mall/bannerList 首页banner图列表
      * @apiName mall.bannerList
@@ -69,47 +72,21 @@ public class MallApi extends CommonController {
     }
 
     /**
-     * @api {post} /api/mall/newProductList 首页最新三个类型的商品图
+     * @api {post} /api/mall/newProductList 首页三张商品图和商品套餐图
      * @apiName mall.newProductList
      * @apiGroup mall
      * @apiSuccess {Object} list 商品图列表
-     * @apiSuccess {Integer} list.id 商品id
-     * @apiSuccess {Integer} list.type 类型，1=单品，2=艺术品，3=设计师品牌
+     * @apiSuccess {Integer} list.id 图片id（1=商品单品，2=艺术品，3=设计师品牌，4=商品套餐）
+     * @apiSuccess {Integer} list.name 图片所属类别
      * @apiSuccess {String} list.cover 图片路径
+     * @apiSuccess {String} list.updateTime 更新时间
      */
     @RequestMapping(value = "/newProductList")
     public void newProductList(HttpServletResponse response) {
-        List<Products> list = productsService.iFindList();
-
-        for (Products product : list) {
-            product.setCover(imageService.getById(product.getCoverId()).getPath());
-        }
+        List<MallPic> list = mallPicService.findAll();
 
         Result obj = new Result(true).data(createMap("list", list));
-        String result = JsonUtil.obj2ApiJson(obj, "price", "name", "oldPrice", "showNum", "count", "path", "merchantHead", "merchantDescription", "createTime", "merchant", "brand", "sort", "coverId", "place", "labels", "colors", "sizes", "materials", "isHot", "isCheck", "isAdd", "description", "merchantId", "merchantName", "brandId", "brandName", "sortId", "sortName", "imageList", "similarList", "appraisalVoList");
-        WebUtil.printApi(response, result);
-    }
-
-    /**
-     * @api {post} /api/mall/newPackageList 首页最新商品套餐图
-     * @apiName mall.newPackageList
-     * @apiGroup mall
-     * @apiSuccess {Object} packageInfo 首页套餐信息
-     * @apiSuccess {Integer} packageInfo.id 套餐id
-     * @apiSuccess {String} packageInfo.cover 图片路径
-     */
-    @RequestMapping(value = "/newPackageList")
-    public void newPackageList(HttpServletResponse response) {
-        List<Packages> list = packagesService.findListOrderByCreateTimeDesc();
-
-        Packages packages = new Packages();
-        if (null != list && list.size() > 0) {
-            packages = list.get(0);
-            packages.setCover(imageService.getById(packages.getCoverId()).getPath());
-        }
-
-        Result obj = new Result(true).data(createMap("packageInfo", packages));
-        String result = JsonUtil.obj2ApiJson(obj, "name", "type", "price", "oldPrice", "labels", "coverId", "brand", "description", "showNum", "count", "createTime", "productsList", "brandId", "brandName", "productNum", "imageList", "similarList", "appraisalVoList");
+        String result = JsonUtil.obj2ApiJson(obj);
         WebUtil.printApi(response, result);
     }
 
