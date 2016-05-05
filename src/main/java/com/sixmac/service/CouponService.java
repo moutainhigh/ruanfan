@@ -5,6 +5,7 @@ import com.sixmac.entity.Usercoupon;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,4 +30,6 @@ public interface CouponService extends ICommonService<Coupon> {
 
     // 根据优惠券id删除有关联的所有用户信息
     public void deleteAllListByCouponId(Integer couponId);
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.VrtypeDao;
 import com.sixmac.entity.Virtuals;
 import com.sixmac.entity.Vrtype;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.VrtypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,6 +24,9 @@ public class VrtypeServiceImpl implements VrtypeService {
 
     @Autowired
     private VrtypeDao vrtypeDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Vrtype> findAll() {
@@ -73,5 +78,14 @@ public class VrtypeServiceImpl implements VrtypeService {
         List<Virtuals> virtualsList = vrtypeDao.iFindListByTypeId(vrTypeId);
 
         return virtualsList.size();
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Vrtype vrtype = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除虚拟体验分类 " + vrtype.getName());
+
+        vrtypeDao.delete(vrtype);
     }
 }

@@ -4,6 +4,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.ReserveDao;
 import com.sixmac.entity.Reserve;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.ReserveService;
 import com.sixmac.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,9 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Autowired
     private ReserveDao reserveDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Reserve> findAll() {
@@ -81,7 +86,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     @Transactional
-    public void batchConfirm(int[] ids, String reserveTime, String reserveAddress) {
+    public void batchConfirm(HttpServletRequest request, int[] ids, String reserveTime, String reserveAddress) {
         try {
             Reserve reserve = null;
             for (int id : ids) {
@@ -90,6 +95,8 @@ public class ReserveServiceImpl implements ReserveService {
                 reserve.setReseAddress(reserveAddress);
                 reserve.setStatus(1);
                 update(reserve);
+
+                operatisService.addOperatisInfo(request, "处理用户 " + reserve.getName() + " 的预约");
             }
         } catch (ParseException e) {
             e.printStackTrace();

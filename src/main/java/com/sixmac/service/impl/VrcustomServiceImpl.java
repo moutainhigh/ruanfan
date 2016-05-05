@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.VrcustomDao;
 import com.sixmac.entity.Vrcustom;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.VrcustomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public class VrcustomServiceImpl implements VrcustomService {
 
     @Autowired
     private VrcustomDao vrcustomDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Vrcustom> findAll() {
@@ -65,5 +70,14 @@ public class VrcustomServiceImpl implements VrcustomService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Vrcustom vrcustom = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除id为 " + vrcustom.getId() + " 的VR虚拟设计");
+
+        vrcustomDao.delete(vrcustom);
     }
 }

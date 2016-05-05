@@ -7,6 +7,7 @@ import com.sixmac.dao.UsersDao;
 import com.sixmac.entity.Coupon;
 import com.sixmac.entity.Usercoupon;
 import com.sixmac.service.CouponService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private UsersDao usersDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Coupon> findAll() {
@@ -118,5 +123,13 @@ public class CouponServiceImpl implements CouponService {
         for (Usercoupon userCoupon : list) {
             usercouponDao.delete(userCoupon.getId());
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        operatisService.addOperatisInfo(request, "删除优惠券 " + couponDao.findOne(id).getName());
+
+        deleteById(id);
     }
 }

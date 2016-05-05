@@ -201,14 +201,6 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
         for (int id : ids) {
             deleteInfo(request, id);
         }
-
-        // 拼接设计师昵称
-        StringBuffer sb = new StringBuffer("");
-        for (int id : ids) {
-            sb.append(ordersinfoDao.findOne(id).getProductName() + "、");
-        }
-
-        operatisService.addOperatisInfo(request, "批量删除商品 " + sb.toString().substring(0, sb.toString().length() - 1) + " 的评价");
     }
 
 }

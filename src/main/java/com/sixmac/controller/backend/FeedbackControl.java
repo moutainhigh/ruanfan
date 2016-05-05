@@ -4,6 +4,7 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Feedback;
 import com.sixmac.service.FeedbackService;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -25,6 +27,9 @@ public class FeedbackControl extends CommonController {
 
     @Autowired
     private FeedbackService feedbackService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
@@ -39,23 +44,25 @@ public class FeedbackControl extends CommonController {
                      Integer draw,
                      Integer start,
                      Integer length) {
-
         int pageNum = getPageNum(start, length);
 
         Page<Feedback> page = feedbackService.page(nickName, mobile, mail, pageNum, length);
+
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
 
-
     @RequestMapping("/update")
     @ResponseBody
-    public Integer update(Integer id) {
+    public Integer update(HttpServletRequest request, Integer id) {
         if (id != null) {
             Feedback feedback = feedbackService.getById(id);
             feedback.setStatus(1);
 
             feedbackService.update(feedback);
+
+            operatisService.addOperatisInfo(request, "处理用户 " + feedback.getUser().getNickName() + " 的反馈");
+
             return 1;
         } else {
             return -1;

@@ -5,6 +5,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Propertyinfo;
 import com.sixmac.entity.Propertys;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.PropertyinfoService;
 import com.sixmac.service.PropertysService;
 import com.sixmac.utils.QiNiuUploadImgUtil;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -36,8 +38,11 @@ public class PropertysController extends CommonController {
     @Autowired
     private PropertyinfoService propertyInfoService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/地产列表";
     }
 
@@ -91,9 +96,10 @@ public class PropertysController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer propertyId) {
+    public Integer delete(HttpServletRequest request, Integer propertyId) {
         try {
-            propertysService.deleteById(propertyId);
+            propertysService.deleteById(request, propertyId);
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,7 +116,7 @@ public class PropertysController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
+    public Integer save(HttpServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
         try {
             Propertys propertys = null;
 
@@ -143,6 +149,8 @@ public class PropertysController extends CommonController {
                 propertys.setCreateTime(new Date());
                 propertysService.create(propertys);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "地产 " + propertys.getName());
 
             return 1;
         } catch (Exception e) {
@@ -198,7 +206,7 @@ public class PropertysController extends CommonController {
      */
     @RequestMapping("/addChildInfo")
     @ResponseBody
-    public Integer addChildInfo(ServletRequest request,
+    public Integer addChildInfo(HttpServletRequest request,
                                 Integer id,
                                 String name,
                                 String address,
@@ -270,6 +278,8 @@ public class PropertysController extends CommonController {
                     propertyInfoService.create(propertyInfo);
                 }
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "楼盘 " + propertys.getName() + "，该楼盘属于地产 " + propertysService.getById(parentId).getName());
 
             return 1;
         } catch (Exception e) {

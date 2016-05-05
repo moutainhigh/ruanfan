@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.MessageDao;
 import com.sixmac.entity.Message;
 import com.sixmac.service.MessageService;
+import com.sixmac.service.OperatisService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private MessageDao messageDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Message> findAll() {
@@ -118,5 +123,21 @@ public class MessageServiceImpl implements MessageService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Message message = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除消息 " + message.getTitle());
+
+        messageDao.delete(message);
+    }
+
+    @Override
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        for (int id : ids) {
+            deleteById(request, id);
+        }
     }
 }

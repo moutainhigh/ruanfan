@@ -4,6 +4,7 @@ import com.sixmac.entity.Propertys;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,4 +29,6 @@ public interface PropertysService extends ICommonService<Propertys> {
 
     // 查询楼盘列表
     public Page<Propertys> pageChild(Integer pageNum, Integer pageSize);
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.FeedbackDao;
 import com.sixmac.entity.Feedback;
 import com.sixmac.service.FeedbackService;
+import com.sixmac.service.OperatisService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Autowired
     private FeedbackDao feedbackDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Feedback> findAll() {
@@ -105,5 +110,23 @@ public class FeedbackServiceImpl implements FeedbackService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Feedback feedback = getById(id);
+
+        operatisService.addOperatisInfo(request, "处理用户 " + feedback.getUser().getNickName() + " 的反馈");
+
+        feedbackDao.delete(feedback);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        for (int id : ids) {
+            deleteById(request, id);
+        }
     }
 }

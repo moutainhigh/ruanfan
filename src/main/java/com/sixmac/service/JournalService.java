@@ -4,6 +4,7 @@ import com.sixmac.entity.Journal;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,5 +19,7 @@ public interface JournalService extends ICommonService<Journal> {
     public List<Journal> iFindListByUserId(Integer userId);
 
     //查询新增日志
-    public  List<Journal> FindListNew();
+    public List<Journal> FindListNew();
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

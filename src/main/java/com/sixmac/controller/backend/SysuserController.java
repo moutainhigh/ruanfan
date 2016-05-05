@@ -3,7 +3,6 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Sysusers;
 import com.sixmac.service.OperatisService;
 import com.sixmac.service.RoleModulesService;
@@ -121,12 +120,10 @@ public class SysuserController extends CommonController {
 
     @RequestMapping("delete")
     @ResponseBody
-    public Integer delete(HttpServletRequest request, HttpServletResponse response, Integer id) {
+    public Integer delete(HttpServletRequest request, Integer id) {
         if (id != null) {
             sysusersService.deleteById(request, id);
             return 1;
-        } else {
-            WebUtil.printJson(response, new Result(false).msg("管理人员不存在"));
         }
         return 0;
     }

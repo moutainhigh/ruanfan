@@ -3,20 +3,19 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Producttype;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.ProducttypeService;
-import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -31,8 +30,11 @@ public class ProductTypeController extends CommonController {
     @Autowired
     private ProducttypeService producttypeService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/商品种类";
     }
 
@@ -64,9 +66,9 @@ public class ProductTypeController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer productTypeId) {
+    public Integer delete(HttpServletRequest request, Integer productTypeId) {
         try {
-            producttypeService.deleteById(productTypeId);
+            producttypeService.deleteById(request, productTypeId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +87,7 @@ public class ProductTypeController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
+    public Integer save(HttpServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
         try {
             Producttype producttype = null;
 
@@ -109,6 +111,8 @@ public class ProductTypeController extends CommonController {
             } else {
                 producttypeService.create(producttype);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "商品种类 " + producttype.getName());
 
             return 1;
         } catch (Exception e) {

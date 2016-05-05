@@ -8,20 +8,6 @@
     <meta name="author" content="">
     <title>商品管理</title>
     <%@ include file="inc/css.jsp" %>
-    <style type="text/css">
-        /*模块拖拽*/
-        .drag {
-            position: absolute;
-            width: 150px;
-            height: 30px;
-            border: 1px solid #ddd;
-            background: #FBF2BD;
-            text-align: center;
-            padding: 5px;
-            opacity: 0.7;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 <body>
 
@@ -93,7 +79,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">用户:</label>
                                 <div class="col-sm-3" style="padding-top: 6.5px;">
-                                    ${orders.user.mobile}
+                                    <c:if test="${orders.user.mobile eq null}">
+                                        ${orders.user.nickName}
+                                    </c:if>
+                                    <c:if test="${orders.user.mobile ne null}">
+                                        ${orders.user.mobile}
+                                    </c:if>
                                 </div>
                             </div>
 

@@ -3,8 +3,8 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Vrcustom;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.VrcustomService;
-import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +26,21 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "backend/vrcustom")
-public class VrcustomController extends CommonController{
+public class VrcustomController extends CommonController {
 
     @Autowired
     private VrcustomService vrcustomService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping(value = "/index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/VR虚拟设计列表";
     }
 
     @RequestMapping(value = "/list")
     public void list(HttpServletResponse response,
-                     HttpServletRequest request,
                      Integer draw,
                      Integer start,
                      Integer length) {
@@ -53,10 +55,10 @@ public class VrcustomController extends CommonController{
     }
 
     @RequestMapping(value = "/add")
-    public String add(ModelMap model,Integer id) {
-        if(id != null) {
+    public String add(ModelMap model, Integer id) {
+        if (id != null) {
             Vrcustom vrcustom = vrcustomService.getById(id);
-            model.addAttribute("vrcustom",vrcustom);
+            model.addAttribute("vrcustom", vrcustom);
         }
 
         return "backend/新增VR虚拟设计";
@@ -64,9 +66,9 @@ public class VrcustomController extends CommonController{
 
     @RequestMapping(value = "/delete")
     @ResponseBody
-    public Integer delte(Integer id) {
+    public Integer delete(HttpServletRequest request, Integer id) {
         try {
-            vrcustomService.deleteById(id);
+            vrcustomService.deleteById(request, id);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,7 +79,6 @@ public class VrcustomController extends CommonController{
     @RequestMapping(value = "/save")
     @ResponseBody
     public Integer save(HttpServletRequest request,
-                        HttpServletResponse response,
                         Integer id,
                         String urls,
                         MultipartRequest multipartRequest) {
@@ -104,9 +105,12 @@ public class VrcustomController extends CommonController{
             } else {
                 vrcustomService.update(vrcustom);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "id为 " + vrcustom.getId() + " 的VR虚拟设计");
+
             return 1;
-        }catch (Exception e) {
-        e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return 0;
     }

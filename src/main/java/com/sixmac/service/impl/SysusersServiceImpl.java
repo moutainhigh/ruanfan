@@ -72,15 +72,9 @@ public class SysusersServiceImpl implements SysusersService {
     @Override
     @Transactional
     public void deleteAll(HttpServletRequest request, int[] ids) {
-        // 拼接管理员账号
-        StringBuffer sb = new StringBuffer("");
         for (int id : ids) {
-            sb.append(sysusersDao.findOne(id).getAccount() + "、");
+            deleteById(request, id);
         }
-
-        operatisService.addOperatisInfo(request, "批量删除管理员 " + sb.toString().substring(0, sb.toString().length() - 1));
-
-        deleteAll(ids);
     }
 
     @Override

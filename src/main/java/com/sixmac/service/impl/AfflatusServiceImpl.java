@@ -8,6 +8,7 @@ import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.AfflatusService;
+import com.sixmac.service.OperatisService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,9 @@ public class AfflatusServiceImpl implements AfflatusService {
 
     @Autowired
     private ImageDao imageDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Afflatus> findAll() {
@@ -241,12 +246,20 @@ public class AfflatusServiceImpl implements AfflatusService {
 
     @Override
     @Transactional
-    public void changeCheck(Integer afflatusId, Integer status, String reason) {
+    public void changeCheck(HttpServletRequest request, Integer afflatusId, Integer status, String reason) {
         Afflatus afflatus = afflatusDao.findOne(afflatusId);
         afflatus.setStatus(status);
 
         // 修改审核状态
         afflatusDao.save(afflatus);
+
+        if (afflatus.getType() == 1) {
+            // 单图
+            operatisService.addOperatisInfo(request, "id为 " + afflatus.getId() + " 的灵感单图" + (status == 1 ? "审核通过" : "审核不通过"));
+        } else {
+            // 套图
+            operatisService.addOperatisInfo(request, "灵感套图 " + afflatus.getName() + (status == 1 ? " 审核通过" : " 审核不通过"));
+        }
 
         // 添加系统消息
         Messageplus message = new Messageplus();

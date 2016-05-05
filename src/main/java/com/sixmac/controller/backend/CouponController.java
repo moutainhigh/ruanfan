@@ -6,7 +6,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.entity.Coupon;
 import com.sixmac.entity.Usercoupon;
 import com.sixmac.service.CouponService;
-import com.sixmac.utils.ImageUtil;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
@@ -34,8 +35,11 @@ public class CouponController extends CommonController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/范票列表";
     }
 
@@ -81,12 +85,14 @@ public class CouponController extends CommonController {
      */
     @RequestMapping("/changeCheck")
     @ResponseBody
-    public Integer changeCheck(Integer couponId, Integer isCheck) {
+    public Integer changeCheck(HttpServletRequest request, Integer couponId, Integer isCheck) {
         try {
             Coupon coupon = couponService.getById(couponId);
             coupon.setIsCheck(isCheck);
 
             couponService.update(coupon);
+
+            operatisService.addOperatisInfo(request, "范票 " + coupon.getName() + (1 == isCheck ? " 审核通过" : " 审核不通过"));
 
             return 1;
         } catch (Exception e) {
@@ -103,7 +109,7 @@ public class CouponController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer couponId) {
+    public Integer delete(HttpServletRequest request, Integer couponId) {
         try {
             List<Usercoupon> list = couponService.findListByCouponId(couponId);
 
@@ -111,7 +117,7 @@ public class CouponController extends CommonController {
                 return -1;
             }
 
-            couponService.deleteById(couponId);
+            couponService.deleteById(request, couponId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,7 +141,7 @@ public class CouponController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request,
+    public Integer save(HttpServletRequest request,
                         Integer id,
                         String name,
                         String money,
@@ -178,6 +184,8 @@ public class CouponController extends CommonController {
             } else {
                 couponService.update(coupon);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "优惠券 " + coupon.getName());
 
             return 1;
         } catch (Exception e) {

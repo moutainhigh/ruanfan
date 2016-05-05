@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.CustomDao;
 import com.sixmac.entity.Custom;
 import com.sixmac.service.CustomService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public class CustomServiceImpl implements CustomService {
 
     @Autowired
     private CustomDao customDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Custom> findAll() {
@@ -75,5 +80,14 @@ public class CustomServiceImpl implements CustomService {
     @Override
     public Custom findOneByHot() {
         return customDao.findOneByHot();
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Custom custom = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除在线定制楼盘 " + custom.getName());
+
+        customDao.delete(custom);
     }
 }

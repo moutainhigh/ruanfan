@@ -3,16 +3,12 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
-import com.sixmac.core.bean.Result;
-import com.sixmac.entity.Comment;
-import com.sixmac.entity.Gams;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Journal;
 import com.sixmac.service.CommentService;
 import com.sixmac.service.GamsService;
 import com.sixmac.service.ImageService;
 import com.sixmac.service.JournalService;
-import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,18 +45,16 @@ public class JournalController extends CommonController {
     private ImageService imageService;
 
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/日志列表";
     }
 
     @RequestMapping(value = "/list")
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      Integer userId,
                      Integer draw,
                      Integer start,
-                     Integer length
-    ) {
+                     Integer length) {
         if (null == start || start == 0) {
             start = 1;
         }
@@ -107,12 +101,11 @@ public class JournalController extends CommonController {
 
     @RequestMapping(value = "/delete")
     @ResponseBody
-    public Integer delete(HttpServletResponse response, Integer id) {
+    public Integer delete(HttpServletRequest request, Integer id) {
         if (id != null) {
-            journalService.deleteById(id);
+            journalService.deleteById(request, id);
+
             return 1;
-        } else {
-            WebUtil.printJson(response, new Result(false).msg("不存在"));
         }
         return 0;
     }

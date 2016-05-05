@@ -9,6 +9,7 @@ import com.sixmac.entity.Comment;
 import com.sixmac.entity.Replys;
 import com.sixmac.entity.Report;
 import com.sixmac.service.CommentService;
+import com.sixmac.service.OperatisService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private ReportDao reportDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Comment> findAll() {
@@ -191,5 +196,26 @@ public class CommentServiceImpl implements CommentService {
         }
 
         return page;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        // 先删除评论回复，再删除与该评论相关的举报信息，然后删除评论消息
+        List<Replys> replysList = replysDao.findListByCommentId(id);
+        for (Replys replys : replysList) {
+            replysDao.delete(replys.getId());
+        }
+
+        List<Report> reportList = reportDao.findListByCommentId(id);
+        for (Report report : reportList) {
+            reportDao.delete(report.getId());
+        }
+
+        Comment comment = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除用户 " + (null == comment.getUser().getNickName() ? comment.getUser().getMobile() : comment.getUser().getNickName()) + " 的评论");
+
+        commentDao.delete(comment);
     }
 }

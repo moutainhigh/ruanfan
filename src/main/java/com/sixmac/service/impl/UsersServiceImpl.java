@@ -4,6 +4,7 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.*;
 import com.sixmac.entity.*;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,9 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private AttentionsDao attentionsDao;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @Override
     public List<Users> findAll() {
         return usersDao.findAll();
@@ -79,12 +83,21 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    @Transactional
     public Users deleteById(int id) {
         Users users = getById(id);
         users.setStatus(Constant.BANNED_STATUS_NO);
         usersDao.save(users);
         return users;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Users users = getById(id);
+        users.setStatus(Constant.BANNED_STATUS_NO);
+        usersDao.save(users);
+
+        operatisService.addOperatisInfo(request, "删除用户 " + users.getNickName());
     }
 
     @Override
@@ -295,6 +308,13 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public List<Users> findListNew() {
         return usersDao.findListNew(CommonController.getOldDate());
+    }
+
+    @Override
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        for (int id : ids) {
+            deleteById(request, id);
+        }
     }
 
     // 将登录人的信息放入session中

@@ -172,10 +172,10 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<button type='button' title='推荐到MALL' class='btn btn-info btn-circle editHot'>" +
+                            "defaultContent": /*"<button type='button' title='推荐到MALL' class='btn btn-info btn-circle editHot'>" +
                             "<i class='fa fa-recycle'></i>" +
                             "</button>" +
-                            "&nbsp;&nbsp;" +
+                            "&nbsp;&nbsp;" +*/
                             "<a title='编辑' class='btn btn-primary btn-circle edit'>" +
                             "<i class='fa fa-edit'></i>" +
                             "</a>" +

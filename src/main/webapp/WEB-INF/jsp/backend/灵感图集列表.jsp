@@ -217,14 +217,12 @@
                             "<i class='fa fa-eye'></i>" +
                             "</a>" +
                             "&nbsp;&nbsp;" +
-                            "<button type='button' title='转为虚拟体验' class='btn btn-info btn-circle delete'>" +
+                            "<button type='button' title='转为虚拟体验' style='margin-right: 10px;' class='btn btn-info btn-circle delete'>" +
                             "<i class='fa fa-recycle'></i>" +
                             "</button>" +
-                            "&nbsp;&nbsp;" +
                             "<button type='button' title='审核通过' style='display: none' class='btn btn-primary btn-circle checkyes'>" +
                             "<i class='fa fa-check'></i>" +
                             "</button>" +
-                            "&nbsp;&nbsp;" +
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'>" +
                             "<i class='fa fa-close'></i>" +

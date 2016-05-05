@@ -4,14 +4,15 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Areas;
 import com.sixmac.service.AreasService;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -26,8 +27,11 @@ public class AfflatusAreaController extends CommonController {
     @Autowired
     private AreasService areasService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/灵感图区域";
     }
 
@@ -59,9 +63,9 @@ public class AfflatusAreaController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer afflatusAreaId) {
+    public Integer delete(HttpServletRequest request, Integer afflatusAreaId) {
         try {
-            areasService.deleteById(afflatusAreaId);
+            areasService.deleteById(request, afflatusAreaId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +82,9 @@ public class AfflatusAreaController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id, String name) {
+    public Integer save(HttpServletRequest request,
+                        Integer id,
+                        String name) {
         try {
             Areas areas = null;
 
@@ -96,6 +102,8 @@ public class AfflatusAreaController extends CommonController {
             } else {
                 areasService.create(areas);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "灵感图区域 " + areas.getName());
 
             return 1;
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import com.sixmac.dao.AreasDao;
 import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Areas;
 import com.sixmac.service.AreasService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,6 +24,9 @@ public class AreasServiceImpl implements AreasService {
 
     @Autowired
     private AreasDao areasDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Areas> findAll() {
@@ -73,5 +78,14 @@ public class AreasServiceImpl implements AreasService {
         List<Afflatus> afflatusList = areasDao.iFindListByAreaId(areaId);
 
         return afflatusList.size();
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Areas areas = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除灵感图区域 " + areas.getName());
+
+        areasDao.delete(areas);
     }
 }

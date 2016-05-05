@@ -17,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -51,8 +52,11 @@ public class AfflatusController extends CommonController {
     @Autowired
     private VirtualsService virtualsService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/灵感图集列表";
     }
 
@@ -146,7 +150,8 @@ public class AfflatusController extends CommonController {
      */
     @RequestMapping(value = "/save")
     @ResponseBody
-    public Integer save(Integer id,
+    public Integer save(HttpServletRequest request,
+                        Integer id,
                         String name,
                         Integer type,
                         Integer styleId,
@@ -206,6 +211,13 @@ public class AfflatusController extends CommonController {
                     imageService.deleteById(Integer.parseInt(imageId));
                 }
             }
+            if (afflatus.getType() == 1) {
+                // 单图
+                operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "id为 " + afflatus.getId() + " 的灵感单图");
+            } else {
+                // 套图
+                operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "灵感套图 " + afflatus.getName());
+            }
 
             return 1;
         } catch (Exception e) {
@@ -223,7 +235,7 @@ public class AfflatusController extends CommonController {
      * @return
      */
     @RequestMapping("/addTempLabel")
-    public String addTempLabel(Integer id, ModelMap model) {
+    public String addTempLabel(HttpServletRequest request, Integer id, ModelMap model) {
         try {
             Image image = imageService.getById(id);
             // 查询标签信息
@@ -231,6 +243,15 @@ public class AfflatusController extends CommonController {
             model.put("imageInfo", image);
             model.put("objectType", Constant.LABEL_AFFLATUS);
             model.put("labelList", JSONArray.fromObject(labelList.size() == 0 ? null : labelList));
+
+            Afflatus afflatus = afflatusService.getById(image.getObjectId());
+            if (afflatus.getType() == 1) {
+                // 单图
+                operatisService.addOperatisInfo(request, "增加id为 " + afflatus.getId() + " 的灵感单图图片锚点");
+            } else {
+                // 套图
+                operatisService.addOperatisInfo(request, "增加灵感套图 " + afflatus.getName() + " 图片锚点");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -246,7 +267,7 @@ public class AfflatusController extends CommonController {
      */
     @RequestMapping("/changeVR")
     @ResponseBody
-    public Integer changeVR(Integer afflatusId, Integer typeId) {
+    public Integer changeVR(HttpServletRequest request, Integer afflatusId, Integer typeId) {
         try {
             // 根据灵感集id获取灵感集详情
             Afflatus afflatus = afflatusService.getById(afflatusId);
@@ -264,6 +285,15 @@ public class AfflatusController extends CommonController {
             // 保存虚拟体验信息
             virtualsService.create(virtuals);
 
+
+            if (afflatus.getType() == 1) {
+                // 单图
+                operatisService.addOperatisInfo(request, "将id为 " + afflatus.getId() + " 的灵感单图转化为虚拟体验");
+            } else {
+                // 套图
+                operatisService.addOperatisInfo(request, "将灵感套图 " + afflatus.getName() + " 转化为虚拟体验");
+            }
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,11 +309,19 @@ public class AfflatusController extends CommonController {
      */
     @RequestMapping("/changeAuth")
     @ResponseBody
-    public Integer changeAuth(Integer afflatusId) {
+    public Integer changeAuth(HttpServletRequest request, Integer afflatusId) {
         try {
             Afflatus afflatus = afflatusService.getById(afflatusId);
             afflatus.setIsAuth(Constant.AUTH_STATUS_YES);
             afflatusService.update(afflatus);
+
+            if (afflatus.getType() == 1) {
+                // 单图
+                operatisService.addOperatisInfo(request, "认证id为 " + afflatus.getId() + " 的灵感单图");
+            } else {
+                // 套图
+                operatisService.addOperatisInfo(request, "认证灵感套图 " + afflatus.getName());
+            }
 
             return 1;
         } catch (Exception e) {
@@ -301,9 +339,9 @@ public class AfflatusController extends CommonController {
      */
     @RequestMapping("/changeCheck")
     @ResponseBody
-    public Integer changeCheck(Integer afflatusId, Integer status, String reason) {
+    public Integer changeCheck(HttpServletRequest request, Integer afflatusId, Integer status, String reason) {
         try {
-            afflatusService.changeCheck(afflatusId, status, reason);
+            afflatusService.changeCheck(request, afflatusId, status, reason);
 
             return 1;
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.BannerDao;
 import com.sixmac.entity.Banner;
 import com.sixmac.service.BannerService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public class BannerServiceImpl implements BannerService {
 
     @Autowired
     private BannerDao bannerDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Banner> findAll() {
@@ -65,5 +70,14 @@ public class BannerServiceImpl implements BannerService {
         for (int id : ids) {
             deleteById(id);
         }
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Banner banner = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除id为 " + banner.getId() + " 的广告banner");
+
+        bannerDao.delete(banner);
     }
 }

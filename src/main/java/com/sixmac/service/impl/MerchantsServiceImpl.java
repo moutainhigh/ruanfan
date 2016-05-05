@@ -230,4 +230,20 @@ public class MerchantsServiceImpl implements MerchantsService {
     public List<Merchants> findListWithSuccess() {
         return merchantsDao.findListWithSuccess();
     }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Merchants merchants = getById(id);
+        merchants.setIsCut(Constant.IS_CUT_YES);
+        merchantsDao.save(merchants);
+
+        operatisService.addOperatisInfo(request, "删除商户 " + merchants.getNickName());
+    }
+
+    @Override
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        for (int id : ids) {
+            deleteById(request, id);
+        }
+    }
 }

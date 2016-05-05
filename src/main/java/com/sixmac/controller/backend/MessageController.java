@@ -2,9 +2,9 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
-import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Message;
 import com.sixmac.service.MessageService;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
 /**
- * Created by yesong on 2016/3/28 0028.
- * 书籍管理
+ * 消息管理
  */
 @Controller
 @RequestMapping(value = "backend/message")
 public class MessageController extends CommonController {
 
     @Autowired
-    private MessageService service;
+    private MessageService messageService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
@@ -46,7 +48,7 @@ public class MessageController extends CommonController {
                      Integer length) {
         int pageNum = getPageNum(start, length);
 
-        Page<Message> page = service.page(title, type, description, pageNum, length);
+        Page<Message> page = messageService.page(title, type, description, pageNum, length);
 
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
@@ -56,7 +58,7 @@ public class MessageController extends CommonController {
     public String add(ModelMap model, Integer id) {
         // 如果id不为空，则代表编辑
         if (null != id) {
-            Message message = service.getById(id);
+            Message message = messageService.getById(id);
             model.addAttribute("message", message);
         }
 
@@ -65,13 +67,18 @@ public class MessageController extends CommonController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Integer save(Integer id, String title, String types, String des, String description) {
+    public Integer save(HttpServletRequest request,
+                        Integer id,
+                        String title,
+                        String types,
+                        String des,
+                        String description) {
         try {
             Message message = null;
             if (id == null) {
                 message = new Message();
             } else {
-                message = service.getById(id);
+                message = messageService.getById(id);
             }
 
             message.setTitle(title);
@@ -81,11 +88,13 @@ public class MessageController extends CommonController {
 
             if (null == id) {
                 message.setCreateTime(new Date());
-                service.create(message);
+                messageService.create(message);
             } else {
                 message.setUpdateTime(new Date());
-                service.update(message);
+                messageService.update(message);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "消息 " + message.getTitle());
 
             return 1;
         } catch (Exception e) {
@@ -96,23 +105,22 @@ public class MessageController extends CommonController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(ServletRequest request, HttpServletResponse response, Integer id) {
+    public Integer delete(HttpServletRequest request, Integer id) {
         if (id != null) {
-            service.deleteById(id);
+            messageService.deleteById(request, id);
+
             return 1;
-        } else {
-            WebUtil.printJson(response, new Result(false).msg("日志不存在"));
         }
         return 0;
     }
 
     @RequestMapping("/batchDel")
     @ResponseBody
-    public Integer batchDel(String ids) {
+    public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             // 将界面上的id数组格式的字符串解析成int类型的数组
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
-            service.deleteAll(arrayId);
+            messageService.deleteAll(request, arrayId);
 
             return 1;
         } catch (Exception e) {

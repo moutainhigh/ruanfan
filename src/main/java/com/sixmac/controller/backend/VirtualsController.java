@@ -4,10 +4,10 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.entity.Virtuals;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.StylesService;
 import com.sixmac.service.VirtualsService;
 import com.sixmac.service.VrtypeService;
-import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -40,8 +40,11 @@ public class VirtualsController extends CommonController {
     @Autowired
     private VrtypeService vrtypeService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/虚拟体验列表";
     }
 
@@ -81,11 +84,13 @@ public class VirtualsController extends CommonController {
      */
     @RequestMapping("/changeAuth")
     @ResponseBody
-    public Integer changeAuth(Integer virtualId) {
+    public Integer changeAuth(HttpServletRequest request, Integer virtualId) {
         try {
             Virtuals virtuals = virtualsService.getById(virtualId);
             virtuals.setIsAuth(Constant.AUTH_STATUS_YES);
             virtualsService.update(virtuals);
+
+            operatisService.addOperatisInfo(request, "认证VR虚拟 " + virtuals.getName());
 
             return 1;
         } catch (Exception e) {
@@ -102,9 +107,9 @@ public class VirtualsController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer virtualId) {
+    public Integer delete(HttpServletRequest request, Integer virtualId) {
         try {
-            virtualsService.deleteById(virtualId);
+            virtualsService.deleteById(request, virtualId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +129,14 @@ public class VirtualsController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(Integer id, Integer styleId, Integer typeId, String name, String labels, String url, MultipartRequest multipartRequest) {
+    public Integer save(HttpServletRequest request,
+                        Integer id,
+                        Integer styleId,
+                        Integer typeId,
+                        String name,
+                        String labels,
+                        String url,
+                        MultipartRequest multipartRequest) {
         try {
             Virtuals virtuals = null;
 
@@ -154,6 +166,8 @@ public class VirtualsController extends CommonController {
                 virtuals.setCreateTime(new Date());
                 virtualsService.create(virtuals);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "VR虚拟 " + virtuals.getName());
 
             return 1;
         } catch (Exception e) {

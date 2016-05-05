@@ -5,6 +5,7 @@ import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface AfflatusService extends ICommonService<Afflatus> {
     public List<BeanVo> iFindLoveList(Integer afflatusId, Integer type, Integer styleId, Integer areaId);
 
     // 审核灵感集
-    public void changeCheck(Integer afflatusId, Integer status, String reason);
+    public void changeCheck(HttpServletRequest request, Integer afflatusId, Integer status, String reason);
 
     // 根据设计师id查询对应的灵感集列表
     public List<Afflatus> findListByDesignerId(Integer designerId);

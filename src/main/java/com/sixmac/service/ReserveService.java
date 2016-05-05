@@ -4,6 +4,7 @@ import com.sixmac.entity.Reserve;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public interface ReserveService extends ICommonService<Reserve> {
     public Page<Reserve> page(String name, String mobile, String email, String nickName, Integer status, int pageNum, int pageSize);
 
     // 批量确认联系
-    public void batchConfirm(int[] ids, String reserveTime, String reserveAddress);
+    public void batchConfirm(HttpServletRequest request, int[] ids, String reserveTime, String reserveAddress);
 
     //查询预约列表
     public List<Reserve> findListNew();

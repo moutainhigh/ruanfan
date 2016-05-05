@@ -25,10 +25,10 @@ import java.util.Map;
 public class ReserveController extends CommonController {
 
     @Autowired
-    private ReserveService reserveServicee;
+    private ReserveService reserveService;
 
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/预约列表";
     }
 
@@ -42,36 +42,36 @@ public class ReserveController extends CommonController {
                      Integer status,
                      Integer draw,
                      Integer start,
-        Integer length) {
-            if (null == start || start == 0) {
-                start = 1;
-            }
-            int pageNum = getPageNum(start, length);
-            Page<Reserve> page = reserveServicee.page(name, mobile, email, nickName, status, pageNum, length);
-
-            Map<String, Object> result = DataTableFactory.fitting(draw, page);
-            WebUtil.printJson(response, result);
+                     Integer length) {
+        if (null == start || start == 0) {
+            start = 1;
         }
+        int pageNum = getPageNum(start, length);
+        Page<Reserve> page = reserveService.page(name, mobile, email, nickName, status, pageNum, length);
 
-        @RequestMapping(value = "/detail")
-        public String detail(ModelMap model, Integer id) {
-            // 如果id不为空，则代表编辑
-            if (null != id) {
-                Reserve reserve = reserveServicee.getById(id);
-                model.addAttribute("reserve", reserve);
-            }
+        Map<String, Object> result = DataTableFactory.fitting(draw, page);
+        WebUtil.printJson(response, result);
+    }
+
+    @RequestMapping(value = "/detail")
+    public String detail(ModelMap model, Integer id) {
+        // 如果id不为空，则代表编辑
+        if (null != id) {
+            Reserve reserve = reserveService.getById(id);
+            model.addAttribute("reserve", reserve);
+        }
 
         return "backend/预约详情";
     }
 
     @RequestMapping("/batchConfirm")
     @ResponseBody
-    public Integer batchConfirm(String ids, String reserveTime, String reserveAddress) {
+    public Integer batchConfirm(HttpServletRequest request, String ids, String reserveTime, String reserveAddress) {
         try {
             // 将界面上的id数组格式的字符串解析成int类型的数组
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
 
-            reserveServicee.batchConfirm(arrayId, reserveTime, reserveAddress);
+            reserveService.batchConfirm(request, arrayId, reserveTime, reserveAddress);
 
             return 1;
         } catch (Exception e) {

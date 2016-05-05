@@ -4,6 +4,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.ProducttypeDao;
 import com.sixmac.entity.Products;
 import com.sixmac.entity.Producttype;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.ProducttypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,6 +24,9 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 
     @Autowired
     private ProducttypeDao producttypeDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Producttype> findAll() {
@@ -71,5 +76,14 @@ public class ProducttypeServiceImpl implements ProducttypeService {
     @Override
     public List<Products> findProductListByProductTypeId(Integer productTypeId) {
         return producttypeDao.findProductListByProductTypeId(productTypeId);
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Producttype producttype = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除商品种类 " + producttype.getName());
+
+        producttypeDao.delete(producttype);
     }
 }

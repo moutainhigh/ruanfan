@@ -7,7 +7,10 @@ import com.sixmac.entity.Designers;
 import com.sixmac.service.CityService;
 import com.sixmac.service.DesignersService;
 import com.sixmac.service.OperatisService;
-import com.sixmac.utils.*;
+import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.Md5Util;
+import com.sixmac.utils.QiNiuUploadImgUtil;
+import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -154,9 +156,7 @@ public class DesignerController extends CommonController {
     @ResponseBody
     public Integer delete(HttpServletRequest request, Integer designerId) {
         try {
-            designersService.deleteById(designerId);
-
-            operatisService.addOperatisInfo(request, "删除设计师 " + designersService.getById(designerId).getNickName());
+            designersService.deleteById(request, designerId);
 
             return 1;
         } catch (Exception e) {

@@ -4,7 +4,7 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Banner;
 import com.sixmac.service.BannerService;
-import com.sixmac.utils.ImageUtil;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -31,8 +31,11 @@ public class BannerController extends CommonController {
     @Autowired
     private BannerService bannerService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping("index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/广告banner列表";
     }
 
@@ -70,9 +73,9 @@ public class BannerController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer bannerId) {
+    public Integer delete(HttpServletRequest request, Integer bannerId) {
         try {
-            bannerService.deleteById(bannerId);
+            bannerService.deleteById(request, bannerId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +95,7 @@ public class BannerController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request,
+    public Integer save(HttpServletRequest request,
                         Integer id,
                         Integer typeId,
                         Integer sourceId,
@@ -121,6 +124,8 @@ public class BannerController extends CommonController {
             } else {
                 bannerService.update(banner);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "id为 " + banner.getId() + " 的广告banner");
 
             return 1;
         } catch (Exception e) {

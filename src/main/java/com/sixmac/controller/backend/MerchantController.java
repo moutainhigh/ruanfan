@@ -8,7 +8,10 @@ import com.sixmac.service.CityService;
 import com.sixmac.service.MerchantsService;
 import com.sixmac.service.OperatisService;
 import com.sixmac.service.StylesService;
-import com.sixmac.utils.*;
+import com.sixmac.utils.JsonUtil;
+import com.sixmac.utils.Md5Util;
+import com.sixmac.utils.QiNiuUploadImgUtil;
+import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -133,9 +135,7 @@ public class MerchantController extends CommonController {
     @ResponseBody
     public Integer delete(HttpServletRequest request, Integer merchantId) {
         try {
-            merchantsService.deleteById(merchantId);
-
-            operatisService.addOperatisInfo(request, "删除商户 " + merchantsService.getById(merchantId).getNickName());
+            merchantsService.deleteById(request,merchantId);
 
             return 1;
         } catch (Exception e) {
@@ -155,15 +155,7 @@ public class MerchantController extends CommonController {
     public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
-            merchantsService.deleteAll(arrayId);
-
-            // 拼接商户昵称
-            StringBuffer sb = new StringBuffer("");
-            for (int id : arrayId) {
-                sb.append(merchantsService.getById(id).getNickName() + "、");
-            }
-
-            operatisService.addOperatisInfo(request, "批量删除商户 " + sb.toString().substring(0, sb.toString().length() - 1));
+            merchantsService.deleteAll(request, arrayId);
 
             return 1;
         } catch (Exception e) {

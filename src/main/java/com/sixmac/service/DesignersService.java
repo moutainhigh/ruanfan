@@ -35,5 +35,7 @@ public interface DesignersService extends ICommonService<Designers> {
     // 查询合格的设计师列表
     public List<Designers> findListWithSuccess();
 
+    public void deleteById(HttpServletRequest request,Integer id);
+
     public void deleteAll(HttpServletRequest request, int[] ids);
 }

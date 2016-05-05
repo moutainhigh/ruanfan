@@ -5,6 +5,7 @@ import com.sixmac.core.Constant;
 import com.sixmac.dao.JournalDao;
 import com.sixmac.entity.Journal;
 import com.sixmac.service.JournalService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class JournalServiceImpl implements JournalService {
 
     @Autowired
     private JournalDao journalDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Journal> findAll() {
@@ -110,5 +115,14 @@ public class JournalServiceImpl implements JournalService {
     @Override
     public List<Journal> FindListNew() {
         return journalDao.findListNew(CommonController.getOldDate());
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Journal journal = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除用户 " + (null == journal.getUser().getNickName() ? journal.getUser().getMobile() : journal.getUser().getNickName()) + " 的日志");
+
+        journalDao.delete(journal);
     }
 }

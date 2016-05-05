@@ -4,7 +4,7 @@ import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Brand;
 import com.sixmac.service.BrandService;
-import com.sixmac.utils.ImageUtil;
+import com.sixmac.service.OperatisService;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
@@ -30,6 +30,9 @@ public class BrandController extends CommonController {
 
     @Autowired
     private BrandService brandService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping("index")
     public String index(ModelMap model) {
@@ -64,9 +67,9 @@ public class BrandController extends CommonController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer brandId) {
+    public Integer delete(HttpServletRequest request, Integer brandId) {
         try {
-            brandService.deleteById(brandId);
+            brandService.deleteById(request, brandId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +88,7 @@ public class BrandController extends CommonController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
+    public Integer save(HttpServletRequest request, Integer id, String name, MultipartRequest multipartRequest) {
         try {
             Brand brand = null;
 
@@ -109,6 +112,8 @@ public class BrandController extends CommonController {
             } else {
                 brandService.create(brand);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "品牌分类 " + brand.getName());
 
             return 1;
         } catch (Exception e) {

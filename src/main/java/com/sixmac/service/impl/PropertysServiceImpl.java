@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.PropertysDao;
 import com.sixmac.entity.Propertys;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.PropertysService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class PropertysServiceImpl implements PropertysService {
 
     @Autowired
     private PropertysDao propertysDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Propertys> findAll() {
@@ -219,5 +224,20 @@ public class PropertysServiceImpl implements PropertysService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Propertys propertys = getById(id);
+
+        if (propertys.getParentId() == 0) {
+            // parentId为0，代表是地产，此时直接删除
+            operatisService.addOperatisInfo(request, "删除地产 " + propertys.getName());
+        } else {
+            Propertys parentProperty = propertysDao.findOne(propertys.getParentId());
+            operatisService.addOperatisInfo(request, "删除地产 " + parentProperty.getName() + " 下的楼盘 " + propertys.getName());
+        }
+
+        propertysDao.delete(propertys);
     }
 }

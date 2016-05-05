@@ -4,6 +4,7 @@ import com.sixmac.entity.Message;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,4 +19,8 @@ public interface MessageService extends ICommonService<Message> {
     public Page<Message> pageByType(String type, Integer pageNum, Integer pageSize);
 
     public Page<Message> page(String title, String type, String description, int pageNum, int pageSize);
+
+    public void deleteById(HttpServletRequest request, Integer id);
+
+    public void deleteAll(HttpServletRequest request, int[] ids);
 }

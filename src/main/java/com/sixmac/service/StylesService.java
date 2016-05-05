@@ -4,6 +4,7 @@ import com.sixmac.entity.Products;
 import com.sixmac.entity.Styles;
 import com.sixmac.service.common.ICommonService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,4 +17,6 @@ public interface StylesService extends ICommonService<Styles> {
 
     // 获取第一个风格信息
     public Styles getFirstStyle();
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

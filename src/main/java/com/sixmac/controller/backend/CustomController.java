@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -46,8 +46,11 @@ public class CustomController extends CommonController {
     @Autowired
     private LabelService labelService;
 
+    @Autowired
+    private OperatisService operatisService;
+
     @RequestMapping(value = "/index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/定制楼盘列表";
     }
 
@@ -90,7 +93,7 @@ public class CustomController extends CommonController {
      * @return
      */
     @RequestMapping("/addTempLabel")
-    public String addTempLabel(Integer id, ModelMap model) {
+    public String addTempLabel(HttpServletRequest request, Integer id, ModelMap model) {
         try {
             Image image = imageService.getById(id);
             // 查询标签信息
@@ -98,6 +101,8 @@ public class CustomController extends CommonController {
             model.put("imageInfo", image);
             model.put("objectType", Constant.LABEL_CUSTOMPACKAGE);
             model.put("labelList", JSONArray.fromObject(labelList.size() == 0 ? null : labelList));
+
+            operatisService.addOperatisInfo(request, "增加在线定制套餐图 " + custompackagesService.getById(image.getObjectId()).getName() + " 图片锚点");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,9 +111,9 @@ public class CustomController extends CommonController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public Integer delete(Integer customId) {
+    public Integer delete(HttpServletRequest request, Integer customId) {
         try {
-            customService.deleteById(customId);
+            customService.deleteById(request, customId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,9 +123,9 @@ public class CustomController extends CommonController {
 
     @RequestMapping("/deleteChild")
     @ResponseBody
-    public Integer deleteChild(Integer customInfoId) {
+    public Integer deleteChild(HttpServletRequest request, Integer customInfoId) {
         try {
-            custominfoService.deleteById(customInfoId);
+            custominfoService.deleteById(request, customInfoId);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +135,10 @@ public class CustomController extends CommonController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Integer save(ServletRequest request, Integer id, String productName, MultipartRequest multipartRequest) {
+    public Integer save(HttpServletRequest request,
+                        Integer id,
+                        String productName,
+                        MultipartRequest multipartRequest) {
         try {
             Custom custom = null;
 
@@ -154,6 +162,8 @@ public class CustomController extends CommonController {
                 custom.setCreateTime(new Date());
                 customService.create(custom);
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "在线定制楼盘 " + custom.getName());
 
             return 1;
         } catch (Exception e) {
@@ -202,7 +212,8 @@ public class CustomController extends CommonController {
 
     @RequestMapping("/addChildInfo")
     @ResponseBody
-    public Integer addChildInfo(Integer id,
+    public Integer addChildInfo(HttpServletRequest request,
+                                Integer id,
                                 Integer parentId,
                                 String name,
                                 String[] nameTemp,
@@ -218,7 +229,9 @@ public class CustomController extends CommonController {
                 custominfo = new Custominfo();
             }
 
-            custominfo.setCustom(customService.getById(parentId));
+            Custom custom = customService.getById(parentId);
+
+            custominfo.setCustom(custom);
             custominfo.setName(name);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
@@ -251,6 +264,8 @@ public class CustomController extends CommonController {
                     custompackagesService.create(custompackages);
                 }
             }
+
+            operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "在线定制楼盘 " + custom.getName() + " 下的户型 " + custominfo.getName());
 
             return 1;
         } catch (Exception e) {

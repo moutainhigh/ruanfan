@@ -4,6 +4,7 @@ import com.sixmac.entity.Comment;
 import com.sixmac.service.common.ICommonService;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,4 +29,6 @@ public interface CommentService extends ICommonService<Comment> {
 
     // 根据用户id查询列表
     public Page<Comment> page(Integer userId, int pageNum, int pageSize);
+
+    public void deleteById(HttpServletRequest request, Integer id);
 }

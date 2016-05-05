@@ -126,9 +126,7 @@ public class UsersController extends CommonController {
     @ResponseBody
     public Integer delete(HttpServletRequest request, Integer userId) {
         try {
-            usersService.deleteById(userId);
-
-            operatisService.addOperatisInfo(request, "删除用户 " + usersService.getById(userId).getNickName());
+            usersService.deleteById(request, userId);
 
             return 1;
         } catch (Exception e) {
@@ -148,15 +146,7 @@ public class UsersController extends CommonController {
     public Integer batchDel(HttpServletRequest request, String ids) {
         try {
             int[] arrayId = JsonUtil.json2Obj(ids, int[].class);
-            usersService.deleteAll(arrayId);
-
-            // 拼接用户昵称
-            StringBuffer sb = new StringBuffer("");
-            for (int id : arrayId) {
-                sb.append(usersService.getById(id).getNickName() + "、");
-            }
-
-            operatisService.addOperatisInfo(request, "批量删除用户 " + sb.toString().substring(0, sb.toString().length() - 1));
+            usersService.deleteAll(request, arrayId);
 
             return 1;
         } catch (Exception e) {

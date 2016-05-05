@@ -3,6 +3,7 @@ package com.sixmac.service;
 import com.sixmac.entity.Custom;
 import com.sixmac.service.common.ICommonService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -15,4 +16,6 @@ public interface CustomService extends ICommonService<Custom> {
 
     // 查询推荐楼盘信息
     public Custom findOneByHot();
+
+    public void deleteById(HttpServletRequest request,Integer id);
 }

@@ -9,6 +9,7 @@ import com.sixmac.entity.Afflatus;
 import com.sixmac.entity.Merchants;
 import com.sixmac.entity.Styles;
 import com.sixmac.entity.Virtuals;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.StylesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -36,6 +38,9 @@ public class StylesServiceImpl implements StylesService {
 
     @Autowired
     private VirtualsDao virtualsDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Styles> findAll() {
@@ -108,5 +113,14 @@ public class StylesServiceImpl implements StylesService {
             return list.get(0);
         }
         return null;
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Styles styles = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除风格分类 " + styles.getName());
+
+        stylesDao.delete(styles);
     }
 }

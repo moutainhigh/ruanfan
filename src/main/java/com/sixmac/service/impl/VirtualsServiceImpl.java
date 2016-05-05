@@ -3,6 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.VirtualsDao;
 import com.sixmac.entity.Virtuals;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.VirtualsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class VirtualsServiceImpl implements VirtualsService {
 
     @Autowired
     private VirtualsDao virtualsDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Virtuals> findAll() {
@@ -107,5 +112,14 @@ public class VirtualsServiceImpl implements VirtualsService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Virtuals virtuals = getById(id);
+
+        operatisService.addOperatisInfo(request, "认证VR虚拟 " + virtuals.getName());
+
+        virtualsDao.delete(virtuals);
     }
 }

@@ -6,6 +6,7 @@ import com.sixmac.dao.MagazineDao;
 import com.sixmac.entity.Image;
 import com.sixmac.entity.Magazine;
 import com.sixmac.service.MagazineService;
+import com.sixmac.service.OperatisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class MagazineServiceImpl implements MagazineService {
 
     @Autowired
     private ImageDao imageDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public List<Magazine> findAll() {
@@ -148,5 +153,22 @@ public class MagazineServiceImpl implements MagazineService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Magazine magazine = getById(id);
+
+        // 删除杂志对应的图片信息
+        List<Image> list = imageDao.iFindList(id, Constant.IMAGE_MAGAZINE);
+
+        for (Image image : list) {
+            imageDao.delete(image.getId());
+        }
+
+        operatisService.addOperatisInfo(request, "删除杂志 " + magazine.getName());
+
+        magazineDao.delete(magazine);
     }
 }

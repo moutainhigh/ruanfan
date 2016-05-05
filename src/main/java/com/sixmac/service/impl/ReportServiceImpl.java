@@ -4,6 +4,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.ReportDao;
 import com.sixmac.entity.Report;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.ReportService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private ReportDao reportDao;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @Override
     public Page<Report> page(final String userName, final String sourceName, Integer pageNum, Integer pageSize) {
@@ -61,6 +66,24 @@ public class ReportServiceImpl implements ReportService {
         }, pageRequest);
 
         return page;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Report report = getById(id);
+
+        operatisService.addOperatisInfo(request, "删除用户 " + report.getUser().getNickName() + " 的举报");
+
+        reportDao.delete(report);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll(HttpServletRequest request, int[] ids) {
+        for (int id : ids) {
+            deleteById(request, id);
+        }
     }
 
     @Override

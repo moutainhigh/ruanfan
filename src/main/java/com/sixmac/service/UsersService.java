@@ -49,4 +49,8 @@ public interface UsersService extends ICommonService<Users> {
 
     // 查询新增会员列表
     public List<Users> findListNew();
+
+    public void deleteById(HttpServletRequest request, Integer id);
+
+    public void deleteAll(HttpServletRequest request, int[] ids);
 }

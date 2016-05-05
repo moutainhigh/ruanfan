@@ -3,6 +3,7 @@ package com.sixmac.controller.backend;
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.entity.Singlepage;
+import com.sixmac.service.OperatisService;
 import com.sixmac.service.SinglepageService;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,40 +27,44 @@ import java.util.Map;
 public class SinglepageController extends CommonController {
 
     @Autowired
-    private SinglepageService singelpageservice;
+    private SinglepageService singlePageService;
+
+    @Autowired
+    private OperatisService operatisService;
 
     @RequestMapping(value = "index")
-    public String index(ModelMap model) {
+    public String index() {
         return "backend/单页列表";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public void list(HttpServletRequest request,
-                     HttpServletResponse response,
+    public void list(HttpServletResponse response,
                      String title,
                      String content,
                      Integer draw,
                      Integer start,
                      Integer length) {
-
         int pageNum = getPageNum(start, length);
 
-        Page<Singlepage> page = singelpageservice.page(title, content, pageNum, length);
+        Page<Singlepage> page = singlePageService.page(title, content, pageNum, length);
+
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Integer save(Integer id, String content) {
-
+    public Integer save(HttpServletRequest request, Integer id, String content) {
         try {
-            Singlepage singlepage = singelpageservice.getById(id);
+            Singlepage singlepage = singlePageService.getById(id);
 
             singlepage.setCreateTime(new Date());
             singlepage.setContent(content);
 
-            singelpageservice.update(singlepage);
+            singlePageService.update(singlepage);
+
+            operatisService.addOperatisInfo(request, "修改单页信息");
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +76,7 @@ public class SinglepageController extends CommonController {
     public String add(ModelMap model, Integer id) {
         // 如果id不为空，则代表编辑
         if (null != id) {
-            Singlepage singlepage = singelpageservice.getById(id);
+            Singlepage singlepage = singlePageService.getById(id);
             model.addAttribute("singlepage", singlepage);
         }
         return "backend/单页编辑";

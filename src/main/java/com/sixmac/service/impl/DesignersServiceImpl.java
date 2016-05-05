@@ -271,17 +271,18 @@ public class DesignersServiceImpl implements DesignersService {
     }
 
     @Override
+    public void deleteById(HttpServletRequest request, Integer id) {
+        Designers designers = getById(id);
+        designers.setIsCut(Constant.IS_CUT_YES);
+        designersDao.save(designers);
+
+        operatisService.addOperatisInfo(request, "删除设计师 " + designers.getNickName());
+    }
+
+    @Override
     public void deleteAll(HttpServletRequest request, int[] ids) {
-        // 拼接设计师昵称
-        StringBuffer sb = new StringBuffer("");
         for (int id : ids) {
-            sb.append(designersDao.findOne(id).getNickName() + "、");
-        }
-
-        operatisService.addOperatisInfo(request, "批量删除设计师 " + sb.toString().substring(0, sb.toString().length() - 1));
-
-        for (int id : ids) {
-            deleteById(id);
+            deleteById(request, id);
         }
     }
 }
