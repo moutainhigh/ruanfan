@@ -156,7 +156,7 @@ public class UsersApi extends CommonController {
             users.setPassword(password);
             users.setNickName(nickname);
             users.setCity(cityService.getById(1));
-            users.setScore(0);
+            users.setScore(100);
             users.setType(1);
             users.setStatus(0);
             users.setCreateTime(new Date());

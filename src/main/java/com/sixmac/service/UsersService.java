@@ -53,4 +53,7 @@ public interface UsersService extends ICommonService<Users> {
     public void deleteById(HttpServletRequest request, Integer id);
 
     public void deleteAll(HttpServletRequest request, int[] ids);
+
+    // 获取积分
+    public void getScore(Integer userId, Integer score);
 }

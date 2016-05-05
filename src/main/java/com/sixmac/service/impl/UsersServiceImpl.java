@@ -317,6 +317,17 @@ public class UsersServiceImpl implements UsersService {
         }
     }
 
+    @Override
+    public void getScore(Integer userId, Integer score) {
+        Users users = usersDao.findOne(userId);
+
+        if (null != users) {
+            users.setScore(users.getScore() + score);
+
+            usersDao.save(users);
+        }
+    }
+
     // 将登录人的信息放入session中
     private void putSession(HttpSession session, Integer id, String name, Integer type) {
         session.setAttribute(Constant.CURRENT_USER_ID, id);

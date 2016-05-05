@@ -193,11 +193,13 @@ public class OrdersApi extends CommonController {
             Double allPrice = 0.0;
 
             // 循环读取商户id集合，依此根据商户id生成对应的商家订单
+            Users users = usersService.getById(userId);
+
             for (String merchantIdStr : mapList) {
                 orders = new Orders();
                 orders.setOrderNum(System.currentTimeMillis() + "");
                 orders.setPayType(payType);
-                orders.setUser(usersService.getById(userId));
+                orders.setUser(users);
                 orders.setMerchant(merchantsService.getById(Integer.parseInt(merchantIdStr)));
                 orders.setConsignee(consignee);
                 orders.setType(type);
@@ -251,13 +253,20 @@ public class OrdersApi extends CommonController {
                 orders.setPrice(allPrice.toString());
                 orders.setRealPrice((allPrice - allCouponPrice / mapList.size() - allScoreMoney / mapList.size()) + "");
                 ordersService.update(orders);
+
+                // 用户将根据订单额获取等值的积分
+                double doubleScore = Double.parseDouble(orders.getRealPrice());
+                users.setScore(users.getScore() + (int) doubleScore);
+                usersService.update(users);
             }
         } else {
             // 当订单类型为秒杀订单或套餐订单时，直接生成同一张订单
+            Users tempUser = usersService.getById(userId);
+
             orders = new Orders();
             orders.setOrderNum(System.currentTimeMillis() + "");
             orders.setPayType(payType);
-            orders.setUser(usersService.getById(userId));
+            orders.setUser(tempUser);
             orders.setConsignee(consignee);
             orders.setType(type);
             orders.setMobile(mobile);
@@ -343,6 +352,11 @@ public class OrdersApi extends CommonController {
 
             // 回写订单总金额和实付金额
             ordersService.update(orders);
+
+            // 用户将根据订单额获取等值的积分
+            double doubleScore = Double.parseDouble(orders.getRealPrice());
+            tempUser.setScore(tempUser.getScore() + (int) doubleScore);
+            usersService.update(tempUser);
         }
 
         // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数

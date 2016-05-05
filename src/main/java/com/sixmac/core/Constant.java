@@ -176,4 +176,9 @@ public interface Constant {
     // 系统通知类型
     Integer NOTICES_TYPE_MERCHANT = 1;  // 商户
     Integer NOTICES_TYPE_DESIGNER = 2;  // 设计师
+
+    // 分享记录目标类型
+    Integer SHARE_TYPE_AFFLATUS = 1;
+    Integer SHARE_TYPE_JOURNAL = 2;
+    Integer SHARE_TYPE_VIRTUALS = 3;
 }

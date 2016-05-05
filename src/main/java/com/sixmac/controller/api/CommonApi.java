@@ -78,6 +78,9 @@ public class CommonApi extends CommonController {
     @Autowired
     private ReportService reportService;
 
+    @Autowired
+    private ShareRecordService shareRecordService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
@@ -323,12 +326,16 @@ public class CommonApi extends CommonController {
      * @api {post} /api/common/share 分享
      * @apiName common.share
      * @apiGroup common
+     * @apiParam {Integer} userId 用户id     <必传 />
      * @apiParam {Integer} objectId 分享目标id      <必传 />
      * @apiParam {Integer} objectType 分享类型，1=灵感集，2=日志，3=VR虚拟       <必传 />
      */
     @RequestMapping("/share")
-    public void share(HttpServletResponse response, Integer objectId, Integer objectType) {
-        if (null == objectId || null == objectType) {
+    public void share(HttpServletResponse response,
+                      Integer userId,
+                      Integer objectId,
+                      Integer objectType) {
+        if (null == userId || null == objectId || null == objectType) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -348,6 +355,9 @@ public class CommonApi extends CommonController {
                 afflatus.setShareNum(afflatus.getShareNum() + 1);
 
                 afflatusService.update(afflatus);
+
+                // 每分享一个案例，获取10积分
+                shareRecordService.addShareRecord(userId, objectId, Constant.SHARE_TYPE_AFFLATUS, 10);
                 break;
             case 2:
                 // 增加日志的分享数
@@ -361,6 +371,9 @@ public class CommonApi extends CommonController {
                 journal.setShareNum(journal.getShareNum() + 1);
 
                 journalService.update(journal);
+
+                // 每分享一遍日志，获取300积分，不可重复分享
+                shareRecordService.addShareRecord(userId, objectId, Constant.SHARE_TYPE_JOURNAL, 300);
                 break;
             case 3:
                 // 增加VR虚拟的分享数
@@ -474,14 +487,20 @@ public class CommonApi extends CommonController {
         }
 
         try {
+            Users users = usersService.getById(userId);
+
             Comment comment = new Comment();
-            comment.setUser(usersService.getById(userId));
+            comment.setUser(users);
             comment.setObjectId(objectId);
             comment.setObjectType(objectType);
             comment.setContent(content);
             comment.setCreateTime(new Date());
 
             commentService.create(comment);
+
+            // 评论增加50积分
+            users.setScore(users.getScore() + 50);
+            usersService.update(users);
 
             WebUtil.printApi(response, new Result(true));
         } catch (Exception e) {
@@ -518,6 +537,10 @@ public class CommonApi extends CommonController {
             replys.setCreateTime(new Date());
 
             replysService.create(replys);
+
+            // 回复增加50积分
+            users.setScore(users.getScore() + 50);
+            usersService.update(users);
 
             WebUtil.printApi(response, new Result(true));
         } catch (Exception e) {
