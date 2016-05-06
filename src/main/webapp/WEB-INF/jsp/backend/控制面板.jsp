@@ -129,9 +129,9 @@
                         <thead>
                         <tr>
                             <td width="25%;" class="textAling">今日访问</td>
-                            <td width="25%;" class="textAling">${num1}</td>
+                            <td width="25%;" class="textAling">${visitCount}</td>
                             <td width="25%;" class="textAling">在线人数</td>
-                            <td width="25%;" class="textAling">${num2}</td>
+                            <td width="25%;" class="textAling">${onlineCount}</td>
                         </tr>
                         </thead>
                     </table>

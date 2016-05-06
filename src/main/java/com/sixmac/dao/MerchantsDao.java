@@ -24,4 +24,7 @@ public interface MerchantsDao extends JpaRepository<Merchants, Integer>, JpaSpec
 
     @Query("select a from Merchants a where a.status = 0 and a.isCut = 0 and a.isCheck = 1")
     public List<Merchants> findListWithSuccess();
+
+    @Query("select a from Merchants a where a.status = 0 and a.isCut = 0 and a.isCheck = 1 and a.city.id = ?1")
+    public List<Merchants> findListWithSuccess(Integer cityId);
 }

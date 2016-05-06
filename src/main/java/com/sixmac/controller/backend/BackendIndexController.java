@@ -54,6 +54,9 @@ public class BackendIndexController {
     @Autowired
     private RoleModulesService roleModulesService;
 
+    @Autowired
+    private RecordCountService recordCountService;
+
     @RequestMapping(value = "/dashboard")
     public String dashboard(HttpServletRequest request,
                             ModelMap model) {
@@ -148,6 +151,11 @@ public class BackendIndexController {
             //查询昨日新增商品
             List<Products> newList = productsService.findListNew();
             model.addAttribute("productNewNum", newList.size());
+
+            // 查询今日访问人数和在线人数
+            RecordCount recordCount = recordCountService.getById(1);
+            model.addAttribute("visitCount", recordCount.getVisitCount());
+            model.addAttribute("onlineCount", recordCount.getOnlineCount());
         }
 
         return "backend/控制面板";

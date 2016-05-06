@@ -232,6 +232,11 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
+    public List<Merchants> findListWithSuccess(Integer cityId) {
+        return merchantsDao.findListWithSuccess(cityId);
+    }
+
+    @Override
     public void deleteById(HttpServletRequest request, Integer id) {
         Merchants merchants = getById(id);
         merchants.setIsCut(Constant.IS_CUT_YES);

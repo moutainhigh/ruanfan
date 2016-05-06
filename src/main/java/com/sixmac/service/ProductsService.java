@@ -44,4 +44,7 @@ public interface ProductsService extends ICommonService<Products> {
 
     // 查询合格的商品列表
     public List<Products> findListWithSuccess();
+
+    // 查询merchantId查询合格的商品列表
+    public List<Products> findListWithSuccess(Integer merchantId);
 }

@@ -85,8 +85,12 @@ public class CommonsController {
      */
     @RequestMapping("/merchantList")
     @ResponseBody
-    public List<Merchants> merchantList() {
-        return merchantsService.findListWithSuccess();
+    public List<Merchants> merchantList(Integer cityId) {
+        if (null == cityId) {
+            return merchantsService.findListWithSuccess();
+        } else {
+            return merchantsService.findListWithSuccess(cityId);
+        }
     }
 
     /**
@@ -184,8 +188,12 @@ public class CommonsController {
      */
     @RequestMapping("/productList")
     @ResponseBody
-    public List<Products> productList() {
-        return productsService.findListWithSuccess();
+    public List<Products> productList(Integer merchantId) {
+        if (null == merchantId) {
+            return productsService.findListWithSuccess();
+        } else {
+            return productsService.findListWithSuccess(merchantId);
+        }
     }
 
     /**

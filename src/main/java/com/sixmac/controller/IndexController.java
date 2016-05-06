@@ -54,6 +54,9 @@ public class IndexController extends CommonController {
     @Autowired
     private OperatisService operatisService;
 
+    @Autowired
+    private RecordCountService recordCountService;
+
     @RequestMapping(value = "/login")
     public String login(String error,
                         ModelMap model) {
@@ -157,6 +160,9 @@ public class IndexController extends CommonController {
                     // 记录登录操作
                     operatisService.addOperatisInfo(request, "登录系统");
 
+                    // 增加今日访问人数和在线人数
+                    recordCountService.addCount(1, 1);
+
                     return "redirect:/backend/dashboard";
                 }
                 break;
@@ -172,6 +178,9 @@ public class IndexController extends CommonController {
                         model.addAttribute("error", "该商家已被禁用");
                         return "redirect:/login";
                     }
+
+                    // 增加今日访问人数和在线人数
+                    recordCountService.addCount(1, 1);
 
                     return "merchant/控制面板";
                 }
@@ -189,6 +198,9 @@ public class IndexController extends CommonController {
                         return "redirect:/login";
                     }
 
+                    // 增加今日访问人数和在线人数
+                    recordCountService.addCount(1, 1);
+
                     return "designer/控制面板";
                 }
                 break;
@@ -201,6 +213,9 @@ public class IndexController extends CommonController {
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request,
                          ModelMap model) {
+        // 增加今日访问人数和在线人数
+        recordCountService.addCount(0, -1);
+
         usersService.logOut(request);
         return "登录";
     }
@@ -395,6 +410,9 @@ public class IndexController extends CommonController {
                     if (null != sysusers) {
                         operatisService.addOperatisInfo(request, "修改密码");
                     }
+
+                    // 增加今日访问人数和在线人数
+                    recordCountService.addCount(0, -1);
 
                     usersService.logOut(request);
                     WebUtil.print(response, new Result(true).msg("修改密码成功！请重新登录！"));

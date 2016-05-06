@@ -36,4 +36,7 @@ public interface ProductsDao extends JpaRepository<Products, Integer>, JpaSpecif
 
     @Query("select a from Products a where a.status = 0 and a.isAdd = 0 and a.isCheck = 1")
     public List<Products> findListWithSuccess();
+
+    @Query("select a from Products a where a.status = 0 and a.isAdd = 0 and a.isCheck = 1 and a.merchant.id = ?1")
+    public List<Products> findListWithSuccess(Integer merchantId);
 }

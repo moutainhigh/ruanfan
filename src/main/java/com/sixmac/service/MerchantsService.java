@@ -31,6 +31,9 @@ public interface MerchantsService extends ICommonService<Merchants> {
     // 查询合格的商家列表
     public List<Merchants> findListWithSuccess();
 
+    // 查询城市id查询合格的商家列表
+    public List<Merchants> findListWithSuccess(Integer cityId);
+
     public void deleteById(HttpServletRequest request, Integer id);
 
     public void deleteAll(HttpServletRequest request, int[] ids);

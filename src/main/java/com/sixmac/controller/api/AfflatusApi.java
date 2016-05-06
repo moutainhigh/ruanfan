@@ -78,6 +78,7 @@ public class AfflatusApi extends CommonController {
      * @apiGroup afflatus
      * @apiParam {String} key 名称
      * @apiParam {String} labels 标签
+     * @apiParam {Integer} userId 用户id
      * @apiParam {Integer} type 类型：1单图 2套图      <必传 />
      * @apiParam {Integer} styleId 风格id
      * @apiParam {Integer} areaId 区域id
@@ -98,6 +99,9 @@ public class AfflatusApi extends CommonController {
      * @apiSuccess {Integer} list.collectNum 收藏数
      * @apiSuccess {Integer} list.gamNum 点赞数
      * @apiSuccess {Integer} list.reserveNum 预约数
+     * @apiSuccess {Integer} list.isComment 是否评论  0=是，1=否
+     * @apiSuccess {Integer} list.isGam 是否点赞  0=是，1=否
+     * @apiSuccess {Integer} list.isCollect 是否收藏  0=是，1=否
      * @apiSuccess {Integer} list.designerId 设计师id
      * @apiSuccess {String} list.designerHead 设计师头像
      * @apiSuccess {String} list.designerName 设计师名称
@@ -109,6 +113,7 @@ public class AfflatusApi extends CommonController {
                      Integer type,
                      Integer styleId,
                      Integer areaId,
+                     Integer userId,
                      Integer pageNum,
                      Integer pageSize) {
         if (null == pageNum || null == pageSize) {
@@ -134,6 +139,18 @@ public class AfflatusApi extends CommonController {
             afflatus.setGamNum(gamsService.iFindList(afflatus.getId(), Constant.GAM_AFFLATUS, Constant.GAM_LOVE, Constant.SORT_TYPE_ASC).size());
 
             afflatus.setReserveNum(reserveService.iFindListByDesignerId(afflatus.getDesigner().getId()).size());
+
+            // 如果userId不为空的话，查询是否评论过、点赞过
+            if (null != userId) {
+                List<Comment> commentList = commentService.iFindList(userId, afflatus.getId(), Constant.COMMENT_AFFLATUS);
+                afflatus.setIsComment(null == commentList || commentList.size() == 0 ? Constant.COMMENT_STATUS_NO : Constant.COMMENT_STATUS_YES);
+
+                Gams gams = gamsService.iFindOne(userId, afflatus.getId(), Constant.GAM_AFFLATUS, Constant.GAM_LOVE);
+                afflatus.setIsGam(null == gams ? Constant.GAM_LOVE_NO : Constant.GAM_LOVE_YES);
+
+                Collect collect = collectService.iFindOne(userId, afflatus.getId(), Constant.COLLECT_AFFLATUS);
+                afflatus.setIsCollect(null == collect ? Constant.GAM_LOVE_NO : Constant.GAM_LOVE_YES);
+            }
         }
 
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);

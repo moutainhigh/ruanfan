@@ -311,4 +311,9 @@ public class ProductsServiceImpl implements ProductsService {
     public List<Products> findListWithSuccess() {
         return productsDao.findListWithSuccess();
     }
+
+    @Override
+    public List<Products> findListWithSuccess(Integer merchantId) {
+        return productsDao.findListWithSuccess(merchantId);
+    }
 }
