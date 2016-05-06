@@ -142,6 +142,14 @@ public class PropertysController extends CommonController {
             }
 
             if (null != id) {
+                Propertys tempProperty = propertysService.getShowTurn(0, 0);
+
+                if (null == tempProperty) {
+                    propertys.setShowTurn(1);
+                } else {
+                    propertys.setShowTurn(tempProperty.getShowTurn() + 1);
+                }
+
                 propertysService.update(propertys);
             } else {
                 propertys.setDescription("");
@@ -153,6 +161,24 @@ public class PropertysController extends CommonController {
             operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "地产 " + propertys.getName());
 
             return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 地产信息排序
+     *
+     * @param propertyId
+     * @param turn
+     * @return
+     */
+    @RequestMapping("/moveProperty")
+    @ResponseBody
+    public Integer moveProperty(Integer propertyId, Integer turn) {
+        try {
+            return propertysService.changeShowTurn(propertyId, turn);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -249,6 +275,14 @@ public class PropertysController extends CommonController {
             }
 
             if (null != id) {
+                Propertys tempProperty = propertysService.getShowTurn(0, parentId);
+
+                if (null == tempProperty) {
+                    propertys.setShowTurn(1);
+                } else {
+                    propertys.setShowTurn(tempProperty.getShowTurn() + 1);
+                }
+
                 propertysService.update(propertys);
             } else {
                 propertys.setCreateTime(new Date());

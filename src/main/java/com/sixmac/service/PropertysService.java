@@ -31,4 +31,11 @@ public interface PropertysService extends ICommonService<Propertys> {
     public Page<Propertys> pageChild(Integer pageNum, Integer pageSize);
 
     public void deleteById(HttpServletRequest request, Integer id);
+
+    // 查询序号，turn=0代表查询排序号第一位的地产信息，turn=1代表查询排序号最后一位的地产信息
+    // parentId=0时，代表查询的是地产，否则查询对应地产下的楼盘信息
+    public Propertys getShowTurn(Integer turn, Integer parentId);
+
+    // 排序，turn=0，上移；turn=1，下移
+    public Integer changeShowTurn(Integer propertyId,Integer turn);
 }

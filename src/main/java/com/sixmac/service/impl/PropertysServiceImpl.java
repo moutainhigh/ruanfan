@@ -132,7 +132,7 @@ public class PropertysServiceImpl implements PropertysService {
 
     @Override
     public Page<Propertys> page(Integer pageNum, Integer pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "showTurn");
 
         Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
             @Override
@@ -163,7 +163,7 @@ public class PropertysServiceImpl implements PropertysService {
 
     @Override
     public Page<Propertys> pageChild(final Integer parentId, Integer pageNum, Integer pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "showTurn");
 
         Page<Propertys> page = propertysDao.findAll(new Specification<Propertys>() {
             @Override
@@ -239,5 +239,47 @@ public class PropertysServiceImpl implements PropertysService {
         }
 
         propertysDao.delete(propertys);
+    }
+
+    @Override
+    public Propertys getShowTurn(Integer turn, Integer parentId) {
+        List<Propertys> list = propertysDao.findListByShowTurn(parentId);
+
+        if (null != list && list.size() > 0) {
+            if (turn == 0) {
+                return list.get(list.size() - 1);
+            } else {
+                return list.get(0);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Integer changeShowTurn(Integer propertyId, Integer turn) {
+        Propertys baseProperty = propertysDao.findOne(propertyId);
+        Propertys sourceProperty = propertysDao.getByShowTurn(baseProperty.getParentId(), turn == 0 ? baseProperty.getShowTurn() - 1 : baseProperty.getShowTurn() + 1);
+        Integer showTurn = 0;
+
+        if (null == sourceProperty) {
+            if (turn == 0) {
+                // 已经是第一条了，无法上移
+                return -1;
+            } else {
+                // 已经是最后一条了，无法下移
+                return -2;
+            }
+        } else {
+            showTurn = sourceProperty.getShowTurn();
+            sourceProperty.setShowTurn(baseProperty.getShowTurn());
+            propertysDao.save(sourceProperty);
+
+            baseProperty.setShowTurn(showTurn);
+            propertysDao.save(baseProperty);
+
+            return 1;
+        }
     }
 }

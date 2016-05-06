@@ -209,24 +209,12 @@
                     "columnDefs": [
                         {
                             "data": null,
-                            "defaultContent": "<button type='button' title='认证' style='display: none' class='btn btn-primary btn-circle changeAuth'>" +
-                            "<i class='fa fa-check'></i>" +
-                            "</button>" +
-                            "&nbsp;&nbsp;" +
-                            "<a title='查看详情' class='btn btn-primary btn-circle edit'>" +
-                            "<i class='fa fa-eye'></i>" +
-                            "</a>" +
-                            "&nbsp;&nbsp;" +
-                            "<button type='button' title='转为虚拟体验' style='margin-right: 10px;' class='btn btn-info btn-circle delete'>" +
-                            "<i class='fa fa-recycle'></i>" +
-                            "</button>" +
-                            "<button type='button' title='审核通过' style='display: none' class='btn btn-primary btn-circle checkyes'>" +
-                            "<i class='fa fa-check'></i>" +
-                            "</button>" +
-                            "&nbsp;&nbsp;" +
-                            "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'>" +
-                            "<i class='fa fa-close'></i>" +
-                            "</button>",
+                            "defaultContent": "<button type='button' title='认证' style='display: none;margin-right: 5px;' class='btn btn-primary btn-circle changeAuth'><i class='fa fa-check'></i></button>" +
+                            "<button type='button' title='查看详情' style='margin-right: 5px;' class='btn btn-primary btn-circle edits'><i class='fa fa-eye'></i></button>" +
+                            "<button type='button' title='编辑' style='margin-right: 5px;' class='btn btn-primary btn-circle edit'><i class='fa fa-edit'></i></button>" +
+                            "<button type='button' title='转为虚拟体验' style='margin-right: 5px;' class='btn btn-info btn-circle delete'><i class='fa fa-recycle'></i></button>" +
+                            "<button type='button' title='审核通过' style='display: none;margin-right: 5px;' class='btn btn-primary btn-circle checkyes'><i class='fa fa-check'></i></button>" +
+                            "<button type='button' title='审核不通过' style='display: none' class='btn btn-danger btn-circle checkno'><i class='fa fa-close'></i></button>",
                             "targets": -1
                         }
                     ],
@@ -268,7 +256,13 @@
                             $('td', row).last().find(".changeAuth").css("display", '');
                         }
 
-                        $('td', row).last().find(".edit").attr("href", 'backend/afflatus/show?id=' + data.id);
+                        $('td', row).last().find(".edits").click(function () {
+                            window.location.href = 'backend/afflatus/show?id=' + data.id;
+                        });
+
+                        $('td', row).last().find(".edit").click(function () {
+                            window.location.href = 'backend/afflatus/add?id=' + data.id;
+                        });
 
                         $('td', row).last().find(".delete").click(function () {
                             // 转化为虚拟体验

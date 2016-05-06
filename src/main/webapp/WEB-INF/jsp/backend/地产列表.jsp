@@ -185,6 +185,14 @@
                             "&nbsp;&nbsp;" +
                             "<button type='button' title='删除' class='btn btn-danger btn-circle delete'>" +
                             "<i class='fa fa-remove'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='上移' class='btn btn-warning btn-circle upTurn'>" +
+                            "<i class='fa fa-arrow-up'></i>" +
+                            "</button>" +
+                            "&nbsp;&nbsp;" +
+                            "<button type='button' title='下移' class='btn btn-warning btn-circle downTurn'>" +
+                            "<i class='fa fa-arrow-down'></i>" +
                             "</button>",
                             "targets": -1
                         }
@@ -220,12 +228,39 @@
                                 propertysList.fn.delInfo(data.id);
                             }
                         });
+
+                        $('td', row).last().find(".upTurn").click(function () {
+                            // 上移
+                            propertysList.fn.moveTurn(data.id, 0);
+                        });
+
+                        $('td', row).last().find(".downTurn").click(function () {
+                            // 下移
+                            propertysList.fn.moveTurn(data.id, 1);
+                        });
                     },
                     "fnServerParams": function (aoData) {
 
                     },
                     "fnDrawCallback": function (row) {
                         $sixmac.uiform();
+                    }
+                });
+            },
+            moveTurn: function (propertyId, turn) {
+                $sixmac.ajax("backend/propertys/moveProperty", {
+                    "propertyId": propertyId,
+                    "turn": turn
+                }, function (result) {
+                    if (result == 1) {
+                        $sixmac.notify("操作成功", "success");
+                        propertysList.v.dTable.ajax.reload(null, false);
+                    } else if (result == -1) {
+                        $sixmac.notify("已经是第一条了，无法上移", "error");
+                    } else if (result == -2) {
+                        $sixmac.notify("已经是最后一条了，无法下移", "error");
+                    } else {
+                        $sixmac.notify("操作失败", "error");
                     }
                 });
             },

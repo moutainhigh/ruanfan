@@ -14,4 +14,10 @@ public interface PropertysDao extends JpaRepository<Propertys, Integer>, JpaSpec
 
     @Query("select a from Propertys a where a.parentId = ?1")
     public List<Propertys> iPageByParentId(Integer parentId);
+
+    @Query("select a from Propertys a where a.parentId = ?1 order by a.showTurn desc")
+    public List<Propertys> findListByShowTurn(Integer parentId);
+
+    @Query("select a from Propertys a where a.parentId = ?1 and a.showTurn = ?2")
+    public Propertys getByShowTurn(Integer parentId, Integer turn);
 }

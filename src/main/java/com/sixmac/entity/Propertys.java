@@ -20,6 +20,7 @@ public class Propertys {
     private String labels;
     private String description;
     private Integer parentId;
+    private Integer showTurn;
     private Date createTime;
     private List<Propertys> childList = new ArrayList<Propertys>();
     private Integer childNum;
@@ -96,6 +97,14 @@ public class Propertys {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getShowTurn() {
+        return showTurn;
+    }
+
+    public void setShowTurn(Integer showTurn) {
+        this.showTurn = showTurn;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
