@@ -54,8 +54,11 @@
             <div class="col-lg-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">图片
+                        <button type="button" style="float: right;margin-top: -7px;margin-left: 5px;" onclick="Label.fn.addLabel()" class="btn btn-primary btn-sl">添加标签</button>
                         <select id="productList" style="float: right; width: 150px;margin-top: -7px;" class="form-control"></select>
-                        <button type="button" style="float: right;margin-top: -7px;margin-right: 5px;" onclick="Label.fn.addLabel()" class="btn btn-primary btn-sl">添加标签</button>
+                        <select id="merchantList" style="float: right; width: 150px;margin-top: -7px;margin-right: 5px;" class="form-control"></select>
+                        <select id="cityList" style="float: right; width: 150px;margin-top: -7px;margin-right: 5px;" class="form-control"></select>
+                        <select id="provinceList" style="float: right; width: 150px;margin-top: -7px;margin-right: 5px;" class="form-control"></select>
                     </div>
                     <div id="panelBody" class="panel-body">
                         <table>
@@ -117,20 +120,102 @@
 
                 //初始化已经添加的标签
                 Label.fn.getLabels();
+
+                $('#provinceList').change(function () {
+                    var provinceId = $(this).val();
+                    Label.fn.loadCity(provinceId);
+                });
+
+                $('#cityList').change(function () {
+                    var cityId = $(this).val();
+                    Label.fn.loadMerchant(cityId);
+                });
+
+                $('#merchantList').change(function () {
+                    var merchantId = $(this).val();
+                    Label.fn.loadProduct(merchantId);
+                });
             },
             getSelectList: function () {
-                $sixmac.ajax("common/productList", null, function (result) {
+                $sixmac.ajax("common/provinceList", null, function (result) {
                     if (null != result && result.length > 0) {
                         // 获取返回的分类列表信息，并循环绑定到label中
                         var content = "";
                         jQuery.each(result, function (i, item) {
                             content += "<option value='" + item.id + "'>" + item.name + "</option>";
                         });
-                        $('#productList').append(content);
+                        $('#provinceList').append(content);
                     } else {
-                        $('#productList').append("<option value=''>暂无商品</option>");
+                        $('#provinceList').append("<option value=''>暂无省份</option>");
                     }
+
+                    var provinceId = $('#provinceList option:selected').val();
+                    Label.fn.loadCity(provinceId);
                 });
+            },
+            loadCity: function (provinceId) {
+                $('#cityList').html('');
+
+                $sixmac.ajax("common/cityList", {
+                    provinceId: provinceId
+                }, function (result) {
+                    if (null != result && result.length > 0) {
+                        // 获取返回的分类列表信息，并循环绑定到label中
+                        var content = "";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                        });
+                        $('#cityList').append(content);
+                    } else {
+                        $('#cityList').append("<option value=''>暂无城市</option>");
+                    }
+
+                    var cityId = $('#cityList option:selected').val();
+                    Label.fn.loadMerchant(cityId);
+                });
+            },
+            loadMerchant: function (cityId) {
+                $('#merchantList').html('');
+
+                $sixmac.ajax("common/merchantList", {
+                    cityId: cityId
+                }, function (result) {
+                    if (null != result && result.length > 0) {
+                        // 获取返回的分类列表信息，并循环绑定到label中
+                        var content = "";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item.id + "'>" + item.nickName + "</option>";
+                        });
+                        $('#merchantList').append(content);
+                    } else {
+                        $('#merchantList').append("<option value=''>暂无商家</option>");
+                    }
+
+                    var merchantId = $('#merchantList option:selected').val();
+                    Label.fn.loadProduct(merchantId);
+                });
+            },
+            loadProduct: function (merchantId) {
+                $('#productList').html('');
+
+                if (null == merchantId || merchantId == '') {
+                    $('#productList').append("<option value=''>暂无商品</option>");
+                } else {
+                    $sixmac.ajax("common/productList", {
+                        merchantId: merchantId
+                    }, function (result) {
+                        if (null != result && result.length > 0) {
+                            // 获取返回的分类列表信息，并循环绑定到label中
+                            var content = "";
+                            jQuery.each(result, function (i, item) {
+                                content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                            });
+                            $('#productList').append(content);
+                        } else {
+                            $('#productList').append("<option value=''>暂无商品</option>");
+                        }
+                    });
+                }
             },
             getLabels: function () {
                 var labelList = ${labelList };

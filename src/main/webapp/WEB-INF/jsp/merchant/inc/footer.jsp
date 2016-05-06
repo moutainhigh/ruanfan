@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="submit">
-                <p class="text-center"><a href="static/sb-admin-2/index.html" target="_blank"> sb admin bootstrap template</a></p>
+                    <p class="text-center"><a href="javascript:void(0)" target="_blank">软范商户后台管理系统</a></p>
                 </div>
             </div>
         </div>
