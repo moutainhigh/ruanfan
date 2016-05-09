@@ -19,8 +19,6 @@ public class PackageVo {
 
     private Double price;
 
-    private List<Products> productsList = new ArrayList<Products>();
-
     public Integer getId() {
         return id;
     }
@@ -51,13 +49,5 @@ public class PackageVo {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public List<Products> getProductsList() {
-        return productsList;
-    }
-
-    public void setProductsList(List<Products> productsList) {
-        this.productsList = productsList;
     }
 }

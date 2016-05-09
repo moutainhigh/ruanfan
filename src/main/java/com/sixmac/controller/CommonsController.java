@@ -311,10 +311,11 @@ public class CommonsController {
                 return image;
             }
 
-            // Map<String, Object> map = ImageUtil.saveImage(request, multipartFile, false);
             String url = QiNiuUploadImgUtil.upload(multipartFile);
-
+            Map<String, Object> map = QiNiuUploadImgUtil.getInfo(url);
             image.setPath(url);
+            image.setWidth(map.get("width").toString());
+            image.setHeight(map.get("height").toString());
             image.setCreateTime(new Date());
 
             imageService.create(image);

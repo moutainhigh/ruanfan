@@ -1,6 +1,7 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.LabelDao;
 import com.sixmac.entity.Label;
 import com.sixmac.service.LabelService;
@@ -21,6 +22,9 @@ public class LabelServiceImpl implements LabelService {
 
     @Autowired
     private LabelDao labelDao;
+
+    @Autowired
+    private ImageDao imageDao;
 
     @Override
     public List<Label> findAll() {
@@ -73,6 +77,7 @@ public class LabelServiceImpl implements LabelService {
 
         for (Label label : list) {
             label.setProductId(label.getProduct().getId());
+            label.setProductCover(imageDao.findOne(label.getProduct().getCoverId()).getPath());
         }
 
         return list;

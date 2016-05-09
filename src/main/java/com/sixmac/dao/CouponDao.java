@@ -18,4 +18,7 @@ public interface CouponDao extends JpaRepository<Coupon, Integer> {
 
     @Query("select a from Coupon a where a.merchant.id = ?1")
     public Page<Coupon> pageByMerchantId(Integer merchantId, Pageable pageable);
+
+    @Query("select a from Coupon a where a.merchant.id = ?1")
+    public List<Coupon> findListByMerchantId(Integer merchantId);
 }

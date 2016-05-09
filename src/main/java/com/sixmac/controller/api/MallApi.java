@@ -51,6 +51,9 @@ public class MallApi extends CommonController {
     @Autowired
     private MallPicService mallPicService;
 
+    @Autowired
+    private CouponService couponService;
+
     /**
      * @api {post} /api/mall/bannerList 首页banner图列表
      * @apiName mall.bannerList
@@ -232,6 +235,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} list.description 描述
      * @apiSuccess {String} list.cover 封面图
      * @apiSuccess {Integer} list.merchantId 商户id
+     * @apiSuccess {Integer} list.isCoupon 是否有范票，0=没有，1=有
      * @apiSuccess {String} list.merchantName 商户名称
      * @apiSuccess {String} list.merchantHead 商户头像
      * @apiSuccess {String} list.merchantDescription 商户描述
@@ -256,10 +260,13 @@ public class MallApi extends CommonController {
         }
 
         Page<Products> page = productsService.iPage(type, name, merchantId, brandId, sortId, isHot, pageNum, pageSize);
+        List<Coupon> couponList = null;
 
         for (Products products : page.getContent()) {
             products.setCover(imageService.getById(products.getCoverId()).getPath());
             products.setMerchantId(products.getMerchant().getId());
+            couponList = couponService.findListByMerchantId(products.getMerchantId());
+            products.setIsCoupon(null == couponList || couponList.size() == 0 ? 0 : 1);
             products.setMerchantName(products.getMerchant().getNickName());
             products.setMerchantHead(products.getMerchant().getHead());
             products.setMerchantDescription(products.getMerchant().getDescription());
@@ -296,6 +303,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.description 描述
      * @apiSuccess {String} productInfo.cover 封面图
      * @apiSuccess {Integer} productInfo.merchantId 商户id
+     * @apiSuccess {Integer} productInfo.isCoupon 是否有范票，0=没有，1=有
      * @apiSuccess {String} productInfo.merchantName 商户名称
      * @apiSuccess {String} productInfo.merchantHead 商户头像
      * @apiSuccess {String} productInfo.merchantDescription 商户介绍
@@ -348,6 +356,8 @@ public class MallApi extends CommonController {
 
         products.setCover(imageService.getById(products.getCoverId()).getPath());
         products.setMerchantId(products.getMerchant().getId());
+        List<Coupon> couponList = couponService.findListByMerchantId(products.getMerchantId());
+        products.setIsCoupon(null == couponList || couponList.size() == 0 ? 0 : 1);
         products.setMerchantName(products.getMerchant().getNickName());
         products.setMerchantHead(products.getMerchant().getHead());
         products.setMerchantDescription(products.getMerchant().getDescription());

@@ -4,6 +4,7 @@ package com.sixmac.service.impl;
 import com.sixmac.dao.ImageDao;
 import com.sixmac.entity.Image;
 import com.sixmac.service.ImageService;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,10 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public Image deleteById(int id) {
         Image image = getById(id);
+
+        // 从七牛删除图片
+        QiNiuUploadImgUtil.delete(image.getPath());
+
         imageDao.delete(image);
         return image;
     }

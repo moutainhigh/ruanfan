@@ -276,7 +276,7 @@ public class AfflatusApi extends CommonController {
         afflatus.setDesignerName(afflatus.getDesigner().getNickName());
 
         Result obj = new Result(true).data(createMap("afflatusInfo", afflatus));
-        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password", "user", "product", "thuPath", "width", "height", "labelId");
+        String result = JsonUtil.obj2ApiJson(obj, "designer", "style", "area", "coverId", "city", "objectId", "objectType", "password", "user", "product", "thuPath", "labelId");
         WebUtil.printApi(response, result);
     }
 }

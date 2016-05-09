@@ -112,7 +112,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label style="color: red;margin-left: 18%;">提示:图片尺寸待定</label>
+                                <label style="color: red;margin-left: 18%;margin-top: 45px;">提示:图片尺寸待定</label>
                             </div>
 
                             <div class="form-group">
@@ -127,7 +127,7 @@
                             <input type="file" name="tempImage" id="tempImage" data-rule="required" style="display:none;" onchange="afflatus.fn.saveTempImage()"/>
                         </form>
 
-                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 30px;">
+                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 65px;">
                             <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
                             <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 207px; left: 184px; display: none;" class="axx" onclick="afflatus.fn.deleteImage(this)">
@@ -135,6 +135,7 @@
                             </a>
                             <a href="javascript:void(0)" target="_blank" class="btn btn-primary btn-sm" role="button" style="color: white; display: none; margin-left: -19px;">添加锚点</a>
                             <input type="radio" name="settingCover"/>设为封面
+                            <textarea cols="20" rows="4" style="display: none;resize: none" class="form-control textDesc" name="textDesc"></textarea>
                         </div>
                     </div>
                     <!-- /.panel-body -->
@@ -192,6 +193,12 @@
                         } else {
                             $("#lastImageDiv").css('display', 'none');
                         }
+
+                        // 隐藏图片的文字描述
+                        $('.textDesc').val('');
+                        $('.textDesc').css('display', 'none');
+
+                        afflatus.fn.removeOtherImage();
                     } else {
                         $('#name').val('');
                         $('#labels').val('');
@@ -200,8 +207,25 @@
                         $('#nameDiv').css('display', '');
 
                         $("#lastImageDiv").css('display', '');
+
+                        // 显示图片的文字描述
+                        $('.textDesc').css('display', '');
                     }
                 });
+            },
+            removeOtherImage: function () {
+                // 切换为单图时，移除除了封面之外的所有图片
+                var id = $('#id').val();
+                if (null != id && id != '') {
+                    $('input:radio[name="settingCover"]').each(function () {
+                        if (!$(this).prop('checked') && $(this).parent().prop('id') != 'tempDiv') {
+                            $('#tempDelImageIds').html($('#tempDelImageIds').html() + $(this).val() + ',');
+                            $(this).parent().remove();
+                        }
+                    });
+                }
+
+                afflatus.v.imageSize = 1;
             },
             loadData: function () {
                 var id = $('#id').val();
@@ -241,7 +265,7 @@
 
                 $.each(imgList, function (i, item) {
                     if (null != item) {
-                        afflatus.fn.insertImage(item.path, item.id);
+                        afflatus.fn.insertImage(item.path, item.id, item.description);
                     } else {
                         $('#lastImageDiv').html('暂无');
                     }
@@ -263,7 +287,9 @@
                     });
                 }
             },
-            insertImage: function (path, id) {
+            insertImage: function (path, id, description) {
+                var typeId = $("#typeList option:selected").val();
+
                 $('#tempPicture').prop('src', "static/images/add.jpg");
 
                 var tempDiv = $("#tempDiv").clone();
@@ -273,6 +299,12 @@
                 tempDiv.children(":first").next().prop("value", id);
                 tempDiv.children(":first").next().next().next().prop("href", "backend/afflatus/addTempLabel?id=" + id);
                 tempDiv.children(":first").next().next().next().next().val(id);
+                tempDiv.children(":first").next().next().next().next().next().val(description);
+
+                if (typeId == 2) {
+                    tempDiv.children(":first").next().next().next().next().next().css('display', '');
+                }
+
                 tempDiv.insertBefore("#lastImageDiv");
 
                 var type = $('#typeList option:selected').val();
@@ -301,7 +333,7 @@
                     success: function (data) {
                         if (null != data.path && data.path != '') {
                             $('#tempAddImageIds').html($('#tempAddImageIds').html() + data.id + ',');
-                            afflatus.fn.insertImage(data.path, data.id);
+                            afflatus.fn.insertImage(data.path, data.id, '');
 
                             afflatus.v.imageSize = afflatus.v.imageSize + 1;
 
@@ -393,6 +425,8 @@
                 var labels = $('#labels').val();
                 var url = $('#url').val();
                 var description = $('#description').val();
+
+                console.log('灵感集图片数量：' + afflatus.v.imageSize);
 
                 // 当灵感集的类型为套图时，检查名称是否为空
                 if (type == 2) {

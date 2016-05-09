@@ -16,6 +16,7 @@ public class Label {
     private String width;
     private Products product;
     private Integer productId;
+    private String productCover;
     private String labelId;
     private String description;
     private Double leftPoint;
@@ -88,6 +89,15 @@ public class Label {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    @Transient
+    public String getProductCover() {
+        return productCover;
+    }
+
+    public void setProductCover(String productCover) {
+        this.productCover = productCover;
     }
 
     public String getLabelId() {

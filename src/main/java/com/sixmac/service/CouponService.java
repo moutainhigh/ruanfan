@@ -25,6 +25,9 @@ public interface CouponService extends ICommonService<Coupon> {
     // 根据商户id查询对应的优惠券集合
     public Page<Coupon> pageByMerchantId(Integer merchantId, Integer pageNum, Integer pageSize);
 
+    // 根据商户id查询对应的优惠券集合
+    public List<Coupon> findListByMerchantId(Integer merchantId);
+
     // 根据优惠券id获取有关联的所有用户信息
     public List<Usercoupon> findListByCouponId(Integer couponId);
 

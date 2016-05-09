@@ -36,6 +36,7 @@ public class Products {
     private String cover;
     private String path;
     private Integer merchantId;
+    private Integer isCoupon;
     private String merchantName;
     private String merchantHead;
     private String merchantDescription;
@@ -237,6 +238,15 @@ public class Products {
 
     public void setMerchantId(Integer merchantId) {
         this.merchantId = merchantId;
+    }
+
+    @Transient
+    public Integer getIsCoupon() {
+        return isCoupon;
+    }
+
+    public void setIsCoupon(Integer isCoupon) {
+        this.isCoupon = isCoupon;
     }
 
     @Transient

@@ -149,6 +149,11 @@ public class QiNiuUploadImgUtil {
         }
     }
 
+    public static Map<String, Object> getInfo(String url) {
+        String result = HttpRequestUtil.sendGet(url, "imageInfo");
+        return JsonUtil.jsontoMap(result);
+    }
+
     public static void main(String[] args) {
         upload(new File("F:/Images/动物/QQ图片20141128173523.gif"));
     }

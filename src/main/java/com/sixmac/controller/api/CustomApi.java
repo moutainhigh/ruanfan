@@ -88,13 +88,11 @@ public class CustomApi extends CommonController {
      * @apiSuccess {Object} customInfo.packageList.cover.labelList 图片标签列表
      * @apiSuccess {Integer} customInfo.packageList.cover.labelList.id 标签id
      * @apiSuccess {String} customInfo.packageList.cover.labelList.name 标签名称
+     * @apiSuccess {String} customInfo.packageList.cover.labelList.productId 商品id
+     * @apiSuccess {String} customInfo.packageList.cover.labelList.productCover 商品封面
      * @apiSuccess {String} customInfo.packageList.cover.labelList.description 标签描述
      * @apiSuccess {String} customInfo.packageList.cover.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
      * @apiSuccess {String} customInfo.packageList.cover.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
-     * @apiSuccess {Object} customInfo.packageList.productsList 套餐包含商品列表
-     * @apiSuccess {Integer} customInfo.packageList.productsList.id 商品id
-     * @apiSuccess {String} customInfo.packageList.productsList.name 商品名称
-     * @apiSuccess {String} customInfo.packageList.productsList.cover 商品封面
      */
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response,

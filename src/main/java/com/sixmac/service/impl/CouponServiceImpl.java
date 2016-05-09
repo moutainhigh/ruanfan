@@ -111,6 +111,11 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public List<Coupon> findListByMerchantId(Integer merchantId) {
+        return couponDao.findListByMerchantId(merchantId);
+    }
+
+    @Override
     public List<Usercoupon> findListByCouponId(Integer couponId) {
         return usercouponDao.findListByCouponId(couponId);
     }

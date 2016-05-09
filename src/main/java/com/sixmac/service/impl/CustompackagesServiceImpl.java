@@ -3,10 +3,7 @@ package com.sixmac.service.impl;
 import com.sixmac.core.Constant;
 import com.sixmac.dao.CustompackagesDao;
 import com.sixmac.dao.PackageproductsDao;
-import com.sixmac.entity.Custompackages;
-import com.sixmac.entity.Image;
-import com.sixmac.entity.Packageproducts;
-import com.sixmac.entity.Products;
+import com.sixmac.entity.*;
 import com.sixmac.entity.vo.PackageVo;
 import com.sixmac.service.CustompackagesService;
 import com.sixmac.service.ImageService;
@@ -95,7 +92,6 @@ public class CustompackagesServiceImpl implements CustompackagesService {
 
     @Override
     public List<PackageVo> findListByCustominfoId(Integer custominfoId, Integer areaId) {
-        List<Packageproducts> packageproductsList = null;
         PackageVo packageVo = null;
         List<PackageVo> packageVoList = new ArrayList<PackageVo>();
         List<Products> productList = new ArrayList<Products>();
@@ -120,18 +116,10 @@ public class CustompackagesServiceImpl implements CustompackagesService {
             image.setLabelList(labelService.findListByParams(image.getId(), Constant.LABEL_CUSTOMPACKAGE));
             packageVo.setCover(image);
 
-            // 根据套餐id和套餐类型查询套餐商品集合
-            packageproductsList = packageProductsDao.findListByPackageId(customPackage.getId(), Constant.PACKAGE_TYPE_CUSTOM);
-
-            // 将套餐商品里面的商品循环读取，放入到缓存商品集合中
-            for (Packageproducts packageProduct : packageproductsList) {
-                packageProduct.getProduct().setCover(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
-                packageProduct.getProduct().setPath(imageService.getById(packageProduct.getProduct().getCoverId()).getPath());
-                productList.add(packageProduct.getProduct());
-                price += Double.parseDouble(packageProduct.getProduct().getPrice());
+            for (Label label : image.getLabelList()) {
+                price += Double.parseDouble(label.getProduct().getPrice());
             }
 
-            packageVo.setProductsList(productList);
             packageVo.setPrice(price);
 
             packageVoList.add(packageVo);
