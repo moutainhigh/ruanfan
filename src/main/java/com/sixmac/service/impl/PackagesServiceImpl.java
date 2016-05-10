@@ -1,6 +1,7 @@
 package com.sixmac.service.impl;
 
 import com.sixmac.core.Constant;
+import com.sixmac.dao.ImageDao;
 import com.sixmac.dao.PackageproductsDao;
 import com.sixmac.dao.PackagesDao;
 import com.sixmac.entity.Packageproducts;
@@ -38,6 +39,9 @@ public class PackagesServiceImpl implements PackagesService {
 
     @Autowired
     private OperatisService operatisService;
+
+    @Autowired
+    private ImageDao imageDao;
 
     @Override
     public List<Packages> findAll() {
@@ -176,7 +180,13 @@ public class PackagesServiceImpl implements PackagesService {
 
     @Override
     public List<Packages> iFindListByBrand(Integer packageId, Integer brandId) {
-        return packagesDao.iFindListByBrand(packageId, brandId);
+        List<Packages> list = packagesDao.iFindListByBrand(packageId, brandId);
+
+        for (Packages packages : list) {
+            packages.setCover(imageDao.findOne(packages.getCoverId()).getPath());
+        }
+
+        return list;
     }
 
     @Override

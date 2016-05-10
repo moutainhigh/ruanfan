@@ -50,6 +50,9 @@ public class OrdersApi extends CommonController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private PackagesService packagesService;
+
     /**
      * @api {post} /api/orders/list 订单列表
      * @apiName orders.list
@@ -114,6 +117,7 @@ public class OrdersApi extends CommonController {
      * @apiParam {Integer} userId 用户id       <必传 />
      * @apiParam {String} couponIds 优惠券id（中间用英文逗号隔开）
      * @apiParam {Integer} type 订单类型，1=商品订单，2=套餐订单，3=秒杀订单       <必传 />
+     * @apiParam {Integer} packageId 套餐id，当订单类型为套餐订单时传入
      * @apiParam {Integer} payType 支付方式，1=支付宝，2=微信       <必传 />
      * @apiParam {Integer} score 使用积分数
      * @apiParam {String} consignee 收货人       <必传 />
@@ -141,6 +145,7 @@ public class OrdersApi extends CommonController {
     @RequestMapping("confirmOrder")
     public void confirmOrder(HttpServletResponse response,
                              Integer userId,
+                             Integer packageId,
                              String couponIds,
                              Integer type,
                              Integer payType,
@@ -285,6 +290,7 @@ public class OrdersApi extends CommonController {
             Products products = null;
             Spikes spikes = null;
             Double price = 0.0;
+
             for (Object orderMap : orderinfos) {
                 // 获取单个订单详情
                 mapInfo = JsonUtil.jsontoMap(orderMap);
@@ -352,6 +358,16 @@ public class OrdersApi extends CommonController {
 
             // 回写订单总金额和实付金额
             ordersService.update(orders);
+
+            // 如果是套餐订单，修改套餐的交易数量
+            if (type == 2) {
+                Packages packages = packagesService.getById(packageId);
+
+                if (null != packages) {
+                    packages.setCount(packages.getCount() + 1);
+                    packagesService.update(packages);
+                }
+            }
 
             // 用户将根据订单额获取等值的积分
             double doubleScore = Double.parseDouble(orders.getRealPrice());
