@@ -91,7 +91,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">价格:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" value="${designer.price}" placeholder="请输入价格"/>
+                                    <input type="text" class="form-control" id="price" name="price" style="width: 150px;" maxlength="11" value="${designer.price}" placeholder="请输入价格"/>/㎡
                                 </div>
                             </div>
 
@@ -105,7 +105,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
-                                    <textarea id="content" name="content" cols="40" rows="6" maxlength="200" class="form-control" style="resize: none">${designer.description}</textarea>
+                                    <textarea id="content" name="content" cols="40" rows="6" maxlength="200" class="form-control" style="resize: none">${designer.content}</textarea>
                                 </div>
                             </div>
 

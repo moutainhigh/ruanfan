@@ -21,6 +21,7 @@ public class Spikes {
     private Date startTime;
     private Date endTime;
     private Integer count;
+    private Integer showNum;
     private String labels;
     private String colors;
     private String sizes;
@@ -100,6 +101,14 @@ public class Spikes {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Integer getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(Integer showNum) {
+        this.showNum = showNum;
     }
 
     public String getLabels() {

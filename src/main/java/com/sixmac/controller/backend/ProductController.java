@@ -249,6 +249,7 @@ public class ProductController extends CommonController {
             product.setDescription(content);
 
             if (null == id) {
+                product.setIsAdd(Constant.ADDED_STATUS_YES);
                 product.setCount(0);
                 product.setShowNum(0);
                 product.setIsHot(Constant.RECOMMEND_STATUS_NO);

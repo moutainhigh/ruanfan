@@ -124,7 +124,7 @@ public class AfflatusController extends CommonController {
                 map = new HashMap<String, Object>();
                 map.put("id", image.getId());
                 map.put("path", image.getPath());
-                map.put("description", image.getDescription());
+                // map.put("description", image.getDescription());
 
                 list.add(map);
             }
@@ -203,13 +203,13 @@ public class AfflatusController extends CommonController {
                     image = imageService.getById(Integer.parseInt(addImageIds[i]));
                     image.setObjectId(afflatus.getId());
                     image.setObjectType(Constant.IMAGE_AFFLATUS);
-                    image.setDescription(type == 1 ? "" : textDesc[i]);
+                    // image.setDescription(type == 1 ? "" : textDesc[i]);
 
                     imageService.update(image);
                 }
             }
 
-            List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
+            /*List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
 
             for (int i = 0; i < imageList.size(); i++) {
                 image = imageList.get(i);
@@ -223,7 +223,7 @@ public class AfflatusController extends CommonController {
 
                     imageService.update(image);
                 }
-            }
+            }*/
 
             // 删除灵感集图片
             for (String imageId : delImageIds) {

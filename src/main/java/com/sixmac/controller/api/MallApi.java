@@ -107,6 +107,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} list.startTime 开始时间
      * @apiSuccess {String} list.endTime 结束时间
      * @apiSuccess {Integer} list.count 交易数量
+     * @apiSuccess {Integer} list.showNum 浏览量
      * @apiSuccess {String} list.labels 标签
      * @apiSuccess {String} list.colors 颜色
      * @apiSuccess {String} list.sizes 尺寸
@@ -150,6 +151,7 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} spikeInfo.startTime 开始时间
      * @apiSuccess {String} spikeInfo.endTime 结束时间
      * @apiSuccess {Integer} spikeInfo.count 交易数量
+     * @apiSuccess {Integer} spikeInfo.showNum 浏览量
      * @apiSuccess {String} spikeInfo.labels 标签
      * @apiSuccess {String} spikeInfo.colors 颜色
      * @apiSuccess {String} spikeInfo.sizes 尺寸
@@ -183,6 +185,10 @@ public class MallApi extends CommonController {
             WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
         }
+
+        // 修改秒杀商品浏览量
+        spikes.setShowNum(spikes.getShowNum() + 1);
+        spikesService.update(spikes);
 
         // 商品评价列表
         List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(spikesId, Constant.ORDERS_TYPE_SPIKE);

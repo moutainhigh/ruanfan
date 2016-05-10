@@ -90,7 +90,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">价格:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" value="${designers.price}" placeholder="请输入价格"/>
+                                    <input type="text" class="form-control" id="price" name="price" style="width: 100px;" maxlength="11" value="${designers.price}" placeholder="请输入价格"/>/㎡
                                 </div>
                             </div>
 

@@ -184,7 +184,7 @@ public class AfflatusServiceImpl implements AfflatusService {
 
     @Override
     public Page<Afflatus> iPage(final String key, final String labels, final Integer type, final Integer styleId, final Integer areaId, Integer pageNum, Integer pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNum - 1, pageSize, Sort.Direction.DESC, "id");
 
         Page<Afflatus> page = afflatusDao.findAll(new Specification<Afflatus>() {
             @Override

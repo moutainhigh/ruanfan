@@ -170,6 +170,7 @@ public class MerchantProductController extends CommonController {
             product.setDescription(content);
 
             if (null == id) {
+                product.setIsAdd(Constant.ADDED_STATUS_NO);
                 product.setCount(0);
                 product.setIsHot(Constant.RECOMMEND_STATUS_NO);
                 product.setIsCheck(Constant.CHECK_STATUS_DEFAULT);

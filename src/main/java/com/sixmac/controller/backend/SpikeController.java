@@ -182,6 +182,7 @@ public class SpikeController extends CommonController {
             spikes.setDescription(content);
 
             if (null == id) {
+                spikes.setShowNum(0);
                 spikes.setCount(0);
                 spikes.setCreateTime(new Date());
                 spikesService.create(spikes);

@@ -39,7 +39,7 @@
                                 <div class="col-sm-10" style="padding-top: 5.5px;">
                                     <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="designer.fn.changeStatus()"/>
                                     <a href="javascript:void(0);" onclick="designer.fn.AddImg()">
-                                        <img id="mainPicture" src="static/images/add.jpg" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
+                                        <img id="mainPicture" src="${designer.head}" style="height: 200px; width: 200px; display: inline; margin-bottom: 5px;" border="1"/>
                                     </a>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">价格:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="price" name="price" maxlength="20" value="${designer.price}" placeholder="请输入价格"/>
+                                    <input type="text" class="form-control" id="price" name="price" style="width: 150px;" maxlength="11" value="${designer.price}" placeholder="请输入价格"/>/㎡
                                 </div>
                             </div>
 
@@ -100,7 +100,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">介绍:</label>
                                 <div class="col-sm-6">
-                                    <textarea id="content" name="content" cols="40" rows="6" maxlength="200" class="form-control" style="resize: none">${designer.description}</textarea>
+                                    <textarea id="content" name="content" cols="40" rows="6" maxlength="200" class="form-control" style="resize: none">${designer.content}</textarea>
                                 </div>
                             </div>
 
