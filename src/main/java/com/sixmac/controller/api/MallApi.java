@@ -186,6 +186,9 @@ public class MallApi extends CommonController {
             return;
         }
 
+        // 截取掉最后一位英文逗号
+        spikes.setColors(spikes.getColors().substring(0, spikes.getColors().length() - 1));
+
         // 修改秒杀商品浏览量
         spikes.setShowNum(spikes.getShowNum() + 1);
         spikesService.update(spikes);
