@@ -258,11 +258,6 @@ public class OrdersApi extends CommonController {
                 orders.setPrice(allPrice.toString());
                 orders.setRealPrice((allPrice - allCouponPrice / mapList.size() - allScoreMoney / mapList.size()) + "");
                 ordersService.update(orders);
-
-                // 用户将根据订单额获取等值的积分
-                double doubleScore = Double.parseDouble(orders.getRealPrice());
-                users.setScore(users.getScore() + (int) doubleScore);
-                usersService.update(users);
             }
         } else {
             // 当订单类型为秒杀订单或套餐订单时，直接生成同一张订单
@@ -368,11 +363,6 @@ public class OrdersApi extends CommonController {
                     packagesService.update(packages);
                 }
             }
-
-            // 用户将根据订单额获取等值的积分
-            double doubleScore = Double.parseDouble(orders.getRealPrice());
-            tempUser.setScore(tempUser.getScore() + (int) doubleScore);
-            usersService.update(tempUser);
         }
 
         // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数

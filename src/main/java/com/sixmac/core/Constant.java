@@ -9,7 +9,7 @@ public interface Constant {
     Integer days = 7;
 
     // 积分换算比例
-    Integer scoreMoney = 1000;
+    Integer scoreMoney = 100;
 
     // 管理员id
     Integer ADMIN_ID = 1;

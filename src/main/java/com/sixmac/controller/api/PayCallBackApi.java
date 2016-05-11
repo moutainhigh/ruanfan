@@ -4,7 +4,9 @@ import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Orders;
+import com.sixmac.entity.Users;
 import com.sixmac.service.OrdersService;
+import com.sixmac.service.UsersService;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class PayCallBackApi extends CommonController {
 
     @Autowired
     private OrdersService ordersService;
+
+    @Autowired
+    private UsersService usersService;
 
     /**
      * @api {post} /api/pay/getPayInfo 拼接微信支付参数
@@ -205,6 +210,12 @@ public class PayCallBackApi extends CommonController {
             orders.setPayTime(new Date());
 
             ordersService.update(orders);
+
+            // 用户将根据订单额获取等值的积分
+            double doubleScore = Double.parseDouble(orders.getRealPrice());
+            Users users = orders.getUser();
+            users.setScore(users.getScore() + (int) doubleScore);
+            usersService.update(users);
 
             WebUtil.printApi(response, new Result(true));
         } catch (Exception e) {
