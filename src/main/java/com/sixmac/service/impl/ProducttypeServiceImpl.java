@@ -40,7 +40,7 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 
     @Override
     public Page<Producttype> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

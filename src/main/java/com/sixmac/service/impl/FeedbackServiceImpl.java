@@ -47,7 +47,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Page<Feedback> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

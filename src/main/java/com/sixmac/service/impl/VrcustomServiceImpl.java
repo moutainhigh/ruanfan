@@ -39,7 +39,7 @@ public class VrcustomServiceImpl implements VrcustomService {
 
     @Override
     public Page<Vrcustom> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

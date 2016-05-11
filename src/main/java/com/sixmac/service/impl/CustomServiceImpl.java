@@ -39,7 +39,7 @@ public class CustomServiceImpl implements CustomService {
 
     @Override
     public Page<Custom> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

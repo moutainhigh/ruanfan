@@ -40,7 +40,7 @@ public class AreasServiceImpl implements AreasService {
 
     @Override
     public Page<Areas> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

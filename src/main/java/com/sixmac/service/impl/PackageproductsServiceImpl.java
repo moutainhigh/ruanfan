@@ -45,7 +45,7 @@ public class PackageproductsServiceImpl implements PackageproductsService {
 
     @Override
     public Page<Packageproducts> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

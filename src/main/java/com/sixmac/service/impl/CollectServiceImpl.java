@@ -41,7 +41,7 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public Page<Collect> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

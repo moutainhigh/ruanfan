@@ -40,7 +40,7 @@ public class ModulesServiceImpl implements ModulesService {
 
     @Override
     public Page<Modules> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

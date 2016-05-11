@@ -51,7 +51,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public Page<Reserve> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

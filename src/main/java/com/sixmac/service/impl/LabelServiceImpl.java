@@ -38,7 +38,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Page<Label> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

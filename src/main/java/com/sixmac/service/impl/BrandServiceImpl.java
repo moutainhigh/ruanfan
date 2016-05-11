@@ -41,7 +41,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class OperatisServiceImpl implements OperatisService {
 
     @Override
     public Page<Operatis> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

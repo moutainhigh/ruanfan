@@ -34,7 +34,7 @@ public class UsersotherServiceImpl implements UsersotherService {
 
     @Override
     public Page<Usersother> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

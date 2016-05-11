@@ -48,7 +48,7 @@ public class CustompackagesServiceImpl implements CustompackagesService {
 
     @Override
     public Page<Custompackages> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

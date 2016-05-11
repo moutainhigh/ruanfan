@@ -35,7 +35,7 @@ public class HotWordsServiceImpl implements HotWordsService {
 
     @Override
     public Page<HotWords> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

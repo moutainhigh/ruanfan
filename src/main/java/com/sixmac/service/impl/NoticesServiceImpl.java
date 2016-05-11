@@ -34,7 +34,7 @@ public class NoticesServiceImpl implements NoticesService {
 
     @Override
     public Page<Notices> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

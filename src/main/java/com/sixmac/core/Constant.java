@@ -17,11 +17,11 @@ public interface Constant {
     // 云片网appkey
     String YUNPIAN_APPKEY = "0003c8a4216ac79cdd02327ff99b96ae";
 
-    // 云片网select
-
+    // 默认编码
     String ENCODING = "UTF-8";
 
-    int PAGE_DEF_SZIE = 20;
+    // 默认每页显示条数
+    Integer PAGE_DEF_SIZE = 20;
 
     // 当前登录人id
     String CURRENT_USER_ID = "session_member_id";

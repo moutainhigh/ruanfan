@@ -34,7 +34,7 @@ public class RecordCountServiceImpl implements RecordCountService {
 
     @Override
     public Page<RecordCount> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

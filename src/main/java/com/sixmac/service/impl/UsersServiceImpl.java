@@ -66,7 +66,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Page<Users> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

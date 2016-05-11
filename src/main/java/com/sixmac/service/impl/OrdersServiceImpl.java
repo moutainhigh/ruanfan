@@ -44,7 +44,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<Orders> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

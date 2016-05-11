@@ -51,7 +51,7 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Override
     public Page<Merchants> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

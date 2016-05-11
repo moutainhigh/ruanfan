@@ -44,7 +44,7 @@ public class CustominfoServiceImpl implements CustominfoService {
 
     @Override
     public Page<Custominfo> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

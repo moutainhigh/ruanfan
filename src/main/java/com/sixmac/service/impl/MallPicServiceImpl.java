@@ -34,7 +34,7 @@ public class MallPicServiceImpl implements MallPicService {
 
     @Override
     public Page<MallPic> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

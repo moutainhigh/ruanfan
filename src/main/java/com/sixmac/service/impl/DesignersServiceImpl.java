@@ -56,7 +56,7 @@ public class DesignersServiceImpl implements DesignersService {
 
     @Override
     public Page<Designers> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

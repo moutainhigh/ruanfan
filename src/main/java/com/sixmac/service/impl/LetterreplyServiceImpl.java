@@ -34,7 +34,7 @@ public class LetterreplyServiceImpl implements LetterreplyService {
 
     @Override
     public Page<Letterreply> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

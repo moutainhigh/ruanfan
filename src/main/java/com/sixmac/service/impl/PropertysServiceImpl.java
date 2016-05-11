@@ -46,7 +46,7 @@ public class PropertysServiceImpl implements PropertysService {
 
     @Override
     public Page<Propertys> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

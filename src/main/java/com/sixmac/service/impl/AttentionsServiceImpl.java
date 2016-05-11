@@ -35,7 +35,7 @@ public class AttentionsServiceImpl implements AttentionsService {
 
     @Override
     public Page<Attentions> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

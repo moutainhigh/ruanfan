@@ -45,7 +45,7 @@ public class SysusersServiceImpl implements SysusersService {
 
     @Override
     public Page<Sysusers> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

@@ -60,6 +60,7 @@ public class DesignerController extends CommonController {
             start = 1;
         }
         int pageNum = getPageNum(start, length);
+
         Page<Designers> page = designersService.page(mobile, nickName, status, isCheck, type, pageNum, length);
         Map<String, Object> result = DataTableFactory.fitting(draw, page);
         WebUtil.printJson(response, result);

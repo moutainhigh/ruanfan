@@ -34,7 +34,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public Page<City> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

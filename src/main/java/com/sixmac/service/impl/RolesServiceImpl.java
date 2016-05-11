@@ -39,7 +39,7 @@ public class RolesServiceImpl implements RolesService {
 
     @Override
     public Page<Roles> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override

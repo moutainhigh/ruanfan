@@ -54,7 +54,7 @@ public class StylesServiceImpl implements StylesService {
 
     @Override
     public Page<Styles> find(int pageNum) {
-        return find(pageNum, Constant.PAGE_DEF_SZIE);
+        return find(pageNum, Constant.PAGE_DEF_SIZE);
     }
 
     @Override
