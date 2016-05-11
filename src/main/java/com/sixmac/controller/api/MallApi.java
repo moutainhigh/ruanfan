@@ -186,9 +186,6 @@ public class MallApi extends CommonController {
             return;
         }
 
-        // 截取掉最后一位英文逗号
-        spikes.setColors(spikes.getColors().substring(0, spikes.getColors().length() - 1));
-
         // 修改秒杀商品浏览量
         spikes.setShowNum(spikes.getShowNum() + 1);
         spikesService.update(spikes);
@@ -212,6 +209,9 @@ public class MallApi extends CommonController {
 
         spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
         spikes.setImageList(imageService.iFindList(spikesId, Constant.IMAGE_SPIKES));
+
+        // 截取掉最后一位英文逗号
+        spikes.setColors(spikes.getColors().substring(0, spikes.getColors().length() - 1));
 
         Result obj = new Result(true).data(createMap("spikeInfo", spikes));
         String result = JsonUtil.obj2ApiJson(obj, "coverId", "labelList", "objectId", "objectType", "thuPath", "width", "height");
