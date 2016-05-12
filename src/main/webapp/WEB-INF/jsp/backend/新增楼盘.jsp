@@ -85,8 +85,8 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">楼盘简介:</label>
-                                <div class="col-sm-3">
-                                    <textarea cols="40" rows="8" class="form-control" id="description" name="description" maxlength="2000" placeholder="楼盘简介，最多2000字">${propertyInfo.description}</textarea>
+                                <div class="col-sm-6">
+                                    <textarea cols="40" rows="8" class="form-control" style="resize: none" id="description" name="description" maxlength="2000" placeholder="楼盘简介，最多2000字">${propertyInfo.description}</textarea>
                                 </div>
                             </div>
 

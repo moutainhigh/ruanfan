@@ -73,11 +73,11 @@
                         <input type="hidden" id="mallPicId" name="id"/>
 
                         <div class="form-group">
-                            <label class="col-sm-2"></label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1"></label>
+                            <div class="col-sm-11">
                                 <input type="file" name="mainImage" id="mainImage" style="display:none;"/>
                                 <a href="javascript:void(0);" onclick="mallPicList.fn.AddImg()">
-                                    <img id="mainPicture" src="" style="height: 400px; width: 400px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    <img id="mainPicture" src="" title="点击更换图片" style="height: 400px; width: 450px; display: inline; margin-bottom: 5px;" border="1"/>
                                 </a>
                             </div>
                         </div>

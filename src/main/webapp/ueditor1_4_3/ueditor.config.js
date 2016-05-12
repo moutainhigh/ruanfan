@@ -35,6 +35,7 @@
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
         , toolbars: [[
             'customstyle', //自定义标题
+            'fontsize', //字体
             'bold', //加粗
             'italic', //斜体
             'underline', //下划线

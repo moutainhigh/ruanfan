@@ -43,10 +43,10 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">单页详情:</label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-8">
                                     <!-- 百度富文本编辑框 -->
                                     <script id="container" name="content" type="text/plain"
-                                            style="width:100%; height:150px; line-height: 0px;"></script>
+                                            style="width:100%; height:200px; line-height: 0px;"></script>
                                 </div>
                             </div>
 
