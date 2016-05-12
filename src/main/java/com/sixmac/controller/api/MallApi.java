@@ -165,12 +165,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} spikeInfo.imageList.description 图片描述
      * @apiSuccess {String} spikeInfo.imageList.demo 图片备注
      * @apiSuccess {String} spikeInfo.imageList.createTime 创建时间
-     * @apiSuccess {Object} spikeInfo.appraisalVoList 评价列表
-     * @apiSuccess {Integer} spikeInfo.appraisalVoList.userId 评价人id
-     * @apiSuccess {String} spikeInfo.appraisalVoList.userName 评价人名称
-     * @apiSuccess {Integer} spikeInfo.appraisalVoList.star 评价星级
-     * @apiSuccess {String} spikeInfo.appraisalVoList.content 评价内容
-     * @apiSuccess {String} spikeInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("spikeInfo")
     public void spikeInfo(HttpServletResponse response,
@@ -189,23 +183,6 @@ public class MallApi extends CommonController {
         // 修改秒杀商品浏览量
         spikes.setShowNum(spikes.getShowNum() + 1);
         spikesService.update(spikes);
-
-        // 商品评价列表
-        List<Ordersinfo> ordersinfoList = ordersinfoService.findListBySourceId(spikesId, Constant.ORDERS_TYPE_SPIKE);
-        List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
-        AppraisalVo appra = null;
-
-        for (Ordersinfo ordersInfo : ordersinfoList) {
-            appra = new AppraisalVo();
-            appra.setUserId(ordersInfo.getOrder().getUser().getId());
-            appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
-            appra.setStar(ordersInfo.getStar());
-            appra.setContent(ordersInfo.getComment());
-            appra.setCreateTime(ordersInfo.getOrder().getCreateTime());
-
-            appraisalVoList.add(appra);
-        }
-        spikes.setAppraisalVoList(appraisalVoList);
 
         spikes.setCover(imageService.getById(spikes.getCoverId()).getPath());
         spikes.setImageList(imageService.iFindList(spikesId, Constant.IMAGE_SPIKES));
@@ -334,17 +311,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} productInfo.imageList.labelList.leftPoint 标签左边距（实际使用时，数值乘以二）
      * @apiSuccess {String} productInfo.imageList.labelList.topPoint 标签上边距（实际使用时，数值乘以二）
      * @apiSuccess {Object} productInfo.similarList 类似商品列表（信息与本接口相同）
-     * @apiSuccess {Object} productInfo.appraisalVoList 商品评价列表
-     * @apiSuccess {Integer} productInfo.appraisalVoList.userId 评价人id
-     * @apiSuccess {String} productInfo.appraisalVoList.userName 评价人名称
-     * @apiSuccess {String} productInfo.appraisalVoList.userHead 评价人头像
-     * @apiSuccess {String} productInfo.appraisalVoList.colors 颜色
-     * @apiSuccess {String} productInfo.appraisalVoList.sizes 尺寸
-     * @apiSuccess {String} productInfo.appraisalVoList.materials 材质
-     * @apiSuccess {Integer} productInfo.appraisalVoList.count 数量
-     * @apiSuccess {Integer} productInfo.appraisalVoList.star 评价星级
-     * @apiSuccess {String} productInfo.appraisalVoList.content 评价内容
-     * @apiSuccess {String} productInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("info")
     public void info(HttpServletResponse response,
@@ -374,8 +340,6 @@ public class MallApi extends CommonController {
         products.setSortName(products.getSort().getName());
         products.setImageList(imageService.iFindList(products.getId(), Constant.IMAGE_PRODUCTS));
         products.setSimilarList(productsService.iFindListBySortAndStyle(productId, products.getType(), products.getSort().getId()));
-        // 商品评价列表
-        products.setAppraisalVoList(findList(productId, Constant.ORDERS_TYPE_PACKAGE));
 
         Result obj = new Result(true).data(createMap("productInfo", products));
         String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "objectId", "objectType");
@@ -513,17 +477,6 @@ public class MallApi extends CommonController {
      * @apiSuccess {String} packageInfo.imageList.demo 备注
      * @apiSuccess {String} packageInfo.imageList.createTime 创建时间
      * @apiSuccess {Object} packageInfo.similarList 类似商品列表（信息与本接口相同）
-     * @apiSuccess {Object} packageInfo.appraisalVoList 商品评价列表
-     * @apiSuccess {Integer} packageInfo.appraisalVoList.userId 评价人id
-     * @apiSuccess {String} packageInfo.appraisalVoList.userName 评价人名称
-     * @apiSuccess {String} packageInfo.appraisalVoList.userHead 评价人头像
-     * @apiSuccess {String} packageInfo.appraisalVoList.colors 颜色
-     * @apiSuccess {String} packageInfo.appraisalVoList.sizes 尺寸
-     * @apiSuccess {String} packageInfo.appraisalVoList.materials 材质
-     * @apiSuccess {Integer} packageInfo.appraisalVoList.count 数量
-     * @apiSuccess {Integer} packageInfo.appraisalVoList.star 评价星级
-     * @apiSuccess {String} packageInfo.appraisalVoList.content 评价内容
-     * @apiSuccess {String} packageInfo.appraisalVoList.createTime 评价时间
      */
     @RequestMapping("packageInfo")
     public void packageInfo(HttpServletResponse response,
@@ -563,9 +516,6 @@ public class MallApi extends CommonController {
 
         packages.setSimilarList(packagesService.iFindListByBrand(packageId, packages.getBrand().getId()));
 
-        // 套餐评价列表
-        packages.setAppraisalVoList(findList(packageId, Constant.ORDERS_TYPE_PACKAGE));
-
         Result obj = new Result(true).data(createMap("packageInfo", packages));
         String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType", "thuPath", "width", "height");
         WebUtil.printApi(response, result);
@@ -586,10 +536,14 @@ public class MallApi extends CommonController {
                 break;
         }
 
+        return getList(ordersinfoList);
+    }
+
+    private List<AppraisalVo> getList(List<Ordersinfo> list) {
         List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
         AppraisalVo appra = null;
 
-        for (Ordersinfo ordersInfo : ordersinfoList) {
+        for (Ordersinfo ordersInfo : list) {
             appra = new AppraisalVo();
             appra.setUserId(ordersInfo.getOrder().getUser().getId());
             appra.setUserName(ordersInfo.getOrder().getUser().getNickName());
@@ -618,5 +572,55 @@ public class MallApi extends CommonController {
             product.setSortId(product.getSort().getId());
             product.setSortName(product.getSort().getName());
         }
+    }
+
+    /**
+     * @api {post} /api/mall/appraisalList 评价列表
+     * @apiName mall.appraisalList
+     * @apiGroup mall
+     * @apiParam {Integer} id 关联目标id       <必传 />
+     * @apiParam {Integer} type 评价类型，1=商品，2=套餐，3=秒杀       <必传 />
+     * @apiSuccess {Object} list 商品评价列表
+     * @apiSuccess {Integer} list.userId 评价人id
+     * @apiSuccess {String} list.userName 评价人名称
+     * @apiSuccess {String} list.userHead 评价人头像
+     * @apiSuccess {String} list.colors 颜色
+     * @apiSuccess {String} list.sizes 尺寸
+     * @apiSuccess {String} list.materials 材质
+     * @apiSuccess {Integer} list.count 数量
+     * @apiSuccess {Integer} list.star 评价星级
+     * @apiSuccess {String} list.content 评价内容
+     * @apiSuccess {String} list.createTime 评价时间
+     */
+    @RequestMapping("appraisalList")
+    public void appraisalList(HttpServletResponse response,
+                              Integer id,
+                              Integer type,
+                              Integer pageNum,
+                              Integer pageSize) {
+        if (null == id || null == type) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Page<Ordersinfo> page = null;
+
+        switch (type) {
+            case 2:
+                // 套餐订单
+                page = ordersinfoService.pageByPackageOrderId(id, pageNum, pageSize);
+                break;
+            case 1:
+            case 3:
+                // 秒杀订单
+                page = ordersinfoService.pageBySourceId(id, type, pageNum, pageSize);
+                break;
+        }
+
+        Map<String, Object> dataMap = APIFactory.fittingPlus(page, getList(page.getContent()));
+
+        Result obj = new Result(true).data(dataMap);
+        String result = JsonUtil.obj2ApiJson(obj);
+        WebUtil.printApi(response, result);
     }
 }

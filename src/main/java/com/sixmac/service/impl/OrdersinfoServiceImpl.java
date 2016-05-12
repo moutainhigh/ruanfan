@@ -179,8 +179,18 @@ public class OrdersinfoServiceImpl implements OrdersinfoService {
     }
 
     @Override
+    public Page<Ordersinfo> pageBySourceId(Integer productId, Integer type, Integer pageNum, Integer pageSize) {
+        return ordersinfoDao.pageBySourceId(productId, type, new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id"));
+    }
+
+    @Override
     public List<Ordersinfo> findListByPackageOrderId(Integer orderId) {
         return ordersinfoDao.findListByPackageOrderId(orderId);
+    }
+
+    @Override
+    public Page<Ordersinfo> pageByPackageOrderId(Integer orderId, Integer pageNum, Integer pageSize) {
+        return ordersinfoDao.pageByPackageOrderId(orderId, new PageRequest(pageNum - 1, pageSize, Sort.Direction.ASC, "id"));
     }
 
     @Override

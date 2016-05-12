@@ -3,6 +3,7 @@ package com.sixmac.controller;
 import com.sixmac.entity.*;
 import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.*;
+import com.sixmac.utils.GetImageInfo;
 import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -312,13 +313,15 @@ public class CommonsController {
             }
 
             String url = QiNiuUploadImgUtil.upload(multipartFile);
-            Map<String, Object> map = QiNiuUploadImgUtil.getInfo(url);
             image.setPath(url);
-            image.setWidth(map.get("width").toString());
-            image.setHeight(map.get("height").toString());
-            image.setCreateTime(new Date());
 
             imageService.create(image);
+
+            // 使用线程更新图片的宽高信息
+            GetImageInfo getImageInfo = new GetImageInfo();
+            getImageInfo.setImage(image);
+            getImageInfo.setKey(url);
+            getImageInfo.run();
         } catch (Exception e) {
             e.printStackTrace();
         }

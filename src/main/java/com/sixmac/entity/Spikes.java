@@ -31,7 +31,6 @@ public class Spikes {
     private String cover;
     private Integer status;
     private List<Image> imageList = new ArrayList<Image>();
-    private List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -186,14 +185,5 @@ public class Spikes {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
-    }
-
-    @Transient
-    public List<AppraisalVo> getAppraisalVoList() {
-        return appraisalVoList;
-    }
-
-    public void setAppraisalVoList(List<AppraisalVo> appraisalVoList) {
-        this.appraisalVoList = appraisalVoList;
     }
 }

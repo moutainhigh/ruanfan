@@ -45,7 +45,6 @@ public class Products {
     private Date createTime;
     private List<Image> imageList = new ArrayList<Image>();
     private List<Products> similarList = new ArrayList<Products>();
-    private List<AppraisalVo> appraisalVoList = new ArrayList<AppraisalVo>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -320,14 +319,5 @@ public class Products {
 
     public void setSimilarList(List<Products> similarList) {
         this.similarList = similarList;
-    }
-
-    @Transient
-    public List<AppraisalVo> getAppraisalVoList() {
-        return appraisalVoList;
-    }
-
-    public void setAppraisalVoList(List<AppraisalVo> appraisalVoList) {
-        this.appraisalVoList = appraisalVoList;
     }
 }

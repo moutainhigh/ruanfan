@@ -341,12 +341,13 @@ public class OrdersApi extends CommonController {
             }
             // 获取减免金额
             Double reducePrice = 0.0;
-            if (StringUtils.isNotBlank(couponIds)) {
-                couponIds += ",";
-                int[] couIds = JsonUtil.json2Obj(couponIds, int[].class);
-                for (int couponId : couIds) {
-                    usersService.usedCoupon(userId, couponId);
-                    reducePrice += Double.parseDouble(couponService.getById(couponId).getMoney());
+            if (StringUtils.isNotEmpty(couponIds)) {
+                String[] couIds = couponIds.split(",");
+                for (String couponId : couIds) {
+                    if (StringUtils.isNotEmpty(couponId)) {
+                        usersService.usedCoupon(userId, Integer.parseInt(couponId));
+                        reducePrice += Double.parseDouble(couponService.getById(Integer.parseInt(couponId)).getMoney());
+                    }
                 }
             }
             orders.setRealPrice((price - reducePrice - allScoreMoney) + "");
