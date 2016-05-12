@@ -580,6 +580,8 @@ public class MallApi extends CommonController {
      * @apiGroup mall
      * @apiParam {Integer} id 关联目标id       <必传 />
      * @apiParam {Integer} type 评价类型，1=商品，2=套餐，3=秒杀       <必传 />
+     * @apiParam {Integer} pageNum 页码       <必传 />
+     * @apiParam {Integer} pageSize 每页显示条数       <必传 />
      * @apiSuccess {Object} list 商品评价列表
      * @apiSuccess {Integer} list.userId 评价人id
      * @apiSuccess {String} list.userName 评价人名称
@@ -598,7 +600,7 @@ public class MallApi extends CommonController {
                               Integer type,
                               Integer pageNum,
                               Integer pageSize) {
-        if (null == id || null == type) {
+        if (null == id || null == type || null == pageNum || null == pageSize) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
