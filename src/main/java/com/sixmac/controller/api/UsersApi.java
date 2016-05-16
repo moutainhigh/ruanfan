@@ -136,47 +136,44 @@ public class UsersApi extends CommonController {
             return;
         }
 
-        // 检测验证码
-        if (checkCode(response, mobile, code, codeType)) {
-            // 检测手机号是否唯一，如果不唯一，返回错误码
-            if (null != usersService.iFindOneByMobile(mobile)) {
-                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0006));
-                return;
-            }
-
-            // 获取头像
-            MultipartFile multipartFile = multipartRequest.getFile("head");
-            if (null == multipartFile) {
-                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
-                return;
-            }
-
-            Users users = new Users();
-            users.setMobile(mobile);
-            users.setPassword(password);
-            users.setNickName(nickname);
-            users.setCity(cityService.getById(1));
-            users.setScore(100);
-            users.setType(1);
-            users.setStatus(0);
-            users.setCreateTime(new Date());
-            users.setHeadPath("");
-
-            try {
-                users.setHeadPath(QiNiuUploadImgUtil.upload(multipartFile));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // 注册
-            usersService.create(users);
-
-            users.setCityId(1);
-
-            Result obj = new Result(true).data(createMap("userInfo", users));
-            String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
-            WebUtil.printApi(response, result);
+        // 检测手机号是否唯一，如果不唯一，返回错误码
+        if (null != usersService.iFindOneByMobile(mobile)) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0006));
+            return;
         }
+
+        // 获取头像
+        MultipartFile multipartFile = multipartRequest.getFile("head");
+        if (null == multipartFile) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Users users = new Users();
+        users.setMobile(mobile);
+        users.setPassword(password);
+        users.setNickName(nickname);
+        users.setCity(cityService.getById(1));
+        users.setScore(100);
+        users.setType(1);
+        users.setStatus(0);
+        users.setCreateTime(new Date());
+        users.setHeadPath("");
+
+        try {
+            users.setHeadPath(QiNiuUploadImgUtil.upload(multipartFile));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 注册
+        usersService.create(users);
+
+        users.setCityId(1);
+
+        Result obj = new Result(true).data(createMap("userInfo", users));
+        String result = JsonUtil.obj2ApiJson(obj, "city", "password", "type");
+        WebUtil.printApi(response, result);
     }
 
     /**
@@ -290,22 +287,19 @@ public class UsersApi extends CommonController {
             return;
         }
 
-        // 检测验证码
-        if (checkCode(response, mobile, code, codeType)) {
-            // 根据手机号获取用户信息，并返回该用户的信息
-            Users users = usersService.iFindOneByMobile(mobile);
+        // 根据手机号获取用户信息，并返回该用户的信息
+        Users users = usersService.iFindOneByMobile(mobile);
 
-            if (null == users) {
-                WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
-                return;
-            }
-
-            users.setPassword(password);
-
-            usersService.update(users);
-
-            WebUtil.printApi(response, new Result(true));
+        if (null == users) {
+            WebUtil.printApi(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
+            return;
         }
+
+        users.setPassword(password);
+
+        usersService.update(users);
+
+        WebUtil.printApi(response, new Result(true));
     }
 
     /**
@@ -795,6 +789,28 @@ public class UsersApi extends CommonController {
         Result obj = new Result(true).data(dataMap);
         String result = JsonUtil.obj2ApiJson(obj, "types");
         WebUtil.printApi(response, result);
+    }
+
+    /**
+     * @api {post} /api/users/checkCodeStatus 检测验证码是否正确
+     * @apiName users.checkCodeStatus
+     * @apiGroup users
+     * @apiParam {String} mobile 手机号       <必传 />
+     * @apiParam {String} code 验证码       <必传 />
+     * @apiParam {String} type 验证码类型，注册=register，忘记密码=forgetPwd       <必传 />
+     */
+    @RequestMapping(value = "/checkCodeStatus")
+    public void checkCodeStatus(HttpServletResponse response, String mobile, String code, String type) {
+        if (null == mobile || null == code || null == type) {
+            WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
+            return;
+        }
+
+        Boolean flag = checkCode(response, mobile, code, type);
+
+        if (flag) {
+            WebUtil.printApi(response, new Result(true));
+        }
     }
 
     /**
