@@ -6,7 +6,7 @@ import com.sixmac.entity.Designers;
 import com.sixmac.entity.Messageplus;
 import com.sixmac.service.CityService;
 import com.sixmac.service.DesignersService;
-import com.sixmac.utils.ImageUtil;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/3/23 0023.
@@ -86,17 +85,17 @@ public class DesignerIndexController extends CommonController {
             designers.setIsCheck(Constant.CHECK_STATUS_DEFAULT);
 
             // 保存资质证明
-            MultipartFile proof = multipartRequest.getFile("mainImage2");
-            if (null != proof) {
-                Map<String, Object> map = ImageUtil.saveImage(request, proof, false);
-                designers.setProof(map.get("imgURL").toString());
+            MultipartFile multipartFile = multipartRequest.getFile("mainImage2");
+            if (null != multipartFile) {
+                String proof = QiNiuUploadImgUtil.upload(multipartFile);
+                designers.setProof(proof);
             }
 
             // 保存头像
             MultipartFile head = multipartRequest.getFile("mainImage");
             if (null != head) {
-                Map<String, Object> map = ImageUtil.saveImage(request, head, false);
-                designers.setHead(map.get("imgURL").toString());
+                String headUrl = QiNiuUploadImgUtil.upload(multipartFile);
+                designers.setHead(headUrl);
             }
 
             designersService.update(designers);
@@ -127,8 +126,8 @@ public class DesignerIndexController extends CommonController {
             // 保存头像
             MultipartFile head = multipartRequest.getFile("mainImage");
             if (null != head) {
-                Map<String, Object> map = ImageUtil.saveImage(request, head, false);
-                designers.setHead(map.get("imgURL").toString());
+                String headUrl = QiNiuUploadImgUtil.upload(head);
+                designers.setHead(headUrl);
             }
 
             designersService.update(designers);
