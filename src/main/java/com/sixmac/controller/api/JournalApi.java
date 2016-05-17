@@ -131,10 +131,10 @@ public class JournalApi extends CommonController {
         journalService.update(journal);
 
         journal.setImageList(imageService.iFindList(journal.getId(), Constant.IMAGE_JOURNAL));
-        journal.setGamNum(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC).size());
-        journal.setCommentNum(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL).size());
-        journal.setCommentList(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL));
         journal.setGamsList(gamsService.iFindList(journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE, Constant.SORT_TYPE_DESC));
+        journal.setGamNum(journal.getGamsList().size());
+        journal.setCommentList(commentService.iFindList(journalId, Constant.COMMENT_JOURNAL));
+        journal.setCommentNum(journal.getCommentList().size());
 
         if (null != userId) {
             Gams gams = gamsService.iFindOne(userId, journalId, Constant.GAM_JOURNAL, Constant.GAM_LOVE);
@@ -158,7 +158,7 @@ public class JournalApi extends CommonController {
      * @apiParam {Object} imagesMap 图片数组Map
      */
     @RequestMapping(value = "/addJournal")
-    public void addJournal(ServletRequest request, HttpServletResponse response, Integer userId, String content, MultipartHttpServletRequest multipartRequest) {
+    public void addJournal(HttpServletResponse response, Integer userId, String content, MultipartHttpServletRequest multipartRequest) {
         if (null == userId || null == content) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;

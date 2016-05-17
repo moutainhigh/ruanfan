@@ -77,6 +77,20 @@ public class UsersApi extends CommonController {
             return;
         }
 
+        Users users = usersService.iFindOneByMobile(mobile);
+
+        if (type.equals("register")) {
+            if (null != users) {
+                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0006));
+                return;
+            }
+        } else {
+            if (null == users) {
+                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0015));
+                return;
+            }
+        }
+
         // 生成验证码
         String code = RandomUtil.getCode();
 
@@ -109,8 +123,6 @@ public class UsersApi extends CommonController {
      * @apiParam {String} password 密码，MD5密文       <必传 />
      * @apiParam {String} nickname 昵称       <必传 />
      * @apiParam {Stream} head 头像（二级制流文件）       <必传 />
-     * @apiParam {String} code 验证码       <必传 />
-     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd       <必传 />
      * @apiSuccess {Object} userInfo 用户信息
      * @apiSuccess {Integer} userInfo.id 用户id
      * @apiSuccess {String} userInfo.mobile 手机号
@@ -123,15 +135,12 @@ public class UsersApi extends CommonController {
      * @apiSuccess {Integer} userInfo.cityId 所在城市id
      */
     @RequestMapping(value = "/register")
-    public void register(ServletRequest request,
-                         HttpServletResponse response,
+    public void register(HttpServletResponse response,
                          String mobile,
                          String password,
                          String nickname,
-                         MultipartRequest multipartRequest,
-                         String code,
-                         String codeType) {
-        if (null == mobile || null == password || null == nickname || null == code || null == codeType) {
+                         MultipartRequest multipartRequest) {
+        if (null == mobile || null == password || null == nickname) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }
@@ -277,12 +286,10 @@ public class UsersApi extends CommonController {
      * @apiGroup users
      * @apiParam {String} mobile 手机号       <必传 />
      * @apiParam {String} password 新密码，MD5密文       <必传 />
-     * @apiParam {String} code 验证码       <必传 />
-     * @apiParam {String} codeType 验证码类型，注册=register，忘记密码=forgetPwd       <必传 />
      */
     @RequestMapping(value = "/forgetPwd")
-    public void forgetPwd(HttpServletResponse response, String mobile, String password, String code, String codeType) {
-        if (null == mobile || null == password || null == code || null == codeType) {
+    public void forgetPwd(HttpServletResponse response, String mobile, String password) {
+        if (null == mobile || null == password) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0002));
             return;
         }

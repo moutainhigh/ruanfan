@@ -224,4 +224,15 @@ public class PayCallBackApi extends CommonController {
             WebUtil.printApi(response, new Result(false));
         }
     }
+
+    /**
+     * @api {post} /api/pay/changeOrderStatus 直接改变订单状态
+     * @apiName pay.changeOrderStatus
+     * @apiGroup pay
+     * @apiParam {String} orderNum 订单流水号       <必传 />
+     */
+    @RequestMapping(value = "/changeOrderStatus")
+    private void changeOrder(String orderNum, HttpServletResponse response) {
+        changeOrderStatus(orderNum, response);
+    }
 }
