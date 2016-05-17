@@ -2,6 +2,7 @@ package com.sixmac.controller.api;
 
 import com.sixmac.controller.common.CommonController;
 import com.sixmac.core.Constant;
+import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Orders;
 import com.sixmac.entity.Users;
@@ -206,6 +207,12 @@ public class PayCallBackApi extends CommonController {
     private void changeOrderStatus(String orderNum, HttpServletResponse response) {
         try {
             Orders orders = ordersService.iFindOneByOrderNum(orderNum);
+
+            if (null == orders) {
+                WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0022));
+                return;
+            }
+
             orders.setStatus(Constant.ORDERS_STATUS_001);
             orders.setPayTime(new Date());
 
