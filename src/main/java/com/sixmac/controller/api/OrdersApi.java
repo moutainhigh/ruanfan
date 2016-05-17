@@ -368,6 +368,7 @@ public class OrdersApi extends CommonController {
 
         if (null != score && score > 0) {
             orders.setScore(score);
+            ordersService.update(orders);
         }
 
         Map<String, Object> map = new HashMap<String, Object>();
