@@ -23,6 +23,7 @@ public class Orders {
     private String address;
     private String price;
     private String realPrice;
+    private Integer score;
     private String demo;
     private Integer status;
     private Date createTime;
@@ -130,6 +131,14 @@ public class Orders {
 
     public void setRealPrice(String realPrice) {
         this.realPrice = realPrice;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public String getDemo() {

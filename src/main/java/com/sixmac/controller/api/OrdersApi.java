@@ -366,11 +366,8 @@ public class OrdersApi extends CommonController {
             }
         }
 
-        // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数
         if (null != score && score > 0) {
-            Users users = usersService.getById(userId);
-            users.setScore(users.getScore() - score);
-            usersService.update(users);
+            orders.setScore(score);
         }
 
         Map<String, Object> map = new HashMap<String, Object>();

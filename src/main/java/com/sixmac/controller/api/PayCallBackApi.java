@@ -218,6 +218,13 @@ public class PayCallBackApi extends CommonController {
 
             ordersService.update(orders);
 
+            // 判断使用积分数，如果大于零，则表示使用了积分，此时应当减去对应用户的积分数
+            if (null != orders.getScore() && orders.getScore() > 0) {
+                Users users = orders.getUser();
+                users.setScore(users.getScore() - orders.getScore());
+                usersService.update(users);
+            }
+
             // 用户将根据订单额获取等值的积分
             double doubleScore = Double.parseDouble(orders.getRealPrice());
             Users users = orders.getUser();
