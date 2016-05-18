@@ -81,12 +81,15 @@ public class CommonApi extends CommonController {
     @Autowired
     private ShareRecordService shareRecordService;
 
+    @Autowired
+    private CustominfoService custominfoService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
      * @apiGroup common
      * @apiParam {Integer} userId 用户id      <必传 />
-     * @apiParam {Integer} type 类型，1=灵感集，2=设计作品，3=VR虚拟      <必传 />
+     * @apiParam {Integer} type 类型，1=灵感集，2=设计作品，3=VR虚拟，4=在线设计定制户型      <必传 />
      * @apiParam {Integer} pageNum 页码       <必传 />
      * @apiParam {Integer} pageSize 每页显示条数      <必传 />
      * @apiSuccess {Object} list 收藏列表  返回类型有三种，灵感集，设计作品，VR虚拟
@@ -135,6 +138,12 @@ public class CommonApi extends CommonController {
      * @apiSuccess {String} list.gamsList.description 描述
      * @apiSuccess {Integer} list.gamsList.gamUserId 点赞人id
      * @apiSuccess {String} list.gamsList.gamHead 点赞人头像
+     * @apiSuccess {Object} or
+     * @apiSuccess {Object} list 在线设计定制户型列表
+     * @apiSuccess {Integer} list.id 户型id
+     * @apiSuccess {String} list.name 户型名称
+     * @apiSuccess {String} list.path 户型图片
+     * @apiSuccess {String} list.createTime 添加时间
      */
     @RequestMapping(value = "/collectList")
     public void collectList(HttpServletResponse response,
@@ -150,6 +159,7 @@ public class CommonApi extends CommonController {
         List<Afflatus> afflatusList = new ArrayList<Afflatus>();
         List<Works> worksList = new ArrayList<Works>();
         List<Virtuals> virtualsList = new ArrayList<Virtuals>();
+        List<Custominfo> custominfoList = new ArrayList<Custominfo>();
 
         Page<Collect> page = collectService.iPage(type, userId, pageNum, pageSize);
 
@@ -174,6 +184,12 @@ public class CommonApi extends CommonController {
                     Virtuals virtuals = virtualsService.getById(collect.getObjectId());
                     if (null != virtuals) {
                         virtualsList.add(virtuals);
+                    }
+                    break;
+                case 4:
+                    Custominfo custominfo = custominfoService.getById(collect.getObjectId());
+                    if (null != custominfo) {
+                        custominfoList.add(custominfo);
                     }
                     break;
             }
@@ -229,10 +245,13 @@ public class CommonApi extends CommonController {
 
                 dataMap = APIFactory.fittingPlus(page, virtualsList);
                 break;
+            case 4:
+                dataMap = APIFactory.fittingPlus(page, custominfoList);
+                break;
         }
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "designer", "coverId", "isCut", "style", "area");
+        String result = JsonUtil.obj2ApiJson(obj, "user", "objectId", "objectType", "designer", "coverId", "isCut", "style", "area", "custom", "packageList");
         WebUtil.printApi(response, result);
     }
 
@@ -242,7 +261,7 @@ public class CommonApi extends CommonController {
      * @apiGroup common
      * @apiParam {Integer} userId 用户id      <必传 />
      * @apiParam {Integer} objectId 目标id        <必传 />
-     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品，3=VR虚拟     <必传 />
+     * @apiParam {Integer} objectType 目标类型，1=灵感集，2=设计作品，3=VR虚拟，4=在线设计定制户型     <必传 />
      * @apiParam {Integer} action 类型，0=收藏，1=取消收藏        <必传 />
      */
     @RequestMapping("/collect")
