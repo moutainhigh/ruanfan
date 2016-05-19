@@ -138,7 +138,7 @@ public class QiNiuUploadImgUtil {
      *
      * @param key
      */
-    public static void delete(String key) {
+    public static void deleteInfo(String key) {
         try {
             //调用delete方法移动文件
             bucketManager.delete(bucketName, key);

@@ -31,10 +31,6 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public Image deleteById(int id) {
         Image image = getById(id);
-
-        // 从七牛删除图片
-        QiNiuUploadImgUtil.delete(image.getPath());
-
         imageDao.delete(image);
         return image;
     }
