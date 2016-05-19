@@ -76,6 +76,7 @@ public interface Constant {
     Integer COLLECT_AFFLATUS = 1;  // 灵感集
     Integer COLLECT_WORKS = 2;     // 设计作品
     Integer COLLECT_VIRTUALS = 3;  // VR虚拟
+    Integer COLLECT_CUSTOMINFO = 4;  // 在线定制户型
 
     // 评论目标类型
     Integer COMMENT_DESIGNERS = 1;  // 设计师

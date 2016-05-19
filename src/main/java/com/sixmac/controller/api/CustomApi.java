@@ -1,10 +1,13 @@
 package com.sixmac.controller.api;
 
 import com.sixmac.controller.common.CommonController;
+import com.sixmac.core.Constant;
 import com.sixmac.core.ErrorCode;
 import com.sixmac.core.bean.Result;
+import com.sixmac.entity.Collect;
 import com.sixmac.entity.Custom;
 import com.sixmac.entity.Custominfo;
+import com.sixmac.service.CollectService;
 import com.sixmac.service.CustomService;
 import com.sixmac.service.CustominfoService;
 import com.sixmac.service.CustompackagesService;
@@ -33,6 +36,9 @@ public class CustomApi extends CommonController {
 
     @Autowired
     private CustompackagesService customPackageService;
+
+    @Autowired
+    private CollectService collectService;
 
     /**
      * @api {post} /api/custom/findList 根据楼盘名称查询户型列表
@@ -78,6 +84,7 @@ public class CustomApi extends CommonController {
      * @apiSuccess {Integer} customInfo.id 户型id
      * @apiSuccess {String} customInfo.name 户型名称
      * @apiSuccess {String} customInfo.path 户型封面图
+     * @apiSuccess {Integer} customInfo.isCollect 是否收藏，0=是，1=否
      * @apiSuccess {String} customInfo.createTime 创建时间
      * @apiSuccess {Object} customInfo.packageList 套餐列表
      * @apiSuccess {Integer} customInfo.packageList.id 套餐id
@@ -97,12 +104,18 @@ public class CustomApi extends CommonController {
     @RequestMapping(value = "/info")
     public void info(HttpServletResponse response,
                      Integer customInfoId,
-                     Integer areaId) {
+                     Integer areaId,
+                     Integer userId) {
         Custominfo custominfo = custominfoService.getById(customInfoId);
 
         if (null == custominfo) {
             WebUtil.printJson(response, new Result(false).msg(ErrorCode.ERROR_CODE_0003));
             return;
+        }
+
+        if (null != userId) {
+            Collect collect = collectService.iFindOne(userId, customInfoId, Constant.COLLECT_CUSTOMINFO);
+            custominfo.setIsCollect(null == collect ? Constant.IS_CUT_YES : Constant.IS_CUT_NO);
         }
 
         custominfo.setPackageList(customPackageService.findListByCustominfoId(customInfoId, areaId));

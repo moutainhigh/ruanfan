@@ -18,6 +18,7 @@ public class Custominfo {
     private String name;
     private String path;
     private Date createTime;
+    private Integer isCollect;
     private List<PackageVo> packageList = new ArrayList<PackageVo>();
 
     @Id
@@ -63,6 +64,15 @@ public class Custominfo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Transient
+    public Integer getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(Integer isCollect) {
+        this.isCollect = isCollect;
     }
 
     @Transient
