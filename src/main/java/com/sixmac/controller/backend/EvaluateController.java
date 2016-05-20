@@ -2,9 +2,7 @@ package com.sixmac.controller.backend;
 
 import com.sixmac.common.DataTableFactory;
 import com.sixmac.controller.common.CommonController;
-import com.sixmac.core.bean.Result;
 import com.sixmac.entity.Ordersinfo;
-import com.sixmac.service.OperatisService;
 import com.sixmac.service.OrdersinfoService;
 import com.sixmac.utils.JsonUtil;
 import com.sixmac.utils.WebUtil;
@@ -29,9 +27,6 @@ public class EvaluateController extends CommonController {
     @Autowired
     private OrdersinfoService ordersinfoService;
 
-    @Autowired
-    private OperatisService operatisService;
-
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
         return "backend/评价列表";
@@ -45,7 +40,6 @@ public class EvaluateController extends CommonController {
                      Integer draw,
                      Integer start,
                      Integer length) {
-
         int pageNum = getPageNum(start, length);
 
         Page<Ordersinfo> page = ordersinfoService.page(mobile, productName, orderNum, pageNum, length);
