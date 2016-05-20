@@ -180,13 +180,7 @@ public class PackagesServiceImpl implements PackagesService {
 
     @Override
     public List<Packages> iFindListByBrand(Integer packageId, Integer brandId) {
-        List<Packages> list = packagesDao.iFindListByBrand(packageId, brandId);
-
-        for (Packages packages : list) {
-            packages.setCover(imageDao.findOne(packages.getCoverId()).getPath());
-        }
-
-        return list;
+        return packagesDao.iFindListByBrand(packageId, brandId);
     }
 
     @Override

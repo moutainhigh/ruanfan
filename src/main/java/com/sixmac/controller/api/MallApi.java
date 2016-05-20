@@ -406,8 +406,7 @@ public class MallApi extends CommonController {
         List<Products> productList = new ArrayList<Products>();
 
         for (Packages packages : page.getContent()) {
-            // 设置封面图路径和品牌信息
-            packages.setCover(imageService.getById(packages.getCoverId()).getPath());
+            // 设置品牌信息
             packages.setBrandId(packages.getBrand().getId());
             packages.setBrandName(packages.getBrand().getName());
 
@@ -427,7 +426,7 @@ public class MallApi extends CommonController {
         Map<java.lang.String, Object> dataMap = APIFactory.fitting(page);
 
         Result obj = new Result(true).data(dataMap);
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isCheck", "isAdd", "productNum", "imageList", "similarList", "appraisalVoList");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "isHot", "isCheck", "isAdd", "productNum", "imageList", "similarList", "appraisalVoList");
         WebUtil.printApi(response, result);
     }
 
@@ -495,8 +494,7 @@ public class MallApi extends CommonController {
         packages.setShowNum(packages.getShowNum() + 1);
         packagesService.update(packages);
 
-        // 设置封面图路径和品牌信息
-        packages.setCover(imageService.getById(packages.getCoverId()).getPath());
+        // 设置品牌信息
         packages.setBrandId(packages.getBrand().getId());
         packages.setBrandName(packages.getBrand().getName());
 
@@ -517,7 +515,7 @@ public class MallApi extends CommonController {
         packages.setSimilarList(packagesService.iFindListByBrand(packageId, packages.getBrand().getId()));
 
         Result obj = new Result(true).data(createMap("packageInfo", packages));
-        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "coverId", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType", "thuPath", "width", "height");
+        String result = JsonUtil.obj2ApiJson(obj, "merchant", "brand", "sort", "isHot", "isAdd", "isCheck", "productNum", "labelList", "objectId", "objectType", "thuPath", "width", "height");
         WebUtil.printApi(response, result);
     }
 

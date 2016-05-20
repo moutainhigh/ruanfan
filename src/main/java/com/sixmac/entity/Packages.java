@@ -20,7 +20,6 @@ public class Packages {
     private String oldPrice;
     private Brand brand;
     private String labels;
-    private Integer coverId;
     private String description;
     private Integer showNum;
     private Integer count;
@@ -93,14 +92,6 @@ public class Packages {
         this.labels = labels;
     }
 
-    public Integer getCoverId() {
-        return coverId;
-    }
-
-    public void setCoverId(Integer coverId) {
-        this.coverId = coverId;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -144,7 +135,6 @@ public class Packages {
         this.productsList = productsList;
     }
 
-    @Transient
     public String getCover() {
         return cover;
     }

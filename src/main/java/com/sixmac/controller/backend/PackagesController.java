@@ -7,6 +7,7 @@ import com.sixmac.entity.Image;
 import com.sixmac.entity.Packageproducts;
 import com.sixmac.entity.Packages;
 import com.sixmac.service.*;
+import com.sixmac.utils.QiNiuUploadImgUtil;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -132,7 +135,6 @@ public class PackagesController extends CommonController {
      * @param name
      * @param price
      * @param oldPrice
-     * @param coverId
      * @param labels
      * @param content
      * @param tempAddImageIds
@@ -145,14 +147,14 @@ public class PackagesController extends CommonController {
                         String name,
                         String price,
                         String oldPrice,
-                        Integer coverId,
                         Integer brandId,
                         String labels,
                         String content,
                         String tempAddImageIds,
                         String tempColors,
                         String tempSizes,
-                        String tempMaterials) {
+                        String tempMaterials,
+                        MultipartRequest multipartRequest) {
         try {
             String[] addImageIds = tempAddImageIds.split(",");
             String[] colors = tempColors.split(",");
@@ -171,7 +173,12 @@ public class PackagesController extends CommonController {
             packages.setOldPrice(oldPrice);
             packages.setBrand(brandService.getById(brandId));
             packages.setLabels(labels);
-            packages.setCoverId(coverId);
+
+            MultipartFile multipartFile = multipartRequest.getFile("mainImage");
+            if (null != multipartFile) {
+                packages.setCover(QiNiuUploadImgUtil.upload(multipartFile));
+            }
+
             packages.setDescription(content);
 
             if (null == id) {

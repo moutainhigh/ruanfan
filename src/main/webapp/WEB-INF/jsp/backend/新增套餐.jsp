@@ -30,7 +30,6 @@
                     <div class="panel-body">
                         <form id="packagesForm" method="post" action="backend/packages/save" class="form-horizontal nice-validator n-default" role="form" novalidate="novalidate">
                             <input type="hidden" id="packagesId" name="id" value="${packages.id}">
-                            <input type="hidden" id="tempCoverId" value="${packages.coverId}">
                             <input type="hidden" id="tempBrandId" value="${packages.brand.id}"/>
                             <span id="tempAddImageIds" style="display: none">${imageIds}</span>
 
@@ -71,6 +70,16 @@
 
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" id="labels" name="labels" maxlength="200" data-rule="required" value="${packages.labels}" placeholder="使用空格隔开"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">封面图:</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="mainImage" id="mainImage" style="display:none;" onchange="packages.fn.changeStatus()"/>
+                                    <a href="javascript:void(0);" onclick="packages.fn.AddImg()">
+                                        <img id="mainPicture" src="${packages.cover}" style="height: 320px; width: 320px; display: inline; margin-bottom: 5px;" border="1"/>
+                                    </a>
                                 </div>
                             </div>
 
@@ -116,7 +125,7 @@
                         <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 30px;">
                             <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
-                            <input type="radio" name="settingCover"/>设为封面
+                            <input type="radio" name="settingCover" style="display: none" />
                             <button type="button" class="btn btn-danger btn-sm" style="margin-top: 5px;" onclick="packages.fn.removeProduct(this)">删除</button>
                             <input name="tempProductColor" type="hidden"/>
                             <input name="tempProductSize" type="hidden"/>
@@ -160,7 +169,8 @@
             imageSize: 0,
             tempColors: "",
             tempSizes: "",
-            tempMaterials: ""
+            tempMaterials: "",
+            mainImageStatus: 0
         },
         fn: {
             init: function () {
@@ -171,6 +181,13 @@
                 if ($("#packagesId").val() != "") {
                     $("#showH").text("——编辑套餐");
                 }
+
+                //套图主图预览
+                $("#mainImage").uploadPreview({
+                    Img: "mainPicture",
+                    Width: 200,
+                    Height: 170
+                });
 
                 // 页面加载时，自动加载下拉框
                 packages.fn.getSelectList();
@@ -186,6 +203,13 @@
                 });
             },
             loadData: function () {
+                var mainImagePath = $('#mainPicture').attr('src');
+                if (null != mainImagePath && mainImagePath != '') {
+                    packages.v.mainImageStatus = 1;
+                } else {
+                    $('#mainPicture').attr('src', 'static/images/add.jpg');
+                }
+
                 // 加载套餐包含的商品图片数组
                 packages.fn.getSerImages();
             },
@@ -202,17 +226,13 @@
                         $('#lastImageDiv').html('暂无');
                     }
                 });
-
-                // 选中封面图
-                var id = $('#packagesId').val();
-                var coverId = $('#tempCoverId').val();
-                if (null != id && id != '') {
-                    $('input:radio[name="settingCover"]').each(function () {
-                        if ($(this).prev().val() == coverId) {
-                            $(this).prop('checked', true);
-                        }
-                    });
-                }
+            },
+            AddImg: function () {
+                // a标签绑定onclick事件
+                $('#mainImage').click();
+            },
+            changeStatus: function () {
+                packages.v.mainImageStatus = 1;
             },
             confirmProduct: function () {
                 var productId = $('#productList option:selected').val();
@@ -393,15 +413,14 @@
                     return;
                 }
 
-                if (packages.v.imageSize == 0) {
-                    $sixmac.notify("请至少添加一个商品", "error");
+                if (packages.v.mainImageStatus == 0) {
+                    $sixmac.notify("请上传封面图", "error");
                     flag = false;
                     return;
                 }
 
-                var val = $('input:radio[name="settingCover"]:checked').val();
-                if (null == val || val == 'undefined') {
-                    $sixmac.notify("请选择一张封面图", "error");
+                if (packages.v.imageSize == 0) {
+                    $sixmac.notify("请至少添加一个商品", "error");
                     flag = false;
                     return;
                 }
@@ -415,7 +434,6 @@
                 return flag;
             },
             subInfo: function () {
-                console.log(0);
                 // 所有的验证通过后，执行新增操作
                 if (packages.fn.checkData()) {
                     $("input[name='tempProductColor']").each(function () {
@@ -427,29 +445,26 @@
                     $("input[name='tempProductMaterial']").each(function () {
                         packages.v.tempMaterials += $(this).val().trim() + ',';
                     });
-                    console.log(1);
-                    $.post(_basePath + "backend/packages/save",
-                            {
-                                "id": $('#packagesId').val(),
-                                "name": $('#name').val(),
-                                "price": $('#price').val(),
-                                "oldPrice": $('#oldPrice').val(),
-                                "brandId": $('#brandList option:selected').val(),
-                                "labels": $('#labels').val(),
-                                "coverId": $("input[type='radio']:checked").prev().val(),
-                                "tempAddImageIds": $("#tempAddImageIds").html(),
-                                "tempColors": packages.v.tempColors,
-                                "tempSizes": packages.v.tempSizes,
-                                "tempMaterials": packages.v.tempMaterials,
-                                "content": editor1.getContent()
-                            },
-                            function (data) {
-                                if (data > 0) {
-                                    window.location.href = _basePath + "backend/packages/index";
-                                } else {
-                                    $sixmac.notify("操作失败", "error");
-                                }
-                            });
+
+                    $("#packagesForm").ajaxSubmit({
+                        url: _basePath + "backend/packages/save",
+                        dataType: "json",
+                        data: {
+                            "brandId": $('#brandList option:selected').val(),
+                            "tempAddImageIds": $("#tempAddImageIds").html(),
+                            "tempColors": packages.v.tempColors,
+                            "tempSizes": packages.v.tempSizes,
+                            "tempMaterials": packages.v.tempMaterials,
+                            "content": editor1.getContent()
+                        },
+                        success: function (result) {
+                            if (result > 0) {
+                                window.location.href = _basePath + "backend/packages/index";
+                            } else {
+                                $sixmac.notify("操作失败", "error");
+                            }
+                        }
+                    });
                 }
             },
             goBack: function () {
