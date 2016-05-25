@@ -76,7 +76,7 @@ public class OrdersApi extends CommonController {
      * @apiSuccess {String} list.createTime 下单时间
      * @apiSuccess {Object} list.orderInfoList 订单详情列表
      * @apiSuccess {Integer} list.orderInfoList.id 订单详情id
-     * @apiSuccess {Integer} list.orderInfoList.type 类型，1=商品，2=秒杀，3=套餐
+     * @apiSuccess {Integer} list.orderInfoList.type 类型，1=商品，2=套餐，3=秒杀
      * @apiSuccess {Integer} list.orderInfoList.productId 商品id or 秒杀id
      * @apiSuccess {String} list.orderInfoList.productName 名称
      * @apiSuccess {String} list.orderInfoList.productPath 图片
