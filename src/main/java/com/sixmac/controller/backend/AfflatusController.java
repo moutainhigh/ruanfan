@@ -10,6 +10,7 @@ import com.sixmac.entity.Virtuals;
 import com.sixmac.service.*;
 import com.sixmac.utils.WebUtil;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -203,27 +204,29 @@ public class AfflatusController extends CommonController {
                     image = imageService.getById(Integer.parseInt(addImageIds[i]));
                     image.setObjectId(afflatus.getId());
                     image.setObjectType(Constant.IMAGE_AFFLATUS);
-                    // image.setDescription(type == 1 ? "" : textDesc[i]);
+                    image.setDescription(type == 1 && textDesc.length > 0 && StringUtils.isNotEmpty(textDesc[i]) ? "" : textDesc[i]);
 
                     imageService.update(image);
                 }
             }
 
-            /*List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
+            if (textDesc.length > 0) {
+                List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
 
-            for (int i = 0; i < imageList.size(); i++) {
-                image = imageList.get(i);
+                for (int i = 0; i < imageList.size(); i++) {
+                    image = imageList.get(i);
 
-                if (null != image) {
-                    if (type == 2) {
-                        image.setDescription(textDesc[i]);
-                    } else {
-                        image.setDescription("");
+                    if (null != image) {
+                        if (type == 2) {
+                            image.setDescription(textDesc[i]);
+                        } else {
+                            image.setDescription("");
+                        }
+
+                        imageService.update(image);
                     }
-
-                    imageService.update(image);
                 }
-            }*/
+            }
 
             // 删除灵感集图片
             for (String imageId : delImageIds) {
