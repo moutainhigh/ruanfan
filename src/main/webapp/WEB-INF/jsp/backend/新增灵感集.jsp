@@ -247,6 +247,8 @@
                         if (afflatus.v.imageSize == 0) {
                             $("#lastImageDiv").css('display', '');
                         }
+
+                        $('#tempDiv').css('margin-bottom', '10px');
                     }
 
                     // 加载灵感图集图片数组
