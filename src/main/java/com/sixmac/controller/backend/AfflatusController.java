@@ -205,25 +205,27 @@ public class AfflatusController extends CommonController {
                     image.setObjectId(afflatus.getId());
                     image.setObjectType(Constant.IMAGE_AFFLATUS);
                     image.setPath(image.getPath());
-                    image.setDescription(type == 1 && textDesc.length > 0 && StringUtils.isNotEmpty(textDesc[i]) ? "" : textDesc[i]);
+                    image.setDescription(type == 2 && textDesc.length > 0 && StringUtils.isNotEmpty(textDesc[i]) ? textDesc[i] : "");
 
                     imageService.update(image);
                 }
             }
 
-            List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
+            if (textDesc.length > 0) {
+                List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
 
-            for (int i = 0; i < imageList.size(); i++) {
-                image = imageList.get(i);
+                for (int i = 0; i < imageList.size(); i++) {
+                    image = imageList.get(i);
 
-                if (null != image) {
-                    if (type == 2) {
-                        image.setDescription(StringUtils.isNotEmpty(textDesc[i]) ? "" : textDesc[i]);
-                    } else {
-                        image.setDescription("");
+                    if (null != image) {
+                        if (type == 2) {
+                            image.setDescription(StringUtils.isNotEmpty(textDesc[i]) ? textDesc[i] : "");
+                        } else {
+                            image.setDescription("");
+                        }
+
+                        imageService.update(image);
                     }
-
-                    imageService.update(image);
                 }
             }
 
