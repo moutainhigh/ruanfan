@@ -127,7 +127,7 @@
                             <input type="file" name="tempImage" id="tempImage" data-rule="required" style="display:none;" onchange="afflatus.fn.saveTempImage()"/>
                         </form>
 
-                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 65px;">
+                        <div id="tempDiv" style="display:none;float: left; height: 210px;width: 200px;margin-right:6px; z-index: 0;margin-bottom: 120px;">
                             <img class="imgs" alt="" src="" style="height: 200px;width: 200px; z-index: 1;"/>
                             <input name="imageIdTemp" type="hidden"/>
                             <a href="javascript:void(0);" style="float: none; z-index: 10; position: relative; bottom: 207px; left: 184px; display: none;" class="axx" onclick="afflatus.fn.deleteImage(this)">
@@ -197,6 +197,7 @@
                         // 隐藏图片的文字描述
                         $('.textDesc').val('');
                         $('.textDesc').css('display', 'none');
+                        $('.textDesc').parent().css('margin-bottom', '10px');
 
                         afflatus.fn.removeOtherImage();
                     } else {
@@ -210,6 +211,7 @@
 
                         // 显示图片的文字描述
                         $('.textDesc').css('display', '');
+                        $('.textDesc').parent().css('margin-bottom', '120px');
                     }
                 });
             },

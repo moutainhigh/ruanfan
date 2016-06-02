@@ -182,21 +182,20 @@ public class DesignerAfflatusController extends CommonController {
                 }
             }
 
-            if (textDesc.length > 0) {
-                List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
+            List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
 
-                for (int i = 0; i < imageList.size(); i++) {
-                    image = imageList.get(i);
+            for (int i = 0; i < imageList.size(); i++) {
+                image = imageList.get(i);
 
-                    if (null != image) {
-                        if (type == 2) {
-                            image.setDescription(textDesc[i]);
-                        } else {
-                            image.setDescription("");
-                        }
-
-                        imageService.update(image);
+                if (null != image) {
+                    if (type == 2) {
+                        image.setPath(image.getPath());
+                        image.setDescription(StringUtils.isNotEmpty(textDesc[i]) ? "" : textDesc[i]);
+                    } else {
+                        image.setDescription("");
                     }
+
+                    imageService.update(image);
                 }
             }
 
