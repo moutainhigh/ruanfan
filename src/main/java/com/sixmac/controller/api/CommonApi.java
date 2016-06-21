@@ -84,6 +84,9 @@ public class CommonApi extends CommonController {
     @Autowired
     private CustominfoService custominfoService;
 
+    @Autowired
+    private VersionsService versionsService;
+
     /**
      * @api {post} /api/common/collectList 收藏列表
      * @apiName common.collectList
@@ -675,6 +678,19 @@ public class CommonApi extends CommonController {
 
         Result obj = new Result(true).data(createMap("list", list));
         String result = JsonUtil.obj2ApiJson(obj, "province");
+        WebUtil.printApi(response, result);
+    }
+
+    /**
+     * 获取当前版本号
+     * @param response
+     */
+    @RequestMapping(value = "/versionInfo")
+    public void versionInfo(HttpServletResponse response){
+        Versions versions = versionsService.getById(1);
+
+        Result obj = new Result(true).data(createMap("versions", versions.getContent()));
+        String result = JsonUtil.obj2ApiJson(obj);
         WebUtil.printApi(response, result);
     }
 }
