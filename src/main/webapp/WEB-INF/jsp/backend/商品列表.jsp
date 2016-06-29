@@ -71,9 +71,11 @@
                                     <col class="gradeA odd"/>
                                     <col class="gradeA even"/>
                                     <col class="gradeA odd"/>
+                                    <col class="gradeA even"/>
                                 </colgroup>
                                 <thead>
                                 <tr>
+                                    <th>商品ID</th>
                                     <th>商品名称</th>
                                     <th>发布者</th>
                                     <th>类别</th>
@@ -162,6 +164,7 @@
                         "type": "POST"
                     },
                     "columns": [
+                        {"data": "id"},
                         {"data": "name"},
                         {"data": "merchant.nickName"},
                         {"data": "type"},
@@ -194,19 +197,19 @@
                         masterProductList.v.list.push(data);
 
                         if (data.type == 1) {
-                            $('td', row).eq(2).html("单品");
+                            $('td', row).eq(3).html("单品");
                         } else if (data.type == 2) {
-                            $('td', row).eq(2).html("艺术品");
+                            $('td', row).eq(3).html("艺术品");
                         } else {
-                            $('td', row).eq(2).html("设计师品牌");
+                            $('td', row).eq(3).html("设计师品牌");
                         }
 
                         if (data.isCheck == 0) {
-                            $('td', row).eq(3).html("待审核");
+                            $('td', row).eq(4).html("待审核");
                         } else if (data.isCheck == 1) {
-                            $('td', row).eq(3).html("审核通过");
+                            $('td', row).eq(4).html("审核通过");
                         } else {
-                            $('td', row).eq(3).html("审核不通过");
+                            $('td', row).eq(4).html("审核不通过");
                         }
                     },
                     rowCallback: function (row, data) {
