@@ -14,4 +14,7 @@ public interface VirtualsDao extends JpaRepository<Virtuals, Integer>, JpaSpecif
 
     @Query("select a from Virtuals a where a.style.id = ?1")
     public List<Virtuals> iFindListByStyleId(Integer styleId);
+
+    @Query("select a from Virtuals a where a.afflatusId = ?1")
+    public Virtuals iFindOneByAfflatusId(Integer afflatusId);
 }

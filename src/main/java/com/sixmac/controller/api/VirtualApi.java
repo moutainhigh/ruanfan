@@ -52,6 +52,7 @@ public class VirtualApi {
      * @apiSuccess {String} list.labels 标签
      * @apiSuccess {String} list.cover 封面图
      * @apiSuccess {String} list.url 链接地址
+     * @apiSuccess {Integer} list.afflatusId 灵感套图id
      * @apiSuccess {Integer} list.isAuth 认证状态，0=未认证，1=已认证
      * @apiSuccess {String} list.createTime 创建时间
      * @apiSuccess {String} list.isGam 是否点赞  0=是，1=否

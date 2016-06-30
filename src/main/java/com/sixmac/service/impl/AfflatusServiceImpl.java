@@ -285,4 +285,9 @@ public class AfflatusServiceImpl implements AfflatusService {
     public List<Afflatus> findListByStatus() {
         return afflatusDao.findListBystatus();
     }
+
+    @Override
+    public List<Afflatus> findListForVirtual() {
+        return afflatusDao.findListForVirtual();
+    }
 }

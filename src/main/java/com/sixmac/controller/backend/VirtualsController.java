@@ -136,8 +136,13 @@ public class VirtualsController extends CommonController {
                         String name,
                         String labels,
                         String url,
+                        Integer afflatusId,
                         MultipartRequest multipartRequest) {
         try {
+            if (virtualsService.checkAfflatusId(afflatusId, id)) {
+                return -200;
+            }
+
             Virtuals virtuals = null;
 
             if (null != id) {
@@ -151,6 +156,7 @@ public class VirtualsController extends CommonController {
             virtuals.setName(name);
             virtuals.setLabels(labels);
             virtuals.setUrl(url);
+            virtuals.setAfflatusId(afflatusId);
 
             MultipartFile multipartFile = multipartRequest.getFile("mainImage");
             if (null != multipartFile) {

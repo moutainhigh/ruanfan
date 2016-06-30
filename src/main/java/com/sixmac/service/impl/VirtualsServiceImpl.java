@@ -122,4 +122,18 @@ public class VirtualsServiceImpl implements VirtualsService {
 
         virtualsDao.delete(virtuals);
     }
+
+    @Override
+    public Boolean checkAfflatusId(Integer afflatusId, Integer virtualId) {
+        Virtuals virtuals = virtualsDao.iFindOneByAfflatusId(afflatusId);
+        if (null == virtuals) {
+            return false;
+        } else {
+            if (null != virtualId && virtuals.getId() == virtualId) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
 }

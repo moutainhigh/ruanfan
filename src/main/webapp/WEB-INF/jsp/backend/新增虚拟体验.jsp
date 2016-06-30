@@ -33,6 +33,7 @@
                             <input type="hidden" id="styleId" value="${virtuals.style.id}">
                             <input type="hidden" id="typeId" value="${virtuals.type.id}">
                             <input type="hidden" id="tempCover" value="${virtuals.cover}"/>
+                            <input type="hidden" id="tempAfflatusId" value="${virtuals.afflatusId}"/>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">名称:</label>
@@ -76,6 +77,13 @@
                                 <label class="col-sm-2 control-label">链接:</label>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="url" name="url" maxlength="200" data-rule="required" value="${virtuals.url}" placeholder="请输入链接地址"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">灵感套图:</label>
+                                <div class="col-sm-3">
+                                    <select id="afflatusList" style="width: 300px;" class="form-control"></select>
                                 </div>
                             </div>
 
@@ -182,6 +190,23 @@
                         $('#styleList').val(styleId);
                     }
                 });
+                $sixmac.ajax("common/afflatusList", null, function (result) {
+                    if (null != result) {
+                        // 获取返回的灵感套图信息，并循环绑定到label中
+                        var content = "<option value=''>请选择灵感套图</option>";
+                        jQuery.each(result, function (i, item) {
+                            content += "<option value='" + item.id + "'>" + item.name + "</option>";
+                        });
+                        $('#afflatusList').append(content);
+                    } else {
+                        $sixmac.notify("获取灵感套图信息失败", "error");
+                    }
+
+                    var afflatusId = $('#tempAfflatusId').val();
+                    if (null != afflatusId && afflatusId != '') {
+                        $('#afflatusList').val(afflatusId);
+                    }
+                });
             },
             AddImg: function () {
                 // a标签绑定onclick事件
@@ -191,6 +216,7 @@
                 var flag = true;
                 var typeId = $('#typeList option:selected').val();
                 var styleId = $('#styleList option:selected').val();
+                var afflatusId = $('#afflatusList option:selected').val();
                 var name = $('#name').val();
                 var url = $('#url').val();
 
@@ -224,6 +250,12 @@
                     return;
                 }
 
+                if (afflatusId == '') {
+                    $sixmac.notify("请选择灵感套图", "error");
+                    flag = false;
+                    return;
+                }
+
                 // 所有的验证通过后，执行新增操作
                 if (flag) {
                     $("#virtualsForm").ajaxSubmit({
@@ -231,11 +263,14 @@
                         dataType: "json",
                         data: {
                             "styleId": styleId,
-                            "typeId": typeId
+                            "typeId": typeId,
+                            "afflatusId": afflatusId
                         },
                         success: function (result) {
                             if (result > 0) {
                                 window.location.href = _basePath + "backend/virtuals/index";
+                            } else if (result == -200) {
+                                $sixmac.notify("该套图已绑定VR，请重新选择套图", "error");
                             } else {
                                 $sixmac.notify("操作失败", "error");
                             }

@@ -1,10 +1,8 @@
 package com.sixmac.controller;
 
 import com.sixmac.entity.*;
-import com.sixmac.entity.vo.BeanVo;
 import com.sixmac.service.*;
 import com.sixmac.utils.GetImageInfo;
-import com.sixmac.utils.ImageUtil;
 import com.sixmac.utils.QiNiuUploadImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.ServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/9 0009.
@@ -67,6 +66,9 @@ public class CommonsController {
 
     @Autowired
     private RolesService rolesService;
+
+    @Autowired
+    private AfflatusService afflatusService;
 
     /**
      * 权限列表
@@ -195,6 +197,17 @@ public class CommonsController {
         } else {
             return productsService.findListWithSuccess(merchantId);
         }
+    }
+
+    /**
+     * 灵感套图列表
+     *
+     * @return
+     */
+    @RequestMapping("/afflatusList")
+    @ResponseBody
+    public List<Afflatus> afflatusList() {
+        return afflatusService.findListForVirtual();
     }
 
     /**

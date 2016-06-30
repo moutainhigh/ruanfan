@@ -18,6 +18,7 @@ public class Virtuals {
     private String labels;
     private String cover;
     private String url;
+    private Integer afflatusId;
     private Integer isAuth;
     private Date createTime;
     private Integer isGam;
@@ -86,6 +87,14 @@ public class Virtuals {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getAfflatusId() {
+        return afflatusId;
+    }
+
+    public void setAfflatusId(Integer afflatusId) {
+        this.afflatusId = afflatusId;
     }
 
     public Integer getIsAuth() {

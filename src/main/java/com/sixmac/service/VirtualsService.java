@@ -15,4 +15,7 @@ public interface VirtualsService extends ICommonService<Virtuals> {
     public Page<Virtuals> iPage(String name, Integer styleId, Integer typeId, Integer pageNum, Integer pageSize);
 
     public void deleteById(HttpServletRequest request, Integer id);
+
+    // 检测灵感套图id是否已经绑定
+    public Boolean checkAfflatusId(Integer afflatusId, Integer virtualId);
 }
