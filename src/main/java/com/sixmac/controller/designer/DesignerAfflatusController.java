@@ -182,6 +182,13 @@ public class DesignerAfflatusController extends CommonController {
                 }
             }
 
+            // 删除灵感集图片
+            for (String imageId : delImageIds) {
+                if (null != imageId && !imageId.equals("")) {
+                    imageService.deleteById(Integer.parseInt(imageId));
+                }
+            }
+
             if (textDesc.length > 0) {
                 List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
 
@@ -198,13 +205,6 @@ public class DesignerAfflatusController extends CommonController {
 
                         imageService.update(image);
                     }
-                }
-            }
-
-            // 删除灵感集图片
-            for (String imageId : delImageIds) {
-                if (null != imageId && !imageId.equals("")) {
-                    imageService.deleteById(Integer.parseInt(imageId));
                 }
             }
 

@@ -211,6 +211,13 @@ public class AfflatusController extends CommonController {
                 }
             }
 
+            // 删除灵感集图片
+            for (String imageId : delImageIds) {
+                if (null != imageId && !imageId.equals("")) {
+                    imageService.deleteById(Integer.parseInt(imageId));
+                }
+            }
+
             if (textDesc.length > 0) {
                 List<Image> imageList = imageService.iFindList(afflatus.getId(), Constant.IMAGE_AFFLATUS);
 
@@ -229,12 +236,6 @@ public class AfflatusController extends CommonController {
                 }
             }
 
-            // 删除灵感集图片
-            for (String imageId : delImageIds) {
-                if (null != imageId && !imageId.equals("")) {
-                    imageService.deleteById(Integer.parseInt(imageId));
-                }
-            }
             if (afflatus.getType() == 1) {
                 // 单图
                 operatisService.addOperatisInfo(request, null == id ? "新增" : "修改" + "id为 " + afflatus.getId() + " 的灵感单图");
